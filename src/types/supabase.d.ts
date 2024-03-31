@@ -1,0 +1,1 @@
+// declare supabase db types
