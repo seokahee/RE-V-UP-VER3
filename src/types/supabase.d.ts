@@ -294,6 +294,7 @@ export type Database = {
           postsOpen: boolean;
           userChar: Json;
           userId: string;
+          userImage: string | null;
           userType: number;
         };
         Insert: {
@@ -309,6 +310,7 @@ export type Database = {
           postsOpen?: boolean;
           userChar: Json;
           userId?: string;
+          userImage?: string | null;
           userType?: number;
         };
         Update: {
@@ -324,6 +326,7 @@ export type Database = {
           postsOpen?: boolean;
           userChar?: Json;
           userId?: string;
+          userImage?: string | null;
           userType?: number;
         };
         Relationships: [];
