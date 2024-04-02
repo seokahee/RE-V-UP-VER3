@@ -25,8 +25,8 @@ const ImageInput = () => {
   };
 
   return (
-    <div>
-      <button id="btn-image" onClick={imageButtonClickHandler}>IMG</button>
+    <>
+      <button className='btn mx-1 p-1 border border-solid border-black rounded' onClick={imageButtonClickHandler}>IMG</button>
       <input
         type="file"
         id="img-selector"
@@ -34,7 +34,7 @@ const ImageInput = () => {
         style={{ display: 'none' }}
         onChange={imageChangeHandler}
       />
-    </div>
+    </>
   );
 };
 
