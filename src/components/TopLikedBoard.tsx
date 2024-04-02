@@ -47,7 +47,7 @@ const TopLikedBoard = () => {
   });
 
   return (
-    <>
+    <section>
       <h2>지금 핫한 게시글</h2>
       <ul>
         {data
@@ -59,8 +59,10 @@ const TopLikedBoard = () => {
 
             return (
               <li key={item.boardId} className="my-2 border border-solid border-slate-300">
-                <div>
-                  {/* <Image src={userImage} alt={userData?.nickname!}></Image> */}
+                <div className="flex">
+                  <span className="w-5 h-5 flex overflow-hidden rounded-full bg-slate-200">
+                    {item.userInfo.userImage && <Image src={item.userInfo.userImage} alt={item.userInfo.nickname!} width={20} height={20} />}
+                  </span>
                   {item.userInfo.nickname}
                 </div>
                 <Link href={`/community/${item.boardId}`}>{item.boardTitle}</Link>
@@ -71,7 +73,7 @@ const TopLikedBoard = () => {
             );
           })}
       </ul>
-    </>
+    </section>
   );
 };
 
