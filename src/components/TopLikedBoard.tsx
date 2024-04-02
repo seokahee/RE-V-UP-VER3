@@ -2,6 +2,7 @@
 
 import { supabase } from "@/shared/supabase/supabase";
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import React from "react";
 
 type TopLikedBoard = {
@@ -28,17 +29,24 @@ const TopLikedBoard = () => {
   });
 
   return (
-    <ul>
-      {data?.map((item) => {
-        const likedLength = item.likeList.length;
-        return (
-          <li key={item.boardId} className="my-2 border border-solid border-slate-300">
-            {item.boardTitle}
-            <div>좋아요 {likedLength}</div>
-          </li>
-        );
-      })}
-    </ul>
+    <>
+      <h2>지금 핫한 게시글</h2>
+      <ul>
+        {data
+          ?.sort((a, b) => {
+            return b.likeList.length - a.likeList.length;
+          })
+          .map((item) => {
+            const likedLength = item.likeList.length;
+            return (
+              <li key={item.boardId} className="my-2 border border-solid border-slate-300">
+                <Link href={`/community/${item.boardId}`}>{item.boardTitle}</Link>
+                <div>좋아요 {likedLength}</div>
+              </li>
+            );
+          })}
+      </ul>
+    </>
   );
 };
 
