@@ -22,8 +22,9 @@ const Join = () => {
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    const { name, value } = e.target;
-    setJoin((preForm) => ({ ...preForm, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    const checkBoxNdValues = type === "checkbox" ? checked : value;
+    setJoin((preForm) => ({ ...preForm, [name]: checkBoxNdValues }));
   };
 
   const onJoinHandler = () => {
