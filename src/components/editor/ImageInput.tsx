@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef } from "react";
 
 const ImageInput = () => {
   const imageSelectorRef = useRef<HTMLInputElement>(null);
@@ -19,19 +19,23 @@ const ImageInput = () => {
   const insertImageData = (file: File) => {
     const reader = new FileReader();
     reader.onload = (e: ProgressEvent<FileReader>) => {
-      document.execCommand('insertImage', false, e.target?.result as string);
+      document.execCommand("insertImage", false, e.target?.result as string);
     };
     reader.readAsDataURL(file);
   };
 
   return (
     <>
-      <button className='btn mx-1 p-1 border border-solid border-black rounded' onClick={imageButtonClickHandler}>IMG</button>
+      <button
+        className="btn ml-5 mr-2 my-5 p-1 border border-solid border-black rounded"
+        onClick={imageButtonClickHandler}
+      >
+        IMG
+      </button>
       <input
         type="file"
-        id="img-selector"
+        className="hidden"
         ref={imageSelectorRef}
-        style={{ display: 'none' }}
         onChange={imageChangeHandler}
       />
     </>

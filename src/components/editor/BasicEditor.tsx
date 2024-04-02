@@ -16,7 +16,7 @@ const BasicEditor = () => {
     }
   };
 
-  const buttonStyle = "btn mx-1 p-1 border border-solid border-black rounded";
+  const buttonStyle = "btn mx-2 my-5 p-1 border border-solid border-black rounded";
 
   return (
     <>
@@ -30,7 +30,7 @@ const BasicEditor = () => {
         id="editor"
         ref={editorRef}
         contentEditable={true}
-        className="border border-gray-300 min-h-32 p-2 m-5"
+        className="border border-black border-solid rounded min-h-32 p-2 mx-5"
       ></div>
     </>
   );
