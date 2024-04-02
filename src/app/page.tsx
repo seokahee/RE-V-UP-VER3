@@ -1,7 +1,12 @@
-export default function Home() {
+import TopLikedBoard from "@/components/TopLikedBoard";
+import React from "react";
+
+const Home = () => {
   return (
-    <h1>
-      Hello
-    </h1>
+    <div>
+      <TopLikedBoard />
+    </div>
   );
-}
+};
+
+export default Home;
