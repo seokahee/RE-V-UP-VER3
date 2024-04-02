@@ -77,7 +77,7 @@ export type Database = {
           boardTitle: string;
           content: string;
           date: string;
-          images: string;
+          images: string[] | null;
           likeList: string[];
           musicId: string;
           thumbnail: string;
@@ -88,7 +88,7 @@ export type Database = {
           boardTitle?: string;
           content?: string;
           date?: string;
-          images?: string;
+          images?: string[] | null;
           likeList: string[];
           musicId?: string;
           thumbnail?: string;
@@ -99,7 +99,7 @@ export type Database = {
           boardTitle?: string;
           content?: string;
           date?: string;
-          images?: string;
+          images?: string[] | null;
           likeList?: string[];
           musicId?: string;
           thumbnail?: string;
@@ -146,7 +146,8 @@ export type Database = {
         Row: {
           artist: string;
           genre: number;
-          lyrice: string;
+          lyrics: string;
+          music: string;
           musicId: string;
           musicTitle: string;
           release: string;
@@ -155,7 +156,8 @@ export type Database = {
         Insert: {
           artist?: string;
           genre: number;
-          lyrice?: string;
+          lyrics?: string;
+          music?: string;
           musicId?: string;
           musicTitle?: string;
           release: string;
@@ -164,7 +166,8 @@ export type Database = {
         Update: {
           artist?: string;
           genre?: number;
-          lyrice?: string;
+          lyrics?: string;
+          music?: string;
           musicId?: string;
           musicTitle?: string;
           release?: string;
@@ -201,19 +204,19 @@ export type Database = {
       };
       personalMusic: {
         Row: {
-          PersonalMusic: string;
+          personalMusicId: string;
           result: string;
           resultSentence: string;
           userId: string;
         };
         Insert: {
-          PersonalMusic?: string;
+          personalMusicId?: string;
           result?: string;
           resultSentence?: string;
           userId: string;
         };
         Update: {
-          PersonalMusic?: string;
+          personalMusicId?: string;
           result?: string;
           resultSentence?: string;
           userId?: string;
