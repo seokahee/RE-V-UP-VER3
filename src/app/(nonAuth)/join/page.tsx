@@ -1,6 +1,9 @@
 "use client";
+
+import { FormEvent, useRef } from "react";
 import Link from "next/link";
-import React, { ChangeEvent, useState } from "react";
+import useInput from "@/hooks/useInput";
+import { signUp } from "@/shared/join/joinApi";
 
 const Join = () => {
   const joinState = {
@@ -10,26 +13,30 @@ const Join = () => {
     userNickname: "",
     checkAgree: false,
   };
-  const [join, setJoin] = useState(joinState);
+  const {
+    form: join,
+    setForm: setJoin,
+    onChange: onChangeHandler,
+    reset,
+  } = useInput(joinState);
 
-  const validatePassword = !(join.userPw === join.userPwCheck);
-  const validatePwLength = join.userPw.length < 6;
-  const validateEmptyValue = !(
-    join.userEmail ||
-    join.userPwCheck ||
-    join.userNickname
-  );
+  const checkboxRef = useRef(null);
+  const { userEmail, userPw, userPwCheck, userNickname, checkAgree } = join;
 
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const { name, value, type, checked } = e.target;
-    const checkBoxNdValues = type === "checkbox" ? checked : value;
-    setJoin((preForm) => ({ ...preForm, [name]: checkBoxNdValues }));
+  const validateCheckAgree = checkAgree;
+  const validatePwLength = userPw.length < 6;
+  const validatePassword = !(userPw === userPwCheck);
+  const validateEmptyValue = !(userEmail || userPwCheck || userNickname);
+
+  const onClickCheckboxHandler = () => {
+    setJoin((prevForm) => ({ ...prevForm, checkAgree: !prevForm.checkAgree }));
   };
 
-  const onJoinHandler = () => {
+  const onJoinHandler = (e: FormEvent) => {
+    e.preventDefault();
     if (validateEmptyValue) {
       alert("빈칸 없이 작성해 주세요.");
+      return;
     }
     if (validatePassword) {
       alert("비밀번호를 다시 입력해주세요.");
@@ -39,6 +46,11 @@ const Join = () => {
       alert("비밀번호는 최소 6글자 이상 작성해 주세요");
       return;
     }
+    if (validateCheckAgree === false) {
+      alert("약관 동의는 필수입니다");
+      return;
+    }
+    signUp({ email: userEmail, password: userPw });
   };
 
   return (
@@ -52,7 +64,7 @@ const Join = () => {
             type="email"
             name="userEmail"
             placeholder="이메일"
-            value={join.userEmail}
+            value={userEmail}
             onChange={onChangeHandler}
           />
         </div>
@@ -61,7 +73,7 @@ const Join = () => {
             type="password"
             name="userPw"
             placeholder="비밀번호"
-            value={join.userPw}
+            value={userPw}
             onChange={onChangeHandler}
           />
         </div>
@@ -70,7 +82,7 @@ const Join = () => {
             type="password"
             name="userPwCheck"
             placeholder="비밀번호 확인"
-            value={join.userPwCheck}
+            value={userPwCheck}
             onChange={onChangeHandler}
           />
         </div>
@@ -79,23 +91,30 @@ const Join = () => {
             type="text"
             name="userNickname"
             placeholder="닉네임"
-            value={join.userNickname}
+            value={userNickname}
             onChange={onChangeHandler}
           />
         </div>
-        <label htmlFor="checkAgree" className="flex gap-[14px]">
+        <label
+          htmlFor="checkAgree"
+          className="flex gap-[14px]"
+          onClick={onClickCheckboxHandler}
+        >
           <div>
             <input
               type="checkbox"
               id="checkAgree"
               name="checkAgree"
-              checked={join.checkAgree}
-              onChange={onChangeHandler}
+              checked={checkAgree}
+              ref={checkboxRef}
+              onChange={() => {}}
             />
           </div>
-          <span>가입 약관 동의(필수)</span>
+          <span id="checkAgree">가입 약관 동의(필수)</span>
         </label>
-
+        <div>
+          <textarea name="" id="" cols={30} rows={10}></textarea>
+        </div>
         <div>
           <button onClick={onJoinHandler}>다음</button>
         </div>
