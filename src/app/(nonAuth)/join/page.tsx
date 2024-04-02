@@ -8,6 +8,7 @@ const Join = () => {
     userPw: "",
     userPwCheck: "",
     userNickname: "",
+    checkAgree: false,
   };
   const [join, setJoin] = useState(joinState);
 
@@ -81,6 +82,19 @@ const Join = () => {
             onChange={onChangeHandler}
           />
         </div>
+        <label htmlFor="checkAgree" className="flex gap-[14px]">
+          <div>
+            <input
+              type="checkbox"
+              id="checkAgree"
+              name="checkAgree"
+              checked={join.checkAgree}
+              onChange={onChangeHandler}
+            />
+          </div>
+          <span>가입 약관 동의(필수)</span>
+        </label>
+
         <div>
           <button onClick={onJoinHandler}>다음</button>
         </div>
