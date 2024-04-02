@@ -9,12 +9,18 @@ type TopLikedBoard = {
   boardId: string;
   boardTitle: string;
   likeList: string[];
+  userId: string;
 };
 
 const TopLikedBoard = () => {
   const getTopLikedBoardData = async (): Promise<TopLikedBoard[]> => {
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    const oneWeekAgo = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+    oneWeekAgo.setHours(0, 0, 0, 0);
+
     try {
-      const { data, error } = await supabase.from("community").select("boardId, boardTitle, likeList");
+      const { data, error } = await supabase.from("community").select("boardId, boardTitle, likeList, userId").gte("date", oneWeekAgo.toISOString()).lte("date", currentDate.toISOString());
       console.log(data);
       return data as TopLikedBoard[];
     } catch (error) {
@@ -27,6 +33,8 @@ const TopLikedBoard = () => {
     queryFn: () => getTopLikedBoardData(),
     queryKey: ["topLikedBoard"]
   });
+
+  const userIds = data?.map((item) => item.userId);
 
   return (
     <>
