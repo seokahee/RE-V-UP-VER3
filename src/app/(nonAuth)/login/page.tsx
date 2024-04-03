@@ -17,12 +17,6 @@ const LoginPage = () => {
     reset,
   } = useInput(loginInfo);
   const { email, password, checkStayLogin } = userlogin;
-  console.log(
-    "email, password, checkStayLogin => ",
-    email,
-    password,
-    checkStayLogin
-  );
 
   const onClickCheckboxHandler = () => {
     setUserlogin((prevForm) => ({
