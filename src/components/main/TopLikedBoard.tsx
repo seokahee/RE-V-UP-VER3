@@ -47,32 +47,42 @@ const TopLikedBoard = () => {
   });
 
   return (
-    <section>
+    <section className="p-4">
       <h2>지금 핫한 게시글</h2>
-      <ul>
-        {data
-          ?.sort((a, b) => {
-            return b.likeList.length - a.likeList.length;
-          })
-          .map((item) => {
-            const likedLength = item.likeList.length;
+      <div className="relative">
+        <ul className="flex relative ">
+          {data
+            ?.sort((a, b) => {
+              return b.likeList.length - a.likeList.length;
+            })
+            .map((item) => {
+              const likedLength = item.likeList.length;
 
-            return (
-              <li key={item.boardId} className="my-2 border border-solid border-slate-300">
-                <div className="flex">
-                  <span className="w-5 h-5 flex overflow-hidden rounded-full bg-slate-200">
-                    {item.userInfo.userImage && <Image src={item.userInfo.userImage} alt={item.userInfo.nickname!} width={20} height={20} />}
-                  </span>
-                  {item.userInfo.nickname}
-                </div>
-                <Link href={`/community/${item.boardId}`}>{item.boardTitle}</Link>
-                <div>
-                  댓글 {item.comment.length} 좋아요 {likedLength}
-                </div>
-              </li>
-            );
-          })}
-      </ul>
+              return (
+                <li key={item.boardId} className="flex w-2/5 my-2 border border-solid border-slate-300">
+                  <div className="flex">
+                    <span className="w-5 h-5 flex overflow-hidden rounded-full bg-slate-200">
+                      {item.userInfo.userImage && <Image src={item.userInfo.userImage} alt={item.userInfo.nickname!} width={20} height={20} />}
+                    </span>
+                    {item.userInfo.nickname}
+                  </div>
+                  <Link href={`/community/${item.boardId}`}>{item.boardTitle}</Link>
+                  <div>
+                    댓글 {item.comment.length} 좋아요 {likedLength}
+                  </div>
+                </li>
+              );
+            })}
+        </ul>
+        <div>
+          <button type="button" className="absolute left-0 top-1/2 -translate-y-1/2">
+            왼쪽
+          </button>
+          <button type="button" className="absolute right-0 top-1/2 -translate-y-1/2">
+            오른쪽
+          </button>
+        </div>
+      </div>
     </section>
   );
 };
