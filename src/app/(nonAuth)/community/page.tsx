@@ -1,6 +1,7 @@
 "use client";
 import Search from "@/components/search/Search";
 import { supabase } from "@/shared/supabase/supabase";
+import { onDateHandler } from "@/util/util";
 import React, { useEffect, useState } from "react";
 
 interface CommunityData {
@@ -71,21 +72,16 @@ const Community = () => {
       >
         좋아요
       </p>
+
       {communityList.map((item) => {
-        const user = item.userInfo.nickname;
-        const date = new Date(item.date).toLocaleString("ko-KR", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-        });
         return (
           <div key={item.boardId} className="flex items-center">
             <img src={item.thumbnail} alt="" className="w-28" />
             <div className="flex flex-col gap-2">
               <div>{item.boardTitle}</div>
               <div className="flex gap-2">
-                <div>{user}</div>
-                <div>{date}</div>
+                <div>{item.userInfo.nickname}</div>
+                <div>{onDateHandler(item.date)}</div>
                 <div>좋아요 {item.likeList.length}</div>
               </div>
             </div>
@@ -97,4 +93,3 @@ const Community = () => {
 };
 
 export default Community;
-// 쿼리로 무한스크롤 구현할것
