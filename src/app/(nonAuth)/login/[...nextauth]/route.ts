@@ -16,7 +16,7 @@ const handler = NextAuth({
           type: "password",
         },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials, _) {
         if (credentials !== undefined) {
           try {
             const { data, error } = await supabase.auth.signInWithPassword({
