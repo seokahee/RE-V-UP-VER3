@@ -42,15 +42,21 @@ samp,
 small,
 strike,
 strong,
+span,
 sub,
 sup,
 tt,
 var,
+b,
 u,
+i,
 center,
 dl,
 dt,
 dd,
+ol,
+ul,
+li,
 fieldset,
 form,
 label,
@@ -103,6 +109,12 @@ menu,
 nav,
 section {
   display: block;
+}
+ol {
+  list-style: decimal;
+}
+ul {
+  list-style: disc;
 }
 
 blockquote,
