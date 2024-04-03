@@ -1,4 +1,5 @@
 "use client";
+import Search from "@/components/search/Search";
 import { supabase } from "@/shared/supabase/supabase";
 import React, { useEffect, useState } from "react";
 
@@ -12,25 +13,33 @@ interface CommunityData {
   musicId: string;
   thumbnail: string;
   userId: string;
+  adId?: string;
+  userInfo: {
+    nickname: string;
+    userImage: string;
+  };
 }
 
 const Community = () => {
   const [communityList, setCommunityList] = useState<CommunityData[]>([]);
+  const [isSort, setIsSort] = useState(true);
 
   useEffect(() => {
     const getCommunity = async () => {
       const { data, error } = await supabase
         .from("community")
-        .select("*")
-        .order("date", { ascending: false });
+        .select(
+          "boardId, boardTitle, likeList, date, userId, userInfo(nickname, userImage)"
+        )
+        .order(isSort ? "date" : "likeList", { ascending: false });
 
       if (!data) {
         console.log("커뮤니티 리스트를 가져오지 못했습니다", error);
       } else {
-        const communityImage = data.map((item) => {
+        const communityImage = data.map((item: any) => {
           const imgData = supabase.storage
-            .from("thumbnail")
-            .getPublicUrl("main.png");
+            .from("musicThumbnail")
+            .getPublicUrl("v1.png");
           if (imgData) {
             return { ...item, thumbnail: imgData.data.publicUrl };
           } else {
@@ -41,18 +50,45 @@ const Community = () => {
       }
     };
     getCommunity();
-  }, []);
+  }, [isSort]);
 
   return (
     <div>
+      <Search />
+      <p
+        onClick={() => {
+          setIsSort(true);
+        }}
+        className={`${isSort ? "text-zinc-400" : "text-black"}`}
+      >
+        최신순
+      </p>
+      <p
+        onClick={() => {
+          setIsSort(false);
+        }}
+        className={`${isSort ? "text-black" : "text-zinc-400"}`}
+      >
+        좋아요
+      </p>
       {communityList.map((item) => {
-        console.log("item.thumbnail", item.thumbnail);
+        const user = item.userInfo.nickname;
+        const date = new Date(item.date).toLocaleString("ko-KR", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        });
         return (
-          <div key={item.boardId}>
-            <img src={item.thumbnail} alt="" />
-            <div>{item.boardTitle}</div>
-            <div>{item.content}</div>
-            <div>좋아요 {item.likeList.length}</div>
+          <div key={item.boardId} className="flex items-center">
+            <img src={item.thumbnail} alt="" className="w-28" />
+            <div className="flex flex-col gap-2">
+              <div>{item.boardTitle}</div>
+              <div className="flex gap-2">
+                <div>{user}</div>
+                <div>{date}</div>
+                <div>좋아요 {item.likeList.length}</div>
+              </div>
+            </div>
           </div>
         );
       })}
@@ -61,3 +97,4 @@ const Community = () => {
 };
 
 export default Community;
+// 쿼리로 무한스크롤 구현할것
