@@ -147,8 +147,8 @@ export type Database = {
           artist: string;
           genre: number;
           lyrics: string;
-          music: string;
           musicId: string;
+          musicSource: string;
           musicTitle: string;
           release: string;
           thumbnail: string;
@@ -157,8 +157,8 @@ export type Database = {
           artist?: string;
           genre: number;
           lyrics?: string;
-          music?: string;
           musicId?: string;
+          musicSource?: string;
           musicTitle?: string;
           release: string;
           thumbnail?: string;
@@ -167,8 +167,8 @@ export type Database = {
           artist?: string;
           genre?: number;
           lyrics?: string;
-          music?: string;
           musicId?: string;
+          musicSource?: string;
           musicTitle?: string;
           release?: string;
           thumbnail?: string;
