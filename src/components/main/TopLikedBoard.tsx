@@ -4,7 +4,7 @@ import { supabase } from "@/shared/supabase/supabase";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 type TopLikedBoard = {
   boardId: string;
@@ -21,6 +21,12 @@ type TopLikedBoard = {
 };
 
 const TopLikedBoard = () => {
+  const slideRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState(0);
+  // const [currentSlide, setCurrentSlide] = useState(0);
+
+  const MOVE_POINT = 354 + 16; //임시값 - 슬라이드로 이동할 값
+
   const getTopLikedBoardData = async (): Promise<TopLikedBoard[]> => {
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
@@ -33,7 +39,7 @@ const TopLikedBoard = () => {
         .select("boardId, boardTitle, likeList, userId, userInfo(nickname, userImage), comment(commentId)")
         .gte("date", oneWeekAgo.toISOString())
         .lte("date", currentDate.toISOString());
-      console.log(data);
+
       return data as TopLikedBoard[];
     } catch (error) {
       console.error(error);
@@ -41,16 +47,55 @@ const TopLikedBoard = () => {
     }
   };
 
-  const { data } = useQuery({
+  const { data, isError, isLoading } = useQuery({
     queryFn: () => getTopLikedBoardData(),
     queryKey: ["topLikedBoard"]
   });
 
+  const onClickPrevHandler = () => {
+    if (position < 0) {
+      setPosition((prev) => prev + MOVE_POINT);
+      // setCurrentSlide((prev) => prev - 1);
+    }
+  };
+
+  const onClickNextHandler = () => {
+    setPosition((prev) => prev - MOVE_POINT);
+    // const slideWrapWidth = slideRef.current?.offsetWidth!;
+    // const slideListWidth = MOVE_POINT * (data?.length as number);
+    // const viewCount = slideWrapWidth / MOVE_POINT;
+
+    // if (viewCount < currentSlide) {
+    //   setPosition((prev) => prev - MOVE_POINT);
+    // } else {
+    //   setPosition((prev) => slideWrapWidth - slideListWidth);
+    // }
+    // setCurrentSlide((prev) => prev + 1);
+  };
+
+  useEffect(() => {
+    console.log(position, "position");
+  }, [position]);
+
+  if (isError) {
+    return "에러 발생";
+  }
+
+  if (isLoading) {
+    return "로딩중";
+  }
+
   return (
     <section className="p-4">
-      <h2>지금 핫한 게시글</h2>
-      <div className="relative">
-        <ul className="flex relative ">
+      <h2 className="my-4">지금 핫한 게시글 🔥</h2>
+      <div className="relative flex overflow-hidden" ref={slideRef}>
+        <ul
+          className="flex flex-nowrap"
+          style={{
+            transition: "all 0.4s ease-in-out",
+            transform: `translateX(${position}px)`
+          }}
+        >
           {data
             ?.sort((a, b) => {
               return b.likeList.length - a.likeList.length;
@@ -59,15 +104,17 @@ const TopLikedBoard = () => {
               const likedLength = item.likeList.length;
 
               return (
-                <li key={item.boardId} className="flex w-2/5 my-2 border border-solid border-slate-300">
-                  <div className="flex">
+                <li key={item.boardId} className="w-[356px] p-4 mr-4 border border-solid border-slate-300 list-none rounded-[2rem]">
+                  <div className="flex items-center">
                     <span className="w-5 h-5 flex overflow-hidden rounded-full bg-slate-200">
                       {item.userInfo.userImage && <Image src={item.userInfo.userImage} alt={item.userInfo.nickname!} width={20} height={20} />}
                     </span>
                     {item.userInfo.nickname}
                   </div>
-                  <Link href={`/community/${item.boardId}`}>{item.boardTitle}</Link>
-                  <div>
+                  <Link href={`/community/${item.boardId}`} className="block text-ellipsis whitespace-nowrap overflow-hidden">
+                    {item.boardTitle}
+                  </Link>
+                  <div className="mt-4 text-right">
                     댓글 {item.comment.length} 좋아요 {likedLength}
                   </div>
                 </li>
@@ -75,12 +122,16 @@ const TopLikedBoard = () => {
             })}
         </ul>
         <div>
-          <button type="button" className="absolute left-0 top-1/2 -translate-y-1/2">
-            왼쪽
-          </button>
-          <button type="button" className="absolute right-0 top-1/2 -translate-y-1/2">
-            오른쪽
-          </button>
+          {position !== ((data?.length as number) - 1) * -MOVE_POINT && (
+            <button type="button" className="absolute right-0 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black text-white" onClick={onClickNextHandler}>
+              NEXT
+            </button>
+          )}
+          {position !== 0 && (
+            <button type="button" className="absolute left-0 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black text-white" onClick={onClickPrevHandler}>
+              PREV
+            </button>
+          )}
         </div>
       </div>
     </section>
