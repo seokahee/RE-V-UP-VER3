@@ -1,5 +1,5 @@
 import { buttonStyle, initialButtonStyle } from "@/style/editorStyle";
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 
 const BasicEditor = () => {
   const editorRef = useRef<HTMLDivElement>(null);
@@ -18,7 +18,7 @@ const BasicEditor = () => {
     }
   };
 
-  const submitHandler = () => {
+  const submitHandler = async () => {
     console.log(editorValue?.innerHTML);
   };
 
