@@ -56,22 +56,24 @@ const Community = () => {
   return (
     <div>
       <Search />
-      <p
-        onClick={() => {
-          setIsSort(true);
-        }}
-        className={`${isSort ? "text-zinc-400" : "text-black"}`}
-      >
-        최신순
-      </p>
-      <p
-        onClick={() => {
-          setIsSort(false);
-        }}
-        className={`${isSort ? "text-black" : "text-zinc-400"}`}
-      >
-        좋아요
-      </p>
+      <div className="flex gap-2 m-10">
+        <p
+          onClick={() => {
+            setIsSort(true);
+          }}
+          className={`${isSort ? "text-zinc-400" : "text-black"}`}
+        >
+          최신순
+        </p>
+        <p
+          onClick={() => {
+            setIsSort(false);
+          }}
+          className={`${isSort ? "text-black" : "text-zinc-400"}`}
+        >
+          좋아요
+        </p>
+      </div>
 
       {communityList.map((item) => {
         return (
