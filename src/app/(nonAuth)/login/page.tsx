@@ -1,14 +1,13 @@
 "use client";
 
 import useInput from "@/hooks/useInput";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
 
 const LoginPage = () => {
   const router = useRouter();
-  // const data = useSession();
-  // console.log(data);
+
   const loginInfo = { email: "", password: "", checkStayLogin: false };
   const {
     form: userlogin,

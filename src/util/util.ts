@@ -1,5 +1,3 @@
-// utility function
-
 export const onDateHandler = (itemDate: any) => {
   const date = new Date(itemDate).toLocaleString("ko-KR", {
     year: "numeric",
