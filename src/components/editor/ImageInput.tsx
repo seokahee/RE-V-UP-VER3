@@ -1,3 +1,4 @@
+import { initialButtonStyle } from "@/style/editorStyle";
 import React, { useRef } from "react";
 
 const ImageInput = () => {
@@ -27,7 +28,7 @@ const ImageInput = () => {
   return (
     <>
       <button
-        className="btn ml-5 mr-2 my-5 p-1 border border-solid border-black rounded"
+        className={initialButtonStyle}
         onClick={imageButtonClickHandler}
       >
         IMG
