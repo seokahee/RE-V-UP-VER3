@@ -4,7 +4,7 @@ import { supabase } from "@/shared/supabase/supabase";
 import { onDateHandler } from "@/util/util";
 import React, { useEffect, useState } from "react";
 
-interface CommunityData {
+type CommunityData = {
   boardId: string;
   boardTitle: string;
   content: string;
@@ -19,7 +19,7 @@ interface CommunityData {
     nickname: string;
     userImage: string;
   };
-}
+};
 
 const Community = () => {
   const [communityList, setCommunityList] = useState<CommunityData[]>([]);
@@ -34,17 +34,13 @@ const Community = () => {
         )
         .order(isSort ? "date" : "likeList", { ascending: false });
 
-      if (!data) {
-        console.log("커뮤니티 리스트를 가져오지 못했습니다", error);
-      } else {
+      if (data) {
         const communityImage = data.map((item: any) => {
           const imgData = supabase.storage
             .from("musicThumbnail")
             .getPublicUrl("Coffee Shop Romance.png");
           if (imgData) {
             return { ...item, thumbnail: imgData.data.publicUrl };
-          } else {
-            console.log("이미지를 가져오지 못했습니다");
           }
         });
         setCommunityList(communityImage);

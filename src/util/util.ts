@@ -1,6 +1,6 @@
 // utility function
 
-export const onDateHandler = (itemDate: any) => {
+export const onDateHandler = (itemDate: string) => {
   const date = new Date(itemDate).toLocaleString("ko-KR", {
     year: "numeric",
     month: "2-digit",

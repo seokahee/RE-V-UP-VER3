@@ -16,12 +16,6 @@ const Search = () => {
 
   const onSubmitHandler = (e: any) => {
     e.preventDefault();
-
-    // const { data, error } = await supabase
-    //   .from("community")
-    //   .select("boardTitle")
-    //   .like("boardTitle", `%${values.keyword}%`)
-    //   .order("date");
   };
 
   return (
