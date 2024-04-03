@@ -3,7 +3,7 @@ import React, { useRef } from "react";
 const BasicEditor = () => {
   const editorRef = useRef<HTMLDivElement>(null);
 
-  const setStyle = (style: string): void => {
+  const applyStyle = (style: string): void => {
     if (editorRef.current) {
       document.execCommand(style);
       focusEditor();
@@ -20,17 +20,17 @@ const BasicEditor = () => {
 
   return (
     <>
-      <button className={buttonStyle} onClick={() => setStyle('bold')}>B</button>
-      <button className={buttonStyle} onClick={() => setStyle('italic')}>I</button>
-      <button className={buttonStyle} onClick={() => setStyle('underline')}>U</button>
-      <button className={buttonStyle} onClick={() => setStyle('strikeThrough')}>S</button>
-      <button className={buttonStyle} onClick={() => setStyle('insertOrderedList')}>OL</button>
-      <button className={buttonStyle} onClick={() => setStyle('insertUnorderedList')}>UL</button>
+      <button className={buttonStyle} onClick={() => applyStyle('bold')}>B</button>
+      <button className={buttonStyle} onClick={() => applyStyle('italic')}>I</button>
+      <button className={buttonStyle} onClick={() => applyStyle('underline')}>U</button>
+      <button className={buttonStyle} onClick={() => applyStyle('strikeThrough')}>S</button>
+      <button className={buttonStyle} onClick={() => applyStyle('insertOrderedList')}>OL</button>
+      <button className={buttonStyle} onClick={() => applyStyle('insertUnorderedList')}>UL</button>
       <div
         id="editor"
         ref={editorRef}
         contentEditable={true}
-        className="border border-black border-solid rounded min-h-32 p-2 mx-5"
+        className="mx-5 p-10 border border-black border-solid rounded min-h-32 *:w-full"
       ></div>
     </>
   );
