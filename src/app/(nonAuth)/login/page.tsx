@@ -1,22 +1,28 @@
 "use client";
 
 import useInput from "@/hooks/useInput";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
 
 const LoginPage = () => {
   const router = useRouter();
-  // const data = useSession();
-  // console.log(data);
-  const loginInfo = { email: "", password: "" };
+
+  const loginInfo = { email: "", password: "", checkStayLogin: false };
   const {
     form: userlogin,
     setForm: setUserlogin,
     onChange: onChangeHandler,
     reset,
   } = useInput(loginInfo);
-  const { email, password } = userlogin;
+  const { email, password, checkStayLogin } = userlogin;
+
+  const onClickCheckboxHandler = () => {
+    setUserlogin((prevForm) => ({
+      ...prevForm,
+      checkStayLogin: !prevForm.checkStayLogin,
+    }));
+  };
 
   const onLoginHandler = async (e: FormEvent) => {
     e.preventDefault();
@@ -64,6 +70,18 @@ const LoginPage = () => {
             <button type="submit">로그인</button>
           </div>
         </form>
+        <div>
+          <label htmlFor="checkStayLogin" onClick={onClickCheckboxHandler}>
+            <input
+              type="checkbox"
+              id="checkStayLogin"
+              name="checkStayLogin"
+              checked={checkStayLogin}
+              onChange={() => {}}
+            />
+            <p id="checkStayLogin">로그인 유지</p>
+          </label>
+        </div>
       </section>
     </div>
   );
