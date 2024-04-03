@@ -1,7 +1,5 @@
-<<<<<<< HEAD
 "use client";
-=======
->>>>>>> 8af0255b011c83c7ffe3563faed54bb585ed6a0d
+
 import { ChangeEvent, useCallback, useState } from "react";
 
 interface initialFormType {
