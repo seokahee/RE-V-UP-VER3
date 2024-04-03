@@ -40,7 +40,7 @@ const Community = () => {
         const communityImage = data.map((item: any) => {
           const imgData = supabase.storage
             .from("musicThumbnail")
-            .getPublicUrl("v1.png");
+            .getPublicUrl("Coffee Shop Romance.png");
           if (imgData) {
             return { ...item, thumbnail: imgData.data.publicUrl };
           } else {
