@@ -1,10 +1,4 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[];
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
   public: {
@@ -32,7 +26,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "userInfo";
             referencedColumns: ["userId"];
-          },
+          }
         ];
       };
       comment: {
@@ -74,7 +68,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "userInfo";
             referencedColumns: ["userId"];
-          },
+          }
         ];
       };
       community: {
@@ -118,7 +112,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "userInfo";
             referencedColumns: ["userId"];
-          },
+          }
         ];
       };
       musicDislikes: {
@@ -231,7 +225,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "userInfo";
             referencedColumns: ["userId"];
-          },
+          }
         ];
       };
       playlistCurrent: {
@@ -257,7 +251,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "userInfo";
             referencedColumns: ["userId"];
-          },
+          }
         ];
       };
       playlistMy: {
@@ -283,7 +277,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "userInfo";
             referencedColumns: ["userId"];
-          },
+          }
         ];
       };
       userInfo: {
@@ -291,30 +285,48 @@ export type Database = {
           email: string;
           follower: string[];
           following: string[];
+          likedPostsOpen: boolean;
+          mbtiOpen: boolean;
           nickname: string;
           password: string;
+          personalMusicOpen: boolean;
+          playlistOpen: boolean;
+          postsOpen: boolean;
           userChar: Json;
           userId: string;
+          userImage: string | null;
           userType: number;
         };
         Insert: {
           email?: string;
           follower: string[];
           following: string[];
+          likedPostsOpen?: boolean;
+          mbtiOpen?: boolean;
           nickname?: string;
           password?: string;
+          personalMusicOpen?: boolean;
+          playlistOpen?: boolean;
+          postsOpen?: boolean;
           userChar: Json;
           userId?: string;
+          userImage?: string | null;
           userType?: number;
         };
         Update: {
           email?: string;
           follower?: string[];
           following?: string[];
+          likedPostsOpen?: boolean;
+          mbtiOpen?: boolean;
           nickname?: string;
           password?: string;
+          personalMusicOpen?: boolean;
+          playlistOpen?: boolean;
+          postsOpen?: boolean;
           userChar?: Json;
           userId?: string;
+          userImage?: string | null;
           userType?: number;
         };
         Relationships: [];
@@ -338,24 +350,18 @@ export type Database = {
 type PublicSchema = Database[Extract<keyof Database, "public">];
 
 export type Tables<
-  PublicTableNameOrOptions extends
-    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
-    | { schema: keyof Database },
+  PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] & PublicSchema["Views"]) | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-        Database[PublicTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] & Database[PublicTableNameOrOptions["schema"]]["Views"])
+    : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] & Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R;
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
-        PublicSchema["Views"])
-    ? (PublicSchema["Tables"] &
-        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] & PublicSchema["Views"])
+    ? (PublicSchema["Tables"] & PublicSchema["Views"])[PublicTableNameOrOptions] extends {
         Row: infer R;
       }
       ? R
@@ -363,12 +369,8 @@ export type Tables<
     : never;
 
 export type TablesInsert<
-  PublicTableNameOrOptions extends
-    | keyof PublicSchema["Tables"]
-    | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+  PublicTableNameOrOptions extends keyof PublicSchema["Tables"] | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database } ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"] : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I;
@@ -384,12 +386,8 @@ export type TablesInsert<
     : never;
 
 export type TablesUpdate<
-  PublicTableNameOrOptions extends
-    | keyof PublicSchema["Tables"]
-    | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+  PublicTableNameOrOptions extends keyof PublicSchema["Tables"] | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database } ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"] : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U;
@@ -405,12 +403,8 @@ export type TablesUpdate<
     : never;
 
 export type Enums<
-  PublicEnumNameOrOptions extends
-    | keyof PublicSchema["Enums"]
-    | { schema: keyof Database },
-  EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+  PublicEnumNameOrOptions extends keyof PublicSchema["Enums"] | { schema: keyof Database },
+  EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database } ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"] : never = never
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
