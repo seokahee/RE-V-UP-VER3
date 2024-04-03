@@ -10,6 +10,7 @@ export const signUp = async ({ email, password }: SignUp) => {
   if (error) {
     if (error.message.includes("unique")) {
       alert("이미 가입된 이메일입니다.");
+      return;
     } else {
       console.error("가입 오류:", error.message);
       alert("가입 중 오류가 발생했습니다. 문의해주세요.");
@@ -17,5 +18,43 @@ export const signUp = async ({ email, password }: SignUp) => {
   } else {
     alert("회원가입이 완료되었습니다.");
   }
-  return data;
+  return { data, error };
+};
+
+export const saveSignUpInUserInfo = async ({
+  userId,
+  email,
+  password,
+  nickname,
+}: SignUp) => {
+  const { data, error } = await supabase
+    .from("userInfo")
+    .insert([
+      {
+        userId,
+        email,
+        password,
+        nickname,
+        follower: [],
+        following: [],
+        userChar: {},
+      },
+    ])
+    .select();
+
+  console.log(data);
+
+  if (error) {
+    console.error(error.message);
+  }
+};
+
+export const getSignUpUserList = async () => {
+  const { data: signUpUserList, error: signUpUserListError } = await supabase
+    .from("userInfo")
+    .select("*");
+  if (signUpUserListError) {
+    return console.log("get User-Email List from DB => ", signUpUserListError);
+  }
+  return signUpUserList;
 };

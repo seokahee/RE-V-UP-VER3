@@ -3,7 +3,7 @@
 import { FormEvent, useRef } from "react";
 import Link from "next/link";
 import useInput from "@/hooks/useInput";
-import { signUp } from "@/shared/join/joinApi";
+import { saveSignUpInUserInfo, signUp } from "@/shared/join/joinApi";
 
 const Join = () => {
   const joinState = {
@@ -20,7 +20,6 @@ const Join = () => {
     reset,
   } = useInput(joinState);
 
-  const checkboxRef = useRef(null);
   const { userEmail, userPw, userPwCheck, userNickname, checkAgree } = join;
 
   const validateCheckAgree = checkAgree;
@@ -32,7 +31,7 @@ const Join = () => {
     setJoin((prevForm) => ({ ...prevForm, checkAgree: !prevForm.checkAgree }));
   };
 
-  const onJoinHandler = (e: FormEvent) => {
+  const onJoinHandler = async (e: FormEvent) => {
     e.preventDefault();
     if (validateEmptyValue) {
       alert("빈칸 없이 작성해 주세요.");
@@ -50,7 +49,30 @@ const Join = () => {
       alert("약관 동의는 필수입니다");
       return;
     }
-    signUp({ email: userEmail, password: userPw });
+    let signUpResult = await signUp({
+      email: userEmail,
+      password: userPw,
+    });
+    const userId = signUpResult?.data?.user?.id;
+    if (signUpResult) {
+      if (signUpResult.data?.user?.identities?.length === 0) {
+        alert("이미 존재하는 아이디입니다.");
+        return;
+      }
+      if (signUpResult.error) {
+        alert(signUpResult.error.message);
+        return;
+      }
+    }
+
+    saveSignUpInUserInfo({
+      userId,
+      email: userEmail,
+      password: userPw,
+      nickname: userNickname,
+    });
+
+    reset();
   };
 
   return (
@@ -106,7 +128,6 @@ const Join = () => {
               id="checkAgree"
               name="checkAgree"
               checked={checkAgree}
-              ref={checkboxRef}
               onChange={() => {}}
             />
           </div>
