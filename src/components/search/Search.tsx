@@ -6,7 +6,7 @@ const Search = () => {
   const {
     form: keywordInput,
     setForm,
-    onChangeHandler,
+    onChange,
     reset,
   } = useInput({
     keyword: "",
@@ -34,7 +34,7 @@ const Search = () => {
         type="text"
         name="keyword"
         value={keyword}
-        onChange={onChangeHandler}
+        onChange={onChange}
         className="border  border-black"
       />
       <button type="submit">검색</button>

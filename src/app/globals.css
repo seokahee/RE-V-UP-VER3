@@ -11,7 +11,6 @@
 html,
 body,
 div,
-span,
 applet,
 object,
 iframe,
@@ -41,15 +40,12 @@ q,
 s,
 samp,
 small,
-strike,
 strong,
+span,
 sub,
 sup,
 tt,
 var,
-b,
-u,
-i,
 center,
 dl,
 dt,
@@ -110,10 +106,11 @@ nav,
 section {
   display: block;
 }
-
-ol,
+ol {
+  list-style: decimal;
+}
 ul {
-  list-style: none;
+  list-style: disc;
 }
 
 blockquote,

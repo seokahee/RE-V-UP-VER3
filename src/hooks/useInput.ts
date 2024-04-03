@@ -1,12 +1,15 @@
+"use client";
+
 import { ChangeEvent, useCallback, useState } from "react";
 
 interface initialFormType {
   [key: string]: unknown;
 }
+
 const useInput = <T extends initialFormType>(initialForm: T) => {
   const [form, setForm] = useState<T>(initialForm);
 
-  const onChangeHandler = useCallback(
+  const onChange = useCallback(
     (
       e:
         | ChangeEvent<HTMLInputElement>
@@ -20,7 +23,7 @@ const useInput = <T extends initialFormType>(initialForm: T) => {
   );
   const reset = useCallback(() => setForm(initialForm), [initialForm]);
 
-  return { form, setForm, onChangeHandler, reset };
+  return { form, setForm, onChange, reset };
 };
 
 export default useInput;
