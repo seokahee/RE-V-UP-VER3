@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import QueryProvider from "./provider";
+import { NextAuthProvider } from "./NextAuthProvider";
 import Header from "@/components/Header";
 
 export const metadata: Metadata = {
@@ -14,14 +15,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <QueryProvider>
-      <html lang="en">
-        <body>
-          <Header />
-          {children}
-          <div id="portal" />
-        </body>
-      </html>
-    </QueryProvider>
+    <NextAuthProvider>
+      <QueryProvider>
+        <html lang="en">
+          <body>
+            <Header />
+            {children}
+          </body>
+        </html>
+      </QueryProvider>
+    </NextAuthProvider>
   );
 }
