@@ -1,15 +1,18 @@
 import React, { forwardRef, useRef } from "react";
 
-const ChangeFont = forwardRef<HTMLDivElement, string>( ref, button ) => {
+const ChangeFont = forwardRef<HTMLDivElement>((props, ref) => {
   const fontNameSelectorRef = useRef<HTMLSelectElement>(null);
 
   const changeFontName = (name: string) => {
     if (fontNameSelectorRef) {
       document.execCommand("fontName", false, name);
 
-      if (editorValue) {
-        editorValue.focus({ preventScroll: true });
-      }    }
+      if (typeof ref !== "function") {
+        if (ref && ref.current) {
+          ref.current.focus({ preventScroll: true });
+        }
+      }
+    }
   };
 
   return (
@@ -27,6 +30,8 @@ const ChangeFont = forwardRef<HTMLDivElement, string>( ref, button ) => {
       </select>
     </>
   );
-};
+});
+
+ChangeFont.displayName = "ChangeFont";
 
 export default ChangeFont;

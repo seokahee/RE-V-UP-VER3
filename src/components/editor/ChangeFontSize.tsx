@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
+import React, { forwardRef, useRef } from "react";
 
-const ChangeFontSize = () => {
+const ChangeFontSize = forwardRef<HTMLDivElement>((props, ref) => {
   const fontSizeSelectorRef = useRef<HTMLSelectElement>(null);
 
   const fontSizeList: number[] = [10, 12, 16, 18, 24, 32, 48];
@@ -9,8 +9,10 @@ const ChangeFontSize = () => {
     if (fontSizeSelectorRef) {
       document.execCommand("fontSize", false, size.toString());
 
-      if (editorValue) {
-        editorValue.focus({ preventScroll: true });
+      if (typeof ref !== "function") {
+        if (ref && ref.current) {
+          ref.current.focus({ preventScroll: true });
+        }
       }
     }
   };
@@ -31,6 +33,8 @@ const ChangeFontSize = () => {
       </select>
     </>
   );
-};
+});
+ChangeFontSize.displayName = "ChangeFontSize";
+
 
 export default ChangeFontSize;

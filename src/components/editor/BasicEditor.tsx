@@ -5,20 +5,18 @@ import ChangeFontSize from "./ChangeFontSize";
 const BasicEditor = () => {
   const editorRef = useRef<HTMLDivElement>(null);
 
-  const editorValue = editorRef.current;
-
   const applyStyle = (style: string): void => {
-    if (editorValue) {
+    if (editorRef.current) {
       document.execCommand(style);
 
-      if (editorValue) {
-        editorValue.focus({ preventScroll: true });
+      if (editorRef.current) {
+        editorRef.current.focus({ preventScroll: true });
       }
     }
   };
 
   const submitHandler = async () => {
-    console.log(editorValue?.innerHTML);
+    console.log(editorRef.current?.innerHTML);
   };
 
   const buttonStyle =
@@ -56,8 +54,8 @@ const BasicEditor = () => {
       >
         UL
       </button>
-      <ChangeFont ref={editorRef} button={buttonStyle} />
-      <ChangeFontSize ref={editorRef } />
+      <ChangeFont ref={editorRef} />
+      <ChangeFontSize ref={editorRef} />
       <div
         id="editor"
         ref={editorRef}
