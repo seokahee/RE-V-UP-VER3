@@ -45,3 +45,9 @@ export type UserChar = {
     mbti: number;
   };
 };
+
+export type PlaylistCurrent = {
+  currentId: string;
+  userId: string;
+  currentMusicIds: string[];
+};
