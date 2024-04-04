@@ -1,21 +1,8 @@
 // app>api>auth>[...nextauth]>route.ts
 
 import { supabase } from "@/shared/supabase/supabase";
-// import NextAuth from "next-auth";
-// import CredentialsProvider from "next-auth/providers/credentials";
-import { getSession } from "next-auth/react";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-export default async (req, res) => {
-  const session = await getSession({ req });
-
-  if (session) {
-    res.status(200).json({ user: session.user });
-  } else {
-    res.status(401).json({ error: "Unauthorized" });
-  }
-};
 
 const handler = NextAuth({
   providers: [
@@ -40,13 +27,17 @@ const handler = NextAuth({
         const { email, password } = credentials;
         const { data, error } = await supabase
           .from("userInfo")
-          .select("userId, email, nickname")
+          .select("userId, email, nickname, password")
           .eq("email", `${email}`)
           .single();
-        console.log(data);
+
+        // const uid = data && data.userId;
+
+        if (data && credentials && data?.password !== password) {
+          throw new Error("비밀번호가 다릅니다.");
+        }
 
         if (data) {
-          // 반환하는 객체의 형식을 User 형식으로 변경
           return {
             id: data.userId,
             email: data.email,

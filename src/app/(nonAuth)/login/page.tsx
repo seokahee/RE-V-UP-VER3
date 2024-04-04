@@ -1,20 +1,35 @@
 "use client";
 
-import useInput from "@/hooks/useInput";
-import { signIn } from "next-auth/react";
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { FormEvent } from "react";
+import { getSession, signIn, signOut, useSession } from "next-auth/react";
+import { useStore } from "@/shared/store";
+import { findUserPassword, getUserUid } from "@/shared/login/loginApi";
+import useInput from "@/hooks/useInput";
+import Modal from "@/util/Modal";
+import Image from "next/image";
+import findPwImg from "@/../public/images/findPassword.svg";
 
 const LoginPage = () => {
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [spendEmail, setSpendEmail] = useState<string>("");
+  const { userInfo } = useStore();
+  const { data: userEmail, status } = useSession();
+  const currentUserEmail = userEmail?.user?.email;
+  const needLoginInfo = { email: "", password: "", checkStayLogin: false };
 
-  const loginInfo = { email: "", password: "", checkStayLogin: false };
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  console.log("userInfo==>", userInfo);
+  console.log("currentUserEmail==>", currentUserEmail);
+
   const {
     form: userlogin,
     setForm: setUserlogin,
     onChange: onChangeHandler,
     reset,
-  } = useInput(loginInfo);
+  } = useInput(needLoginInfo);
   const { email, password, checkStayLogin } = userlogin;
 
   const onClickCheckboxHandler = () => {
@@ -26,53 +41,151 @@ const LoginPage = () => {
 
   const onLoginHandler = async (e: FormEvent) => {
     e.preventDefault();
-    await signIn("credentials", {
-      email: email,
-      password: password,
-      redirect: false,
-    });
+
+    // if (currentUserEmail) {
+    // console.log(currentUserEmail);
+    try {
+      // const userNickname = await getUserUid(currentUserEmail);
+      const signResult = await signIn("email-password-credential", {
+        email: email,
+        password: password,
+        redirect: false,
+      });
+      console.log(signResult);
+
+      if (signResult && signResult.ok === true) {
+        // alert(`${userNickname?.nickname}님 어서오세요!`);
+        router.push("/");
+      }
+
+      if (signResult && signResult.error) {
+        alert(signResult.error);
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error("에러");
+    }
+    // }
   };
 
+  const findPassword = async (e: FormEvent) => {
+    e.preventDefault();
+    if (spendEmail) {
+      const data = await findUserPassword(spendEmail);
+      console.log(data);
+      if (!data) {
+        alert("존재하지 않는 정보입니다!");
+      } else {
+        alert("비밀번호를 복구하는 이메일을 보냈습니다!");
+      }
+
+      setSpendEmail("");
+    }
+  };
+
+  const logOut = async () => {
+    signOut();
+    const loginStatus = await getSession();
+    if (loginStatus === null) {
+      alert("로그아웃 되셨습니다.");
+    }
+  };
+
+  if (status === "loading") {
+    return <div>로딩주우우웅</div>;
+  }
+
   return (
-    <div>
-      <section>
-        <div>
-          <p>로그인</p>
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center text-white">
+      {/* <Modal isOpen={isModalOpen} closeModal={closeModal}>
+        <div className="text-black z-1500">
+          <div>비밀번호 찾기 모달입니다</div>
+          <input
+            type="email"
+            value={spendEmail}
+            onChange={(e) => setSpendEmail(e.target.value)}
+          />
+          <button onClick={findPassword} className="cursor-pointer">
+            비밀번호 찾기
+          </button>
         </div>
-        <form onSubmit={onLoginHandler}>
-          <div>
-            <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={onChangeHandler}
-              placeholder="이메일을 입력하세요"
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              name="password"
-              value={password}
-              onChange={onChangeHandler}
-              placeholder="비밀번호를 입력하세요"
-            />
-          </div>
-          <div>
-            <button type="submit">로그인</button>
-          </div>
-        </form>
+      </Modal> */}
+      {/* <section className="flex flex-col gap-[40px]"> */}
+      <section className="absolute w-516 left-1/2 transform -translate-x-1/2 translate-y-auto bg-white bg-opacity-10 shadow-lg border border-gray-100 border-opacity-10 rounded-2xl">
         <div>
-          <label htmlFor="checkStayLogin" onClick={onClickCheckboxHandler}>
+          <p>V-UP에 오신 걸 환영합니다</p>
+        </div>
+        <div>
+          <form onSubmit={onLoginHandler} className="flex flex-col gap-[32px]">
+            <div className="flex flex-col gap-[16px]">
+              <div>
+                <label htmlFor="email" className="flex flex-col ">
+                  <p className="text-white-30">이메일</p>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={email}
+                    onChange={onChangeHandler}
+                    placeholder="이메일을 입력하세요"
+                    className="flex items-center gap-2 w-320 bg-white bg-opacity-10 border-2 border-white border-opacity-10 shadow-md rounded-lg"
+                  />
+                </label>
+              </div>
+              <div>
+                <label htmlFor="password" className="flex flex-col ">
+                  <p className="text-white-30">비밀번호</p>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={password}
+                    onChange={onChangeHandler}
+                    placeholder="비밀번호를 입력하세요"
+                    className="flex items-center gap-2 w-320 bg-white bg-opacity-10 border-2 border-white border-opacity-10 shadow-md rounded-lg"
+                  />
+                </label>
+              </div>
+            </div>
+            <div>
+              <button type="submit">로그인</button>
+            </div>
+          </form>
+        </div>
+        <article></article>
+        <div className="flex w-full h-full gap-[8px] items-center justify-start">
+          <label
+            htmlFor="checkStayLogin"
+            onClick={onClickCheckboxHandler}
+            className="flex items-center justify-center gap-[8px]"
+          >
             <input
               type="checkbox"
               id="checkStayLogin"
               name="checkStayLogin"
               checked={checkStayLogin}
               onChange={() => {}}
+              className="w-[24px] h-[24px] bg-opacity-10 shadow-sm rounded-[4px]"
             />
-            <p id="checkStayLogin">로그인 유지</p>
+            <span className="text-center text-[14px]">로그인 유지</span>
           </label>
+        </div>
+        <div>
+          <div className="flex justify-center items-center mx-auto w-101 gap-[2px]">
+            <button onClick={openModal} className="text-[14px] text-white-50">
+              비밀번호 찾기
+            </button>
+            <Image
+              src={findPwImg}
+              width={20}
+              height={20}
+              alt="오른쪽방향화살표"
+            ></Image>
+          </div>
+        </div>
+
+        <div>
+          <button onClick={logOut}>로그아웃</button>
         </div>
       </section>
     </div>
