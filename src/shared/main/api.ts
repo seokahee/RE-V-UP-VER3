@@ -1,6 +1,7 @@
-import { GenreMusicInfo, MusicPreference, TopLikedBoard, UserChar } from "@/types/types";
+import { GenreMusicInfo, MusicPreference, PlaylistCurrent, TopLikedBoard, UserChar } from "@/types/types";
 import { supabase } from "../supabase/supabase";
 import { genreMatch } from "@/util/main/util";
+import { Tables } from "@/types/supabase";
 
 export const getTopLikedBoardData = async (): Promise<TopLikedBoard[]> => {
   const currentDate = new Date();
@@ -69,6 +70,40 @@ export const getMusicPreferenceData = async (mbti: number) => {
     return genreCodes as number[];
   } catch (error) {
     return [];
+  }
+};
+
+export const getCurrentMusicData = async (userId: string): Promise<PlaylistCurrent[]> => {
+  try {
+    const { data } = await supabase.from("playlistCurrent").select("currentId, userId, currentMusicIds").eq("userId", userId);
+
+    return data as PlaylistCurrent[];
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+export const insertCurrentMusic = async ({ userId, musicId }: { userId: string; musicId: string }) => {
+  try {
+    await supabase
+      .from("playlistCurrent")
+      .insert([{ userId: userId, currentMusicIds: [musicId] }])
+      .select();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const updateCurrentMusic = async ({ userId, currentList }: { userId: string; currentList: string[] }) => {
+  try {
+    await supabase
+      .from("playlistCurrent")
+      .update({ currentMusicIds: [...currentList] })
+      .eq("userId", userId)
+      .select();
+  } catch (error) {
+    console.error(error);
   }
 };
 
