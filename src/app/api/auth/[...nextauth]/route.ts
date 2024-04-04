@@ -18,13 +18,13 @@ const handler = NextAuth({
           type: "password",
         },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials, _) {
         if (!credentials) {
           throw new Error("이메일과 비밀번호를 입력하세요.");
         }
 
         const { email, password } = credentials;
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from("userInfo")
           .select("userId, email, nickname, password")
           .eq("email", `${email}`)

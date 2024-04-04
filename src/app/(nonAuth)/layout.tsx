@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useStore } from "@/shared/store";
 import { getUserUid } from "@/shared/login/loginApi";
 
@@ -11,17 +10,14 @@ const AuthLayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const { userInfo, setUserInfo } = useStore();
-  const { data: userEmail, status } = useSession();
-  console.log("userEmail==>", userEmail);
-  const router = useRouter();
+  const { setUserInfo } = useStore();
+  const { data: userEmail } = useSession();
 
   useEffect(() => {
     const saveStoreUserUid = async () => {
       if (userEmail && userEmail?.user?.email) {
         const data = await getUserUid(userEmail.user.email);
         if (data) {
-          console.log(1);
           const userId = data.userId;
           setUserInfo(userId);
         }
@@ -29,7 +25,7 @@ const AuthLayout = ({
     };
 
     saveStoreUserUid();
-  }, []);
+  }, [userEmail]);
 
   return <div>{children}</div>;
 };

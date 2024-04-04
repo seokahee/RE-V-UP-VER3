@@ -14,21 +14,17 @@ const LoginPage = () => {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [spendEmail, setSpendEmail] = useState<string>("");
-  const { userInfo } = useStore();
   const { data: userEmail, status } = useSession();
   const currentUserEmail = userEmail?.user?.email;
   const needLoginInfo = { email: "", password: "", checkStayLogin: false };
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  console.log("userInfo==>", userInfo);
-  console.log("currentUserEmail==>", currentUserEmail);
 
   const {
     form: userlogin,
     setForm: setUserlogin,
     onChange: onChangeHandler,
-    reset,
   } = useInput(needLoginInfo);
   const { email, password, checkStayLogin } = userlogin;
 
