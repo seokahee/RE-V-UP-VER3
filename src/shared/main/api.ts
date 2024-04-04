@@ -1,4 +1,4 @@
-import { GenreMusicInfo, MusicPreference, TopLikedBoard } from "@/types/types";
+import { GenreMusicInfo, MusicPreference, TopLikedBoard, UserChar } from "@/types/types";
 import { supabase } from "../supabase/supabase";
 import { genreMatch } from "@/util/main/util";
 
@@ -45,15 +45,6 @@ export const getRandomMusicData = async (): Promise<GenreMusicInfo[]> => {
     console.error(error);
     return [];
   }
-};
-
-//임시
-type UserChar = {
-  userChar: {
-    gender: boolean;
-    age: number;
-    mbti: number;
-  };
 };
 
 export const getUserChar = async (userId: string): Promise<UserChar | undefined> => {

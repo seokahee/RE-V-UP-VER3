@@ -37,3 +37,11 @@ export type MusicPreference = {
   rnb: number;
   rock: number;
 };
+
+export type UserChar = {
+  userChar: {
+    gender: boolean;
+    age: number;
+    mbti: number;
+  };
+};
