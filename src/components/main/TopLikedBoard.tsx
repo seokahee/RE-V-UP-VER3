@@ -1,51 +1,16 @@
 "use client";
 
-import { supabase } from "@/shared/supabase/supabase";
+import { getTopLikedBoardData } from "@/shared/miain/api";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
-
-type TopLikedBoard = {
-  boardId: string;
-  boardTitle: string;
-  likeList: string[];
-  userId: string;
-  userInfo: {
-    nickname: string;
-    userImage: string;
-  };
-  comment: {
-    commentId: string;
-  }[];
-};
+import React, { useRef, useState } from "react";
 
 const TopLikedBoard = () => {
   const slideRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState(0);
-  // const [currentSlide, setCurrentSlide] = useState(0);
 
   const MOVE_POINT = 354 + 16; //임시값 - 슬라이드로 이동할 값
-
-  const getTopLikedBoardData = async (): Promise<TopLikedBoard[]> => {
-    const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
-    const oneWeekAgo = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
-    oneWeekAgo.setHours(0, 0, 0, 0);
-
-    try {
-      const { data, error } = await supabase
-        .from("community")
-        .select("boardId, boardTitle, likeList, userId, userInfo(nickname, userImage), comment(commentId)")
-        .gte("date", oneWeekAgo.toISOString())
-        .lte("date", currentDate.toISOString());
-
-      return data as TopLikedBoard[];
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  };
 
   const { data, isError, isLoading } = useQuery({
     queryFn: () => getTopLikedBoardData(),
@@ -55,27 +20,12 @@ const TopLikedBoard = () => {
   const onClickPrevHandler = () => {
     if (position < 0) {
       setPosition((prev) => prev + MOVE_POINT);
-      // setCurrentSlide((prev) => prev - 1);
     }
   };
 
   const onClickNextHandler = () => {
     setPosition((prev) => prev - MOVE_POINT);
-    // const slideWrapWidth = slideRef.current?.offsetWidth!;
-    // const slideListWidth = MOVE_POINT * (data?.length as number);
-    // const viewCount = slideWrapWidth / MOVE_POINT;
-
-    // if (viewCount < currentSlide) {
-    //   setPosition((prev) => prev - MOVE_POINT);
-    // } else {
-    //   setPosition((prev) => slideWrapWidth - slideListWidth);
-    // }
-    // setCurrentSlide((prev) => prev + 1);
   };
-
-  useEffect(() => {
-    console.log(position, "position");
-  }, [position]);
 
   if (isError) {
     return "에러 발생";
