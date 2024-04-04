@@ -29,3 +29,11 @@ export type GenreMusicInfo = {
   release: string;
   thumbnail: string;
 };
+
+export type MusicPreference = {
+  ballad: number;
+  dance: number;
+  hiphop: number;
+  rnb: number;
+  rock: number;
+};

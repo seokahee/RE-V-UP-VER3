@@ -1,4 +1,4 @@
-import { GenreMusicInfo, TopLikedBoard } from "@/types/types";
+import { GenreMusicInfo, MusicPreference, TopLikedBoard } from "@/types/types";
 import { supabase } from "../supabase/supabase";
 
 export const getTopLikedBoardData = async (): Promise<TopLikedBoard[]> => {
@@ -22,12 +22,85 @@ export const getTopLikedBoardData = async (): Promise<TopLikedBoard[]> => {
   }
 };
 
-export const getGenreMusicData = async (): Promise<GenreMusicInfo[]> => {
+export const getGenreMusicData = async (genreCodes: number[]): Promise<GenreMusicInfo[]> => {
   try {
-    const { data } = await supabase.from("musicInfo").select("musicTitle, genre, artist, thumbnail, lyrics, release, musicId, musicSource").limit(10);
+    const { data } = await supabase.from("musicInfo").select("musicTitle, genre, artist, thumbnail, lyrics, release, musicId, musicSource").in("genre", genreCodes).limit(10);
+
     return data as GenreMusicInfo[];
   } catch (error) {
     console.error(error);
+    return [];
+  }
+};
+
+export const getRandomMusicData = async (): Promise<GenreMusicInfo[]> => {
+  try {
+    const alphabets = "abcdefghijklmnopqrstuvwxyz";
+    const random = Math.floor(Math.random() * 10);
+    const { data } = await supabase.from("musicInfo").select("musicTitle, genre, artist, thumbnail, lyrics, release, musicId, musicSource").like("musicSource", `%${alphabets[random]}%`).limit(10);
+
+    return data as GenreMusicInfo[];
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+//임시
+type UserChar = {
+  userChar: {
+    gender: boolean;
+    age: number;
+    mbti: number;
+  };
+};
+
+export const getUserChar = async (userId: string): Promise<UserChar | undefined> => {
+  try {
+    let { data, error } = await supabase.from("userInfo").select("userChar").eq("userId", userId).limit(1).single();
+    return data as UserChar | undefined;
+  } catch (error) {
+    return undefined;
+  }
+};
+
+const genreMatch = (genre: string) => {
+  let genreCode;
+  switch (genre) {
+    case "hiphop":
+      genreCode = 0;
+      break;
+    case "dance":
+      genreCode = 1;
+      break;
+    case "ballad":
+      genreCode = 2;
+      break;
+    case "rnb":
+      genreCode = 3;
+      break;
+    case "rock":
+      genreCode = 4;
+      break;
+    default:
+      genreCode = 0;
+      break;
+  }
+  return genreCode;
+};
+
+export const getMusicPreferenceData = async (mbti: number) => {
+  try {
+    let { data, error } = await supabase.from("musicPreferences").select("hiphop, dance, ballad, rnb, rock").eq("mbti", mbti).limit(1).single();
+
+    const entries = Object.entries(data as MusicPreference);
+    entries.sort((a, b) => b[1] - a[1]);
+    const topArr = entries.slice(0, 3);
+
+    const genreCodes = topArr.map((item) => genreMatch(item[0]));
+
+    return genreCodes as number[];
+  } catch (error) {
     return [];
   }
 };
