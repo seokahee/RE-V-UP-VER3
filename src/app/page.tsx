@@ -1,9 +1,14 @@
 import MainBanner from "@/components/main/MainBanner";
+import TopLikedBoard from "@/components/main/TopLikedBoard";
+import React from "react";
 
-export default function Home() {
+const Home = () => {
   return (
-    <div>
+    <>
       <MainBanner />
-    </div>
+      <TopLikedBoard />
+    </>
   );
-}
+};
+
+export default Home;

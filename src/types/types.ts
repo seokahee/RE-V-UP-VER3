@@ -4,3 +4,17 @@ export type SignUp = {
   password: string;
   nickname?: string;
 };
+
+export type TopLikedBoard = {
+  boardId: string;
+  boardTitle: string;
+  likeList: string[];
+  userId: string;
+  userInfo: {
+    nickname: string;
+    userImage: string;
+  };
+  comment: {
+    commentId: string;
+  }[];
+};
