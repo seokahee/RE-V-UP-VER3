@@ -2,13 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 
 const BasicEditor = () => {
   const [fontName, setFontName] = useState("");
-  const [editorContent, setEditorContent] = useState("")
+  const [editorContent, setEditorContent] = useState("");
 
   const editorRef = useRef<HTMLDivElement>(null);
   const editorValue = editorRef.current;
   const fontNameSelectorRef = useRef<HTMLSelectElement>(null);
+  const fontSizeSelectorRef = useRef<HTMLSelectElement>(null);
 
   editorValue;
+  const fontSizeList: number[] = [10, 13, 16, 18, 24, 32, 48];
 
   const applyStyle = (style: string): void => {
     if (editorValue) {
@@ -19,7 +21,7 @@ const BasicEditor = () => {
 
   useEffect(() => {
     checkStyle();
-  }, [editorContent])
+  }, [editorContent]);
 
   const checkStyle = () => {
     const containerElement = document.activeElement;
@@ -27,13 +29,19 @@ const BasicEditor = () => {
       const computedStyle = window.getComputedStyle(containerElement);
       const name = computedStyle.getPropertyValue("font-family");
       setFontName(name);
-      console.log(name)
     }
   };
 
   const changeFontName = (name: string) => {
     if (fontNameSelectorRef) {
       document.execCommand("fontName", false, name);
+      focusEditor();
+    }
+  };
+
+  const changeFontSize = (size: number) => {
+    if (fontSizeSelectorRef) {
+      document.execCommand("fontSize", false, size.toString());
       focusEditor();
     }
   };
@@ -94,6 +102,17 @@ const BasicEditor = () => {
         <option value="Arial">Arial</option>
         <option value="Times New Roman">Times New Roman</option>
         <option value="Verdana">Verdana</option>
+      </select>
+      <select
+        id="select-font-size"
+        ref={fontSizeSelectorRef}
+        onChange={(e) => changeFontSize(parseInt(e.target.value))}
+      >
+        {fontSizeList.map((size, index) => (
+          <option key={index} value={size}>
+            {size}
+          </option>
+        ))}
       </select>
       <div
         id="editor"
