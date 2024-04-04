@@ -1,4 +1,4 @@
-import { TopLikedBoard } from "@/types/types";
+import { GenreMusicInfo, TopLikedBoard } from "@/types/types";
 import { supabase } from "../supabase/supabase";
 
 export const getTopLikedBoardData = async (): Promise<TopLikedBoard[]> => {
@@ -16,6 +16,16 @@ export const getTopLikedBoardData = async (): Promise<TopLikedBoard[]> => {
       .limit(6);
 
     return data as TopLikedBoard[];
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+export const getGenreMusicData = async (): Promise<GenreMusicInfo[]> => {
+  try {
+    const { data } = await supabase.from("musicInfo").select("musicTitle, genre, artist, thumbnail, lyrics, release, musicId, musicSource").limit(10);
+    return data as GenreMusicInfo[];
   } catch (error) {
     console.error(error);
     return [];

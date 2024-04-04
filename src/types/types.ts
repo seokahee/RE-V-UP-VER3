@@ -18,3 +18,14 @@ export type TopLikedBoard = {
     commentId: string;
   }[];
 };
+
+export type GenreMusicInfo = {
+  artist: string;
+  genre: number;
+  lyrics: string;
+  musicId: string;
+  musicSource: string;
+  musicTitle: string;
+  release: string;
+  thumbnail: string;
+};
