@@ -1,10 +1,14 @@
-import { buttonStyle, initialButtonStyle } from "@/style/editorStyle";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const BasicEditor = () => {
+  const [fontName, setFontName] = useState("");
+  const [editorContent, setEditorContent] = useState("")
+
   const editorRef = useRef<HTMLDivElement>(null);
   const editorValue = editorRef.current;
   const fontNameSelectorRef = useRef<HTMLSelectElement>(null);
+
+  editorValue;
 
   const applyStyle = (style: string): void => {
     if (editorValue) {
@@ -13,9 +17,25 @@ const BasicEditor = () => {
     }
   };
 
+  useEffect(() => {
+    checkStyle();
+  }, [editorContent])
+
+  const checkStyle = () => {
+    const containerElement = document.activeElement;
+    if (containerElement) {
+      const computedStyle = window.getComputedStyle(containerElement);
+      const name = computedStyle.getPropertyValue("font-family");
+      setFontName(name);
+      console.log(name)
+    }
+  };
+
   const changeFontName = (name: string) => {
-    document.execCommand("fontName", false, name);
-    focusEditor();
+    if (fontNameSelectorRef) {
+      document.execCommand("fontName", false, name);
+      focusEditor();
+    }
   };
 
   const focusEditor = () => {
@@ -27,6 +47,12 @@ const BasicEditor = () => {
   const submitHandler = async () => {
     console.log(editorValue?.innerHTML);
   };
+
+  const buttonStyle =
+    "btn ml-2 mr-2 my-5 p-1 border border-solid border-black rounded";
+
+  const initialButtonStyle =
+    "btn ml-5 mr-2 my-5 p-1 border border-solid border-black rounded";
 
   return (
     <>
@@ -60,6 +86,7 @@ const BasicEditor = () => {
       <select
         id="select-font"
         ref={fontNameSelectorRef}
+        value={fontName}
         onChange={(e) => changeFontName(e.target.value)}
         className={`ml-5 mr-2 my-5 p-1 border border-solid border-black rounded`}
       >
@@ -73,6 +100,7 @@ const BasicEditor = () => {
         ref={editorRef}
         contentEditable
         className={`mx-5 p-10 border border-black border-solid rounded min-h-32 [&>img]:w-full`}
+        onInput={(event) => setEditorContent(event.currentTarget.innerHTML)}
       ></div>
       <button className={initialButtonStyle} onClick={submitHandler}>
         submit
