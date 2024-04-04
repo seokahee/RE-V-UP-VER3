@@ -71,3 +71,5 @@ export const getMusicPreferenceData = async (mbti: number) => {
     return [];
   }
 };
+
+export const USER_ID = "016011ee-39dc-41d4-92a1-1ea7316c55dc"; //임시 값
