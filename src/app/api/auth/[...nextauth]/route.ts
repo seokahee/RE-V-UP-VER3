@@ -1,5 +1,4 @@
 // app>api>auth>[...nextauth]>route.ts
-
 import { supabase } from "@/shared/supabase/supabase";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -30,8 +29,6 @@ const handler = NextAuth({
           .select("userId, email, nickname, password")
           .eq("email", `${email}`)
           .single();
-
-        // const uid = data && data.userId;
 
         if (data && credentials && data?.password !== password) {
           throw new Error("비밀번호가 다릅니다.");

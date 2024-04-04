@@ -15,7 +15,7 @@ const Modal = ({ isOpen, children, closeModal }: ModalProps) => {
       <div className="bg-white rounded-lg p-8 max-w-[400px] w-full">
         <button
           onClick={closeModal}
-          className="absolute top-0 right-0 w-[32px] h-[32px] bg-red-400 text-black rounded-full flex items-center justify-center"
+          className="absolute top-0 right-0 w-[32px] h-[32px] bg-red-400 text-green-400 rounded-full flex items-center justify-center"
         >
           Close
         </button>

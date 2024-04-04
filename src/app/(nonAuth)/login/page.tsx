@@ -42,19 +42,15 @@ const LoginPage = () => {
   const onLoginHandler = async (e: FormEvent) => {
     e.preventDefault();
 
-    // if (currentUserEmail) {
-    // console.log(currentUserEmail);
     try {
-      // const userNickname = await getUserUid(currentUserEmail);
       const signResult = await signIn("email-password-credential", {
         email: email,
         password: password,
         redirect: false,
       });
-      console.log(signResult);
 
       if (signResult && signResult.ok === true) {
-        // alert(`${userNickname?.nickname}님 어서오세요!`);
+        alert(`V-UP에 오신 걸 환영합니다!`);
         router.push("/");
       }
 
@@ -62,10 +58,8 @@ const LoginPage = () => {
         alert(signResult.error);
       }
     } catch (error) {
-      console.error(error);
       throw new Error("에러");
     }
-    // }
   };
 
   const findPassword = async (e: FormEvent) => {
@@ -97,7 +91,7 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center text-white">
-      {/* <Modal isOpen={isModalOpen} closeModal={closeModal}>
+      <Modal isOpen={isModalOpen} closeModal={closeModal}>
         <div className="text-black z-1500">
           <div>비밀번호 찾기 모달입니다</div>
           <input
@@ -109,7 +103,7 @@ const LoginPage = () => {
             비밀번호 찾기
           </button>
         </div>
-      </Modal> */}
+      </Modal>
       {/* <section className="flex flex-col gap-[40px]"> */}
       <section className="absolute w-516 left-1/2 transform -translate-x-1/2 translate-y-auto bg-white bg-opacity-10 shadow-lg border border-gray-100 border-opacity-10 rounded-2xl">
         <div>
