@@ -4,6 +4,7 @@ import ChangeFontSize from "./ChangeFontSize";
 import ChangeFontStyle from "./ChangeFontStyle";
 import SelectMusic from "./SelectMusic";
 import ChangeFontColor from "./ChangeFontColor";
+import ChangeFontBackground from "./ChangeFontBackground";
 
 const BasicEditor = () => {
   const editorRef = useRef<HTMLDivElement>(null);
@@ -18,6 +19,7 @@ const BasicEditor = () => {
       <ChangeFont ref={editorRef} />
       <ChangeFontSize ref={editorRef} />
       <ChangeFontColor ref={editorRef} />
+      <ChangeFontBackground ref={editorRef} />
       <div
         id="editor"
         ref={editorRef}

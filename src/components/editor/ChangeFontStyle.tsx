@@ -11,7 +11,7 @@ const ChangeFontStyle = forwardRef<HTMLDivElement>((props, ref) => {
   };
 
   const buttonStyle =
-    "btn ml-2 mr-2 my-5 p-1 border border-solid border-black rounded";
+    "btn mr-2 my-5 p-1 border border-solid border-black rounded";
 
   return (
     <>
