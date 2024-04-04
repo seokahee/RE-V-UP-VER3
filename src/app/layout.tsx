@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import QueryProvider from "./provider";
+import Header from "@/components/Header";
 
 export const metadata: Metadata = {
   title: "Volume Up",
@@ -15,7 +16,11 @@ export default function RootLayout({
   return (
     <QueryProvider>
       <html lang="en">
-        <body>{children}</body>
+        <body>
+          <Header />
+          {children}
+          <div id="portal" />
+        </body>
       </html>
     </QueryProvider>
   );
