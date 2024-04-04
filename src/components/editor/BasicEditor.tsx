@@ -1,34 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 
 const BasicEditor = () => {
-  const [fontName, setFontName] = useState("");
-  const [editorContent, setEditorContent] = useState("");
-
   const editorRef = useRef<HTMLDivElement>(null);
-  const editorValue = editorRef.current;
   const fontNameSelectorRef = useRef<HTMLSelectElement>(null);
   const fontSizeSelectorRef = useRef<HTMLSelectElement>(null);
 
-  editorValue;
-  const fontSizeList: number[] = [10, 13, 16, 18, 24, 32, 48];
+  const editorValue = editorRef.current;
+  const fontSizeList: number[] = [10, 12, 16, 18, 24, 32, 48];
 
   const applyStyle = (style: string): void => {
     if (editorValue) {
       document.execCommand(style);
       focusEditor();
-    }
-  };
-
-  useEffect(() => {
-    checkStyle();
-  }, [editorContent]);
-
-  const checkStyle = () => {
-    const containerElement = document.activeElement;
-    if (containerElement) {
-      const computedStyle = window.getComputedStyle(containerElement);
-      const name = computedStyle.getPropertyValue("font-family");
-      setFontName(name);
     }
   };
 
@@ -94,7 +77,6 @@ const BasicEditor = () => {
       <select
         id="select-font"
         ref={fontNameSelectorRef}
-        value={fontName}
         onChange={(e) => changeFontName(e.target.value)}
         className={`ml-5 mr-2 my-5 p-1 border border-solid border-black rounded`}
       >
@@ -107,6 +89,7 @@ const BasicEditor = () => {
         id="select-font-size"
         ref={fontSizeSelectorRef}
         onChange={(e) => changeFontSize(parseInt(e.target.value))}
+        className={`ml-5 mr-2 my-5 p-1 border border-solid border-black rounded`}
       >
         {fontSizeList.map((size, index) => (
           <option key={index} value={size}>
@@ -119,7 +102,6 @@ const BasicEditor = () => {
         ref={editorRef}
         contentEditable
         className={`mx-5 p-10 border border-black border-solid rounded min-h-32 [&>img]:w-full`}
-        onInput={(event) => setEditorContent(event.currentTarget.innerHTML)}
       ></div>
       <button className={initialButtonStyle} onClick={submitHandler}>
         submit
