@@ -2,8 +2,8 @@
 
 import { getRandomMusicData } from "@/shared/main/api";
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import React, { useState } from "react";
+import GenreMusicItem from "./GenreMusicItem";
 
 const RandomMusicList = () => {
   const [position, setPosition] = useState(0);
@@ -38,16 +38,7 @@ const RandomMusicList = () => {
           }}
         >
           {data?.map((item) => {
-            return (
-              <li key={item.musicId} className="w-[136px] p-2 mr-6 list-none">
-                <figure>
-                  <Image src={item.thumbnail} width={120} height={120} alt={`${item.musicTitle} 앨범 썸네일`} />
-                </figure>
-                <strong>{item.musicTitle}</strong>
-                <span>{item.artist}</span>
-                장르 : {item.genre}
-              </li>
-            );
+            return <GenreMusicItem key={item.musicId} item={item} />;
           })}
         </ul>
         <div>
