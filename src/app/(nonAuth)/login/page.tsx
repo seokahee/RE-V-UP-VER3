@@ -30,14 +30,6 @@ const LoginPage = () => {
       email: email,
       password: password,
       redirect: false,
-    }).then((result) => {
-      console.log(result);
-      if (result?.ok) {
-        router.push("/");
-      }
-      if (result?.error) {
-        console.error("로그인 에러입니다.");
-      }
     });
   };
 
