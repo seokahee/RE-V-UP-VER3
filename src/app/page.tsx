@@ -4,10 +4,10 @@ import React from "react";
 
 const Home = () => {
   return (
-    <h1>
+    <>
       <MainBanner />
       <TopLikedBoard />
-    </h1>
+    </>
   );
 };
 
