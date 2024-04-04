@@ -8,7 +8,7 @@ const handler = NextAuth({
       name: "Credentials",
       credentials: {
         email: {
-          label: "아이디",
+          label: "이메일",
           type: "email",
         },
         password: {
@@ -16,27 +16,29 @@ const handler = NextAuth({
           type: "password",
         },
       },
-      async authorize(credentials, req) {
-        if (credentials !== undefined) {
-          try {
-            const { data, error } = await supabase.auth.signInWithPassword({
-              email: credentials.email,
-              password: credentials.password,
-            });
-            if (error) {
-              throw new Error("다시 로그인해주세요");
-            }
-            if (data) {
-              return data.user;
-            }
-            if (!data) {
-              console.error("해당 이메일이 없습니다.");
-              return null;
-            }
-          } catch (error) {
-            console.error("다시 로그인 해주세요.");
-          }
+      async authorize(credentials, _) {
+        if (!credentials) {
+          throw new Error("이메일과 비밀번호를 입력하세요.");
         }
+        try {
+          const { email, password } = credentials;
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
+          if (error) {
+            throw new Error("다시 로그인해주세요");
+          }
+          if (data) {
+            return data.user;
+          }
+          if (!data) {
+            throw new Error("해당 이메일이 없습니다.");
+          }
+        } catch (error) {
+          throw new Error("다시 로그인 해주세요.");
+        }
+
         return null;
       },
     }),
@@ -46,4 +48,4 @@ const handler = NextAuth({
   },
 });
 
-export { handler as GET, handler as POST };
+export default handler;
