@@ -1,33 +1,17 @@
 "use client";
-import Search from "@/components/search/Search";
+import SearchForm from "@/components/search/SearchForm";
 import { supabase } from "@/shared/supabase/supabase";
 import { onDateHandler } from "@/util/util";
-import React, { useEffect, useState } from "react";
-
-type CommunityData = {
-  boardId: string;
-  boardTitle: string;
-  content: string;
-  date: string;
-  images: string;
-  likeList: string[];
-  musicId: string;
-  thumbnail: string;
-  userId: string;
-  adId?: string;
-  userInfo: {
-    nickname: string;
-    userImage: string;
-  };
-};
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 const Community = () => {
-  const [communityList, setCommunityList] = useState<CommunityData[]>([]);
   const [isSort, setIsSort] = useState(true);
 
-  useEffect(() => {
-    const getCommunity = async () => {
-      const { data, error } = await supabase
+  const { data, refetch } = useQuery({
+    queryKey: ["communityList"],
+    queryFn: async () => {
+      const { data } = await supabase
         .from("community")
         .select(
           "boardId, boardTitle, likeList, date, userId, userInfo(nickname, userImage)"
@@ -43,15 +27,18 @@ const Community = () => {
             return { ...item, thumbnail: imgData.data.publicUrl };
           }
         });
-        setCommunityList(communityImage);
+        return communityImage;
       }
-    };
-    getCommunity();
-  }, [isSort]);
+    },
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [isSort, refetch]);
 
   return (
     <div>
-      <Search />
+      <SearchForm />
       <div className="flex gap-2 m-10">
         <p
           onClick={() => {
@@ -71,9 +58,10 @@ const Community = () => {
         </p>
       </div>
 
-      {communityList.map((item) => {
+      {data?.map((item) => {
         return (
           <div key={item.boardId} className="flex items-center">
+            <img src={item.userInfo.userImage} alt="" className="w-28" />
             <img src={item.thumbnail} alt="" className="w-28" />
             <div className="flex flex-col gap-2">
               <div>{item.boardTitle}</div>
