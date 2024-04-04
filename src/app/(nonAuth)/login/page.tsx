@@ -104,7 +104,6 @@ const LoginPage = () => {
           </button>
         </div>
       </Modal>
-      {/* <section className="flex flex-col gap-[40px]"> */}
       <section className="absolute w-516 left-1/2 transform -translate-x-1/2 translate-y-auto bg-white bg-opacity-10 shadow-lg border border-gray-100 border-opacity-10 rounded-2xl">
         <div>
           <p>V-UP에 오신 걸 환영합니다</p>
