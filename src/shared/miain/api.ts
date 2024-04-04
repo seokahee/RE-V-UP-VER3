@@ -12,7 +12,8 @@ export const getTopLikedBoardData = async (): Promise<TopLikedBoard[]> => {
       .from("community")
       .select("boardId, boardTitle, likeList, userId, userInfo(nickname, userImage), comment(commentId)")
       .gte("date", oneWeekAgo.toISOString())
-      .lte("date", currentDate.toISOString());
+      .lte("date", currentDate.toISOString())
+      .limit(6);
 
     return data as TopLikedBoard[];
   } catch (error) {
