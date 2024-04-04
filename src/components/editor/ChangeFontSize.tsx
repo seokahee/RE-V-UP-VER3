@@ -7,7 +7,7 @@ const ChangeFontSize = forwardRef<HTMLDivElement>((props, ref) => {
 
   const changeFontSize = (size: number) => {
     if (fontSizeSelectorRef) {
-      document.execCommand("fontSize", false, size.toString());
+      document.execCommand("fontSize", false, String(size));
 
       if (typeof ref !== "function") {
         if (ref && ref.current) {
@@ -22,11 +22,11 @@ const ChangeFontSize = forwardRef<HTMLDivElement>((props, ref) => {
       <select
         id="select-font-size"
         ref={fontSizeSelectorRef}
-        onChange={(e) => changeFontSize(parseInt(e.target.value))}
+        onChange={(event) => changeFontSize(parseInt(event.target.value))}
         className={`ml-5 mr-2 my-5 p-1 border border-solid border-black rounded`}
       >
         {fontSizeList.map((size, index) => (
-          <option key={index} value={size}>
+          <option key={index} value={index+1}>
             {size}
           </option>
         ))}
