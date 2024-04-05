@@ -1,7 +1,17 @@
-import { GenreMusicInfo, MusicPreference, PlaylistCurrent, TopLikedBoard, UserChar } from "@/types/types";
+import type { Banner, GenreMusicInfo, MusicPreference, PlaylistCurrent, TopLikedBoard, UserChar } from "@/types/types";
 import { supabase } from "../supabase/supabase";
 import { genreMatch } from "@/util/main/util";
-import { Tables } from "@/types/supabase";
+
+export const getBannerData = async (userId: string): Promise<Banner[]> => {
+  try {
+    const { data, error } = await supabase.from("advertisement").select("adId, userId, imageUrl").eq("userId", userId);
+    console.log(data);
+    return data as Banner[];
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
 
 export const getTopLikedBoardData = async (): Promise<TopLikedBoard[]> => {
   const currentDate = new Date();
@@ -51,6 +61,9 @@ export const getRandomMusicData = async (): Promise<GenreMusicInfo[]> => {
 export const getUserChar = async (userId: string): Promise<UserChar | undefined> => {
   try {
     let { data, error } = await supabase.from("userInfo").select("userChar").eq("userId", userId).limit(1).single();
+    if (error) {
+      return {} as UserChar;
+    }
     return data as UserChar | undefined;
   } catch (error) {
     return undefined;
@@ -66,7 +79,6 @@ export const getMusicPreferenceData = async (mbti: number) => {
     const topArr = entries.slice(0, 3);
 
     const genreCodes = topArr.map((item) => genreMatch(item[0]));
-
     return genreCodes as number[];
   } catch (error) {
     return [];
@@ -106,5 +118,3 @@ export const updateCurrentMusic = async ({ userId, currentList }: { userId: stri
     console.error(error);
   }
 };
-
-export const USER_ID = "016011ee-39dc-41d4-92a1-1ea7316c55dc"; //임시 값

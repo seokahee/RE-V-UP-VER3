@@ -40,9 +40,9 @@ export type MusicPreference = {
 
 export type UserChar = {
   userChar: {
-    gender: boolean;
-    age: number;
-    mbti: number;
+    gender?: boolean;
+    age?: number;
+    mbti?: number;
   };
 };
 
@@ -50,4 +50,10 @@ export type PlaylistCurrent = {
   currentId: string;
   userId: string;
   currentMusicIds: string[];
+};
+
+export type Banner = {
+  adId: string;
+  userId: string;
+  imageUrl: string[];
 };
