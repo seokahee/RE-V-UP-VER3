@@ -27,10 +27,10 @@ const ImageInput = () => {
   return (
     <>
       <button
-        className="w-[50px] h-[30px] border border-solid border-black rounded"
+        className="w-[150px] h-[30px] border border-solid border-black rounded"
         onClick={imageButtonClickHandler}
       >
-        IMG
+        이미지 삽입하기
       </button>
       <input
         type="file"

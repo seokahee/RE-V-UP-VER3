@@ -32,7 +32,7 @@ const BasicEditor = () => {
     <div className="mx-5">
       <input
         className="mt-3 px-10 py-4 border border-black border-solid rounded w-[95%]"
-        placeholder="Title"
+        placeholder="제목을 입력하세요."
         onChange={(event) => setTitle(event.target.value)}
       />
       <div className="flex flex-row space-x-1 my-3">
@@ -86,7 +86,7 @@ const BasicEditor = () => {
         className="my-3 w-[100px] h-[30px] border border-solid border-black rounded"
         onClick={submitHandler}
       >
-        submit
+        제출하기
       </button>
     </div>
   );

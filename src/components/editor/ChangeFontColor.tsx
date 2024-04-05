@@ -8,13 +8,7 @@ const ChangeFontColor = forwardRef<HTMLDivElement>((props, ref) => {
     "#000000",
     "#ffffff",
   ];
-  const fontColorNameList: string[] = [
-    "Red",
-    "Green",
-    "Blue",
-    "Black",
-    "white",
-  ];
+  const fontColorNameList: string[] = ["빨강", "초록", "파랑", "검정", "하양"];
 
   const applyColor = (color: string): void => {
     if (typeof ref !== "function") {
