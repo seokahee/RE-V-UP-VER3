@@ -7,7 +7,6 @@ import ChangeFontColor from "./ChangeFontColor";
 import ChangeFontBackground from "./ChangeFontBackground";
 import ActionButton from "./ActionButton";
 import ImageInput from "./ImageInput";
-import { onDateHandler } from "@/util/util";
 
 const BasicEditor = () => {
   const [title, setTitle] = useState("");
