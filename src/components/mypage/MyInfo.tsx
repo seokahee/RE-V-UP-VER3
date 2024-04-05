@@ -1,49 +1,18 @@
 "use client";
 
-import { supabase } from "@/shared/supabase/supabase";
+import { getUserData } from "@/shared/mypage/api";
+import { useStore } from "@/shared/store";
 import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 import React from "react";
 
-type UserInfo = {
-  userId: string;
-  email: string;
-  userType: number;
-  nickname: string;
-  following: string[];
-  follower: string[];
-  userChar: {
-    gender: boolean;
-    age: number;
-    mbti: number;
-  };
-  mbtiOpen: boolean;
-  personalMusicOpen: boolean;
-  playlistOpen: boolean;
-  postsOpen: boolean;
-  likedPostsOpen: boolean;
-  userImage: string;
-};
-
 const MyInfo = () => {
-  const USER_ID = "016011ee-39dc-41d4-92a1-1ea7316c55dc"; //임시값
-
-  const getUserData = async (userId: string): Promise<UserInfo[]> => {
-    try {
-      const { data, error } = await supabase
-        .from("userInfo")
-        .select("userId, email, userType, nickname, following, follower, userChar, mbtiOpen, personalMusicOpen, playlistOpen, postsOpen, likedPostsOpen, userImage")
-        .eq("userId", userId);
-      console.log(data);
-      return data as UserInfo[];
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  };
+  const { userInfo } = useStore();
 
   const { data, isLoading, isError } = useQuery({
-    queryFn: () => getUserData(USER_ID),
-    queryKey: ["mypage"]
+    queryFn: () => getUserData(userInfo.uid),
+    queryKey: ["mypage", userInfo.uid],
+    enabled: !!userInfo
   });
 
   if (isError) {
@@ -57,8 +26,11 @@ const MyInfo = () => {
   return (
     <div>
       <div>
-        {data?.[0].nickname}
-        팔로우 {data?.[0].following.length} 팔로워 {data?.[0].follower.length}
+        <figure className="w-5 h-5 flex overflow-hidden rounded-full bg-slate-200">
+          {data?.userImage && <Image src={data?.userImage} width={150} height={150} alt={`${data?.nickname} 프로필 이미지`} />}
+        </figure>
+        {data?.nickname}
+        팔로우 {data?.following.length} 팔로워 {data?.follower.length}
       </div>
     </div>
   );
