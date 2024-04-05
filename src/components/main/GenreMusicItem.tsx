@@ -1,5 +1,5 @@
 import { getCurrentMusicData, insertCurrentMusic, updateCurrentMusic } from "@/shared/main/api";
-import { GenreMusicInfo } from "@/types/types";
+import type { GenreMusicInfo } from "@/types/main/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
