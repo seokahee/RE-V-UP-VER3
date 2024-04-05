@@ -2,8 +2,6 @@
 import { supabase } from "@/shared/supabase/supabase";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
-import KakaoProvider from "next-auth/providers/kakao";
 
 const handler = NextAuth({
   providers: [
@@ -52,11 +50,6 @@ const handler = NextAuth({
       },
     }),
   ],
-  // session: {
-  //   strategy: "jwt",
-  //   // Seconds - How long until an idle ses
-  //   maxAge: 60 * 60 * 24 * 30, // 30 days
-  // },
   pages: {
     signIn: "/login",
   },
