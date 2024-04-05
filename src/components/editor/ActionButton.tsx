@@ -1,9 +1,10 @@
+import Image from "next/image";
 import React, { forwardRef } from "react";
 
 type propsType = {
   actionValue: string;
   actionSymbol: string;
-}
+};
 
 const ActionButton = forwardRef<HTMLDivElement, propsType>((props, ref) => {
   const applyAction = (action: string) => {
@@ -21,7 +22,12 @@ const ActionButton = forwardRef<HTMLDivElement, propsType>((props, ref) => {
         className={`btn mr-2 my-5 p-1 border border-solid border-black rounded`}
         onClick={() => applyAction(props.actionValue)}
       >
-        {props.actionSymbol}
+        <Image
+          src={props.actionSymbol}
+          alt="actionSymbol"
+          width={20}
+          height={20}
+        />
       </button>
     </>
   );
