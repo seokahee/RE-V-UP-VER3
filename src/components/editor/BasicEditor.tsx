@@ -16,7 +16,18 @@ const BasicEditor = () => {
   const today = new Date();
   const date = today.toISOString();
 
-  const submitHandler = async () => {};
+  const submitHandler = async () => {
+    const data = {
+      boardTitle: title,
+      content: editorRef.current?.innerHTML,
+      date,
+      userId: "",
+      musicId: "",
+      likeList: [],
+    };
+
+    console.log(data);
+  };
 
   return (
     <>
