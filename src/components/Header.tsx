@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Search from "./search/Search";
+import SearchComponent from "@/components/search/SearchForm";
 
 const Header = () => {
   return (
@@ -20,7 +20,7 @@ const Header = () => {
         </Link>
       </nav>
       <nav>
-        <Search />
+        <SearchComponent />
       </nav>
       <nav>
         <Link href="/community">
