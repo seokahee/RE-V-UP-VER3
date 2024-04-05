@@ -1,4 +1,4 @@
-import { JoinApi, SignUp } from "@/types/types";
+import { JoinApi, SignUp } from "@/types/loginJoin/types";
 import { supabase } from "../supabase/supabase";
 
 export const signUp = async ({ email, password }: JoinApi) => {

@@ -1,17 +1,5 @@
 import { Tables } from "./supabase";
 
-export type SignUp = {
-  userId?: string;
-  email: string;
-  password?: string;
-  nickname?: string;
-};
-
-export type JoinApi = {
-  email: string;
-  password: string;
-};
-
 export type CommunityType = {
   boardId: string;
   boardTitle: string;
