@@ -7,6 +7,25 @@ export type SignUp = {
   nickname?: string;
 };
 
+export type JoinApi = {
+  email: string;
+  password: string;
+};
+
+export type TopLikedBoard = {
+  boardId: string;
+  boardTitle: string;
+  likeList: string[];
+  userId: string;
+  userInfo: {
+    nickname: string;
+    userImage: string;
+  };
+  comment: {
+    commentId: string;
+  }[];
+};
+
 export type CommunityType = {
   boardId: string;
   boardTitle: string;
