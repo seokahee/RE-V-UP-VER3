@@ -1,5 +1,5 @@
 "use client";
-import MusicSearchModal from "@/components/search/MusicSearchModal";
+import MusicSearchModal from "@/components/search/MusicSearch";
 import SearchForm from "@/components/search/SearchForm";
 import { supabase } from "@/shared/supabase/supabase";
 import { CommunityType } from "@/types/types";
