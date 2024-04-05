@@ -7,13 +7,13 @@ import ChangeFontColor from "./ChangeFontColor";
 import ChangeFontBackground from "./ChangeFontBackground";
 import ActionButton from "./ActionButton";
 import ImageInput from "./ImageInput";
+import { getToday } from "@/util/util";
 
 const BasicEditor = () => {
   const [title, setTitle] = useState("");
   const editorRef = useRef<HTMLDivElement>(null);
 
-  const today = new Date();
-  const date = today.toISOString();
+  const date = getToday();
 
   const submitHandler = async () => {
     const data = {

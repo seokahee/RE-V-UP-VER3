@@ -7,3 +7,9 @@ export const onDateHandler = (itemDate: any) => {
   return date;
 };
 
+export const getToday = () => {
+  const today = new Date();
+  const date = today.toISOString();
+
+  return date;
+};
