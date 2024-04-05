@@ -77,10 +77,8 @@ export type Database = {
           boardTitle: string;
           content: string;
           date: string;
-          images: string[] | null;
           likeList: string[];
           musicId: string;
-          thumbnail: string;
           userId: string;
         };
         Insert: {
@@ -88,10 +86,8 @@ export type Database = {
           boardTitle?: string;
           content?: string;
           date?: string;
-          images?: string[] | null;
           likeList: string[];
           musicId?: string;
-          thumbnail?: string;
           userId: string;
         };
         Update: {
@@ -99,10 +95,8 @@ export type Database = {
           boardTitle?: string;
           content?: string;
           date?: string;
-          images?: string[] | null;
           likeList?: string[];
           musicId?: string;
-          thumbnail?: string;
           userId?: string;
         };
         Relationships: [
@@ -205,19 +199,19 @@ export type Database = {
       personalMusic: {
         Row: {
           personalMusicId: string;
-          result: string;
+          result: string[];
           resultSentence: string;
           userId: string;
         };
         Insert: {
           personalMusicId?: string;
-          result?: string;
+          result: string[];
           resultSentence?: string;
           userId: string;
         };
         Update: {
           personalMusicId?: string;
-          result?: string;
+          result?: string[];
           resultSentence?: string;
           userId?: string;
         };
