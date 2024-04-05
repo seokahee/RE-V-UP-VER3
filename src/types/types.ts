@@ -40,9 +40,9 @@ export type MusicPreference = {
 
 export type UserChar = {
   userChar: {
-    gender: boolean;
-    age: number;
-    mbti: number;
+    gender?: boolean;
+    age?: number;
+    mbti?: number;
   };
 };
 
