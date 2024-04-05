@@ -1,6 +1,4 @@
-import { SignUp } from "@/types/types";
 import { supabase } from "../supabase/supabase";
-import { PostgrestError } from "@supabase/supabase-js";
 
 export const getUserUid = async (email: string) => {
   const { data: user, error } = await supabase
