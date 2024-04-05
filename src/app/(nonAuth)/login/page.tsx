@@ -9,7 +9,7 @@ import Modal from "@/util/Modal";
 import useInput from "@/hooks/useInput";
 import { findUserPassword } from "@/shared/login/loginApi";
 import findPwImg from "@/../public/images/findPassword.svg";
-import SocialLogin from "../socialLogin/page";
+import SocialLogin from "../../../components/socialLogin/page";
 
 const LoginPage = () => {
   const router = useRouter();
