@@ -19,17 +19,21 @@ const handler = NextAuth({
         },
       },
       async authorize(credentials, _) {
-        if (!credentials) {
+        if (!credentials || !credentials.email || !credentials.password) {
           throw new Error("이메일과 비밀번호를 입력하세요.");
         }
 
         const { email, password } = credentials;
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from("userInfo")
           .select("userId, email, nickname, password")
-          .eq("email", `${email}`)
+          .eq("email", email)
           .single();
+        console.log(data);
 
+        if (error) {
+          throw new Error("에러가 났습니다.");
+        }
         if (data && credentials && data?.password !== password) {
           throw new Error("비밀번호가 다릅니다.");
         }

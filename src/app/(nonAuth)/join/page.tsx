@@ -2,8 +2,8 @@
 
 import { FormEvent } from "react";
 import Link from "next/link";
-import useInput from "@/hooks/useInput";
 import { saveSignUpInUserInfo, signUp } from "@/shared/join/joinApi";
+import useInput from "@/hooks/useInput";
 
 const Join = () => {
   const joinState = {
@@ -53,12 +53,14 @@ const Join = () => {
       email: userEmail,
       password: userPw,
     });
+
     const userId = signUpResult?.data?.user?.id;
     if (signUpResult) {
       if (signUpResult.data?.user?.identities?.length === 0) {
         alert("이미 존재하는 아이디입니다.");
         return;
       }
+
       if (signUpResult.error) {
         alert(signUpResult.error.message);
         return;
