@@ -1,5 +1,7 @@
 "use client";
 
+import RadarChart from "@/components/personal/Chart";
+
 import { useState } from "react";
 
 const PersonalPage = () => {
@@ -74,6 +76,7 @@ const PersonalPage = () => {
   return (
     <div>
       <div>음악 취향을 진단해보세요!</div>
+      <RadarChart />
       {page === 0 ? (
         <div onClick={() => setPage(1)}>테스트하기</div>
       ) : page <= questionList.length ? (

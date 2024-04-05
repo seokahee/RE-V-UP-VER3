@@ -1,6 +1,6 @@
 "use client";
 
-import PersonalModal from "@/components/modal/PersonalModal";
+import PersonalModal from "@/components/personal/PersonalModal";
 import { useState, useEffect } from "react";
 
 const page = () => {
