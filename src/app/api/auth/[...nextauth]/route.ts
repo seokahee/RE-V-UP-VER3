@@ -57,16 +57,7 @@ const handler = NextAuth({
       return token;
     },
   },
-  // async session({ session }: Partial<SessionOptions>) {
-  //   console.log("Provider에서 받은 정보", session);
-  //   const spendSessionUserInfo = {
-  //     id: data.userId,
-  //     email: data.email,
-  //     nickname: data.nickname,
-  //   };
-  //   session.user = spendSessionUserInfo;
-  //   return session;
-  // },
+
   pages: {
     signIn: "/login",
   },
