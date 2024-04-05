@@ -18,12 +18,13 @@ const ChangeFontSize = forwardRef<HTMLDivElement>((props, ref) => {
   };
 
   return (
-    <>
+    <div className="flex flex-row items-center space-x-1 my-3">
+      <p>Font size: </p>
       <select
         id="select-font-size"
         ref={fontSizeSelectorRef}
         onChange={(event) => changeFontSize(parseInt(event.target.value))}
-        className={`ml-5 mr-5 my-5 p-1 border border-solid border-black rounded`}
+        className="border border-solid border-black rounded"
       >
         {fontSizeList.map((size, index) => (
           <option key={index} value={index + 1}>
@@ -31,7 +32,7 @@ const ChangeFontSize = forwardRef<HTMLDivElement>((props, ref) => {
           </option>
         ))}
       </select>
-    </>
+    </div>
   );
 });
 ChangeFontSize.displayName = "ChangeFontSize";

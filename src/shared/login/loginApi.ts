@@ -1,4 +1,3 @@
-import { SignUp } from "@/types/types";
 import { supabase } from "../supabase/supabase";
 
 export const getUserUid = async (email: string) => {
@@ -9,10 +8,11 @@ export const getUserUid = async (email: string) => {
     .single();
 
   if (user) {
-    console.log("User data:", user.userId);
+    return user;
   }
-  if (error) {
-    console.error("Error fetching user data:", error.message);
+
+  if (error && error.message) {
+    alert("정보를 받아오지 못하고 있습니다");
   }
   return user;
 };

@@ -1,7 +1,7 @@
-import { SignUp } from "@/types/types";
+import { JoinApi, SignUp } from "@/types/loginJoin/types";
 import { supabase } from "../supabase/supabase";
 
-export const signUp = async ({ email, password }: SignUp) => {
+export const signUp = async ({ email, password }: JoinApi) => {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -42,7 +42,7 @@ export const saveSignUpInUserInfo = async ({
     .select();
 
   if (error) {
-    console.error(error.message);
+    throw new Error("오류로 인해 가입정보가 승인되지 않았습니다.");
   }
 };
 

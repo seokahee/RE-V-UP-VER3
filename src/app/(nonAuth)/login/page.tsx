@@ -1,25 +1,22 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getSession, signIn, signOut, useSession } from "next-auth/react";
-import { useStore } from "@/shared/store";
-import { findUserPassword, getUserUid } from "@/shared/login/loginApi";
-import useInput from "@/hooks/useInput";
-import Modal from "@/util/Modal";
+import Link from "next/link";
 import Image from "next/image";
+import Modal from "@/util/Modal";
+import useInput from "@/hooks/useInput";
+import { findUserPassword } from "@/shared/login/loginApi";
 import findPwImg from "@/../public/images/findPassword.svg";
+import SocialLogin from "../../../components/socialLogin/page";
 
 const LoginPage = () => {
   const router = useRouter();
+  const { status } = useSession();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [spendEmail, setSpendEmail] = useState<string>("");
-  const { data: userEmail, status } = useSession();
-  const currentUserEmail = userEmail?.user?.email;
   const needLoginInfo = { email: "", password: "", checkStayLogin: false };
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
 
   const {
     form: userlogin,
@@ -27,6 +24,9 @@ const LoginPage = () => {
     onChange: onChangeHandler,
   } = useInput(needLoginInfo);
   const { email, password, checkStayLogin } = userlogin;
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const onClickCheckboxHandler = () => {
     setUserlogin((prevForm) => ({
@@ -54,7 +54,7 @@ const LoginPage = () => {
         alert(signResult.error);
       }
     } catch (error) {
-      throw new Error("에러");
+      throw new Error("회원정보를 불러오지 못하고 있습니다.");
     }
   };
 
@@ -73,7 +73,9 @@ const LoginPage = () => {
   };
 
   const logOut = async () => {
-    signOut();
+    await signOut();
+    localStorage.clear();
+
     const loginStatus = await getSession();
     if (loginStatus === null) {
       alert("로그아웃 되셨습니다.");
@@ -140,7 +142,6 @@ const LoginPage = () => {
             </div>
           </form>
         </div>
-        <article></article>
         <div className="flex w-full h-full gap-[8px] items-center justify-start">
           <label
             htmlFor="checkStayLogin"
@@ -171,7 +172,16 @@ const LoginPage = () => {
             ></Image>
           </div>
         </div>
-
+        <div>
+          <p>SNS로&nbsp;간편하게&nbsp;시작하기</p>
+          <SocialLogin />
+        </div>
+        <div>
+          <p>아직&nbsp;회원이&nbsp;아니신가요?</p>
+          <Link href={"/join"}>
+            <p>회원가입&nbsp;하기</p>
+          </Link>
+        </div>
         <div>
           <button onClick={logOut}>로그아웃</button>
         </div>
