@@ -36,11 +36,15 @@ const BasicEditor = () => {
         onChange={(event) => setTitle(event.target.value)}
       />
       <ImageInput />
-      <ActionButton actionValue="undo" ref={editorRef} />
-      <ActionButton actionValue="redo" ref={editorRef} />
+      <ActionButton actionValue="undo" actionSymbol="Undo" ref={editorRef} />
+      <ActionButton actionValue="redo" actionSymbol="Redo" ref={editorRef} />
       <ChangeFontStyle ref={editorRef} />
       <ChangeFont ref={editorRef} />
       <ChangeFontSize ref={editorRef} />
+      <ActionButton actionValue="justifyFull" actionSymbol="Full" ref={editorRef} />
+      <ActionButton actionValue="justifyLeft" actionSymbol="Left" ref={editorRef} />
+      <ActionButton actionValue="justifyCenter" actionSymbol="Center" ref={editorRef} />
+      <ActionButton actionValue="justifyRight" actionSymbol="Right" ref={editorRef} />
       <ChangeFontColor ref={editorRef} />
       <ChangeFontBackground ref={editorRef} />
       <div
