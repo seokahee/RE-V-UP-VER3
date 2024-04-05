@@ -62,7 +62,6 @@ const LoginPage = () => {
     e.preventDefault();
     if (spendEmail) {
       const data = await findUserPassword(spendEmail);
-      console.log(data);
       if (!data) {
         alert("존재하지 않는 정보입니다!");
       } else {
