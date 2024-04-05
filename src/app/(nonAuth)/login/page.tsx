@@ -9,6 +9,7 @@ import Modal from "@/util/Modal";
 import useInput from "@/hooks/useInput";
 import { findUserPassword } from "@/shared/login/loginApi";
 import findPwImg from "@/../public/images/findPassword.svg";
+import SocialLogin from "../socialLogin/page";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -172,9 +173,13 @@ const LoginPage = () => {
           </div>
         </div>
         <div>
-          <p>아직 회원이 아니신가요? </p>
+          <p>SNS로&nbsp;간편하게&nbsp;시작하기</p>
+          <SocialLogin />
+        </div>
+        <div>
+          <p>아직&nbsp;회원이&nbsp;아니신가요?</p>
           <Link href={"/join"}>
-            <p>회원가입 하기</p>
+            <p>회원가입&nbsp;하기</p>
           </Link>
         </div>
         <div>

@@ -1,6 +1,6 @@
 // app>api>auth>[...nextauth]>route.ts
 import { supabase } from "@/shared/supabase/supabase";
-import NextAuth from "next-auth";
+import NextAuth, { SessionOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 const handler = NextAuth({
@@ -38,18 +38,35 @@ const handler = NextAuth({
           throw new Error("비밀번호가 다릅니다.");
         }
 
-        if (data) {
-          return {
-            id: data.userId,
-            email: data.email,
-            nickname: data.nickname,
-          };
-        } else {
+        if (!data) {
           throw new Error("해당 이메일이 없습니다.");
         }
+
+        const spendSessionUserInfo = {
+          id: data.userId,
+          email: data.email,
+          nickname: data.nickname,
+        };
+
+        return spendSessionUserInfo;
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token }) {
+      return token;
+    },
+  },
+  // async session({ session }: Partial<SessionOptions>) {
+  //   console.log("Provider에서 받은 정보", session);
+  //   const spendSessionUserInfo = {
+  //     id: data.userId,
+  //     email: data.email,
+  //     nickname: data.nickname,
+  //   };
+  //   session.user = spendSessionUserInfo;
+  //   return session;
+  // },
   pages: {
     signIn: "/login",
   },
