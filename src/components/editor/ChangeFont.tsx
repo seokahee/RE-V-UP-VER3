@@ -16,19 +16,20 @@ const ChangeFont = forwardRef<HTMLDivElement>((props, ref) => {
   };
 
   return (
-    <>
+    <div className="flex flex-row items-center space-x-1 my-3">
+      <p>Font: </p>
       <select
         id="select-font"
         ref={fontNameSelectorRef}
         onChange={(e) => changeFontName(e.target.value)}
-        className={`ml-5 mr-2 my-5 p-1 border border-solid border-black rounded`}
+        className="p-1 border border-solid border-black rounded"
       >
         <option value="Inherit">Inherit(default)</option>
         <option value="Arial">Arial</option>
         <option value="Times New Roman">Times New Roman</option>
         <option value="Verdana">Verdana</option>
       </select>
-    </>
+    </div>
   );
 });
 
