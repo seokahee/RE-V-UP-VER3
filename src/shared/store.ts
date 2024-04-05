@@ -7,6 +7,7 @@ type Store = {
   };
   count: number;
   inc: () => void;
+  setUserInfo: (uid: string) => void;
 };
 
 const initialState = {
@@ -19,7 +20,7 @@ export const useStore = create(
   persist<Store>(
     (set, get) => ({
       ...initialState,
-      saveUserInfo: (uid: string) => set({ userInfo: { uid } }),
+      setUserInfo: (uid: string) => set({ userInfo: { uid } }),
       count: 1,
       inc: () => set((state) => ({ count: state.count + 1 })),
     }),

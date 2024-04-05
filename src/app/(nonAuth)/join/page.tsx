@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useRef } from "react";
+import { FormEvent } from "react";
 import Link from "next/link";
 import useInput from "@/hooks/useInput";
 import { saveSignUpInUserInfo, signUp } from "@/shared/join/joinApi";
