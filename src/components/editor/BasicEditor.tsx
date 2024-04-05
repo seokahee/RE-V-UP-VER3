@@ -5,6 +5,7 @@ import ChangeFontStyle from "./ChangeFontStyle";
 import SelectMusic from "./SelectMusic";
 import ChangeFontColor from "./ChangeFontColor";
 import ChangeFontBackground from "./ChangeFontBackground";
+import ActionButton from "./ActionButton";
 
 const BasicEditor = () => {
   const editorRef = useRef<HTMLDivElement>(null);
@@ -15,6 +16,8 @@ const BasicEditor = () => {
 
   return (
     <>
+      <ActionButton actionValue="undo" ref={editorRef} />
+      <ActionButton actionValue="redo" ref={editorRef} />
       <ChangeFontStyle ref={editorRef} />
       <ChangeFont ref={editorRef} />
       <ChangeFontSize ref={editorRef} />
