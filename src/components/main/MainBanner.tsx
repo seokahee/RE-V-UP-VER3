@@ -1,36 +1,19 @@
 "use client";
 
-import { supabase } from "@/shared/supabase/supabase";
+import { getBannerData } from "@/shared/main/api";
+import { useStore } from "@/shared/store";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React, { useState } from "react";
 
-type Banner = {
-  adId: string;
-  userId: string;
-  imageUrl: string[];
-};
-
 const MainBanner = () => {
+  const { userInfo } = useStore();
   const [slide, setSlide] = useState(0);
 
-  const USER_ID = "016011ee-39dc-41d4-92a1-1ea7316c55dc"; //임시 값
-
-  const getBannerData = async (userId: string): Promise<Banner[]> => {
-    try {
-      const { data, error } = await supabase.from("advertisement").select("adId, userId, imageUrl").eq("userId", userId);
-      console.log(data);
-      return data as Banner[];
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  };
-
   const { data, isLoading, isError } = useQuery({
-    queryFn: () => getBannerData(USER_ID),
-    queryKey: ["mainBanner"],
-    enabled: !!USER_ID
+    queryFn: () => getBannerData(userInfo.uid),
+    queryKey: ["mainBanner", userInfo.uid],
+    enabled: !!userInfo.uid
   });
 
   const onClickPrevHandler = () => {
@@ -51,7 +34,7 @@ const MainBanner = () => {
 
   return (
     <div>
-      {data && data?.[0].imageUrl.length > 0 ? (
+      {data && data?.[0]?.imageUrl.length > 0 ? (
         <div className="relative m-4">
           <ul className={`flex overflow-hidden transition-all`}>
             {data?.[0].imageUrl.map((item, idx) => {
