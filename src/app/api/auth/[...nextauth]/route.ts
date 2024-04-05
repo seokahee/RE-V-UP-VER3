@@ -2,6 +2,8 @@
 import { supabase } from "@/shared/supabase/supabase";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import KakaoProvider from "next-auth/providers/kakao";
 
 const handler = NextAuth({
   providers: [
@@ -19,17 +21,21 @@ const handler = NextAuth({
         },
       },
       async authorize(credentials, _) {
-        if (!credentials) {
+        if (!credentials || !credentials.email || !credentials.password) {
           throw new Error("이메일과 비밀번호를 입력하세요.");
         }
 
         const { email, password } = credentials;
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from("userInfo")
           .select("userId, email, nickname, password")
-          .eq("email", `${email}`)
+          .eq("email", email)
           .single();
+        console.log(data);
 
+        if (error) {
+          throw new Error("에러가 났습니다.");
+        }
         if (data && credentials && data?.password !== password) {
           throw new Error("비밀번호가 다릅니다.");
         }
@@ -46,6 +52,11 @@ const handler = NextAuth({
       },
     }),
   ],
+  // session: {
+  //   strategy: "jwt",
+  //   // Seconds - How long until an idle ses
+  //   maxAge: 60 * 60 * 24 * 30, // 30 days
+  // },
   pages: {
     signIn: "/login",
   },

@@ -5,6 +5,11 @@ export type SignUp = {
   nickname?: string;
 };
 
+export type JoinApi = {
+  email: string;
+  password: string;
+};
+
 export type TopLikedBoard = {
   boardId: string;
   boardTitle: string;
