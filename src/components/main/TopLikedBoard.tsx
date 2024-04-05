@@ -1,6 +1,6 @@
 "use client";
 
-import { getTopLikedBoardData } from "@/shared/miain/api";
+import { getTopLikedBoardData } from "@/shared/main/api";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";

@@ -1,5 +1,6 @@
 "use client";
 
+import { USER_ID } from "@/shared/main/api";
 import { supabase } from "@/shared/supabase/supabase";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -13,8 +14,6 @@ type Banner = {
 
 const MainBanner = () => {
   const [slide, setSlide] = useState(0);
-
-  const USER_ID = "016011ee-39dc-41d4-92a1-1ea7316c55dc"; //임시 값
 
   const getBannerData = async (userId: string): Promise<Banner[]> => {
     try {
