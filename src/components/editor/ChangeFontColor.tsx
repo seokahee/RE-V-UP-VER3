@@ -26,11 +26,12 @@ const ChangeFontColor = forwardRef<HTMLDivElement>((props, ref) => {
   };
 
   return (
-    <>
+    <div className="flex flex-row items-center space-x-1 my-3">
+      <p>Font color: </p>
       {fontColorList.map((value, index) => (
         <button
           key={index}
-          className={`btn my-5 p-1 border border-solid border-black rounded`}
+          className="w-[50px] h-[30px] border border-solid border-black rounded"
           style={
             index === 4
               ? { color: "#a9a9a9" }
@@ -41,7 +42,7 @@ const ChangeFontColor = forwardRef<HTMLDivElement>((props, ref) => {
           {fontColorNameList[index]}
         </button>
       ))}
-    </>
+    </div>
   );
 });
 

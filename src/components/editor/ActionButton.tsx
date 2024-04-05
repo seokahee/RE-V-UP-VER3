@@ -19,7 +19,7 @@ const ActionButton = forwardRef<HTMLDivElement, propsType>((props, ref) => {
   return (
     <>
       <button
-        className={`btn mr-2 my-5 p-1 border border-solid border-black rounded`}
+        className="flex justify-center items-center size-[30px] border border-solid border-black rounded"
         onClick={() => applyAction(props.actionValue)}
       >
         <Image

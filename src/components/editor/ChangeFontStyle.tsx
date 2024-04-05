@@ -11,10 +11,10 @@ const ChangeFontStyle = forwardRef<HTMLDivElement>((props, ref) => {
   };
 
   const buttonStyle =
-    "btn mr-2 my-5 p-1 border border-solid border-black rounded";
+    "justify-center items-center size-[30px] border border-solid border-black rounded";
 
   return (
-    <>
+    <div className="flex flex-row space-x-1">
       <button className={buttonStyle} onClick={() => applyStyle("bold")}>
         B
       </button>
@@ -42,7 +42,7 @@ const ChangeFontStyle = forwardRef<HTMLDivElement>((props, ref) => {
       >
         UL
       </button>
-    </>
+    </div>
   );
 });
 

@@ -29,62 +29,66 @@ const BasicEditor = () => {
   };
 
   return (
-    <>
+    <div className="mx-5">
       <input
-        className="mx-5 mt-5 px-10 py-4 border border-black border-solid rounded w-[95%]"
+        className="mt-3 px-10 py-4 border border-black border-solid rounded w-[95%]"
         placeholder="Title"
         onChange={(event) => setTitle(event.target.value)}
       />
-      <ImageInput />
-      <ActionButton
-        actionValue="undo"
-        actionSymbol="/images/undo.svg"
-        ref={editorRef}
-      />
-      <ActionButton
-        actionValue="redo"
-        actionSymbol="/images/redo.svg"
-        ref={editorRef}
-      />
+      <div className="flex flex-row space-x-1 my-3">
+        <ImageInput />
+        <ActionButton
+          actionValue="undo"
+          actionSymbol="/images/undo.svg"
+          ref={editorRef}
+        />
+        <ActionButton
+          actionValue="redo"
+          actionSymbol="/images/redo.svg"
+          ref={editorRef}
+        />
+      </div>
       <ChangeFontStyle ref={editorRef} />
       <ChangeFont ref={editorRef} />
       <ChangeFontSize ref={editorRef} />
-      <ActionButton
-        actionValue="justifyFull"
-        actionSymbol="/images/align-full.svg"
-        ref={editorRef}
-      />
-      <ActionButton
-        actionValue="justifyLeft"
-        actionSymbol="/images/align-left.svg"
-        ref={editorRef}
-      />
-      <ActionButton
-        actionValue="justifyCenter"
-        actionSymbol="/images/align-center.svg"
-        ref={editorRef}
-      />
-      <ActionButton
-        actionValue="justifyRight"
-        actionSymbol="/images/align-right.svg"
-        ref={editorRef}
-      />
+      <div className="flex flex-row space-x-1 my-3">
+        <ActionButton
+          actionValue="justifyFull"
+          actionSymbol="/images/align-full.svg"
+          ref={editorRef}
+        />
+        <ActionButton
+          actionValue="justifyLeft"
+          actionSymbol="/images/align-left.svg"
+          ref={editorRef}
+        />
+        <ActionButton
+          actionValue="justifyCenter"
+          actionSymbol="/images/align-center.svg"
+          ref={editorRef}
+        />
+        <ActionButton
+          actionValue="justifyRight"
+          actionSymbol="/images/align-right.svg"
+          ref={editorRef}
+        />
+      </div>
       <ChangeFontColor ref={editorRef} />
       <ChangeFontBackground ref={editorRef} />
       <div
         id="editor"
         ref={editorRef}
         contentEditable
-        className={`mx-5 p-10 border border-black border-solid rounded min-h-32 w-[95%] [&>img]:w-full`}
+        className="my-3 p-10 border border-black border-solid rounded min-h-32 w-[95%] [&>img]:w-full"
       ></div>
       <SelectMusic />
       <button
-        className="btn ml-5 mr-2 my-5 p-1 border border-solid border-black rounded"
+        className="my-3 w-[100px] h-[30px] border border-solid border-black rounded"
         onClick={submitHandler}
       >
         submit
       </button>
-    </>
+    </div>
   );
 };
 

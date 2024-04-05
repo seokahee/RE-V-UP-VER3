@@ -14,18 +14,19 @@ const ChangeFontBackground = forwardRef<HTMLDivElement>((props, ref) => {
   };
   
   return (
-    <>
+    <div className="flex flex-row items-center space-x-1 my-3">
+      <p>Font background: </p>
       {backgroundColorList.map((value, index) => (
         <button
           key={index}
-          className={`btn my-5 p-1 border border-solid border-black rounded text-white`}
+          className="w-[50px] h-[30px] border border-solid border-black rounded text-white"
           style = {{backgroundColor : `${backgroundColorList[index]}`}}
           onClick={() => applyColor(backgroundColorList[index])}
         >
         {backgroundColorNameList[index]}
         </button>
       ))}
-    </>
+    </div>
   );
 });
 

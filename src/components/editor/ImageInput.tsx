@@ -24,13 +24,10 @@ const ImageInput = () => {
     reader.readAsDataURL(file);
   };
 
-  const initialButtonStyle =
-    "btn ml-5 mr-2 my-5 p-1 border border-solid border-black rounded";
-
   return (
     <>
       <button
-        className={initialButtonStyle}
+        className="w-[50px] h-[30px] border border-solid border-black rounded"
         onClick={imageButtonClickHandler}
       >
         IMG
