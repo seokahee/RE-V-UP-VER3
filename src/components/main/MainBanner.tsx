@@ -1,6 +1,6 @@
 "use client";
 
-import { USER_ID } from "@/shared/main/api";
+import { useStore } from "@/shared/store";
 import { supabase } from "@/shared/supabase/supabase";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -13,6 +13,7 @@ type Banner = {
 };
 
 const MainBanner = () => {
+  const { userInfo } = useStore();
   const [slide, setSlide] = useState(0);
 
   const getBannerData = async (userId: string): Promise<Banner[]> => {
@@ -27,9 +28,9 @@ const MainBanner = () => {
   };
 
   const { data, isLoading, isError } = useQuery({
-    queryFn: () => getBannerData(USER_ID),
-    queryKey: ["mainBanner"],
-    enabled: !!USER_ID
+    queryFn: () => getBannerData(userInfo.uid),
+    queryKey: ["mainBanner", userInfo.uid],
+    enabled: !!userInfo.uid
   });
 
   const onClickPrevHandler = () => {
@@ -50,7 +51,7 @@ const MainBanner = () => {
 
   return (
     <div>
-      {data && data?.[0].imageUrl.length > 0 ? (
+      {data && data?.[0]?.imageUrl.length > 0 ? (
         <div className="relative m-4">
           <ul className={`flex overflow-hidden transition-all`}>
             {data?.[0].imageUrl.map((item, idx) => {
