@@ -1,18 +1,21 @@
-import { USER_ID, getCurrentMusicData, insertCurrentMusic, updateCurrentMusic } from "@/shared/main/api";
+import { getCurrentMusicData, insertCurrentMusic, updateCurrentMusic } from "@/shared/main/api";
 import { GenreMusicInfo } from "@/types/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { useStore } from "@/shared/store";
 
 const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
+  const { userInfo } = useStore();
+
   const { data: playListCurrent } = useQuery({
-    queryFn: () => getCurrentMusicData(USER_ID),
+    queryFn: () => getCurrentMusicData(userInfo.uid),
     queryKey: ["playListCurrent"],
-    enabled: !!USER_ID
+    enabled: !!userInfo.uid
   });
 
   const insertMutation = useMutation({
@@ -56,7 +59,7 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
         <figure>
           <Image src={item.thumbnail} width={120} height={120} alt={`${item.musicTitle} 앨범 썸네일`} />
         </figure>
-        <button type="button" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" onClick={() => onClickAddCurrentMusicHandler(USER_ID, item.musicId)}>
+        <button type="button" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" onClick={() => onClickAddCurrentMusicHandler(userInfo.uid, item.musicId)}>
           +
         </button>
       </div>
