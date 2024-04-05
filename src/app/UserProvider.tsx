@@ -5,18 +5,18 @@ import { useSession } from "next-auth/react";
 import { useStore } from "@/shared/store";
 import { getUserUid } from "@/shared/login/loginApi";
 
-const AuthLayout = ({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) => {
+type Props = {
+  children?: React.ReactNode;
+};
+const UserProvider = ({ children }: Props) => {
   const { setUserInfo } = useStore();
-  const { data: userEmail } = useSession();
+  const { data: userSessionInfo } = useSession();
 
   useEffect(() => {
     const saveStoreUserUid = async () => {
-      if (userEmail && userEmail?.user?.email) {
-        const data = await getUserUid(userEmail.user.email);
+      if (userSessionInfo && userSessionInfo?.user?.email) {
+        const data = await getUserUid(userSessionInfo.user.email);
+
         if (data) {
           const userId = data.userId;
           setUserInfo(userId);
@@ -25,9 +25,9 @@ const AuthLayout = ({
     };
 
     saveStoreUserUid();
-  }, [userEmail]);
+  }, [userSessionInfo]);
 
   return <div>{children}</div>;
 };
 
-export default AuthLayout;
+export default UserProvider;
