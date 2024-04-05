@@ -1,6 +1,17 @@
-import { GenreMusicInfo, MusicPreference, PlaylistCurrent, TopLikedBoard, UserChar } from "@/types/types";
+import type { Banner, GenreMusicInfo, MusicPreference, PlaylistCurrent, TopLikedBoard, UserChar } from "@/types/types";
 import { supabase } from "../supabase/supabase";
 import { genreMatch } from "@/util/main/util";
+
+export const getBannerData = async (userId: string): Promise<Banner[]> => {
+  try {
+    const { data, error } = await supabase.from("advertisement").select("adId, userId, imageUrl").eq("userId", userId);
+    console.log(data);
+    return data as Banner[];
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
 
 export const getTopLikedBoardData = async (): Promise<TopLikedBoard[]> => {
   const currentDate = new Date();

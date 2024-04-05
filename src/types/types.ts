@@ -51,3 +51,9 @@ export type PlaylistCurrent = {
   userId: string;
   currentMusicIds: string[];
 };
+
+export type Banner = {
+  adId: string;
+  userId: string;
+  imageUrl: string[];
+};

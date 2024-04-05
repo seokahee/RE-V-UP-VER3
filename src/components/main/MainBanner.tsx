@@ -1,31 +1,14 @@
 "use client";
 
+import { getBannerData } from "@/shared/main/api";
 import { useStore } from "@/shared/store";
-import { supabase } from "@/shared/supabase/supabase";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React, { useState } from "react";
 
-type Banner = {
-  adId: string;
-  userId: string;
-  imageUrl: string[];
-};
-
 const MainBanner = () => {
   const { userInfo } = useStore();
   const [slide, setSlide] = useState(0);
-
-  const getBannerData = async (userId: string): Promise<Banner[]> => {
-    try {
-      const { data, error } = await supabase.from("advertisement").select("adId, userId, imageUrl").eq("userId", userId);
-      console.log(data);
-      return data as Banner[];
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  };
 
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getBannerData(userInfo.uid),
