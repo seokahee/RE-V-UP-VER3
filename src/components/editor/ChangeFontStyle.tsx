@@ -10,39 +10,45 @@ const ChangeFontStyle = forwardRef<HTMLDivElement>((props, ref) => {
     }
   };
 
-  const buttonStyle =
-    "btn mr-2 my-5 p-1 border border-solid border-black rounded";
-
   return (
-    <>
-      <button className={buttonStyle} onClick={() => applyStyle("bold")}>
+    <div className="flex flex-row space-x-1">
+      <button
+        className="justify-center items-center size-[30px] border border-solid border-black rounded font-bold"
+        onClick={() => applyStyle("bold")}
+      >
         B
       </button>
-      <button className={buttonStyle} onClick={() => applyStyle("italic")}>
+      <button
+        className="justify-center items-center size-[30px] border border-solid border-black rounded italic"
+        onClick={() => applyStyle("italic")}
+      >
         I
       </button>
-      <button className={buttonStyle} onClick={() => applyStyle("underline")}>
+      <button
+        className="justify-center items-center size-[30px] border border-solid border-black rounded underline"
+        onClick={() => applyStyle("underline")}
+      >
         U
       </button>
       <button
-        className={buttonStyle}
+        className="justify-center items-center size-[30px] border border-solid border-black rounded, line-through"
         onClick={() => applyStyle("strikeThrough")}
       >
         S
       </button>
       <button
-        className={buttonStyle}
+        className="justify-center items-center size-[30px] border border-solid border-black rounded"
         onClick={() => applyStyle("insertOrderedList")}
       >
         OL
       </button>
       <button
-        className={buttonStyle}
+        className="justify-center items-center size-[30px] border border-solid border-black rounded"
         onClick={() => applyStyle("insertUnorderedList")}
       >
         UL
       </button>
-    </>
+    </div>
   );
 });
 

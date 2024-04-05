@@ -1,61 +1,54 @@
 "use client";
-import Search from "@/components/search/Search";
+import MusicSearchModal from "@/components/search/MusicSearch";
+import SearchForm from "@/components/search/SearchForm";
 import { supabase } from "@/shared/supabase/supabase";
+import { CommunityType } from "@/types/types";
 import { onDateHandler } from "@/util/util";
-import React, { useEffect, useState } from "react";
-
-interface CommunityData {
-  boardId: string;
-  boardTitle: string;
-  content: string;
-  date: string;
-  images: string;
-  likeList: string[];
-  musicId: string;
-  thumbnail: string;
-  userId: string;
-  adId?: string;
-  userInfo: {
-    nickname: string;
-    userImage: string;
-  };
-}
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 const Community = () => {
-  const [communityList, setCommunityList] = useState<CommunityData[]>([]);
   const [isSort, setIsSort] = useState(true);
 
-  useEffect(() => {
-    const getCommunity = async () => {
-      const { data, error } = await supabase
+  const { data, refetch } = useQuery({
+    queryKey: ["communityList"],
+    queryFn: async () => {
+      const { data } = await supabase
         .from("community")
         .select(
-          "boardId, boardTitle, likeList, date, userId, userInfo(nickname, userImage)"
+          "boardId, boardTitle, likeList, date, userId, userInfo(nickname, userImage), musicInfo(thumbnail)"
         )
         .order(isSort ? "date" : "likeList", { ascending: false });
 
-      if (!data) {
-        console.log("커뮤니티 리스트를 가져오지 못했습니다", error);
-      } else {
-        const communityImage = data.map((item: any) => {
+      if (data) {
+        const communityImage = data.map((item) => {
           const imgData = supabase.storage
             .from("musicThumbnail")
             .getPublicUrl("Coffee Shop Romance.png");
           if (imgData) {
             return { ...item, thumbnail: imgData.data.publicUrl };
-          } else {
-            console.log("이미지를 가져오지 못했습니다");
           }
         });
-        setCommunityList(communityImage);
+        return communityImage;
       }
-    };
-    getCommunity();
-  }, [isSort]);
+    },
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [isSort, refetch]);
+
+  if (!data) {
+    return;
+  }
+  const filteredData = data.filter((item) => {
+    return item && item.userInfo && item.musicInfo;
+  }) as CommunityType[];
 
   return (
     <div>
-      <Search />
+      <SearchForm />
+      <MusicSearchModal />
       <div className="flex gap-2 m-10">
         <p
           onClick={() => {
@@ -75,16 +68,21 @@ const Community = () => {
         </p>
       </div>
 
-      {communityList.map((item) => {
+      {filteredData.map((item) => {
         return (
-          <div key={item.boardId} className="flex items-center">
-            <img src={item.thumbnail} alt="" className="w-28" />
+          <div key={item!.boardId} className="flex items-center">
+            <img
+              src={item?.userInfo?.userImage ?? ""}
+              alt=""
+              className="w-28"
+            />
+            <img src={item.musicInfo.thumbnail} alt="" className="w-28" />
             <div className="flex flex-col gap-2">
-              <div>{item.boardTitle}</div>
+              <div>{item!.boardTitle}</div>
               <div className="flex gap-2">
-                <div>{item.userInfo.nickname}</div>
-                <div>{onDateHandler(item.date)}</div>
-                <div>좋아요 {item.likeList.length}</div>
+                <div>{item?.userInfo?.nickname ?? ""}</div>
+                <div>{onDateHandler(item!.date)}</div>
+                <div>좋아요 {item?.likeList.length}</div>
               </div>
             </div>
           </div>

@@ -1,3 +1,5 @@
+import { Tables } from "./supabase";
+
 export type SignUp = {
   userId?: string;
   email: string;
@@ -5,18 +7,27 @@ export type SignUp = {
   nickname?: string;
 };
 
-export type TopLikedBoard = {
+export type CommunityType = {
   boardId: string;
   boardTitle: string;
+  date: string;
   likeList: string[];
-  userId: string;
   userInfo: {
     nickname: string;
     userImage: string;
   };
-  comment: {
-    commentId: string;
-  }[];
+  musicInfo: {
+    thumbnail: string;
+  };
+};
+
+export type MusicInfoType = {
+  artist: string;
+  musicId: string;
+  musicSource: string;
+  musicTitle: string;
+  release: string;
+  thumbnail: string;
 };
 
 export type GenreMusicInfo = {
