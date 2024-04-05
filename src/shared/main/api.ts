@@ -1,4 +1,4 @@
-import type { Banner, GenreMusicInfo, MusicPreference, PlaylistCurrent, TopLikedBoard, UserChar } from "@/types/types";
+import type { Banner, GenreMusicInfo, MusicPreference, PlaylistCurrent, TopLikedBoard, UserChar } from "@/types/main/types";
 import { supabase } from "../supabase/supabase";
 import { genreMatch } from "@/util/main/util";
 
