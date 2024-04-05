@@ -13,9 +13,7 @@ export const getMusicInfoData = async (keyword: string) => {
 export type MusicInfoDataType = Awaited<
   ReturnType<typeof getMusicInfoData>
 >["data"];
-
 const SearchedMusicData = ({ item }: { item: MusicInfoType }) => {
-  console.log("item", item);
   return (
     <div key={item.musicId} className="flex items-center">
       <img src={item.thumbnail} alt="" className="w-28" />
@@ -30,5 +28,4 @@ const SearchedMusicData = ({ item }: { item: MusicInfoType }) => {
     </div>
   );
 };
-// Neon Nights
 export default SearchedMusicData;

@@ -9,6 +9,7 @@ import SearchedMusicData, {
   getMusicInfoData,
 } from "@/components/search/SearchedMusicData";
 import { useSearchedStore } from "@/shared/store/searchStore";
+import { CommunityType } from "@/types/types";
 import { useEffect, useState } from "react";
 
 const Search = () => {
@@ -28,23 +29,32 @@ const Search = () => {
         setCommunityResult(data);
       }
     };
+
     fetchData();
   }, [keyword, selectedTabs]);
 
-  console.log("musicInfoResult", musicInfoResult);
-  console.log("communityResult", communityResult);
+  const filteredData = communityResult?.filter((item) => {
+    return item && item.userInfo && item.musicInfo;
+  }) as CommunityType[];
+
   return (
     <div>
       <SearchComponent />
       <div>
-        {selectedTabs === "musicInfo"
-          ? musicInfoResult?.map((item) => {
-              return <SearchedMusicData key={item.musicId} item={item} />;
-            })
-          : communityResult?.map((item) => {
-              return <SearchedCommunityData key={item.boardId} item={item} />;
-              // 썸네일 속성 필수래서 넣어줬는데 계속 빨갛게 뜸 기능은 정상작동
-            })}
+        {selectedTabs === "musicInfo" && musicInfoResult && (
+          <div>
+            {musicInfoResult.map((item) => (
+              <SearchedMusicData key={item.musicId} item={item} />
+            ))}
+          </div>
+        )}
+        {selectedTabs !== "musicInfo" && communityResult && (
+          <div>
+            {filteredData.map((item) => (
+              <SearchedCommunityData key={item.boardId} item={item} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

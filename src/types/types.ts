@@ -12,11 +12,12 @@ export type CommunityType = {
   boardTitle: string;
   date: string;
   likeList: string[];
-  thumbnail: string;
   userInfo: {
-    userId: string;
     nickname: string;
     userImage: string;
+  };
+  musicInfo: {
+    thumbnail: string;
   };
 };
 
