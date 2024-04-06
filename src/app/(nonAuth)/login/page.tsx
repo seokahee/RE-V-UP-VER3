@@ -10,6 +10,7 @@ import useInput from "@/hooks/useInput";
 import { findUserPassword } from "@/shared/login/loginApi";
 import findPwImg from "@/../public/images/findPassword.svg";
 import SocialLogin from "../../../components/socialLogin/page";
+import { supabase } from "@/shared/supabase/supabase";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -73,8 +74,9 @@ const LoginPage = () => {
   };
 
   const logOut = async () => {
-    await signOut();
+    await signOut({ redirect: true, callbackUrl: "/" });
     localStorage.clear();
+    const { error } = await supabase.auth.signOut();
 
     const loginStatus = await getSession();
     if (loginStatus === null) {
@@ -144,13 +146,11 @@ const LoginPage = () => {
         </div>
         <div className="flex w-full h-full gap-[8px] items-center justify-start">
           <label
-            htmlFor="checkStayLogin"
             onClick={onClickCheckboxHandler}
             className="flex items-center justify-center gap-[8px]"
           >
             <input
               type="checkbox"
-              id="checkStayLogin"
               name="checkStayLogin"
               checked={checkStayLogin}
               onChange={() => {}}
