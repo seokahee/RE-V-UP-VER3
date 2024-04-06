@@ -8,10 +8,6 @@ import { signIn, useSession } from "next-auth/react";
 import { supabase } from "@/shared/supabase/supabase";
 
 const SocialLogin = () => {
-  const { data: session, status } = useSession();
-  // const session = await getSession();
-  console.log(session);
-
   const onGoogleLoginHandler = async () => {
     signIn("google", { redirect: true, callbackUrl: "/" });
     const { data, error } = await supabase.auth.signInWithOAuth({
