@@ -59,18 +59,24 @@ const MyInfo = () => {
   }
 
   return (
-    <section>
+    <section className="p-[40px]">
       <div>
-        <figure className="w-5 h-5 flex overflow-hidden rounded-full bg-slate-200">
-          {data?.userImage && <Image src={data?.userImage} width={150} height={150} alt={`${data?.nickname} 프로필 이미지`} />}
-        </figure>
-        <button type="button">퍼스널 뮤직 진단 다시받기</button>
+        <div className="flex justify-between">
+          <figure className="w-[80px] h-[80px] flex overflow-hidden rounded-full bg-slate-200">
+            {data?.userImage && <Image src={data?.userImage} width={80} height={80} alt={`${data?.nickname} 프로필 이미지`} />}
+          </figure>
+          <button type="button">퍼스널 뮤직 진단 다시받기</button>
+        </div>
         {data?.nickname}
-        팔로우 {data?.following.length} 팔로워 {data?.follower.length}
-        {data?.userChar?.mbti}
-        {data?.personalMusic?.resultSentence}
+        <p>
+          팔로우 {data?.following.length} 팔로워 {data?.follower.length}
+        </p>
+        <p>
+          {data?.userChar?.mbti}
+          {data?.personalMusic?.resultSentence}
+        </p>
       </div>
-      <div>
+      <div className="mt-[5rem]">
         <h2>{data?.nickname}님의 플레이리스트</h2>
         <button type="button">전체 재생 하기</button>
         <div>
@@ -79,7 +85,7 @@ const MyInfo = () => {
           </button>
           <button type="button">{checkedList.length}곡 재생</button>
         </div>
-        <ul>
+        <ul className="list-none">
           {playlistMyData?.map((item) => {
             return (
               <li key={item.musicId}>
