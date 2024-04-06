@@ -1,7 +1,7 @@
 "use client";
 
 import { useStore } from "@/shared/store";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addComment } from "@/shared/comment/commentApi";
 import { useState } from "react";
 import { getToday } from "@/util/util";

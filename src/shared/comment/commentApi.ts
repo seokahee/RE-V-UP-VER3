@@ -14,6 +14,7 @@ export const getComments = async (): Promise<comment[]> => {
   return comment as comment[];
 };
 
+//추가
 export const addComment = async (newComment: newComment) => {
   const { data, error } = await supabase
     .from("comment")
@@ -26,5 +27,14 @@ export const addComment = async (newComment: newComment) => {
 };
 
 //댓글 삭제
+export const deleteComment = async (commentId: string) => {
+  const { error } = await supabase
+    .from("comment")
+    .delete()
+    .eq("commentId", commentId);
+  if (error) {
+    console.log(error.message);
+  }
+};
 
 //댓글 수정
