@@ -8,3 +8,11 @@ export type comment = {
     userImage: string;
   };
 };
+
+export type newComment = {
+  userId: string;
+  boardId: string;
+  commentLikeList: string[];
+  commentDate: string;
+  commentContent: string;
+};

@@ -1,4 +1,4 @@
-import { comment } from "@/types/comment/type";
+import { comment, newComment } from "@/types/comment/type";
 import { supabase } from "../supabase/supabase";
 
 //댓글 조회
@@ -14,16 +14,16 @@ export const getComments = async (): Promise<comment[]> => {
   return comment as comment[];
 };
 
-//댓글 추가
-// export const addComment = async () => {
-//   const { data, error } = await supabase
-//     .from("comment")
-//     .insert([{ commentContent: "commentContent", commentDate: "commentDate" }])
-//     .select();
-//   if (error) {
-//     throw error.message;
-//   }
-// };
+export const addComment = async (newComment: newComment) => {
+  const { data, error } = await supabase
+    .from("comment")
+    .insert(newComment)
+    .select();
+  if (error) {
+    console.log(error.message);
+  }
+  return data;
+};
 
 //댓글 삭제
 

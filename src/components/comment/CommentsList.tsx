@@ -14,7 +14,7 @@ const CommentsList = () => {
   return (
     <div>
       {commentsData?.map((item) => (
-        <div>
+        <div key={item.commentId}>
           <span className="w-5 h-5 flex overflow-hidden rounded-full bg-slate-200">
             {item.userInfo?.userImage && (
               <Image
