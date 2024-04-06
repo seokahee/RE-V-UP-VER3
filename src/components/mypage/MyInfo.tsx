@@ -122,10 +122,6 @@ const MyInfo = () => {
     setIsFollowModal(true);
   };
 
-  // const onClickTab = (idx: number) => {
-  //   setIsActive(idx);
-  // };
-
   useEffect(() => {
     if (data) {
       setUserImage(data?.userImage);
