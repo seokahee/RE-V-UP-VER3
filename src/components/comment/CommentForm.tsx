@@ -1,15 +1,15 @@
 "use client";
 
-import { useStore } from "@/shared/store";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addComment } from "@/shared/comment/commentApi";
 import { useState } from "react";
 import { getToday } from "@/util/util";
+import { useStore } from "@/shared/store";
+import { addComment } from "@/shared/comment/commentApi";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const CommentForm = () => {
-  const [comment, setComment] = useState<string>("");
   const { userInfo } = useStore();
   const queryClient = useQueryClient();
+  const [comment, setComment] = useState<string>("");
 
   const addCommentMutation = useMutation({
     mutationFn: addComment,

@@ -38,3 +38,7 @@ export const deleteComment = async (commentId: string) => {
 };
 
 //댓글 수정
+
+//댓글 좋아요
+
+//대댓글(?)
