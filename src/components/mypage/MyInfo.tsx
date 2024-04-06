@@ -138,8 +138,10 @@ const MyInfo = () => {
       </div>
       {isModal && (
         <Modal title={"닉네임 변경"} onClick={onClickCloseModalHandler}>
-          <input type="text" placeholder="변경할 닉네임을 입력해주세요" ref={nicknameRef} onChange={onChangeInput} value={nickname} />
-          <div className="flex justify-between">
+          <label>
+            <input type="text" value={nickname} className="w-full" ref={nicknameRef} onChange={onChangeInput} placeholder="변경할 닉네임을 입력해주세요" />
+          </label>
+          <div className="mt-4 flex justify-between">
             <button type="button" onClick={onClickCloseModalHandler}>
               취소
             </button>
