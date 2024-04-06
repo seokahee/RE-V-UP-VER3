@@ -1,10 +1,10 @@
 "use client";
 
-import { updateMyMusicIds, getUserAndPlaylistData, getUserPlaylistMyData } from "@/shared/mypage/api";
+import { updateMyMusicIds, getUserAndPlaylistData, getUserPlaylistMyMusicInfoData } from "@/shared/mypage/api";
 import { useStore } from "@/shared/store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CheckboxItem from "./CheckboxItem";
 
 const MyInfo = () => {
@@ -21,7 +21,7 @@ const MyInfo = () => {
   });
 
   const { data: playlistMyData } = useQuery({
-    queryFn: () => getUserPlaylistMyData(data?.playlistMy?.[0].myMusicIds as string[]),
+    queryFn: () => getUserPlaylistMyMusicInfoData(data?.playlistMy?.[0].myMusicIds as string[]),
     queryKey: ["myMusicIds", data?.playlistMy],
     enabled: !!data?.playlistMy?.length
   });

@@ -28,7 +28,7 @@ export const getUserAndPlaylistData = async (userId: string): Promise<UserInfo> 
   }
 };
 
-export const getUserPlaylistMyData = async (myMusicIds: string[]): Promise<PlaylistMy[]> => {
+export const getUserPlaylistMyMusicInfoData = async (myMusicIds: string[]): Promise<PlaylistMy[]> => {
   try {
     const { data, error } = await supabase.from("musicInfo").select("*").in("musicId", myMusicIds);
 
