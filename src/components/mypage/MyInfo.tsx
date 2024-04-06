@@ -14,6 +14,7 @@ const MyInfo = () => {
   const [checkedList, setCheckedList] = useState<string[]>([]);
   const [isModal, setIsModal] = useState(false);
   const [nickname, setNickname] = useState("");
+  const [checkText, setCheckText] = useState("");
   const nicknameRef = useRef(null);
 
   const queryClient = useQueryClient();
@@ -68,10 +69,17 @@ const MyInfo = () => {
   const onClickCloseModalHandler = () => {
     setIsModal(false);
     setNickname("");
+    setCheckText("");
   };
 
   const onClickUpdateHandler = () => {
+    if (!nickname.trim()) {
+      setCheckText("닉네임을 입력해주세요");
+      return;
+    }
     updateNicknameMutation.mutate({ userId: userInfo.uid, nickname });
+    alert("닉네임 변경이 완료되었습니다.");
+    onClickCloseModalHandler();
   };
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -141,6 +149,7 @@ const MyInfo = () => {
           <label>
             <input type="text" value={nickname} className="w-full" ref={nicknameRef} onChange={onChangeInput} placeholder="변경할 닉네임을 입력해주세요" />
           </label>
+          <p className="h-5 text-sm text-red-500">{checkText}</p>
           <div className="mt-4 flex justify-between">
             <button type="button" onClick={onClickCloseModalHandler}>
               취소
