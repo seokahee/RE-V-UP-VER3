@@ -51,7 +51,7 @@ const MyInfo = () => {
   const updateUserThumbnailMutation = useMutation({
     mutationFn: uploadUserThumbnail,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["ddd"] });
+      queryClient.invalidateQueries({ queryKey: ["mypage"] });
     }
   });
 
@@ -67,7 +67,7 @@ const MyInfo = () => {
   const onClickDeleteHandler = () => {
     const myMusicIds = data?.playlistMy?.[0].myMusicIds as string[];
     const newData = myMusicIds.filter((el) => !checkedList.includes(el));
-    console.log(newData);
+
     deleteMutation.mutate({ userId: userInfo.uid, myMusicIds: newData });
     alert("삭제가 완료되었습니다.");
   };

@@ -122,6 +122,32 @@ export type Database = {
           },
         ];
       };
+      currentMusicList: {
+        Row: {
+          currentMusicId: string;
+          currentMusicList: string[] | null;
+          userId: string;
+        };
+        Insert: {
+          currentMusicId?: string;
+          currentMusicList?: string[] | null;
+          userId?: string;
+        };
+        Update: {
+          currentMusicId?: string;
+          currentMusicList?: string[] | null;
+          userId?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "public_currentMusicList_userId_fkey";
+            columns: ["userId"];
+            isOneToOne: false;
+            referencedRelation: "userInfo";
+            referencedColumns: ["userId"];
+          },
+        ];
+      };
       musicDislikes: {
         Row: {
           ballad: number | null;
@@ -289,6 +315,57 @@ export type Database = {
             referencedColumns: ["userId"];
           },
         ];
+      };
+      providerUserInfo: {
+        Row: {
+          email: string;
+          follower: string[];
+          following: string[];
+          likedPostsOpen: boolean;
+          mbtiOpen: boolean;
+          nickname: string | null;
+          password: string;
+          personalMusicOpen: boolean;
+          playlistOpen: boolean;
+          postsOpen: boolean;
+          userChar: Json;
+          userId: string;
+          userImage: string | null;
+          userType: number;
+        };
+        Insert: {
+          email?: string;
+          follower: string[];
+          following: string[];
+          likedPostsOpen?: boolean;
+          mbtiOpen?: boolean;
+          nickname?: string | null;
+          password?: string;
+          personalMusicOpen?: boolean;
+          playlistOpen?: boolean;
+          postsOpen?: boolean;
+          userChar: Json;
+          userId?: string;
+          userImage?: string | null;
+          userType?: number;
+        };
+        Update: {
+          email?: string;
+          follower?: string[];
+          following?: string[];
+          likedPostsOpen?: boolean;
+          mbtiOpen?: boolean;
+          nickname?: string | null;
+          password?: string;
+          personalMusicOpen?: boolean;
+          playlistOpen?: boolean;
+          postsOpen?: boolean;
+          userChar?: Json;
+          userId?: string;
+          userImage?: string | null;
+          userType?: number;
+        };
+        Relationships: [];
       };
       userInfo: {
         Row: {
