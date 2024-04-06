@@ -1,11 +1,12 @@
-import React from 'react'
+import MyInfo from "@/components/mypage/MyInfo";
+import React from "react";
 
 const MyPage = () => {
   return (
     <div>
-      MyPage
+      <MyInfo />
     </div>
-  )
-}
+  );
+};
 
-export default MyPage
+export default MyPage;
