@@ -1,6 +1,6 @@
 "use client";
 
-import RadarChart from "@/components/personal/Chart";
+import RadarChart from "@/components/personal/ResultChart";
 
 import { useState } from "react";
 

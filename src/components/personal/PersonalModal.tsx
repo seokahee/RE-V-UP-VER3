@@ -5,7 +5,8 @@ import { useState, useEffect } from "react";
 
 const PersonalModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const HOME_VISITED = localStorage.getItem("homeVisited");
+  const HOME_VISITED =
+    typeof window !== "undefined" ? localStorage.getItem("homeVisited") : null;
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);

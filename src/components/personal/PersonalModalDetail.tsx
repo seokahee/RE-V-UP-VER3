@@ -27,7 +27,7 @@ const PersonalModalDetail = ({ isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="fixed inset-0 bg-black opacity-50"></div>
-      <div className="fixed z-10 bg-white p-8 rounded-lg">
+      <div className="fixed z-10 bg-white p-8 h-72 rounded-lg">
         <div>
           {/* 테스트용 닫기버튼 */}
           <button className="absolute top-0 right-0 m-2" onClick={onClose}>
@@ -47,14 +47,27 @@ const PersonalModalDetail = ({ isOpen, onClose }) => {
           </button>
         </div>
         <div>
-          <p>퍼스널 뮤직 진단</p>
-          <span>당신의 음악 성향을 알아보고 맞춤형 음악을 추천해드립니다!</span>
+          <span>퍼스널 뮤직 진단</span>
+          <p>당신의 음악 성향을 알아보고</p>
+          <p>맞춤형 음악을 추천해드립니다!</p>
         </div>
-        <div>
-          <button onClick={onPersonalTestHandler}>테스트 하러가기</button>
-        </div>
-        <div>
-          <p onClick={onCloseModalHandler}>오늘은 그만보기</p>
+        <div className="flex justify-between">
+          <div>
+            <button
+              onClick={onPersonalTestHandler}
+              className="border border-rose-600 rounded-full"
+            >
+              검사하기
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={onCloseModalHandler}
+              className="border border-rose-600 rounded-full"
+            >
+              오늘은 그만보기
+            </button>
+          </div>
         </div>
       </div>
     </div>

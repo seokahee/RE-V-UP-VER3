@@ -22,7 +22,7 @@ const Header = () => {
       <nav>
         <SearchComponent />
       </nav>
-      <nav>
+      <nav className="flex justify-between">
         <Link href="/community">
           <svg
             xmlns="http://www.w3.org/2000/svg"
