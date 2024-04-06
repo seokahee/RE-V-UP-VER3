@@ -39,3 +39,15 @@ export const getUserPlaylistMyData = async (myMusicIds: string[]): Promise<Playl
     return [];
   }
 };
+
+export const updateMyMusicIds = async ({ userId, myMusicIds }: { userId: string; myMusicIds: string[] }) => {
+  try {
+    const { data, error } = await supabase
+      .from("playlistMy")
+      .update({ myMusicIds: [...myMusicIds] })
+      .eq("userId", userId)
+      .select();
+  } catch (error) {
+    console.error(error);
+  }
+};
