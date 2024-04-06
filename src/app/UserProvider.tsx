@@ -12,15 +12,12 @@ type Props = {
 const UserProvider = ({ children }: Props) => {
   const { setUserInfo } = useStore();
   const { data: userSessionInfo } = useSession();
-  console.log(userSessionInfo);
 
   useEffect(() => {
     const saveStoreUserUid = async () => {
       if (userSessionInfo && userSessionInfo?.user?.email) {
         const session = await supabase.auth.getUser();
-        console.log(session);
         const data = await getUserUid(userSessionInfo.user.email);
-        console.log(data);
         if (data) {
           const userId = data.userId;
           setUserInfo(userId);

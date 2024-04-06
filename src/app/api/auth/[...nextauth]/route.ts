@@ -61,17 +61,6 @@ const handler = NextAuth({
       },
     }),
   ],
-  // session: {
-  //   strategy: "jwt",
-  //   maxAge: 30 * 24 * 60 * 60,
-  // },
-  // callbacks: {
-  //   async session({ session, token }: any) {
-  //     session.user = token.user;
-  //     session.providerType = token.providerType;
-  //     return session;
-  //   },
-  // },
   pages: {
     signIn: "/",
   },
