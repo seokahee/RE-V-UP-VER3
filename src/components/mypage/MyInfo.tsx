@@ -7,6 +7,7 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import CheckboxItem from "./CheckboxItem";
 import Modal from "./Modal";
+import Link from "next/link";
 
 const MyInfo = () => {
   const { userInfo } = useStore();
@@ -130,7 +131,7 @@ const MyInfo = () => {
               {userImage && <Image src={userImage} width={80} height={80} alt={`${data?.nickname} 프로필 이미지`} priority={true} />}
             </figure>
           </div>
-          <button type="button">퍼스널 뮤직 진단 다시받기</button>
+          <Link href="/personal-music">퍼스널 뮤직 진단 다시받기</Link>
         </div>
         <span className="cursor-pointer" onClick={onClickViewModalHandler}>
           {data?.nickname} &gt;
