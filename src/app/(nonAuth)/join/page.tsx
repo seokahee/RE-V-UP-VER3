@@ -72,6 +72,7 @@ const Join = () => {
       email: userEmail,
       password: userPw,
       nickname: userNickname,
+      userType: 0,
     });
 
     reset();
