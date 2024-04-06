@@ -51,7 +51,7 @@ const MyInfo = () => {
   const updateUserThumbnailMutation = useMutation({
     mutationFn: uploadUserThumbnail,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["ddd"] });
+      queryClient.invalidateQueries({ queryKey: ["mypage"] });
     }
   });
 
