@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useStore } from "@/shared/store";
 import { getUserUid } from "@/shared/login/loginApi";
+import { supabase } from "@/shared/supabase/supabase";
 
 type Props = {
   children?: React.ReactNode;
@@ -15,8 +16,8 @@ const UserProvider = ({ children }: Props) => {
   useEffect(() => {
     const saveStoreUserUid = async () => {
       if (userSessionInfo && userSessionInfo?.user?.email) {
+        const session = await supabase.auth.getUser();
         const data = await getUserUid(userSessionInfo.user.email);
-
         if (data) {
           const userId = data.userId;
           setUserInfo(userId);
