@@ -1,6 +1,7 @@
 "use client";
 import MusicSearchModal from "@/components/search/MusicSearch";
 import SearchForm from "@/components/search/SearchForm";
+import { getCommunityList } from "@/shared/community/api";
 import { supabase } from "@/shared/supabase/supabase";
 import { CommunityType } from "@/types/types";
 import { onDateHandler } from "@/util/util";
@@ -11,27 +12,8 @@ const Community = () => {
   const [isSort, setIsSort] = useState(true);
 
   const { data, refetch } = useQuery({
-    queryKey: ["communityList"],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from("community")
-        .select(
-          "boardId, boardTitle, likeList, date, userId, userInfo(nickname, userImage), musicInfo(thumbnail)"
-        )
-        .order(isSort ? "date" : "likeList", { ascending: false });
-
-      if (data) {
-        const communityImage = data.map((item) => {
-          const imgData = supabase.storage
-            .from("musicThumbnail")
-            .getPublicUrl("Coffee Shop Romance.png");
-          if (imgData) {
-            return { ...item, thumbnail: imgData.data.publicUrl };
-          }
-        });
-        return communityImage;
-      }
-    },
+    queryFn: () => getCommunityList(isSort),
+    queryKey: ["getCommunityList"],
   });
 
   useEffect(() => {

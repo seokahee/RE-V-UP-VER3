@@ -1,7 +1,7 @@
 "use client";
 import { useStore } from "@/shared/store";
 import { supabase } from "@/shared/supabase/supabase";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
@@ -15,7 +15,7 @@ const CurrentMusicPlayer = () => {
   console.log("uid", uid);
 
   useEffect(() => {
-    const getMusicData = async () => {
+    const getCurrentMusicList = async () => {
       const { data: currentMusic } = await supabase
         .from("playlistCurrent")
         .select("currentId,currentMusicIds,userInfo(userId)")
@@ -36,7 +36,7 @@ const CurrentMusicPlayer = () => {
         }
       }
     };
-    getMusicData();
+    getCurrentMusicList();
   }, [uid]);
 
   const onPreviousHandler = () => {
@@ -64,17 +64,62 @@ const CurrentMusicPlayer = () => {
     });
   };
 
-  const onDeleteCurrentMusicHandler = () => {
-    if (window.confirm("현재 재생 목록에서 선택 항목을 삭제하시겠습니까?"))
-      checkedList.forEach(async (musicId: any) => {
-        const { error } = await supabase
-          .from("playlistCurrent")
-          .delete()
-          .eq("id", musicId);
-        if (!error) {
-          alert("재생 목록이 삭제되었습니다.");
+  const onDeleteCurrentMusicHandler = async () => {
+    if (window.confirm("현재 재생 목록에서 선택 항목을 삭제하시겠습니까?")) {
+      const currentMusicData = currentMusic
+        .filter((music: any) => !checkedList.includes(music.musicId))
+        .map((music: any) => music.musicId);
+
+      const { error } = await supabase
+        .from("playlistCurrent")
+        .update({ currentMusicIds: currentMusicData })
+        .eq("userId", uid);
+      if (!error) {
+        alert("재생 목록이 삭제되었습니다.");
+        setCheckedList([]);
+      }
+    }
+  };
+
+  const onInsertMyPlayListHandler = async () => {
+    if (window.confirm("선택한 곡을 마이플레이 리스트에 추가하시겠습니까?")) {
+      const { data: playlistMy } = await supabase
+        .from("playlistMy")
+        .select("myMusicIds")
+        .eq("userId", uid);
+
+      console.log("playlistMy", playlistMy);
+
+      if (playlistMy && playlistMy.length > 0) {
+        const myMusicData = playlistMy.flatMap((item: any) => item.myMusicIds);
+
+        const checkedMyMusicData = checkedList.some((musicId: string) =>
+          myMusicData.includes(musicId)
+        );
+
+        if (checkedMyMusicData) {
+          alert("마이플레이리스트에 이미 존재하는 노래입니다.");
+        } else {
+          const { data: myPlayList } = await supabase
+            .from("playlistMy")
+            .insert([{ userId: uid, myMusicIds: checkedList }])
+            .select();
+          if (myPlayList) {
+            alert("마이플레이리스트에 추가되었습니다");
+            setCheckedList([]);
+          }
         }
-      });
+      } else {
+        const { data: myPlayList } = await supabase
+          .from("playlistMy")
+          .insert([{ userId: uid, myMusicIds: checkedList }])
+          .select();
+        if (myPlayList) {
+          alert("마이플레이리스트에 추가되었습니다");
+          setCheckedList([]);
+        }
+      }
+    }
   };
 
   return (
@@ -113,6 +158,7 @@ const CurrentMusicPlayer = () => {
                     }}
                     className="m-3"
                   />
+
                   <div
                     onClick={() => {
                       setCurrentTrackIndex(index);
@@ -126,6 +172,7 @@ const CurrentMusicPlayer = () => {
             <button className="m-3" onClick={onDeleteCurrentMusicHandler}>
               선택 삭제
             </button>
+            <button onClick={onInsertMyPlayListHandler}>마플리 추가</button>
           </div>
         </div>
       )}

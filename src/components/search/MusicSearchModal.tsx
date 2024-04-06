@@ -1,5 +1,7 @@
 import useInput from "@/hooks/useInput";
+import { getSearchedMusicData } from "@/shared/search/api";
 import { supabase } from "@/shared/supabase/supabase";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { FormEvent, useRef, useState } from "react";
 
 const MusicSearchModal = ({
@@ -54,7 +56,7 @@ const MusicSearchModal = ({
           </button>
           <button onClick={() => setIsModal(false)}>닫기</button>
         </form>
-        {musicList.map((item: any) => {
+        {musicList?.map((item: any) => {
           return (
             <div key={item.musicId} className="flex flex-col gap-2">
               <div>
