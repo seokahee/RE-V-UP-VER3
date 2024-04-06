@@ -80,3 +80,38 @@ export const uploadUserThumbnail = async ({ userId, file }: { userId: string; fi
     console.log(error);
   }
 };
+
+export const getMyWriteListData = async (userId: string, start: number, end: number) => {
+  try {
+    const { data, error } = await supabase
+      .from("community")
+      .select("*, musicInfo(musicId, thumbnail, musicTitle), userInfo(nickname, userImage), comment(commentId)")
+      .eq("userId", userId)
+      .range(start, end);
+
+    if (error) {
+      console.error(error);
+      return [];
+    }
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getMyWriteListCount = async (userId: string): Promise<number> => {
+  try {
+    const { data, error } = await supabase.from("community").select("boardId").eq("userId", userId);
+
+    if (error) {
+      console.error(error);
+      return 0;
+    }
+
+    return data?.length;
+  } catch (error) {
+    console.log(error);
+    return 0;
+  }
+};
