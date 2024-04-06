@@ -26,7 +26,7 @@ const PersonalMusicPage = () => {
     },
   });
 
-  //퍼스널 뮤직진단 결과
+  //퍼스널 뮤직진단 결과 추가
   const onUserCharHandler = () => {
     const personalUser: UserChar = {
       age: 27,
