@@ -1,6 +1,5 @@
 import { PlaylistMy, UserInfo } from "@/types/mypage/types";
 import { supabase } from "../supabase/supabase";
-import { randomUUID } from "crypto";
 
 export const getUserAndPlaylistData = async (userId: string): Promise<UserInfo> => {
   try {
