@@ -1,8 +1,7 @@
 "use client";
 
-import RadarChart from "@/components/personal/ResultChart";
-
 import { useState } from "react";
+import PersonalTestResult from "./PersonalTestResult";
 
 const PersonalTest = () => {
   const [page, setPage] = useState(0);
@@ -69,7 +68,7 @@ const PersonalTest = () => {
     }
     setPage(page + 1);
     if (idx + 1 === questionList.length) {
-      console.log("결과보기");
+      alert("결과");
     }
   };
 
@@ -102,15 +101,7 @@ const PersonalTest = () => {
           </div>
         </div>
       ) : (
-        <div>
-          결과페이지
-          <div>당신의 음악취향은 입니다.</div>
-          <div>
-            <RadarChart />
-          </div>
-          <button>마이플레이리스트에 담기</button>
-          <button>현재 재생목록에 담기</button>
-        </div>
+        <PersonalTestResult />
       )}
     </div>
   );

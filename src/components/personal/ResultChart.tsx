@@ -1,10 +1,14 @@
 "user client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import Chart from "chart.js/auto";
+import React from "react";
 
-const RadarChart = () => {
+const ResultChart = () => {
   const chartRef = useRef(null);
+  const [chartData, setChartData] = useState([]);
+  const [songData, setSongData] = useState([]);
+
   useEffect(() => {
     if (chartRef.current) {
       if (chartRef.current.chart) {
@@ -12,6 +16,10 @@ const RadarChart = () => {
       }
       //가져오기 콘텍스트, 2D로 할당
       const context = chartRef.current.getContext("2d");
+
+      const label = chartData.map((items) => items.result);
+      console.log("label", label);
+      const data = chartData.map((items) => items.result);
       //새 차트 생성
       const newChart = new Chart(context, {
         type: "radar",
@@ -36,11 +44,18 @@ const RadarChart = () => {
         },
         options: {
           responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: "퍼스널 뮤직 진단 결과",
+            },
+          },
         },
       });
       chartRef.current.chart = newChart;
     }
   }, []);
+
   return (
     <div>
       <canvas ref={chartRef} />
@@ -48,4 +63,4 @@ const RadarChart = () => {
   );
 };
 
-export default RadarChart;
+export default ResultChart;
