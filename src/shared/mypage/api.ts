@@ -114,3 +114,17 @@ export const getMyWriteListCount = async (userId: string): Promise<number> => {
     return 0;
   }
 };
+
+export const getFollowData = async (ids: string[]) => {
+  try {
+    const { data, error } = await supabase.from("userInfo").select("userId, nickname, userImage").in("userId", ids);
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};

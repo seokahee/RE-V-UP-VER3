@@ -9,6 +9,7 @@ import CheckboxItem from "./CheckboxItem";
 import Modal from "./Modal";
 import Link from "next/link";
 import TabMenu from "./TabMenu";
+import FollowerList from "./FollowList";
 
 const MyInfo = () => {
   const { userInfo } = useStore();
@@ -21,11 +22,6 @@ const MyInfo = () => {
   const [nickname, setNickname] = useState("");
   const [checkText, setCheckText] = useState("");
   const nicknameRef = useRef(null);
-
-  const tabArr = [
-    { id: 0, title: "팔로잉", content: <div>팔로잉 리스트 영역입니당</div> },
-    { id: 1, title: "팔로워", content: <div>팔로워 리스트 영역입니당</div> }
-  ];
 
   const queryClient = useQueryClient();
 
@@ -122,6 +118,11 @@ const MyInfo = () => {
     setIsFollowModal(true);
   };
 
+  const tabArr = [
+    { id: 0, title: "팔로잉", content: <FollowerList data={data?.following!} dataKey={"following"} /> },
+    { id: 1, title: "팔로워", content: <FollowerList data={data?.follower!} dataKey={"follower"} /> }
+  ];
+
   useEffect(() => {
     if (data) {
       setUserImage(data?.userImage);
@@ -152,7 +153,7 @@ const MyInfo = () => {
           {data?.nickname} &gt;
         </span>
         <p onClick={onClickViewFollowModalHandler} className="cursor-pointer">
-          팔로우 {data?.following.length} 팔로워 {data?.follower.length}
+          팔로잉 {data?.following.length} 팔로워 {data?.follower.length}
         </p>
         <p>
           {data?.userChar?.mbti}
