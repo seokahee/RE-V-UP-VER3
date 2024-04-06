@@ -1,5 +1,6 @@
 import { PlaylistMy, UserInfo } from "@/types/mypage/types";
 import { supabase } from "../supabase/supabase";
+import { randomUUID } from "crypto";
 
 export const getUserAndPlaylistData = async (userId: string): Promise<UserInfo> => {
   try {
@@ -51,10 +52,31 @@ export const updateMyMusicIds = async ({ userId, myMusicIds }: { userId: string;
   }
 };
 
-export const updateNicname = async ({ userId, nickname }: { userId: string; nickname: string }) => {
+export const updateNickname = async ({ userId, nickname }: { userId: string; nickname: string }) => {
   try {
     const { data, error } = await supabase.from("userInfo").update({ nickname }).eq("userId", userId).select();
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const uploadUserThumbnail = async ({ userId, file }: { userId: string; file: File }) => {
+  try {
+    const { data, error } = await supabase.storage.from("userThumbnail").upload(`${userId}/${file.name}`, file);
+
+    if (error) {
+      console.log("파일이 업로드 되지 않습니다.", error);
+      return;
+    }
+    const { data: urlData } = await supabase.storage.from("userThumbnail").getPublicUrl(data.path);
+
+    const { data: url, error: imageError } = await supabase.from("userInfo").update({ userImage: urlData.publicUrl }).eq("userId", userId).select("userImage");
+    if (error) {
+      console.error(imageError);
+      return;
+    }
+    return url;
+  } catch (error) {
+    console.log(error);
   }
 };

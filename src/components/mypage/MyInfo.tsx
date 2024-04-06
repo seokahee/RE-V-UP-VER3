@@ -1,10 +1,10 @@
 "use client";
 
-import { updateMyMusicIds, getUserAndPlaylistData, getUserPlaylistMyMusicInfoData, updateNicname } from "@/shared/mypage/api";
+import { updateMyMusicIds, getUserAndPlaylistData, getUserPlaylistMyMusicInfoData, updateNickname, uploadUserThumbnail } from "@/shared/mypage/api";
 import { useStore } from "@/shared/store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CheckboxItem from "./CheckboxItem";
 import Modal from "./Modal";
 
@@ -12,6 +12,8 @@ const MyInfo = () => {
   const { userInfo } = useStore();
 
   const [checkedList, setCheckedList] = useState<string[]>([]);
+  const [userImage, setUserImage] = useState("");
+
   const [isModal, setIsModal] = useState(false);
   const [nickname, setNickname] = useState("");
   const [checkText, setCheckText] = useState("");
@@ -39,9 +41,16 @@ const MyInfo = () => {
   });
 
   const updateNicknameMutation = useMutation({
-    mutationFn: updateNicname,
+    mutationFn: updateNickname,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["mypage"] });
+    }
+  });
+
+  const updateUserThumbnailMutation = useMutation({
+    mutationFn: uploadUserThumbnail,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["ddd"] });
     }
   });
 
@@ -87,6 +96,22 @@ const MyInfo = () => {
     setNickname(nickname);
   };
 
+  const selectFileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files![0] as File;
+    console.log(file);
+    if (window.confirm("선택한 이미지로 업로드를 진행할까요?")) {
+      const data = await updateUserThumbnailMutation.mutateAsync({ userId: userInfo.uid, file });
+      setUserImage(data?.[0].userImage as string);
+      alert("업로드 완료!");
+    }
+  };
+
+  useEffect(() => {
+    if (data) {
+      setUserImage(data?.userImage);
+    }
+  }, [data]);
+
   if (isError) {
     return <>에러발생</>;
   }
@@ -99,9 +124,12 @@ const MyInfo = () => {
     <section className="p-[40px]">
       <div>
         <div className="flex justify-between">
-          <figure className="w-[80px] h-[80px] flex overflow-hidden rounded-full bg-slate-200">
-            {data?.userImage && <Image src={data?.userImage} width={80} height={80} alt={`${data?.nickname} 프로필 이미지`} />}
-          </figure>
+          <div>
+            <input type="file" onChange={selectFileHandler} accept="image/*" />
+            <figure className="w-[80px] h-[80px] flex overflow-hidden rounded-full bg-slate-200">
+              {userImage && <Image src={userImage} width={80} height={80} alt={`${data?.nickname} 프로필 이미지`} priority={true} />}
+            </figure>
+          </div>
           <button type="button">퍼스널 뮤직 진단 다시받기</button>
         </div>
         <span className="cursor-pointer" onClick={onClickViewModalHandler}>
