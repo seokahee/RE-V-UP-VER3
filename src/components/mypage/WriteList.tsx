@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
+import Pagination from "./Pagination";
 
 const WriteList = () => {
   const { userInfo } = useStore();
@@ -57,20 +58,7 @@ const WriteList = () => {
           );
         })}
       </ul>
-      <div className="text-center">
-        {currentPage !== 1 && <button onClick={prevPage}>prev</button>}
-        {totalPages &&
-          Array(totalPages)
-            .fill(0)
-            .map((_, idx) => {
-              return (
-                <button key={idx + 1} className={`${idx + 1 === currentPage && "text-red-600"}`} onClick={() => setCurrentPage(idx + 1)}>
-                  {idx + 1}
-                </button>
-              );
-            })}
-        {currentPage !== totalPages && <button onClick={nextPage}>next</button>}
-      </div>
+      <Pagination currentPage={currentPage} totalPages={totalPages} nextPage={nextPage} prevPage={prevPage} setCurrentPage={setCurrentPage} />
     </section>
   );
 };
