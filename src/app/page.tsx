@@ -4,6 +4,7 @@ import TopLikedBoard from "@/components/main/TopLikedBoard";
 import MusicPlayer from "@/components/player/MusicPlayer";
 import React from "react";
 import UserProvider from "./UserProvider";
+import Footer from "@/components/Footer";
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
         <MainBanner />
         <TopLikedBoard />
         <MusicPlayer />
+        <Footer />
       </UserProvider>
     </>
   );
