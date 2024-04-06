@@ -8,6 +8,7 @@ import React, { useEffect, useRef, useState } from "react";
 import CheckboxItem from "./CheckboxItem";
 import Modal from "./Modal";
 import Link from "next/link";
+import TabMenu from "./TabMenu";
 
 const MyInfo = () => {
   const { userInfo } = useStore();
@@ -16,9 +17,15 @@ const MyInfo = () => {
   const [userImage, setUserImage] = useState("");
 
   const [isModal, setIsModal] = useState(false);
+  const [isFollowModal, setIsFollowModal] = useState(false);
   const [nickname, setNickname] = useState("");
   const [checkText, setCheckText] = useState("");
   const nicknameRef = useRef(null);
+
+  const tabArr = [
+    { id: 0, title: "팔로잉", content: <div>팔로잉 리스트 영역입니당</div> },
+    { id: 1, title: "팔로워", content: <div>팔로워 리스트 영역입니당</div> }
+  ];
 
   const queryClient = useQueryClient();
 
@@ -107,6 +114,18 @@ const MyInfo = () => {
     }
   };
 
+  const onClickCloseFollowModalHandler = () => {
+    setIsFollowModal(false);
+  };
+
+  const onClickViewFollowModalHandler = () => {
+    setIsFollowModal(true);
+  };
+
+  // const onClickTab = (idx: number) => {
+  //   setIsActive(idx);
+  // };
+
   useEffect(() => {
     if (data) {
       setUserImage(data?.userImage);
@@ -136,7 +155,7 @@ const MyInfo = () => {
         <span className="cursor-pointer" onClick={onClickViewModalHandler}>
           {data?.nickname} &gt;
         </span>
-        <p>
+        <p onClick={onClickViewFollowModalHandler} className="cursor-pointer">
           팔로우 {data?.following.length} 팔로워 {data?.follower.length}
         </p>
         <p>
@@ -185,6 +204,17 @@ const MyInfo = () => {
             </button>
             <button type="button" onClick={onClickUpdateHandler}>
               변경
+            </button>
+          </div>
+        </Modal>
+      )}
+
+      {isFollowModal && (
+        <Modal title={"팔로잉/팔로워"} onClick={onClickCloseFollowModalHandler}>
+          <TabMenu data={tabArr} />
+          <div className="mt-4 flex justify-between">
+            <button type="button" onClick={onClickCloseFollowModalHandler}>
+              닫기
             </button>
           </div>
         </Modal>
