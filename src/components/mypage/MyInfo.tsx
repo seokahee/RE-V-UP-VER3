@@ -1,16 +1,20 @@
 "use client";
 
-import { updateMyMusicIds, getUserAndPlaylistData, getUserPlaylistMyMusicInfoData } from "@/shared/mypage/api";
+import { updateMyMusicIds, getUserAndPlaylistData, getUserPlaylistMyMusicInfoData, updateNicname } from "@/shared/mypage/api";
 import { useStore } from "@/shared/store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import CheckboxItem from "./CheckboxItem";
+import Modal from "./Modal";
 
 const MyInfo = () => {
   const { userInfo } = useStore();
 
   const [checkedList, setCheckedList] = useState<string[]>([]);
+  const [isModal, setIsModal] = useState(false);
+  const [nickname, setNickname] = useState("");
+  const nicknameRef = useRef(null);
 
   const queryClient = useQueryClient();
 
@@ -33,6 +37,13 @@ const MyInfo = () => {
     }
   });
 
+  const updateNicknameMutation = useMutation({
+    mutationFn: updateNicname,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["mypage"] });
+    }
+  });
+
   const onChangeCheckMusicHandler = (checked: boolean, id: string) => {
     if (checked) {
       setCheckedList((prev) => [...prev, id]);
@@ -48,6 +59,24 @@ const MyInfo = () => {
     console.log(newData);
     deleteMutation.mutate({ userId: userInfo.uid, myMusicIds: newData });
     alert("삭제가 완료되었습니다.");
+  };
+
+  const onClickViewModalHandler = () => {
+    setIsModal(true);
+  };
+
+  const onClickCloseModalHandler = () => {
+    setIsModal(false);
+    setNickname("");
+  };
+
+  const onClickUpdateHandler = () => {
+    updateNicknameMutation.mutate({ userId: userInfo.uid, nickname });
+  };
+
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nickname = e.target.value;
+    setNickname(nickname);
   };
 
   if (isError) {
@@ -67,7 +96,9 @@ const MyInfo = () => {
           </figure>
           <button type="button">퍼스널 뮤직 진단 다시받기</button>
         </div>
-        {data?.nickname}
+        <span className="cursor-pointer" onClick={onClickViewModalHandler}>
+          {data?.nickname} &gt;
+        </span>
         <p>
           팔로우 {data?.following.length} 팔로워 {data?.follower.length}
         </p>
@@ -105,6 +136,19 @@ const MyInfo = () => {
           })}
         </ul>
       </div>
+      {isModal && (
+        <Modal title={"닉네임 변경"} onClick={onClickCloseModalHandler}>
+          <input type="text" placeholder="변경할 닉네임을 입력해주세요" ref={nicknameRef} onChange={onChangeInput} value={nickname} />
+          <div className="flex justify-between">
+            <button type="button" onClick={onClickCloseModalHandler}>
+              취소
+            </button>
+            <button type="button" onClick={onClickUpdateHandler}>
+              변경
+            </button>
+          </div>
+        </Modal>
+      )}
     </section>
   );
 };

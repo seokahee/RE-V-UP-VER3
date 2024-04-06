@@ -50,3 +50,11 @@ export const updateMyMusicIds = async ({ userId, myMusicIds }: { userId: string;
     console.error(error);
   }
 };
+
+export const updateNicname = async ({ userId, nickname }: { userId: string; nickname: string }) => {
+  try {
+    const { data, error } = await supabase.from("userInfo").update({ nickname }).eq("userId", userId).select();
+  } catch (error) {
+    console.error(error);
+  }
+};
