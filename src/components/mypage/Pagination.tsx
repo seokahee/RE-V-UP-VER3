@@ -17,7 +17,7 @@ const Pagination = ({ currentPage, totalPages, prevPage, nextPage, setCurrentPag
           .fill(0)
           .map((_, idx) => {
             return (
-              <button key={idx + 1} className={`${idx + 1 === currentPage && "text-red-600"}`} onClick={() => setCurrentPage(idx + 1)}>
+              <button key={idx + 1} className={`px-1 mx-1 ${idx + 1 === currentPage && "text-red-600"}`} onClick={() => setCurrentPage(idx + 1)}>
                 {idx + 1}
               </button>
             );
