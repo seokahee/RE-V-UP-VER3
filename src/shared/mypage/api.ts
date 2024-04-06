@@ -20,7 +20,7 @@ export const getUserAndPlaylistData = async (userId: string): Promise<UserInfo> 
         console.error("Error inserting data:", insertError.message);
       }
     }
-    console.log(data, "data");
+
     return data as UserInfo;
   } catch (error) {
     console.error(error);
@@ -32,7 +32,6 @@ export const getUserPlaylistMyData = async (myMusicIds: string[]): Promise<Playl
   try {
     const { data, error } = await supabase.from("musicInfo").select("*").in("musicId", myMusicIds);
 
-    console.log(data, "data");
     return data as PlaylistMy[];
   } catch (error) {
     console.error(error);

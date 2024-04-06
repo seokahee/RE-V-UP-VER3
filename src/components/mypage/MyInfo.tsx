@@ -50,10 +50,6 @@ const MyInfo = () => {
     alert("삭제가 완료되었습니다.");
   };
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   if (isError) {
     return <>에러발생</>;
   }
