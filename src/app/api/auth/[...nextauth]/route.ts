@@ -61,6 +61,15 @@ const handler = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    session: ({ session, token }) => ({
+      ...session,
+      user: {
+        ...session.user,
+        uid: token.sub,
+      },
+    }),
+  },
   pages: {
     signIn: "/",
   },
