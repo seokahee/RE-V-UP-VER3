@@ -1,5 +1,3 @@
-import { Tables } from "./supabase";
-
 export type CommunityType = {
   boardId: string;
   boardTitle: string;

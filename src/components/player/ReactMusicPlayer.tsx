@@ -3,9 +3,10 @@ import { supabase } from "@/shared/supabase/supabase";
 import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 
-const MusicPlayer = () => {
+const ReactMusicPlayer = () => {
   const [musicState, setMusicState] = useState<any>("");
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0);
+
   useEffect(() => {
     const getMusicData = async () => {
       const { data } = await supabase
@@ -17,7 +18,6 @@ const MusicPlayer = () => {
     };
     getMusicData();
   }, []);
-  // console.log("musicState", musicState[0].musicSource);
 
   const nextTrack = () => {
     setCurrentTrackIndex((prev) => (prev + 1) % musicState.length);
@@ -40,4 +40,4 @@ const MusicPlayer = () => {
   );
 };
 
-export default MusicPlayer;
+export default ReactMusicPlayer;

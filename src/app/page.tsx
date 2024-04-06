@@ -1,10 +1,9 @@
+import Footer from "@/components/Footer";
 import GenreMusicList from "@/components/main/GenreMusicList";
 import MainBanner from "@/components/main/MainBanner";
 import TopLikedBoard from "@/components/main/TopLikedBoard";
-import MusicPlayer from "@/components/player/MusicPlayer";
-import React from "react";
+import CurrentMusicPlayer from "@/components/player/CurrentMusicPlayer";
 import UserProvider from "./UserProvider";
-import Footer from "@/components/Footer";
 
 const Home = () => {
   return (
@@ -13,7 +12,7 @@ const Home = () => {
         <GenreMusicList />
         <MainBanner />
         <TopLikedBoard />
-        <MusicPlayer />
+        <CurrentMusicPlayer />
         <Footer />
       </UserProvider>
     </>

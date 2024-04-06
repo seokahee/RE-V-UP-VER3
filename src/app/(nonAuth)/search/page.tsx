@@ -39,7 +39,6 @@ const Search = () => {
 
   return (
     <div>
-      <SearchComponent />
       <div>
         {selectedTabs === "musicInfo" && musicInfoResult && (
           <div>
