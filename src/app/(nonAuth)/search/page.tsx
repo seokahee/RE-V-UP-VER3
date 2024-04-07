@@ -1,48 +1,49 @@
 "use client";
-import SearchComponent from "@/components/search/SearchForm";
-import SearchedCommunityData, {
-  CommunityDataType,
-  getCommunityData,
-} from "@/components/search/SearchedCommunityData";
-import SearchedMusicData, {
-  MusicInfoDataType,
-  getMusicInfoData,
-} from "@/components/search/SearchedMusicData";
+import SearchedCommunityData from "@/components/search/SearchedCommunityData";
+import SearchedMusicData from "@/components/search/SearchedMusicData";
+import {
+  getSearchedCommunityData,
+  getSearchedMusicData,
+} from "@/shared/search/api";
 import { useSearchedStore } from "@/shared/store/searchStore";
 import { CommunityType } from "@/types/types";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 const Search = () => {
   const { searchedKeyword } = useSearchedStore();
   const { keyword, selectedTabs } = searchedKeyword;
-  const [musicInfoResult, setMusicInfoResult] = useState<MusicInfoDataType>();
-  const [communityResult, setCommunityResult] = useState<CommunityDataType>();
+  const router = useRouter();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (selectedTabs === "musicInfo") {
-        const { data } = await getMusicInfoData(keyword);
-        setMusicInfoResult(data);
-      }
-      if (selectedTabs === "community") {
-        const { data } = await getCommunityData(keyword);
-        setCommunityResult(data);
-      }
-    };
+  const { data: musicResult } = useQuery({
+    queryFn: () => getSearchedMusicData(keyword, selectedTabs),
+    queryKey: ["getSearchedMusicData"],
+  });
 
-    fetchData();
-  }, [keyword, selectedTabs]);
+  const { data: communityResult } = useQuery({
+    queryFn: () => getSearchedCommunityData(keyword, selectedTabs),
+    queryKey: ["getSearchedCommunityData"],
+  });
 
   const filteredData = communityResult?.filter((item) => {
     return item && item.userInfo && item.musicInfo;
   }) as CommunityType[];
 
+  console.log("musicResult", musicResult);
+
+  if (
+    (filteredData && filteredData.length === 0) ||
+    (musicResult && musicResult.length === 0)
+  ) {
+    alert("검색 결과가 없습니다");
+    router.push("/");
+  }
   return (
     <div>
       <div>
-        {selectedTabs === "musicInfo" && musicInfoResult && (
+        {selectedTabs === "musicInfo" && musicResult && (
           <div>
-            {musicInfoResult.map((item) => (
+            {musicResult.map((item) => (
               <SearchedMusicData key={item.musicId} item={item} />
             ))}
           </div>
@@ -60,3 +61,5 @@ const Search = () => {
 };
 
 export default Search;
+
+// 검색 결과가 없을 때 서치페이지를 거치치 않는 방법

@@ -2,7 +2,6 @@
 import MusicSearchModal from "@/components/search/MusicSearch";
 import SearchForm from "@/components/search/SearchForm";
 import { getCommunityList } from "@/shared/community/api";
-import { supabase } from "@/shared/supabase/supabase";
 import { CommunityType } from "@/types/types";
 import { onDateHandler } from "@/util/util";
 import { useQuery } from "@tanstack/react-query";

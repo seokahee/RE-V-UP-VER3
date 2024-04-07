@@ -1,18 +1,6 @@
 "use client";
-import { supabase } from "@/shared/supabase/supabase";
 import { MusicInfoType } from "@/types/types";
 
-export const getMusicInfoData = async (keyword: string) => {
-  const { data } = await supabase
-    .from("musicInfo")
-    .select("musicId, musicTitle, artist, thumbnail, release, musicSource")
-    .or(`musicTitle.ilike.%${keyword}%,artist.ilike.%${keyword}%`)
-    .order("musicTitle", { ascending: false });
-  return { data };
-};
-export type MusicInfoDataType = Awaited<
-  ReturnType<typeof getMusicInfoData>
->["data"];
 const SearchedMusicData = ({ item }: { item: MusicInfoType }) => {
   return (
     <div key={item.musicId} className="flex items-center">

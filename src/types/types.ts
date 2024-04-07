@@ -20,3 +20,11 @@ export type MusicInfoType = {
   release: string;
   thumbnail: string;
 };
+
+export type playlistCurrentType = {
+  currentId: string;
+  currentMusicIds: string[];
+  userInfo: {
+    userId: string;
+  };
+};

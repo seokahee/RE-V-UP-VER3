@@ -1,7 +1,6 @@
 import useInput from "@/hooks/useInput";
-import { getSearchedMusicData } from "@/shared/search/api";
-import { supabase } from "@/shared/supabase/supabase";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { modalMusicSearchData } from "@/shared/search/api";
+import { MusicInfoType } from "@/types/types";
 import React, { FormEvent, useRef, useState } from "react";
 
 const MusicSearchModal = ({
@@ -10,7 +9,7 @@ const MusicSearchModal = ({
   isModal: boolean;
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [musicList, setMusicList] = useState<any>([]);
+  const [musicList, setMusicList] = useState<MusicInfoType[]>([]);
   const { form: keywordInput, onChange } = useInput({
     keyword: "",
   });
@@ -26,14 +25,12 @@ const MusicSearchModal = ({
     }
 
     const getMusicData = async (keyword: string) => {
-      const { data } = await supabase
-        .from("musicInfo")
-        .select("musicId, musicTitle, artist, thumbnail, release, musicSource")
-        .or(`musicTitle.ilike.%${keyword}%,artist.ilike.%${keyword}%`)
-        .order("musicTitle", { ascending: false });
+      const data = await modalMusicSearchData(keyword);
 
-      if (data) {
+      if (data && data?.length > 0) {
         setMusicList(data);
+      } else {
+        alert("검색 결과가 없습니다");
       }
     };
     getMusicData(keyword);
@@ -56,7 +53,7 @@ const MusicSearchModal = ({
           </button>
           <button onClick={() => setIsModal(false)}>닫기</button>
         </form>
-        {musicList?.map((item: any) => {
+        {musicList.map((item) => {
           return (
             <div key={item.musicId} className="flex flex-col gap-2">
               <div>

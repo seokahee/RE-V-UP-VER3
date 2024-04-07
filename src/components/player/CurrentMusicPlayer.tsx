@@ -1,6 +1,8 @@
 "use client";
+import { getCurrentMusicList } from "@/shared/musicPlayer/api";
 import { useStore } from "@/shared/store";
 import { supabase } from "@/shared/supabase/supabase";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
@@ -8,11 +10,15 @@ import "react-h5-audio-player/lib/styles.css";
 const CurrentMusicPlayer = () => {
   const [currentMusic, setCurrentMusic] = useState<any>();
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0);
-  const [checkedList, setCheckedList] = useState<any>([]);
+  const [checkedList, setCheckedList] = useState<string[]>([]);
   const { userInfo } = useStore();
   const { uid } = userInfo;
 
   console.log("uid", uid);
+  const { data } = useQuery({
+    queryFn: () => getCurrentMusicList(uid),
+    queryKey: ["getCurrentMusicList"],
+  });
 
   useEffect(() => {
     const getCurrentMusicList = async () => {
@@ -33,6 +39,8 @@ const CurrentMusicPlayer = () => {
             .in("musicId", musicIds)
             .order("musicTitle", { ascending: false });
           setCurrentMusic(musicInfo);
+        } else {
+          setCurrentMusic([]);
         }
       }
     };
@@ -84,29 +92,34 @@ const CurrentMusicPlayer = () => {
   const onInsertMyPlayListHandler = async () => {
     if (window.confirm("선택한 곡을 마이플레이 리스트에 추가하시겠습니까?")) {
       const { data: playlistMy } = await supabase
+
+        // 마이플레이 리스트 아이디 인덱스 가져오기
         .from("playlistMy")
         .select("myMusicIds")
         .eq("userId", uid);
 
-      console.log("playlistMy", playlistMy);
-
+      // 마플리가 있으면 마플리 인덱스에 체크된아이디와 같은게 있는지 확인
       if (playlistMy && playlistMy.length > 0) {
         const myMusicData = playlistMy.flatMap((item: any) => item.myMusicIds);
-
         const checkedMyMusicData = checkedList.some((musicId: string) =>
           myMusicData.includes(musicId)
         );
 
         if (checkedMyMusicData) {
           alert("마이플레이리스트에 이미 존재하는 노래입니다.");
+          setCheckedList([]);
         } else {
+          // 마플리에 아이디가 없으면 기존 마플리 배열에 새 배열의 인덱스를 넣어줌
+          const updatedMyMusicIds = [...myMusicData, ...checkedList];
           const { data: myPlayList } = await supabase
             .from("playlistMy")
-            .insert([{ userId: uid, myMusicIds: checkedList }])
+            .update({ myMusicIds: updatedMyMusicIds })
+            .eq("userId", uid)
             .select();
           if (myPlayList) {
             alert("마이플레이리스트에 추가되었습니다");
             setCheckedList([]);
+            console.log("AddmyPlayList", myPlayList);
           }
         }
       } else {
@@ -122,9 +135,14 @@ const CurrentMusicPlayer = () => {
     }
   };
 
+  if (!currentMusic) {
+    return;
+  }
   return (
     <div>
-      {currentMusic && (
+      {currentMusic.length === 0 ? (
+        <div>현재 재생 목록이 없습니다</div>
+      ) : (
         <div>
           <div>
             <div>{currentMusic[currentTrackIndex].musicTitle}</div>
@@ -139,7 +157,7 @@ const CurrentMusicPlayer = () => {
           <AudioPlayer
             autoPlay
             loop={false}
-            // 볼륨 나중에 0.5로 변경할것!
+            // 볼륨 나중에 0.5로 변경할것!, 테스트중으로 자동 재생설정함
             volume={0.1}
             showSkipControls={true}
             onClickPrevious={onPreviousHandler}
@@ -181,13 +199,3 @@ const CurrentMusicPlayer = () => {
 };
 
 export default CurrentMusicPlayer;
-
-// [
-//   "3bb9e4dd-1f54-402d-bf3e-ab5113073b76",
-//   "34a0a9de-872a-43bf-ae89-6fd3972bd708",
-//   "228f1039-81d1-4fbe-8e8a-06678c7af1ec",
-//   "6796be10-36fc-428e-bdeb-603c3c813f91",
-//   "60b6a116-6192-42ff-bcc4-6427b474d223",
-//   "6f238369-472f-4c09-9105-3dcc21b1e099",
-//   "b5e50b6b-36cd-4809-b881-0c3a781a3347"
-// ]
