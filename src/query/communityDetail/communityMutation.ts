@@ -1,6 +1,11 @@
 // import { queryClient } from "@/app/provider";
 // import { useMutation } from "@tanstack/react-query";
 
+// export readCommunityDetail = useQuery({
+//   queryKey: [QUERY_KEY.READ_COMMU_DETAIL],
+//   queryFn: () => readCommunityDetail(id.toString()),
+// });
+
 // export const useMutationItem = () => {
 //   const addCommunityMutation = useMutation({
 //     mutationFn: addCommnityBoard,
