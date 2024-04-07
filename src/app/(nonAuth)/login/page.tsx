@@ -1,40 +1,30 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { getSession, signIn, signOut, useSession } from "next-auth/react";
+import { findUserPassword } from "@/shared/login/loginApi";
 import Link from "next/link";
 import Image from "next/image";
 import Modal from "@/util/Modal";
 import useInput from "@/hooks/useInput";
-import { findUserPassword } from "@/shared/login/loginApi";
 import findPwImg from "@/../public/images/findPassword.svg";
-import SocialLogin from "../../../components/socialLogin/page";
-import { supabase } from "@/shared/supabase/supabase";
+import SocialLogin from "@/components/socialLogin/page";
+import LogOutButton from "@/components/logout/LogOutButton";
 
 const LoginPage = () => {
   const router = useRouter();
   const { status } = useSession();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [spendEmail, setSpendEmail] = useState<string>("");
-  const needLoginInfo = { email: "", password: "", checkStayLogin: false };
+  const needLoginInfo = { email: "", password: "" };
 
-  const {
-    form: userlogin,
-    setForm: setUserlogin,
-    onChange: onChangeHandler,
-  } = useInput(needLoginInfo);
-  const { email, password, checkStayLogin } = userlogin;
+  const { form: userlogin, onChange: onChangeHandler } =
+    useInput(needLoginInfo);
+  const { email, password } = userlogin;
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
-  const onClickCheckboxHandler = () => {
-    setUserlogin((prevForm) => ({
-      ...prevForm,
-      checkStayLogin: !prevForm.checkStayLogin,
-    }));
-  };
 
   const onLoginHandler = async (e: FormEvent) => {
     e.preventDefault();
@@ -70,17 +60,6 @@ const LoginPage = () => {
       }
 
       setSpendEmail("");
-    }
-  };
-
-  const logOut = async () => {
-    await signOut({ redirect: true, callbackUrl: "/" });
-    localStorage.clear();
-    const { error } = await supabase.auth.signOut();
-
-    const loginStatus = await getSession();
-    if (loginStatus === null) {
-      alert("로그아웃 되셨습니다.");
     }
   };
 
@@ -144,21 +123,7 @@ const LoginPage = () => {
             </div>
           </form>
         </div>
-        <div className="flex w-full h-full gap-[8px] items-center justify-start">
-          <label
-            onClick={onClickCheckboxHandler}
-            className="flex items-center justify-center gap-[8px]"
-          >
-            <input
-              type="checkbox"
-              name="checkStayLogin"
-              checked={checkStayLogin}
-              onChange={() => {}}
-              className="w-[24px] h-[24px] bg-opacity-10 shadow-sm rounded-[4px]"
-            />
-            <span className="text-center text-[14px]">로그인 유지</span>
-          </label>
-        </div>
+
         <div>
           <div className="flex justify-center items-center mx-auto w-101 gap-[2px]">
             <button onClick={openModal} className="text-[14px] text-white-50">
@@ -182,9 +147,7 @@ const LoginPage = () => {
             <p>회원가입&nbsp;하기</p>
           </Link>
         </div>
-        <div>
-          <button onClick={logOut}>로그아웃</button>
-        </div>
+        <LogOutButton />
       </section>
     </div>
   );
