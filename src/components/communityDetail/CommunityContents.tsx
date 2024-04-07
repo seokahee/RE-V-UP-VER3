@@ -11,7 +11,7 @@ import LikeButton from "./LikeButton";
 const CommunityContents = () => {
   const router = useRouter();
   const { id } = useParams();
-  console.log(id);
+
   const {
     data: readDetailData,
     isPending,
@@ -27,6 +27,9 @@ const CommunityContents = () => {
   };
   if (isPending && isLoading) {
     <div>정보를 가져오고 있습니다..로딩바자리임</div>;
+  }
+  if (error) {
+    <div>정보를 가져오지 못하고 있습니다. 로딩바자뤼</div>;
   }
   return (
     <div>
