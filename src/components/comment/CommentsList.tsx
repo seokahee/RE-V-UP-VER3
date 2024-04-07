@@ -1,6 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
+
 import Image from "next/image";
+import { useState } from "react";
 import { getToday } from "@/util/util";
 import { useStore } from "@/shared/store";
 import { useQuery } from "@tanstack/react-query";
@@ -11,22 +12,12 @@ import {
   deleteComment,
   updateComment,
   addLikeComment,
-  getLikedUser,
 } from "@/shared/comment/commentApi";
 
 const CommentsList = () => {
   const { userInfo } = useStore();
   const queryClient = useQueryClient();
   const [isLike, setIsLike] = useState<boolean>(false);
-
-  //
-  const { data: likedUser } = useQuery({
-    queryFn: () => getLikedUser(),
-    queryKey: ["like"],
-  });
-
-  // console.log("testData", likedUser?.userInfo);
-  //
 
   const { data: commentsData } = useQuery({
     queryFn: () => getComments(),
@@ -70,13 +61,9 @@ const CommentsList = () => {
 
   const onLikeHandler = (commentId: string) => {
     const userId = userInfo.uid;
-    setIsLike(!isLike);
-    if (isLike) {
-      alert("좋아요");
-      likeCommentMutation.mutate({ commentId, userId });
-    } else {
-      alert("좋아요 취소");
-    }
+
+    alert("좋아요");
+    likeCommentMutation.mutate({ commentId, userId });
   };
 
   return (
