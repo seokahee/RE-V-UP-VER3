@@ -56,19 +56,6 @@ export const updateComment = async ({
   return data;
 };
 
-//선택한 댓글 좋아요 조회
-// export const getLikedUser = async () => {
-//   let { data: commentLiked, error } = await supabase
-//     .from("comment")
-//     .select("commentLikeList,userInfo(nickname)")
-//     .eq("commentId", "ff085ccf-09e1-4ca9-b790-29b85422e08d")
-//     .single();
-//   if (error) {
-//     console.log(error.message);
-//   }
-//   return commentLiked;
-// };
-
 //댓글 좋아요
 export const addLikeComment = async ({
   userId,
@@ -93,6 +80,8 @@ export const addLikeComment = async ({
     return null;
   }
 
+  console.log("commentLiked", commentLiked);
+
   const updatedLikeList = [...commentLiked.commentLikeList, userId];
 
   const { data } = await supabase
@@ -113,10 +102,29 @@ export const cancelLikeComment = async ({
   userId: string;
   commentId: string;
 }) => {
-  const { data, error } = await supabase
+  let { data: commentLiked, error } = await supabase
+    .from("comment")
+    .select("commentLikeList,userInfo(userId)")
+    .eq("commentId", commentId)
+    .single();
+
+  if (error) {
+    console.log(error.message);
+  }
+
+  if (!commentLiked) {
+    console.log("좋아요 한 유저가 없습니다.");
+    return null;
+  }
+
+  const likeListStatus = commentLiked.commentLikeList.filter(
+    (likedId) => likedId !== userId
+  );
+
+  const { data, error: likeError } = await supabase
     .from("comment")
     .update({
-      commentLikeList: commentLikeList.filter((userId) => userId !== userId),
+      commentLikeList: likeListStatus,
     })
     .eq("commentId)", commentId);
   return data;

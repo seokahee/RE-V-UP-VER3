@@ -12,6 +12,7 @@ import {
   deleteComment,
   updateComment,
   addLikeComment,
+  cancelLikeComment,
 } from "@/shared/comment/commentApi";
 
 const CommentsList = () => {
@@ -19,29 +20,17 @@ const CommentsList = () => {
   const queryClient = useQueryClient();
   const [isLike, setIsLike] = useState<boolean>(false);
 
+  //댓글 목록 조회
   const { data: commentsData } = useQuery({
     queryFn: () => getComments(),
     queryKey: ["comments"],
   });
 
+  //댓글 삭제
   const deleteCommentMutation = useMutation({
     mutationFn: deleteComment,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comment"] });
-    },
-  });
-
-  const updateCommentMutation = useMutation({
-    mutationFn: updateComment,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["comment"] });
-    },
-  });
-
-  const likeCommentMutation = useMutation({
-    mutationFn: addLikeComment,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["like"] });
     },
   });
 
@@ -50,20 +39,50 @@ const CommentsList = () => {
     alert("삭제 하시겠습니까?");
   };
 
+  //댓글 수정
+  const updateCommentMutation = useMutation({
+    mutationFn: updateComment,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["comment"] });
+    },
+  });
+
   const onUpdateCommentHandler = (commentId: string) => {
     const editedComment = {
       commentDate: getToday(),
-      commentContent: "수정테스트",
+      commentContent: "수정 테스트",
     };
     updateCommentMutation.mutate({ commentId, editedComment });
     alert("수정 하시겠습니까?");
   };
 
+  //좋아요
+  const likeCommentMutation = useMutation({
+    mutationFn: addLikeComment,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["like"] });
+    },
+  });
+
   const onLikeHandler = (commentId: string) => {
     const userId = userInfo.uid;
-
     alert("좋아요");
     likeCommentMutation.mutate({ commentId, userId });
+  };
+
+  //좋아요 취소
+  const cancelLikeCommentMutation = useMutation({
+    mutationFn: cancelLikeComment,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["like"] });
+    },
+  });
+
+  const onCancleLikeHandler = (commentId: string) => {
+    const userId = userInfo.uid;
+
+    alert("취소");
+    cancelLikeCommentMutation.mutate({ commentId, userId });
   };
 
   return (
@@ -106,14 +125,25 @@ const CommentsList = () => {
                   >
                     수정
                   </button>
+                  <br />
                   <button onClick={() => onLikeHandler(item.commentId)}>
                     좋아요 {item.commentLikeList.length}
+                  </button>{" "}
+                  <br />
+                  <button onClick={() => onCancleLikeHandler(item.commentId)}>
+                    취소
                   </button>
                 </>
               ) : (
-                <button onClick={() => onLikeHandler(item.commentId)}>
-                  좋아요 {item.commentLikeList.length}
-                </button>
+                <>
+                  <button onClick={() => onLikeHandler(item.commentId)}>
+                    좋아요 {item.commentLikeList.length}
+                  </button>{" "}
+                  <br />
+                  <button onClick={() => onCancleLikeHandler(item.commentId)}>
+                    취소
+                  </button>
+                </>
               )}
             </div>
           </div>
