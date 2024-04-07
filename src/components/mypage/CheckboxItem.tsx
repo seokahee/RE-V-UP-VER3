@@ -6,8 +6,19 @@ type CheckboxItme = {
   id: string;
 };
 
-const CheckboxItem = ({ onChangeCheckMusicHandler, id, checked }: CheckboxItme) => {
-  return <input type="checkbox" id={id} checked={checked} onChange={onChangeCheckMusicHandler} />;
+const CheckboxItem = ({
+  onChangeCheckMusicHandler,
+  id,
+  checked,
+}: CheckboxItme) => {
+  return (
+    <input
+      type="checkbox"
+      id={id}
+      checked={checked}
+      onChange={onChangeCheckMusicHandler}
+    />
+  );
 };
 
 export default CheckboxItem;
