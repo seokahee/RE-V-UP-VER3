@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
+//  테스트 주석
+
 const CurrentMusicPlayer = () => {
   const [currentMusic, setCurrentMusic] = useState<any>();
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0);
