@@ -1,4 +1,4 @@
-import { comment, newComment } from "@/types/comment/type";
+import { comment, isEditComment, newComment } from "@/types/comment/type";
 import { supabase } from "../supabase/supabase";
 
 //댓글 조회
@@ -6,7 +6,7 @@ export const getComments = async (): Promise<comment[]> => {
   let { data: comment, error } = await supabase
     .from("comment")
     .select(
-      "commentId,commentContent,commentDate,userInfo(userId, nickname, userImage)"
+      "commentId,commentContent,commentDate,commentLikeList,userInfo(userId, nickname, userImage)"
     );
   if (error) {
     throw error.message;
@@ -38,7 +38,69 @@ export const deleteComment = async (commentId: string) => {
 };
 
 //댓글 수정
+export const updateComment = async ({
+  commentId,
+  editedComment,
+}: {
+  commentId: string;
+  editedComment: isEditComment;
+}) => {
+  const { data, error } = await supabase
+    .from("comment")
+    .update(editedComment)
+    .eq("commentId", commentId)
+    .select();
+  if (error) {
+    console.log(error.message);
+  }
+  return data;
+};
+
+//선택한 댓글 좋아요 조회
+export const getLikedUser = async () => {
+  let { data: commentLiked, error } = await supabase
+    .from("comment")
+    .select("commentLikeList,userInfo(nickname)")
+    .eq("commentId", "ff085ccf-09e1-4ca9-b790-29b85422e08d")
+    .single();
+  if (error) {
+    console.log(error.message);
+  }
+  return commentLiked;
+};
 
 //댓글 좋아요
+export const addLikeComment = async ({
+  userId,
+  commentId,
+}: {
+  userId: string;
+  commentId: string;
+}) => {
+  //
+  const { data, error } = await supabase
+    .from("comment")
+    .update({
+      commentLikeList: [...commentLikeList, userId],
+    })
+    .eq("commentId)", commentId);
+  return data;
+};
+
+export const cancelLikeComment = async ({
+  userId,
+  commentId,
+}: {
+  userId: string;
+  commentId: string;
+}) => {
+  const { data, error } = await supabase
+    .from("comment")
+    .update({
+      commentLikeList: commentLikeList.filter((userId) => userId !== userId),
+    })
+    .eq("commentId)", commentId);
+  return data;
+};
 
 //대댓글(?)
