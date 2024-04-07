@@ -13,4 +13,10 @@ export type readCommuDetail = {
   comment?: {
     commentId?: string;
   }[];
+  musicInfo?: {
+    musicId?: string;
+    musicTitle?: string;
+    artist?: string;
+    thumbnail?: string;
+  };
 };
