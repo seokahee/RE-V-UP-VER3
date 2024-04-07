@@ -1,11 +1,12 @@
-import React from 'react'
+import CommunityDetailRead from "@/components/communityDetail/CommunityDetailRead";
+import React from "react";
 
 const CommunityPage = () => {
   return (
     <div>
-      CommunityPage
+      <CommunityDetailRead />
     </div>
-  )
-}
+  );
+};
 
-export default CommunityPage
+export default CommunityPage;
