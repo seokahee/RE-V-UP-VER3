@@ -83,10 +83,8 @@ export type Database = {
           boardTitle: string;
           content: string;
           date: string;
-          images: string;
           likeList: string[];
           musicId: string;
-          thumbnail: string;
           userId: string;
         };
         Insert: {
@@ -94,10 +92,8 @@ export type Database = {
           boardTitle?: string;
           content?: string;
           date?: string;
-          images?: string;
           likeList: string[];
-          musicId?: string;
-          thumbnail?: string;
+          musicId: string;
           userId: string;
         };
         Update: {
@@ -105,15 +101,46 @@ export type Database = {
           boardTitle?: string;
           content?: string;
           date?: string;
-          images?: string;
           likeList?: string[];
           musicId?: string;
-          thumbnail?: string;
           userId?: string;
         };
         Relationships: [
           {
+            foreignKeyName: "public_community_musicId_fkey";
+            columns: ["musicId"];
+            isOneToOne: false;
+            referencedRelation: "musicInfo";
+            referencedColumns: ["musicId"];
+          },
+          {
             foreignKeyName: "public_community_userId_fkey";
+            columns: ["userId"];
+            isOneToOne: false;
+            referencedRelation: "userInfo";
+            referencedColumns: ["userId"];
+          },
+        ];
+      };
+      currentMusicList: {
+        Row: {
+          currentMusicId: string;
+          currentMusicList: string[] | null;
+          userId: string;
+        };
+        Insert: {
+          currentMusicId?: string;
+          currentMusicList?: string[] | null;
+          userId?: string;
+        };
+        Update: {
+          currentMusicId?: string;
+          currentMusicList?: string[] | null;
+          userId?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "public_currentMusicList_userId_fkey";
             columns: ["userId"];
             isOneToOne: false;
             referencedRelation: "userInfo";
@@ -152,8 +179,9 @@ export type Database = {
         Row: {
           artist: string;
           genre: number;
-          lyrice: string;
+          lyrics: string;
           musicId: string;
+          musicSource: string;
           musicTitle: string;
           release: string;
           thumbnail: string;
@@ -161,8 +189,9 @@ export type Database = {
         Insert: {
           artist?: string;
           genre: number;
-          lyrice?: string;
+          lyrics?: string;
           musicId?: string;
+          musicSource?: string;
           musicTitle?: string;
           release: string;
           thumbnail?: string;
@@ -170,8 +199,9 @@ export type Database = {
         Update: {
           artist?: string;
           genre?: number;
-          lyrice?: string;
+          lyrics?: string;
           musicId?: string;
+          musicSource?: string;
           musicTitle?: string;
           release?: string;
           thumbnail?: string;
@@ -207,20 +237,20 @@ export type Database = {
       };
       personalMusic: {
         Row: {
-          PersonalMusic: string;
-          result: string;
+          personalMusicId: string;
+          result: string[];
           resultSentence: string;
           userId: string;
         };
         Insert: {
-          PersonalMusic?: string;
-          result?: string;
+          personalMusicId?: string;
+          result: string[];
           resultSentence?: string;
           userId: string;
         };
         Update: {
-          PersonalMusic?: string;
-          result?: string;
+          personalMusicId?: string;
+          result?: string[];
           resultSentence?: string;
           userId?: string;
         };
@@ -286,35 +316,104 @@ export type Database = {
           },
         ];
       };
-      userInfo: {
+      providerUserInfo: {
         Row: {
           email: string;
           follower: string[];
           following: string[];
-          nickname: string;
+          likedPostsOpen: boolean;
+          mbtiOpen: boolean;
+          nickname: string | null;
           password: string;
+          personalMusicOpen: boolean;
+          playlistOpen: boolean;
+          postsOpen: boolean;
           userChar: Json;
           userId: string;
+          userImage: string | null;
           userType: number;
         };
         Insert: {
           email?: string;
           follower: string[];
           following: string[];
-          nickname?: string;
+          likedPostsOpen?: boolean;
+          mbtiOpen?: boolean;
+          nickname?: string | null;
           password?: string;
+          personalMusicOpen?: boolean;
+          playlistOpen?: boolean;
+          postsOpen?: boolean;
           userChar: Json;
           userId?: string;
+          userImage?: string | null;
           userType?: number;
         };
         Update: {
           email?: string;
           follower?: string[];
           following?: string[];
-          nickname?: string;
+          likedPostsOpen?: boolean;
+          mbtiOpen?: boolean;
+          nickname?: string | null;
           password?: string;
+          personalMusicOpen?: boolean;
+          playlistOpen?: boolean;
+          postsOpen?: boolean;
           userChar?: Json;
           userId?: string;
+          userImage?: string | null;
+          userType?: number;
+        };
+        Relationships: [];
+      };
+      userInfo: {
+        Row: {
+          email: string;
+          follower: string[];
+          following: string[];
+          likedPostsOpen: boolean;
+          mbtiOpen: boolean;
+          nickname: string;
+          password: string;
+          personalMusicOpen: boolean;
+          playlistOpen: boolean;
+          postsOpen: boolean;
+          userChar: Json;
+          userId: string;
+          userImage: string | null;
+          userType: number;
+        };
+        Insert: {
+          email?: string;
+          follower: string[];
+          following: string[];
+          likedPostsOpen?: boolean;
+          mbtiOpen?: boolean;
+          nickname?: string;
+          password?: string;
+          personalMusicOpen?: boolean;
+          playlistOpen?: boolean;
+          postsOpen?: boolean;
+          userChar: Json;
+          userId?: string;
+          userImage?: string | null;
+          userType?: number;
+        };
+        Update: {
+          email?: string;
+          follower?: string[];
+          following?: string[];
+          likedPostsOpen?: boolean;
+          mbtiOpen?: boolean;
+          nickname?: string;
+          password?: string;
+          personalMusicOpen?: boolean;
+          playlistOpen?: boolean;
+          postsOpen?: boolean;
+          userChar?: Json;
+          userId?: string;
+          userImage?: string | null;
           userType?: number;
         };
         Relationships: [];
