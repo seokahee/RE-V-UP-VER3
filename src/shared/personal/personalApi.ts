@@ -1,6 +1,74 @@
-import type { UserChar } from "@/types/main/types";
+import type { MusicPreference, UserChar } from "@/types/main/types";
 import { supabase } from "../supabase/supabase";
+import { genreMatch } from "@/util/main/util";
 
+//퍼스널 뮤직에 진단 결과 넣는 값
+
+//mbti 선호도, 비선호도 조회하는 값
+//선호도
+export const getPreference = async () => {
+  let { data: musicPreferences, error } = await supabase
+    .from("musicPreferences")
+    .select("hiphop,dance,ballad,rnb,rock")
+    .eq("mbti", 1)
+    .single();
+
+  if (error) {
+    throw new Error(error?.message || "An unknown error occurred");
+  }
+
+  return musicPreferences;
+};
+
+//비선호도
+export const getDislike = async () => {
+  let { data: musicPreferences, error } = await supabase
+    .from("musicDislikes")
+    .select("hiphop,dance,ballad,rnb,rock")
+    .eq("mbti", 1)
+    .single();
+
+  if (error) {
+    throw new Error(error?.message || "An unknown error occurred");
+  }
+
+  return musicPreferences;
+};
+
+//mbti별 선호도 상위 장르 음악
+export const recommendMusic = async () => {
+  try {
+    let { data, error } = await supabase
+      .from("musicPreferences")
+      .select("hiphop, dance, ballad, rnb, rock")
+      .eq("mbti", 1)
+      .limit(1)
+      .single();
+
+    //추천 음악 선별 로직
+    const entries = Object.entries(data as MusicPreference);
+    //선호도 상위 3개 음악 추천
+    entries.sort((a, b) => b[1] - a[1]);
+    const topArr = entries.slice(0, 3);
+
+    //해당하는 음악 장르 코드 추출
+    const genreCodes = topArr.map((item) => genreMatch(item[0]));
+    return genreCodes as number[];
+  } catch (error) {
+    return [];
+  }
+};
+
+export const getRecommendMusic = async (musicPreferenceData) => {
+  let { data: musicInfo, error } = await supabase
+    .from("musicInfo")
+    .select("*")
+    .in("genre", musicPreferenceData)
+    .limit(3);
+
+  return musicInfo;
+};
+////////////////////////////////////////////
 //조회 - 지수님
 export const getUserChar = async (
   userId: string
@@ -38,47 +106,3 @@ export const addUserChar = async ({
     throw new Error(error?.message || "An unknown error occurred");
   }
 };
-
-//퍼스널 뮤직에 진단 결과 넣는 값
-
-//퍼스널 뮤직에 진단 조회
-
-//마이플레이리스트 , 현재 재생목록에 insert
-export const insertCurrentMusic = async ({
-  userId,
-  musicId,
-}: {
-  userId: string;
-  musicId: string;
-}) => {
-  try {
-    await supabase
-      .from("playlistCurrent")
-      .insert([{ userId: userId, currentMusicIds: [musicId] }])
-      .select();
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const updateCurrentMusic = async ({
-  userId,
-  currentList,
-}: {
-  userId: string;
-  currentList: string[];
-}) => {
-  try {
-    await supabase
-      .from("playlistCurrent")
-      .update({ currentMusicIds: [...currentList] })
-      .eq("userId", userId)
-      .select();
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-//mbti 선호도, 비선호도 조회하는 값
-
-//음악 조회하는 값

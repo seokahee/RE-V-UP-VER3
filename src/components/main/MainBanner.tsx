@@ -13,7 +13,7 @@ const MainBanner = () => {
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getBannerData(userInfo.uid),
     queryKey: ["mainBanner", userInfo.uid],
-    enabled: !!userInfo.uid
+    enabled: !!userInfo.uid,
   });
 
   const onClickPrevHandler = () => {
@@ -41,24 +41,47 @@ const MainBanner = () => {
               const splitUrl = item.split("/");
 
               return (
-                <li key={splitUrl[splitUrl.length - 1]} className={`w-full [&_img]:w-full [&_img]:h-auto transition-opacity ${slide === idx ? "block" : "hidden"}`}>
-                  <Image src={item} width={1600} height={300} alt={`배너 이미지 ${idx}`} />
+                <li
+                  key={splitUrl[splitUrl.length - 1]}
+                  className={`w-full [&_img]:w-full [&_img]:h-auto transition-opacity ${slide === idx ? "block" : "hidden"}`}
+                >
+                  <Image
+                    src={item}
+                    width={1600}
+                    height={300}
+                    alt={`배너 이미지 ${idx}`}
+                  />
                 </li>
               );
             })}
           </ul>
           <div>
-            <button type="button" className={`absolute left-0 top-1/2 -translate-y-1/2 ${slide === 0 ? "hidden" : "block"}`} onClick={onClickPrevHandler}>
+            <button
+              type="button"
+              className={`absolute left-0 top-1/2 -translate-y-1/2 ${slide === 0 ? "hidden" : "block"}`}
+              onClick={onClickPrevHandler}
+            >
               PREV
             </button>
-            <button type="button" className={`absolute right-0 top-1/2 -translate-y-1/2 ${slide < data?.[0].imageUrl.length - 1 ? "block" : "hidden"}`} onClick={onClickNextHandler}>
+            <button
+              type="button"
+              className={`absolute right-0 top-1/2 -translate-y-1/2 ${slide < data?.[0].imageUrl.length - 1 ? "block" : "hidden"}`}
+              onClick={onClickNextHandler}
+            >
               NEXT
             </button>
           </div>
         </div>
       ) : (
         <div className="[&_img]:w-full [&_img]:h-auto">
-          <Image src={"https://lukvbpxaabobwpzkacow.supabase.co/storage/v1/object/public/adBanner/Group_286.png"} alt="배너 이미지" width={1670} height={254} />
+          <Image
+            src={
+              "https://hxavgjouatzlrjtjgrth.supabase.co/storage/v1/object/public/adBanner/Group_286.png"
+            }
+            alt="배너 이미지"
+            width={1670}
+            height={254}
+          />
         </div>
       )}
     </div>
