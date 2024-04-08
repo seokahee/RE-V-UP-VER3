@@ -2,10 +2,7 @@
 
 import { getMyWriteListCount, getMyWriteListData } from "@/shared/mypage/api";
 import { useStore } from "@/shared/store";
-import { onDateHandler } from "@/util/util";
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
-import Link from "next/link";
 import React, { useState } from "react";
 import Pagination from "./Pagination";
 import BoardItem from "./BoardItem";
