@@ -29,7 +29,7 @@ export const useMutationItem = () => {
         queryKey: [COMMUNITY_QUERY_KEY.UPDATE_BOARD],
       }),
     onError: () => {
-      console.error("오류가 발생했습니다.");
+      throw new Error("오류가 발생했습니다.");
     },
   });
 
