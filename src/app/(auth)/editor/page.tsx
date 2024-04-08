@@ -1,11 +1,11 @@
-"use client"
+'use client'
 
-import BasicEditor from "@/components/editor/BasicEditor";
+import BasicEditor from '@/components/editor/BasicEditor'
 
 export default function Home() {
   return (
     <>
       <BasicEditor />
     </>
-  );
+  )
 }

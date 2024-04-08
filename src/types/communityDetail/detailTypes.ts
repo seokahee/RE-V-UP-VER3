@@ -1,22 +1,22 @@
 export type readCommuDetail = {
-  boardId?: string;
-  boardTitle?: string;
-  content?: string;
-  date?: string;
-  musicId?: string;
-  likeList?: string[];
-  userId?: string;
+  boardId?: string
+  boardTitle?: string
+  content?: string
+  date?: string
+  musicId?: string
+  likeList?: string[]
+  userId?: string
   userInfo?: {
-    nickname?: string;
-    userImage?: string;
-  };
+    nickname?: string
+    userImage?: string
+  }
   comment?: {
-    commentId?: string;
-  }[];
+    commentId?: string
+  }[]
   musicInfo?: {
-    musicId?: string;
-    musicTitle?: string;
-    artist?: string;
-    thumbnail?: string;
-  };
-};
+    musicId?: string
+    musicTitle?: string
+    artist?: string
+    thumbnail?: string
+  }
+}

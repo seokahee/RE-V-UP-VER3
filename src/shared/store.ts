@@ -1,20 +1,20 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 type Store = {
   userInfo: {
-    uid: string;
-  };
-  count: number;
-  inc: () => void;
-  setUserInfo: (uid: string) => void;
-};
+    uid: string
+  }
+  count: number
+  inc: () => void
+  setUserInfo: (uid: string) => void
+}
 
 const initialState = {
   userInfo: {
-    uid: "",
+    uid: '',
   },
-};
+}
 
 export const useStore = create(
   persist<Store>(
@@ -25,7 +25,7 @@ export const useStore = create(
       inc: () => set((state) => ({ count: state.count + 1 })),
     }),
     {
-      name: "store",
-    }
-  )
-);
+      name: 'store',
+    },
+  ),
+)

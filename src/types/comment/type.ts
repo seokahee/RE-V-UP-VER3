@@ -1,28 +1,28 @@
 export type comment = {
-  commentId: string;
-  commentContent: string;
-  commentDate: string;
-  commentLikeList: string[];
+  commentId: string
+  commentContent: string
+  commentDate: string
+  commentLikeList: string[]
   userInfo: {
-    userId: string;
-    nickname: string;
-    userImage: string;
-  };
-};
+    userId: string
+    nickname: string
+    userImage: string
+  }
+}
 
 export type newComment = {
-  userId: string;
-  boardId: string;
-  commentLikeList: string[];
-  commentDate: string;
-  commentContent: string;
-};
+  userId: string
+  boardId: string
+  commentLikeList: string[]
+  commentDate: string
+  commentContent: string
+}
 
 export type isEditComment = {
-  commentDate: string;
-  commentContent: string;
-};
+  commentDate: string
+  commentContent: string
+}
 
 export type likeComment = {
-  commentLikeList: string[];
-};
+  commentLikeList: string[]
+}
