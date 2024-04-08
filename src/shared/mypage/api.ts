@@ -51,9 +51,25 @@ export const updateMyMusicIds = async ({ userId, myMusicIds }: { userId: string;
   }
 };
 
-export const updateNickname = async ({ userId, nickname }: { userId: string; nickname: string }) => {
+export const updateNickname = async ({
+  userId,
+  nickname,
+  likedPostsOpen,
+  mbtiOpen,
+  personalMusicOpen,
+  playlistOpen,
+  postsOpen
+}: {
+  userId: string;
+  nickname: string;
+  likedPostsOpen: boolean;
+  mbtiOpen: boolean;
+  personalMusicOpen: boolean;
+  playlistOpen: boolean;
+  postsOpen: boolean;
+}) => {
   try {
-    const { data, error } = await supabase.from("userInfo").update({ nickname }).eq("userId", userId).select();
+    const { data, error } = await supabase.from("userInfo").update({ nickname, likedPostsOpen, mbtiOpen, personalMusicOpen, playlistOpen, postsOpen }).eq("userId", userId).select();
   } catch (error) {
     console.error(error);
   }
