@@ -44,6 +44,7 @@ export const saveSignUpInUserInfo = async ({
     .select();
 
   if (error) {
+    console.log(error);
     throw new Error("오류로 인해 가입정보가 승인되지 않았습니다.");
   }
   return data;
@@ -83,11 +84,11 @@ export const saveSignUpInProviderUserInfo = async ({
     .select();
 
   if (error) {
-    if (error.details === "already exists") {
+    if (error.details.includes("0 rows") || error.details.includes("already")) {
       return;
     }
-    alert("오류로 인해 가입정보가 승인되지 않았습니다.");
-    throw new Error("오류로 인해 가입정보가 승인되지 않았습니다.");
+    alert("정보를 받아오지 못하고 있습니다. 문의해주세요");
+    return;
   }
 
   if (data) {
@@ -117,12 +118,11 @@ export const updateInProviderUserInfo = async ({
     .select();
 
   if (error) {
-    if (error.details === "already exists") {
-      console.log(error.details);
+    if (error.details.includes("0 rows") || error.details.includes("already")) {
       return;
     }
-    alert("오류로 인해 가입정보가 승인되지 않았습니다.");
-    throw new Error("오류로 인해 가입정보가 승인되지 않았습니다.");
+    alert("정보를 받아오지 못하고 있습니다. 문의해주세요");
+    return;
   }
   if (data) {
     return data;

@@ -1,6 +1,5 @@
-import { PlaylistMy, UserInfo } from "@/types/mypage/types";
+import type { PlaylistMy, UserInfo } from "@/types/mypage/types";
 import { supabase } from "../supabase/supabase";
-import { randomUUID } from "crypto";
 
 export const getUserAndPlaylistData = async (userId: string): Promise<UserInfo> => {
   try {
@@ -114,4 +113,37 @@ export const getMyWriteListCount = async (userId: string): Promise<number> => {
     console.log(error);
     return 0;
   }
+};
+
+export const getFollowData = async (ids: string[]) => {
+  try {
+    const { data, error } = await supabase.from("userInfo").select("userId, nickname, userImage,following, follower").in("userId", ids);
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateFollow = async ({ userId, targetId, followingData, newTargetData }: { userId: string; targetId: string; followingData: string[]; newTargetData: string[] }) => {
+  try {
+    const { data, error: followingError } = await supabase
+      .from("userInfo")
+      .update({ following: [...followingData] })
+      .eq("userId", userId)
+      .select("userId, nickname, userImage,following, follower");
+
+    const { error: followerError } = await supabase
+      .from("userInfo")
+      .update({ follower: [...newTargetData] })
+      .eq("userId", targetId);
+  } catch (error) {
+    console.error(error);
+  }
+
+  return;
 };
