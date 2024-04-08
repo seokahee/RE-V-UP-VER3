@@ -66,7 +66,7 @@ const CommunityContents = () => {
                 <figure>
                   <Image
                     src={thumbnail}
-                    alt="노래 앨범 이미지"
+                    alt="앨범 이미지"
                     width={56}
                     height={56}
                   />
