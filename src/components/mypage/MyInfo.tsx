@@ -8,6 +8,8 @@ import React, { useEffect, useRef, useState } from "react";
 import CheckboxItem from "./CheckboxItem";
 import Modal from "./Modal";
 import Link from "next/link";
+import TabMenu from "./TabMenu";
+import FollowList from "./FollowList";
 
 const MyInfo = () => {
   const { userInfo } = useStore();
@@ -16,6 +18,7 @@ const MyInfo = () => {
   const [userImage, setUserImage] = useState("");
 
   const [isModal, setIsModal] = useState(false);
+  const [isFollowModal, setIsFollowModal] = useState(false);
   const [nickname, setNickname] = useState("");
   const [checkText, setCheckText] = useState("");
   const nicknameRef = useRef(null);
@@ -107,6 +110,19 @@ const MyInfo = () => {
     }
   };
 
+  const onClickCloseFollowModalHandler = () => {
+    setIsFollowModal(false);
+  };
+
+  const onClickViewFollowModalHandler = () => {
+    setIsFollowModal(true);
+  };
+
+  const tabArr = [
+    { id: 0, title: "팔로잉", content: <FollowList data={data?.following!} dataKey={"following"} /> },
+    { id: 1, title: "팔로워", content: <FollowList data={data?.follower!} dataKey={"follower"} myFollowing={data?.following!} /> }
+  ];
+
   useEffect(() => {
     if (data) {
       setUserImage(data?.userImage);
@@ -136,8 +152,8 @@ const MyInfo = () => {
         <span className="cursor-pointer" onClick={onClickViewModalHandler}>
           {data?.nickname} &gt;
         </span>
-        <p>
-          팔로우 {data?.following.length} 팔로워 {data?.follower.length}
+        <p onClick={onClickViewFollowModalHandler} className="cursor-pointer">
+          팔로잉 {data?.following.length} 팔로워 {data?.follower.length}
         </p>
         <p>
           {data?.userChar?.mbti}
@@ -174,7 +190,7 @@ const MyInfo = () => {
         </ul>
       </div>
       {isModal && (
-        <Modal title={"닉네임 변경"} onClick={onClickCloseModalHandler}>
+        <Modal onClick={onClickCloseModalHandler}>
           <label>
             <input type="text" value={nickname} className="w-full" ref={nicknameRef} onChange={onChangeInput} placeholder="변경할 닉네임을 입력해주세요" />
           </label>
@@ -187,6 +203,12 @@ const MyInfo = () => {
               변경
             </button>
           </div>
+        </Modal>
+      )}
+
+      {isFollowModal && (
+        <Modal onClick={onClickCloseFollowModalHandler}>
+          <TabMenu data={tabArr} width={"w-1/2"} />
         </Modal>
       )}
     </section>
