@@ -1,6 +1,12 @@
 "use client";
 
-import { updateMyMusicIds, getUserAndPlaylistData, getUserPlaylistMyMusicInfoData, updateNickname, uploadUserThumbnail } from "@/shared/mypage/api";
+import {
+  updateMyMusicIds,
+  getUserAndPlaylistData,
+  getUserPlaylistMyMusicInfoData,
+  updateNickname,
+  uploadUserThumbnail,
+} from "@/shared/mypage/api";
 import { useStore } from "@/shared/store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
@@ -25,34 +31,37 @@ const MyInfo = () => {
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getUserAndPlaylistData(userInfo.uid),
     queryKey: ["mypage", userInfo.uid],
-    enabled: !!userInfo.uid
+    enabled: !!userInfo.uid,
   });
 
   const { data: playlistMyData } = useQuery({
-    queryFn: () => getUserPlaylistMyMusicInfoData(data?.playlistMy?.[0].myMusicIds as string[]),
+    queryFn: () =>
+      getUserPlaylistMyMusicInfoData(
+        data?.playlistMy?.[0].myMusicIds as string[]
+      ),
     queryKey: ["myMusicIds", data?.playlistMy],
-    enabled: !!data?.playlistMy?.length
+    enabled: !!data?.playlistMy?.length,
   });
 
   const deleteMutation = useMutation({
     mutationFn: updateMyMusicIds,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["mypage"] });
-    }
+    },
   });
 
   const updateNicknameMutation = useMutation({
     mutationFn: updateNickname,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["mypage"] });
-    }
+    },
   });
 
   const updateUserThumbnailMutation = useMutation({
     mutationFn: uploadUserThumbnail,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["mypage"] });
-    }
+    },
   });
 
   const onChangeCheckMusicHandler = (checked: boolean, id: string) => {
@@ -101,7 +110,10 @@ const MyInfo = () => {
     const file = e.target.files![0] as File;
     console.log(file);
     if (window.confirm("선택한 이미지로 업로드를 진행할까요?")) {
-      const data = await updateUserThumbnailMutation.mutateAsync({ userId: userInfo.uid, file });
+      const data = await updateUserThumbnailMutation.mutateAsync({
+        userId: userInfo.uid,
+        file,
+      });
       setUserImage(data?.[0].userImage as string);
       alert("업로드 완료!");
     }
@@ -128,7 +140,15 @@ const MyInfo = () => {
           <div>
             <input type="file" onChange={selectFileHandler} accept="image/*" />
             <figure className="w-[80px] h-[80px] flex overflow-hidden rounded-full bg-slate-200">
-              {userImage && <Image src={userImage} width={80} height={80} alt={`${data?.nickname} 프로필 이미지`} priority={true} />}
+              {userImage && (
+                <Image
+                  src={userImage}
+                  width={80}
+                  height={80}
+                  alt={`${data?.nickname} 프로필 이미지`}
+                  priority={true}
+                />
+              )}
             </figure>
           </div>
           <Link href="/personal-music">퍼스널 뮤직 진단 다시받기</Link>
@@ -158,9 +178,20 @@ const MyInfo = () => {
             return (
               <li key={item.musicId}>
                 <div>
-                  <CheckboxItem checked={checkedList.includes(item.musicId)} id={item.musicId} onChangeCheckMusicHandler={(e) => onChangeCheckMusicHandler(e.target.checked, item.musicId)} />
+                  <CheckboxItem
+                    checked={checkedList.includes(item.musicId)}
+                    id={item.musicId}
+                    onChangeCheckMusicHandler={(e) =>
+                      onChangeCheckMusicHandler(e.target.checked, item.musicId)
+                    }
+                  />
                   <figure>
-                    <Image src={item.thumbnail} width={56} height={56} alt={`${item.musicTitle} 앨범 이미지`} />
+                    <Image
+                      src={item.thumbnail}
+                      width={56}
+                      height={56}
+                      alt={`${item.musicTitle} 앨범 이미지`}
+                    />
                   </figure>
                   <label htmlFor={item.musicId} className="flex flex-col">
                     {item.musicTitle}
@@ -176,7 +207,14 @@ const MyInfo = () => {
       {isModal && (
         <Modal title={"닉네임 변경"} onClick={onClickCloseModalHandler}>
           <label>
-            <input type="text" value={nickname} className="w-full" ref={nicknameRef} onChange={onChangeInput} placeholder="변경할 닉네임을 입력해주세요" />
+            <input
+              type="text"
+              value={nickname}
+              className="w-full"
+              ref={nicknameRef}
+              onChange={onChangeInput}
+              placeholder="변경할 닉네임을 입력해주세요"
+            />
           </label>
           <p className="h-5 text-sm text-red-500">{checkText}</p>
           <div className="mt-4 flex justify-between">

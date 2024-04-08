@@ -21,9 +21,9 @@ export type MusicInfoType = {
   thumbnail: string;
 };
 
-export type playlistCurrentType = {
+export type CurrentPlaylistType = {
   currentId: string;
-  currentMusicIds: string[] | undefined;
+  currentMusicIds: string[];
   artist: string;
   genre: number;
   lyrics: string;
