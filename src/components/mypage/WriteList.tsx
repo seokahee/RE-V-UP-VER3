@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import Pagination from "./Pagination";
+import BoardItem from "./BoardItem";
 
 const WriteList = () => {
   const { userInfo } = useStore();
@@ -42,23 +43,10 @@ const WriteList = () => {
     <section>
       <ul className="mb-8">
         {data?.map((item) => {
-          return (
-            <li key={item.boardId} className="p-4 border-b border-black border-solid">
-              <figure>
-                <figure>{item.userInfo?.userImage && <Image src={item.userInfo.userImage} width={50} height={50} alt={`${item.userInfo.nickname} 프로필 이미지`} />}</figure>
-              </figure>
-              <Link href={`/community/${item.boardId}`}>{item.boardTitle}</Link>
-              <figure>{item.musicInfo?.thumbnail && <Image src={item.musicInfo.thumbnail} width={80} height={80} alt={`${item.musicInfo.musicTitle} 앨범 이미지`} />}</figure>
-              {item.userInfo?.nickname}
-              {onDateHandler(item.date)}
-              <div>
-                좋아요 수 {item.likeList.length} / 댓글 수 {item.comment.length}
-              </div>
-            </li>
-          );
+          return <BoardItem key={item.boardId} data={item} />;
         })}
       </ul>
-      <Pagination currentPage={currentPage} totalPages={totalPages} nextPage={nextPage} prevPage={prevPage} setCurrentPage={setCurrentPage} />
+      {data && data?.length > 0 ? <Pagination currentPage={currentPage} totalPages={totalPages} nextPage={nextPage} prevPage={prevPage} setCurrentPage={setCurrentPage} /> : ""}
     </section>
   );
 };
