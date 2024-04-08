@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useStore } from "@/shared/store";
 import {
@@ -13,7 +13,7 @@ import {
 } from "@/shared/join/joinApi";
 
 type Props = {
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 const UserProvider = ({ children }: Props) => {
   const { setUserInfo } = useStore();
@@ -31,7 +31,6 @@ const UserProvider = ({ children }: Props) => {
           userSessionInfo.user.email
         );
         const { uid, name, email } = userSessionInfo.user;
-        console.log("providerUserData==>", providerUserData);
         const password = "noPassword";
         const userType = 1;
 

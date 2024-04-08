@@ -81,7 +81,7 @@ const MainBanner = () => {
             alt="배너 이미지"
             width={1670}
             height={254}
-          />{" "}
+          />
         </div>
       )}
     </div>
