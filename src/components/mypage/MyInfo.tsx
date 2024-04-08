@@ -1,17 +1,15 @@
 "use client";
 
-import { updateMyMusicIds, getUserAndPlaylistData, getUserPlaylistMyMusicInfoData, updateNickname, uploadUserThumbnail } from "@/shared/mypage/api";
+import { getUserAndPlaylistData, updateNickname, uploadUserThumbnail } from "@/shared/mypage/api";
 import { useStore } from "@/shared/store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
-import CheckboxItem from "./CheckboxItem";
 import Modal from "./Modal";
 import Link from "next/link";
 import TabMenu from "./TabMenu";
 import FollowList from "./FollowList";
 import MyPlaylist from "./MyPlaylist";
-import { UserInfo } from "@/types/mypage/types";
 
 const MyInfo = () => {
   const { userInfo } = useStore();
