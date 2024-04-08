@@ -37,7 +37,7 @@ const CommentForm = () => {
     //boardId : 일단 원래있는 데이터 가져와끌어오기
     const newComment = {
       userId: userInfo.uid,
-      boardId: "15ef7950-51c6-40db-a9eb-5eaf92eb7efb",
+      boardId: "b165ff75-9818-47b6-95fb-e2cc268ed410",
       commentLikeList: [],
       commentDate: getToday(),
       commentContent: comment,
