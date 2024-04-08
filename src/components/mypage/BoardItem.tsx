@@ -14,6 +14,7 @@ const BoardItem = ({ data: item }: { data: Board }) => {
       <figure>{item.musicInfo?.thumbnail && <Image src={item.musicInfo.thumbnail} width={80} height={80} alt={`${item.musicInfo.musicTitle} 앨범 이미지`} />}</figure>
       {item.userInfo?.nickname}
       {onDateHandler(item.date)}
+      <button type="button">재생</button>
       <div>
         좋아요 수 {item.likeList ? item.likeList.length : 0} / 댓글 수 {item.comment ? item.comment.length : 0}
       </div>
