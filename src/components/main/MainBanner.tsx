@@ -58,7 +58,7 @@ const MainBanner = () => {
         </div>
       ) : (
         <div className="[&_img]:w-full [&_img]:h-auto">
-          <Image src={"https://lukvbpxaabobwpzkacow.supabase.co/storage/v1/object/public/adBanner/Group_286.png"} alt="배너 이미지" width={1670} height={254} />
+          <Image src={"https://hxavgjouatzlrjtjgrth.supabase.co/storage/v1/object/public/adBanner/Group_286.png"} alt="배너 이미지" width={1670} height={254} />
         </div>
       )}
     </div>
