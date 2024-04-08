@@ -18,7 +18,7 @@ export type Database = {
         Insert: {
           adId?: string;
           imageUrl?: string[] | null;
-          userId: string;
+          userId?: string;
         };
         Update: {
           adId?: string;
@@ -41,24 +41,24 @@ export type Database = {
           commentContent: string;
           commentDate: string;
           commentId: string;
-          commentLikeList: string[];
-          userId: string | null;
+          commentLikeList: string[] | null;
+          userId: string;
         };
         Insert: {
-          boardId: string;
+          boardId?: string;
           commentContent?: string;
           commentDate?: string;
           commentId?: string;
-          commentLikeList: string[];
-          userId?: string | null;
+          commentLikeList?: string[] | null;
+          userId?: string;
         };
         Update: {
           boardId?: string;
           commentContent?: string;
           commentDate?: string;
           commentId?: string;
-          commentLikeList?: string[];
-          userId?: string | null;
+          commentLikeList?: string[] | null;
+          userId?: string;
         };
         Relationships: [
           {
@@ -83,7 +83,7 @@ export type Database = {
           boardTitle: string;
           content: string;
           date: string;
-          likeList: string[];
+          likeList: string[] | null;
           musicId: string;
           userId: string;
         };
@@ -92,16 +92,16 @@ export type Database = {
           boardTitle?: string;
           content?: string;
           date?: string;
-          likeList: string[];
-          musicId: string;
-          userId: string;
+          likeList?: string[] | null;
+          musicId?: string;
+          userId?: string;
         };
         Update: {
           boardId?: string;
           boardTitle?: string;
           content?: string;
           date?: string;
-          likeList?: string[];
+          likeList?: string[] | null;
           musicId?: string;
           userId?: string;
         };
@@ -122,37 +122,11 @@ export type Database = {
           },
         ];
       };
-      currentMusicList: {
-        Row: {
-          currentMusicId: string;
-          currentMusicList: string[] | null;
-          userId: string;
-        };
-        Insert: {
-          currentMusicId?: string;
-          currentMusicList?: string[] | null;
-          userId?: string;
-        };
-        Update: {
-          currentMusicId?: string;
-          currentMusicList?: string[] | null;
-          userId?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "public_currentMusicList_userId_fkey";
-            columns: ["userId"];
-            isOneToOne: false;
-            referencedRelation: "userInfo";
-            referencedColumns: ["userId"];
-          },
-        ];
-      };
       musicDislikes: {
         Row: {
           ballad: number | null;
           dance: number | null;
-          hiphop: number | null;
+          hiphop: number;
           mbti: number;
           rnb: number | null;
           rock: number | null;
@@ -160,15 +134,15 @@ export type Database = {
         Insert: {
           ballad?: number | null;
           dance?: number | null;
-          hiphop?: number | null;
-          mbti: number;
+          hiphop: number;
+          mbti?: number;
           rnb?: number | null;
           rock?: number | null;
         };
         Update: {
           ballad?: number | null;
           dance?: number | null;
-          hiphop?: number | null;
+          hiphop?: number;
           mbti?: number;
           rnb?: number | null;
           rock?: number | null;
@@ -187,7 +161,7 @@ export type Database = {
           thumbnail: string;
         };
         Insert: {
-          artist?: string;
+          artist: string;
           genre: number;
           lyrics?: string;
           musicId?: string;
@@ -212,7 +186,7 @@ export type Database = {
         Row: {
           ballad: number | null;
           dance: number | null;
-          hiphop: number | null;
+          hiphop: number;
           mbti: number;
           rnb: number | null;
           rock: number | null;
@@ -220,15 +194,15 @@ export type Database = {
         Insert: {
           ballad?: number | null;
           dance?: number | null;
-          hiphop?: number | null;
-          mbti: number;
+          hiphop: number;
+          mbti?: number;
           rnb?: number | null;
           rock?: number | null;
         };
         Update: {
           ballad?: number | null;
           dance?: number | null;
-          hiphop?: number | null;
+          hiphop?: number;
           mbti?: number;
           rnb?: number | null;
           rock?: number | null;
@@ -244,9 +218,9 @@ export type Database = {
         };
         Insert: {
           personalMusicId?: string;
-          result: string[];
-          resultSentence?: string;
-          userId: string;
+          result?: string[];
+          resultSentence: string;
+          userId?: string;
         };
         Update: {
           personalMusicId?: string;
@@ -268,17 +242,17 @@ export type Database = {
         Row: {
           currentId: string;
           currentMusicIds: string[] | null;
-          userId: string | null;
+          userId: string;
         };
         Insert: {
           currentId?: string;
           currentMusicIds?: string[] | null;
-          userId?: string | null;
+          userId?: string;
         };
         Update: {
           currentId?: string;
           currentMusicIds?: string[] | null;
-          userId?: string | null;
+          userId?: string;
         };
         Relationships: [
           {
@@ -324,7 +298,7 @@ export type Database = {
           likedPostsOpen: boolean;
           mbtiOpen: boolean;
           nickname: string | null;
-          password: string;
+          password: string | null;
           personalMusicOpen: boolean;
           playlistOpen: boolean;
           postsOpen: boolean;
@@ -340,7 +314,7 @@ export type Database = {
           likedPostsOpen?: boolean;
           mbtiOpen?: boolean;
           nickname?: string | null;
-          password?: string;
+          password?: string | null;
           personalMusicOpen?: boolean;
           playlistOpen?: boolean;
           postsOpen?: boolean;
@@ -356,7 +330,7 @@ export type Database = {
           likedPostsOpen?: boolean;
           mbtiOpen?: boolean;
           nickname?: string | null;
-          password?: string;
+          password?: string | null;
           personalMusicOpen?: boolean;
           playlistOpen?: boolean;
           postsOpen?: boolean;
