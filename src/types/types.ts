@@ -23,7 +23,15 @@ export type MusicInfoType = {
 
 export type playlistCurrentType = {
   currentId: string;
-  currentMusicIds: string[];
+  currentMusicIds: string[] | undefined;
+  artist: string;
+  genre: number;
+  lyrics: string;
+  musicId: string;
+  musicSource: string;
+  musicTitle: string;
+  release: string;
+  thumbnail: string;
   userInfo: {
     userId: string;
   };

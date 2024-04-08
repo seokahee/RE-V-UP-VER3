@@ -3,64 +3,42 @@ import { getCurrentMusicList } from "@/shared/musicPlayer/api";
 import { useStore } from "@/shared/store";
 import { supabase } from "@/shared/supabase/supabase";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
 //  테스트 주석
 
 const CurrentMusicPlayer = () => {
-  const [currentMusic, setCurrentMusic] = useState<any>();
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0);
   const [checkedList, setCheckedList] = useState<string[]>([]);
   const { userInfo } = useStore();
   const { uid } = userInfo;
 
   console.log("uid", uid);
+
   const { data } = useQuery({
     queryFn: () => getCurrentMusicList(uid),
     queryKey: ["getCurrentMusicList"],
   });
 
-  useEffect(() => {
-    const getCurrentMusicList = async () => {
-      const { data: currentMusic } = await supabase
-        .from("playlistCurrent")
-        .select("currentId,currentMusicIds,userInfo(userId)")
-        .eq("userId", uid);
-
-      if (currentMusic) {
-        const musicIds = currentMusic.map((item) => {
-          return item.currentMusicIds;
-        });
-
-        if (musicIds.length > 0) {
-          const { data: musicInfo } = await supabase
-            .from("musicInfo")
-            .select("*")
-            .in("musicId", musicIds)
-            .order("musicTitle", { ascending: false });
-          setCurrentMusic(musicInfo);
-        } else {
-          setCurrentMusic([]);
-        }
-      }
-    };
-    getCurrentMusicList();
-  }, [uid]);
+  if (data && data.length > 0) {
+    return;
+  }
 
   const onPreviousHandler = () => {
     setCurrentTrackIndex(
       (prev) =>
-        (prev - 1 + currentMusic.currentMusicIds.length) %
-        currentMusic.currentMusicIds.length
+        (prev - 1 + data.currentTrackIndex.length) %
+        data.currentTrackIndex.length
     );
   };
 
   const onNextTrackHandler = () => {
-    setCurrentTrackIndex((prev) => (prev + 1) % currentMusic.length);
+    setCurrentTrackIndex((prev) => (prev + 1) % data.length);
   };
 
+  //  삭제 쳌
   const onMusicCheckedHandler = (musicId: string) => {
     setCheckedList((prev: any) => {
       const isChecked = prev.includes(musicId);
@@ -74,9 +52,11 @@ const CurrentMusicPlayer = () => {
     });
   };
 
+  // 삭제버튼
+
   const onDeleteCurrentMusicHandler = async () => {
     if (window.confirm("현재 재생 목록에서 선택 항목을 삭제하시겠습니까?")) {
-      const currentMusicData = currentMusic
+      const currentMusicData = data
         .filter((music: any) => !checkedList.includes(music.musicId))
         .map((music: any) => music.musicId);
 
@@ -91,6 +71,7 @@ const CurrentMusicPlayer = () => {
     }
   };
 
+  // 마플리
   const onInsertMyPlayListHandler = async () => {
     if (window.confirm("선택한 곡을 마이플레이 리스트에 추가하시겠습니까?")) {
       const { data: playlistMy } = await supabase
@@ -137,23 +118,20 @@ const CurrentMusicPlayer = () => {
     }
   };
 
-  if (!currentMusic) {
-    return;
-  }
   return (
     <div>
-      {currentMusic.length === 0 ? (
+      {data.length === 0 ? (
         <div>현재 재생 목록이 없습니다</div>
       ) : (
         <div>
           <div>
-            <div>{currentMusic[currentTrackIndex].musicTitle}</div>
-            <div>{currentMusic[currentTrackIndex].artist}</div>
+            <div>{data[currentTrackIndex].musicTitle}</div>
+            <div>{data[currentTrackIndex].artist}</div>
             <img
-              src={currentMusic[currentTrackIndex].thumbnail}
+              src={data[currentTrackIndex].thumbnail}
               alt="Album Thumbnail"
             />
-            <div>{currentMusic[currentTrackIndex].lyrics}</div>
+            <div>{data[currentTrackIndex].lyrics}</div>
           </div>
 
           <AudioPlayer
@@ -164,11 +142,11 @@ const CurrentMusicPlayer = () => {
             showSkipControls={true}
             onClickPrevious={onPreviousHandler}
             onClickNext={onNextTrackHandler}
-            src={currentMusic[currentTrackIndex].musicSource}
+            src={data[currentTrackIndex].musicSource}
             onEnded={onNextTrackHandler}
           />
           <div>
-            {currentMusic?.map((item: any, index: number) => {
+            {data?.map((item: any, index: number) => {
               return (
                 <div key={item.musicId} className="flex gap-5">
                   <input

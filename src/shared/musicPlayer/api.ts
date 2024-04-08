@@ -20,4 +20,5 @@ export const getCurrentMusicList = async (uid: string) => {
       return musicInfo;
     }
   }
+  return [];
 };
