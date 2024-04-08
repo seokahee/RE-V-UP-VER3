@@ -10,11 +10,12 @@ import Modal from "./Modal";
 import Link from "next/link";
 import TabMenu from "./TabMenu";
 import FollowList from "./FollowList";
+import MyPlaylist from "./MyPlaylist";
+import { UserInfo } from "@/types/mypage/types";
 
 const MyInfo = () => {
   const { userInfo } = useStore();
 
-  const [checkedList, setCheckedList] = useState<string[]>([]);
   const [userImage, setUserImage] = useState("");
 
   const [isModal, setIsModal] = useState(false);
@@ -31,19 +32,6 @@ const MyInfo = () => {
     enabled: !!userInfo.uid
   });
 
-  const { data: playlistMyData } = useQuery({
-    queryFn: () => getUserPlaylistMyMusicInfoData(data?.playlistMy?.[0].myMusicIds as string[]),
-    queryKey: ["myMusicIds", data?.playlistMy],
-    enabled: !!data?.playlistMy?.length
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: updateMyMusicIds,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["mypage"] });
-    }
-  });
-
   const updateNicknameMutation = useMutation({
     mutationFn: updateNickname,
     onSuccess: () => {
@@ -57,23 +45,6 @@ const MyInfo = () => {
       queryClient.invalidateQueries({ queryKey: ["mypage"] });
     }
   });
-
-  const onChangeCheckMusicHandler = (checked: boolean, id: string) => {
-    if (checked) {
-      setCheckedList((prev) => [...prev, id]);
-    } else {
-      const checkList = checkedList.filter((el) => el !== id);
-      setCheckedList(checkList);
-    }
-  };
-
-  const onClickDeleteHandler = () => {
-    const myMusicIds = data?.playlistMy?.[0].myMusicIds as string[];
-    const newData = myMusicIds.filter((el) => !checkedList.includes(el));
-
-    deleteMutation.mutate({ userId: userInfo.uid, myMusicIds: newData });
-    alert("삭제가 완료되었습니다.");
-  };
 
   const onClickViewModalHandler = () => {
     setIsModal(true);
@@ -160,35 +131,7 @@ const MyInfo = () => {
           {data?.personalMusic?.resultSentence}
         </p>
       </div>
-      <div className="mt-[5rem]">
-        <h2>{data?.nickname}님의 플레이리스트</h2>
-        <button type="button">전체 재생 하기</button>
-        <div>
-          <button type="button" onClick={onClickDeleteHandler}>
-            삭제
-          </button>
-          <button type="button">{checkedList.length}곡 재생</button>
-        </div>
-        <ul className="list-none">
-          {playlistMyData?.map((item) => {
-            return (
-              <li key={item.musicId}>
-                <div>
-                  <CheckboxItem checked={checkedList.includes(item.musicId)} id={item.musicId} onChangeCheckMusicHandler={(e) => onChangeCheckMusicHandler(e.target.checked, item.musicId)} />
-                  <figure>
-                    <Image src={item.thumbnail} width={56} height={56} alt={`${item.musicTitle} 앨범 이미지`} />
-                  </figure>
-                  <label htmlFor={item.musicId} className="flex flex-col">
-                    {item.musicTitle}
-                    <span>{item.artist}</span>
-                  </label>
-                </div>
-                <span>재생시간..</span>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      <MyPlaylist data={data!} />
       {isModal && (
         <Modal onClick={onClickCloseModalHandler}>
           <label>
