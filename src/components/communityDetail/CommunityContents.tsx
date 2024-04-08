@@ -46,6 +46,7 @@ const CommunityContents = () => {
         }) => {
           const { nickname, userImage } = userInfo!;
           const { musicTitle, artist, thumbnail } = musicInfo!;
+          if (!likeList) return;
           return (
             <div>
               <button onClick={onBackButtonHandler}>이전으로 가기</button>

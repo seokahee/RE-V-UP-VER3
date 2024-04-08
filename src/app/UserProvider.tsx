@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useStore } from "@/shared/store";
 import {
   getUserUid,
@@ -31,6 +31,7 @@ const UserProvider = ({ children }: Props) => {
           userSessionInfo.user.email
         );
         const { uid, name, email } = userSessionInfo.user;
+        console.log("providerUserData==>", providerUserData);
         const password = "noPassword";
         const userType = 1;
 
@@ -50,6 +51,9 @@ const UserProvider = ({ children }: Props) => {
             await saveSignUpInProviderUserInfo(googleUserData);
             setUserInfo(uid);
           }
+        } else {
+          await saveSignUpInProviderUserInfo(googleUserData);
+          setUserInfo(uid);
         }
 
         if (userData) {
