@@ -9,7 +9,7 @@ import CheckboxItem from "./CheckboxItem";
 import Modal from "./Modal";
 import Link from "next/link";
 import TabMenu from "./TabMenu";
-import FollowerList from "./FollowList";
+import FollowList from "./FollowList";
 
 const MyInfo = () => {
   const { userInfo } = useStore();
@@ -119,8 +119,8 @@ const MyInfo = () => {
   };
 
   const tabArr = [
-    { id: 0, title: "팔로잉", content: <FollowerList data={data?.following!} dataKey={"following"} /> },
-    { id: 1, title: "팔로워", content: <FollowerList data={data?.follower!} dataKey={"follower"} /> }
+    { id: 0, title: "팔로잉", content: <FollowList data={data?.following!} dataKey={"following"} /> },
+    { id: 1, title: "팔로워", content: <FollowList data={data?.follower!} dataKey={"follower"} myFollowing={data?.following!} /> }
   ];
 
   useEffect(() => {
@@ -190,7 +190,7 @@ const MyInfo = () => {
         </ul>
       </div>
       {isModal && (
-        <Modal title={"닉네임 변경"} onClick={onClickCloseModalHandler}>
+        <Modal onClick={onClickCloseModalHandler}>
           <label>
             <input type="text" value={nickname} className="w-full" ref={nicknameRef} onChange={onChangeInput} placeholder="변경할 닉네임을 입력해주세요" />
           </label>
@@ -207,13 +207,8 @@ const MyInfo = () => {
       )}
 
       {isFollowModal && (
-        <Modal title={"팔로잉/팔로워"} onClick={onClickCloseFollowModalHandler}>
+        <Modal onClick={onClickCloseFollowModalHandler}>
           <TabMenu data={tabArr} />
-          <div className="mt-4 flex justify-between">
-            <button type="button" onClick={onClickCloseFollowModalHandler}>
-              닫기
-            </button>
-          </div>
         </Modal>
       )}
     </section>
