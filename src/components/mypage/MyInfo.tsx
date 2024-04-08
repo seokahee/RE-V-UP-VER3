@@ -208,7 +208,7 @@ const MyInfo = () => {
 
       {isFollowModal && (
         <Modal onClick={onClickCloseFollowModalHandler}>
-          <TabMenu data={tabArr} />
+          <TabMenu data={tabArr} width={"w-1/2"} />
         </Modal>
       )}
     </section>

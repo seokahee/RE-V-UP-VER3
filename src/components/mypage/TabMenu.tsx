@@ -6,9 +6,10 @@ type TabProps = {
     title: string;
     content: React.JSX.Element;
   }[];
+  width: string;
 };
 
-const TabMenu = ({ data }: TabProps) => {
+const TabMenu = ({ data, width }: TabProps) => {
   const [isActive, setIsActive] = useState(0);
 
   const onClickTab = (idx: number) => {
@@ -17,13 +18,16 @@ const TabMenu = ({ data }: TabProps) => {
 
   return (
     <div>
-      {data.map((item, idx) => {
-        return (
-          <button key={item.id} type="button" onClick={() => onClickTab(idx)} className={`${isActive === idx && "text-blue-600"}`}>
-            {item.title}
-          </button>
-        );
-      })}
+      <div className="flex">
+        {data &&
+          data.map((item, idx) => {
+            return (
+              <button key={item.id} type="button" onClick={() => onClickTab(idx)} className={`${isActive === idx ? "text-blue-600" : ""} ${width}`}>
+                {item.title}
+              </button>
+            );
+          })}
+      </div>
       <div>{data[isActive].content}</div>
     </div>
   );
