@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import Pagination from "./Pagination";
 import BoardItem from "./BoardItem";
+import BoardNoData from "./BoardNoData";
 
 const WriteList = () => {
   const { userInfo } = useStore();
@@ -39,9 +40,13 @@ const WriteList = () => {
   return (
     <section>
       <ul className="mb-8">
-        {data?.map((item) => {
-          return <BoardItem key={item.boardId} data={item} />;
-        })}
+        {data ? (
+          data?.map((item) => {
+            return <BoardItem key={item.boardId} data={item} />;
+          })
+        ) : (
+          <BoardNoData />
+        )}
       </ul>
       {data && data?.length > 0 ? <Pagination currentPage={currentPage} totalPages={totalPages} nextPage={nextPage} prevPage={prevPage} setCurrentPage={setCurrentPage} /> : ""}
     </section>

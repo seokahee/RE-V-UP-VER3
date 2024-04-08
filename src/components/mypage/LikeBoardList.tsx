@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import BoardItem from "./BoardItem";
 import Pagination from "./Pagination";
+import BoardNoData from "./BoardNoData";
 
 const LikeBoardList = () => {
   const { userInfo } = useStore();
@@ -50,7 +51,7 @@ const LikeBoardList = () => {
             return <BoardItem key={item.boardId} data={item} />;
           })
         ) : (
-          <li>없어용</li>
+          <BoardNoData />
         )}
       </ul>
       {data && data?.length > 0 ? <Pagination currentPage={currentPage} totalPages={totalPages} nextPage={nextPage} prevPage={prevPage} setCurrentPage={setCurrentPage} /> : ""}
