@@ -12,7 +12,7 @@ type TabProps = {
 const TabMenu = ({ data, width }: TabProps) => {
   const [isActive, setIsActive] = useState(0);
 
-  const onClickTab = (idx: number) => {
+  const onClickTabHandler = (idx: number) => {
     setIsActive(idx);
   };
 
@@ -22,7 +22,7 @@ const TabMenu = ({ data, width }: TabProps) => {
         {data &&
           data.map((item, idx) => {
             return (
-              <button key={item.id} type="button" onClick={() => onClickTab(idx)} className={`${isActive === idx ? "text-blue-600" : ""} ${width}`}>
+              <button key={item.id} type="button" onClick={() => onClickTabHandler(idx)} className={`${isActive === idx ? "text-blue-600" : ""} ${width}`}>
                 {item.title}
               </button>
             );
