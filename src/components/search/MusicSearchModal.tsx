@@ -37,6 +37,12 @@ const MusicSearchModal = ({
     getMusicData(keyword)
   }
 
+  const onAddMusicBoardHandler = async (e: FormEvent) => {
+    e.preventDefault()
+    // store에 정보 저장
+    //
+  }
+
   return (
     <div className='fixed w-full h-screen inset-0 flex flex-col justify-center items-center z-50 bg-black bg-opacity-50'>
       <div className='bg-white h-3/5 w-3/5 flex flex-col items-center rounded-md pb-10'>
@@ -57,16 +63,17 @@ const MusicSearchModal = ({
         {musicList.map((item: any) => {
           return (
             <div key={item.musicId} className='flex flex-col gap-2'>
-              <div>
-                <img src={item.thumbnail} alt='' />
-                <div>제목 {item.musicTitle}</div>
-                <div>가수 {item.artist}</div>
-                <div>발매일 {item.release}</div>
-                <div className='flex mt-5 gap-3'>
-                  <button>선택</button>
-                  <button onClick={() => setIsModal(false)}>취소</button>
+              <button type='submit' onClick={onAddMusicBoardHandler}>
+                <div>
+                  <img src={item.thumbnail} alt='' />
+                  <div>제목 {item.musicTitle}</div>
+                  <div>가수 {item.artist}</div>
+                  <div>발매일 {item.release}</div>
+                  <div className='flex mt-5 gap-3'>
+                    <button onClick={() => setIsModal(false)}>취소</button>
+                  </div>
                 </div>
-              </div>
+              </button>
             </div>
           )
         })}

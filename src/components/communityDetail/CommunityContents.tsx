@@ -58,12 +58,14 @@ const CommunityContents = () => {
                 <div>{boardTitle}</div>
                 <div>{nickname}</div>
                 <figure>
-                  <Image
-                    src={`${userImage}`}
-                    alt='유저 이미지'
-                    width={56}
-                    height={56}
-                  />
+                  {userImage ? (
+                    <Image
+                      src={`${userImage}`}
+                      alt='유저 이미지'
+                      width={56}
+                      height={56}
+                    />
+                  ) : null}
                 </figure>
                 <div>{onDateHandler(date)}</div>
                 <figure>
