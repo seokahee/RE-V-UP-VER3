@@ -9,6 +9,7 @@ export const readCommunityDetail = async (boardId: string) => {
         'boardId, boardTitle, date, musicId, content, likeList, userId, userInfo(nickname, userImage), comment(commentId), musicInfo(musicId, musicTitle, artist, thumbnail)',
       )
       .eq('boardId', boardId)
+      .single()
 
     if (!data) {
       return null
@@ -37,9 +38,23 @@ export const addCommnityBoard = async (
   return data
 }
 
-export const updateCommnityBoard = () => {}
+export const updateCommnityBoard = async (
+  boardId: string | string[],
+  boardTitle: string,
+  content: string,
+) => {
+  const { data, error } = await supabase
+    .from('community')
+    .update({ boardTitle, content })
+    .eq('boardId', boardId)
+    .select()
 
-export const deleteCommunityMutation = async (boardId: string | string[]) => {
+  if (error) {
+    throw new Error('내용을 수정하는 중에 오류가 생겼습니다. 문의해주세요.')
+  }
+}
+
+export const deleteCommunityBoard = async (boardId: string | string[]) => {
   const { error } = await supabase
     .from('community')
     .delete()
