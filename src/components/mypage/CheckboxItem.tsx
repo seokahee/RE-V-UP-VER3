@@ -1,6 +1,6 @@
 import React from 'react'
 
-type CheckboxItme = {
+type CheckboxItem = {
   onChangeCheckMusicHandler: React.ChangeEventHandler<HTMLInputElement>
   checked: boolean
   id: string
@@ -10,7 +10,7 @@ const CheckboxItem = ({
   onChangeCheckMusicHandler,
   id,
   checked,
-}: CheckboxItme) => {
+}: CheckboxItem) => {
   return (
     <input
       type='checkbox'
