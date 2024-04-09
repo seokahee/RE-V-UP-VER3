@@ -1,6 +1,6 @@
 import useInput from '@/hooks/useInput'
 import { modalMusicSearchData } from '@/shared/search/api'
-import { MusicInfoType } from '@/types/types'
+import { MusicInfoType } from '@/types/musicPlayer/types'
 import Image from 'next/image'
 import React, { FormEvent, useRef, useState } from 'react'
 
