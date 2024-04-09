@@ -7,10 +7,13 @@ import { COMMUNITY_QUERY_KEY } from "@/query/communityDetail/communityQueryKey";
 import { onDateHandler } from "@/util/util";
 import Image from "next/image";
 import LikeButton from "./LikeButton";
+import useInput from "@/hooks/useInput";
+import { useState } from "react";
 
 const CommunityContents = () => {
   const router = useRouter();
   const { id } = useParams();
+  const [isEdit, setIsEdit] = useState<boolean>(false);
 
   const {
     data: readDetailData,
@@ -27,10 +30,10 @@ const CommunityContents = () => {
   };
 
   if (isPending && isLoading) {
-    <div>정보를 가져오고 있습니다..로딩바자리임</div>;
+    return <div>정보를 가져오고 있습니다..로딩바자리임</div>;
   }
   if (error) {
-    <div>정보를 가져오지 못하고 있습니다. 로딩바자뤼</div>;
+    return <div>정보를 가져오지 못하고 있습니다. 로딩바자뤼</div>;
   }
   return (
     <div>
@@ -47,7 +50,7 @@ const CommunityContents = () => {
         }) => {
           const { nickname, userImage } = userInfo!;
           const { musicTitle, artist, thumbnail } = musicInfo!;
-          if (!likeList) return;
+          if (!likeList || !date || !comment || !thumbnail) return;
           return (
             <div>
               <button onClick={onBackButtonHandler}>이전으로 가기</button>

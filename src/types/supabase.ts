@@ -83,7 +83,7 @@ export type Database = {
           boardTitle: string;
           content: string;
           date: string;
-          likeList: string[] | null;
+          likeList: string[] | undefined;
           musicId: string;
           userId: string;
         };
@@ -92,7 +92,7 @@ export type Database = {
           boardTitle?: string;
           content?: string;
           date?: string;
-          likeList?: string[] | null;
+          likeList?: string[] | undefined;
           musicId?: string;
           userId?: string;
         };
@@ -101,7 +101,7 @@ export type Database = {
           boardTitle?: string;
           content?: string;
           date?: string;
-          likeList?: string[] | null;
+          likeList?: string[] | undefined;
           musicId?: string;
           userId?: string;
         };
