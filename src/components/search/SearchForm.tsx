@@ -2,10 +2,14 @@
 import useInput from '@/hooks/useInput'
 import { useSearchedStore } from '@/shared/store/searchStore'
 import { useRouter } from 'next/navigation'
-import { FormEvent, useEffect, useRef } from 'react'
+import { FormEvent, useRef } from 'react'
 
 const SearchForm = () => {
-  const { form: keywordInput, onChange } = useInput({
+  const {
+    form: keywordInput,
+    onChange,
+    reset,
+  } = useInput({
     keyword: '',
     selectedTabs: 'musicInfo',
   })
@@ -22,13 +26,9 @@ const SearchForm = () => {
     }
     searched(keyword, selectedTabs)
     router.push('/search')
+    reset()
   }
 
-  useEffect(() => {
-    return () => {
-      searched('', 'musicInfo') // 검색 인풋 값을 초기화
-    }
-  }, [searched])
   return (
     <div>
       <form onSubmit={onSubmitHandler}>

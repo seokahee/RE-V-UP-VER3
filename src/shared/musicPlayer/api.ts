@@ -1,81 +1,80 @@
-import { supabase } from "../supabase/supabase";
+import { supabase } from '../supabase/supabase'
 
 export const getCurrentMusicList = async (userId: string) => {
   const { data: currentMusic } = await supabase
-    .from("playlistCurrent")
-    .select("currentId,currentMusicIds,userInfo(userId)")
-    .eq("userId", userId);
+    .from('playlistCurrent')
+    .select('currentId,currentMusicIds,userInfo(userId)')
+    .eq('userId', userId)
 
   if (currentMusic && currentMusic.length > 0) {
     const musicIds = currentMusic.map((item) => {
-      return item.currentMusicIds;
-    });
+      return item.currentMusicIds
+    })
     if (musicIds && musicIds.length > 0) {
       const { data: musicInfo } = await supabase
-        .from("musicInfo")
-        .select("*")
-        .in("musicId", musicIds)
-        .order("musicTitle", { ascending: false });
+        .from('musicInfo')
+        .select('*')
+        .in('musicId', musicIds)
+        .order('musicTitle', { ascending: false })
 
-      return musicInfo;
+      return musicInfo
     }
   }
-  return [];
-};
+  return []
+}
 
 export const getMyMusicList = async (userId: string) => {
   const { data: playlistMy } = await supabase
-    .from("playlistMy")
-    .select("myMusicIds")
-    .eq("userId", userId);
-  return playlistMy;
-};
+    .from('playlistMy')
+    .select('myMusicIds')
+    .eq('userId', userId)
+  return playlistMy
+}
 
 export const updateCurrentMusic = async ({
   uid,
   currentMusicData,
 }: {
-  uid: string;
-  currentMusicData: string[];
+  uid: string
+  currentMusicData: string[]
 }) => {
   const { error } = await supabase
-    .from("playlistCurrent")
+    .from('playlistCurrent')
     .update({ currentMusicIds: currentMusicData })
-    .eq("userId", uid);
+    .eq('userId', uid)
   if (!error) {
-    alert("재생 목록이 삭제되었습니다.");
+    alert('재생 목록이 삭제되었습니다.')
   }
-};
+}
 
 export const insertMyPlayMusic = async ({
   userId,
   musicId,
 }: {
-  userId: string;
-  musicId: string[];
+  userId: string
+  musicId: string[]
 }) => {
   try {
     await supabase
-      .from("playlistMy")
+      .from('playlistMy')
       .insert([{ userId: userId, myMusicIds: musicId }])
-      .select();
+      .select()
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
-};
+}
 
 export const updateMyPlayMusic = async ({
   userId,
   myMusicList,
 }: {
-  userId: string;
-  myMusicList: any;
+  userId: string
+  myMusicList: any
 }) => {
   const { data: myPlayList } = await supabase
-    .from("playlistMy")
+    .from('playlistMy')
     .update({ myMusicIds: myMusicList })
-    .eq("userId", userId)
-    .select();
-
-  return myPlayList;
-};
+    .eq('userId', userId)
+    .select()
+  return myPlayList
+}
