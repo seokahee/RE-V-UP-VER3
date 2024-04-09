@@ -5,12 +5,16 @@ import { useRouter } from 'next/navigation'
 import { FormEvent, useRef } from 'react'
 
 const SearchForm = () => {
-  const { form: keywordInput, onChange } = useInput({
+  const {
+    form: keywordInput,
+    onChange,
+    reset,
+  } = useInput({
     keyword: '',
     selectedTabs: 'musicInfo',
   })
   const { keyword, selectedTabs } = keywordInput
-  const searched = useSearchedStore((state) => state.searched) // 스토어에서 set 함수 가져오기 (유즈셀렉토와 같음)
+  const searched = useSearchedStore((state) => state.searched)
   const router = useRouter()
   const keywordRef = useRef<HTMLInputElement>(null)
 
@@ -20,10 +24,11 @@ const SearchForm = () => {
       alert('검색 키워드를 입력해 주세요')
       return keywordRef.current?.focus()
     }
-    searched(keyword, selectedTabs) // 스토어 set 함수에 저장할 값 넣어주기 (디스패치에 페이로드 넣어주는것과 같음)
+    searched(keyword, selectedTabs)
     router.push('/search')
+    reset()
   }
-  //검색페이지를 벗어나면 초기화
+
   return (
     <div>
       <form onSubmit={onSubmitHandler}>
