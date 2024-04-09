@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react'
 
 const CommunityDetailEdit = () => {
-  return <div>CommunityDetailEdit</div>;
-};
+  return <div>CommunityDetailEdit</div>
+}
 
-export default CommunityDetailEdit;
+export default CommunityDetailEdit

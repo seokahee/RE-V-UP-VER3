@@ -1,23 +1,20 @@
-"use client";
+'use client'
 
-import { ReactNode, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import { useStore } from "@/shared/store";
-import {
-  getUserUid,
-  getUserUidProviderUserInfo,
-} from "@/shared/login/loginApi";
+import { ReactNode, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
+import { useStore } from '@/shared/store'
+import { getUserUid, getUserUidProviderUserInfo } from '@/shared/login/loginApi'
 import {
   saveSignUpInProviderUserInfo,
   updateInProviderUserInfo,
-} from "@/shared/join/joinApi";
+} from '@/shared/join/joinApi'
 
 type Props = {
-  children?: ReactNode;
-};
+  children?: ReactNode
+}
 const UserProvider = ({ children }: Props) => {
-  const { setUserInfo } = useStore();
-  const { data: userSessionInfo } = useSession();
+  const { setUserInfo } = useStore()
+  const { data: userSessionInfo } = useSession()
 
   useEffect(() => {
     const saveStoreUserUid = async () => {
@@ -26,13 +23,13 @@ const UserProvider = ({ children }: Props) => {
         userSessionInfo?.user?.email &&
         userSessionInfo.user.uid
       ) {
-        const userData = await getUserUid(userSessionInfo.user.email);
+        const userData = await getUserUid(userSessionInfo.user.email)
         const providerUserData = await getUserUidProviderUserInfo(
-          userSessionInfo.user.email
-        );
-        const { uid, name, email } = userSessionInfo.user;
-        const password = "noPassword";
-        const userType = 1;
+          userSessionInfo.user.email,
+        )
+        const { uid, name, email } = userSessionInfo.user
+        const password = 'noPassword'
+        const userType = 1
 
         const googleUserData = {
           userId: uid,
@@ -40,32 +37,32 @@ const UserProvider = ({ children }: Props) => {
           nickname: name,
           password,
           userType,
-        };
+        }
 
         if (providerUserData) {
           if (providerUserData.userId.includes(uid)) {
-            await updateInProviderUserInfo(googleUserData);
-            setUserInfo(uid);
+            await updateInProviderUserInfo(googleUserData)
+            setUserInfo(uid)
           } else {
-            await saveSignUpInProviderUserInfo(googleUserData);
-            setUserInfo(uid);
+            await saveSignUpInProviderUserInfo(googleUserData)
+            setUserInfo(uid)
           }
         } else {
-          await saveSignUpInProviderUserInfo(googleUserData);
-          setUserInfo(uid);
+          await saveSignUpInProviderUserInfo(googleUserData)
+          setUserInfo(uid)
         }
 
         if (userData) {
-          const userId = userData.userId;
-          setUserInfo(userId);
+          const userId = userData.userId
+          setUserInfo(userId)
         }
       }
-    };
+    }
 
-    saveStoreUserUid();
-  }, [userSessionInfo]);
+    saveStoreUserUid()
+  }, [userSessionInfo])
 
-  return <div>{children}</div>;
-};
+  return <div>{children}</div>
+}
 
-export default UserProvider;
+export default UserProvider
