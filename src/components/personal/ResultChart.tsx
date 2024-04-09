@@ -5,16 +5,26 @@ import Chart from "chart.js/auto";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getPreference, getDislike } from "@/shared/personal/personalApi";
-const ResultChart = () => {
+
+type ResultChartProps = {
+  userChar: {
+    gender: string;
+    mbti: string;
+  };
+};
+
+const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
+  const mbtiStatus = userChar.mbti;
+
   const chartRef = useRef(null);
 
   const { data: preference } = useQuery({
-    queryFn: () => getPreference(),
+    queryFn: () => getPreference(mbtiStatus),
     queryKey: ["preference"],
   });
 
   const { data: dislike } = useQuery({
-    queryFn: () => getDislike(),
+    queryFn: () => getDislike(mbtiStatus),
     queryKey: ["dislike"],
   });
 

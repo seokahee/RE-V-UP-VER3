@@ -1,16 +1,16 @@
 import type { MusicPreference, UserChar } from "@/types/main/types";
 import { supabase } from "../supabase/supabase";
 import { genreMatch } from "@/util/main/util";
-
-//퍼스널 뮤직에 진단 결과 넣는 값
+import { mbtiMatch } from "@/util/personal/util";
 
 //mbti 선호도, 비선호도 조회하는 값
 //선호도
-export const getPreference = async () => {
+export const getPreference = async (mbtiStatus: string) => {
+  const mbtiCode = mbtiMatch(mbtiStatus); // MBTI를 숫자로 변환
   let { data: musicPreferences, error } = await supabase
     .from("musicPreferences")
     .select("hiphop,dance,ballad,rnb,rock")
-    .eq("mbti", 1)
+    .eq("mbti", mbtiCode)
     .single();
 
   if (error) {
@@ -21,11 +21,12 @@ export const getPreference = async () => {
 };
 
 //비선호도
-export const getDislike = async () => {
+export const getDislike = async (mbtiStatus: string) => {
+  const mbtiCode = mbtiMatch(mbtiStatus); // MBTI를 숫자로 변환
   let { data: musicPreferences, error } = await supabase
     .from("musicDislikes")
     .select("hiphop,dance,ballad,rnb,rock")
-    .eq("mbti", 1)
+    .eq("mbti", mbtiCode)
     .single();
 
   if (error) {
@@ -36,12 +37,13 @@ export const getDislike = async () => {
 };
 
 //mbti별 선호도 상위 장르 음악
-export const recommendMusic = async () => {
+export const recommendMusic = async (mbtiStatus: string) => {
+  const mbtiCode = mbtiMatch(mbtiStatus); // MBTI를 숫자로 변환
   try {
     let { data, error } = await supabase
       .from("musicPreferences")
       .select("hiphop, dance, ballad, rnb, rock")
-      .eq("mbti", 1)
+      .eq("mbti", mbtiCode)
       .limit(1)
       .single();
 
@@ -90,16 +92,17 @@ export const getUserChar = async (
 };
 
 //userInfo에 userChar 넣는 값
-export const addUserChar = async ({
+export const insertUserChar = async ({
   userId,
   personalUser,
 }: {
   userId: string;
   personalUser: UserChar;
 }) => {
+  const mbtiCode = mbtiMatch(personalUser.mbti); // MBTI를 숫자로 변환
   const { data, error } = await supabase
     .from("userInfo")
-    .update({ userChar: personalUser })
+    .update({ userChar: { ...personalUser, mbti: mbtiCode } }) // 숫자로 변환된 MBTI 저장
     .eq("userId", userId)
     .select();
   if (error) {

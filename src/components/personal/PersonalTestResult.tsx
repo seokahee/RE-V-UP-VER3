@@ -1,13 +1,15 @@
 import React from "react";
 import ResultChart from "@/components/personal/ResultChart";
 import PersonalRecommend from "./PersonalRecommend";
+import { useSurvey } from "@/shared/store/personalStore";
 
 const PersonalTestResult = () => {
+  const { userChar } = useSurvey();
+
   return (
     <div>
-      결과페이지
-      <ResultChart />
-      <PersonalRecommend />
+      <ResultChart userChar={userChar} />
+      <PersonalRecommend userChar={userChar} />
     </div>
   );
 };

@@ -4,14 +4,22 @@ import {
   recommendMusic,
   getRecommendMusic,
 } from "@/shared/personal/personalApi";
-import { addUserChar } from "@/shared/personal/personalApi";
+import { insertUserChar } from "@/shared/personal/personalApi";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { useStore } from "@/shared/store";
 import type { UserChar } from "@/types/main/types";
 
-const PersonalRecommend = () => {
+type PersonalRecommendProps = {
+  userChar: {
+    gender: string;
+    mbti: string;
+  };
+};
+
+const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
+  const mbtiStatus = userChar.mbti;
   const { data: musicPreferenceData } = useQuery({
-    queryFn: () => recommendMusic(),
+    queryFn: () => recommendMusic(mbtiStatus),
     queryKey: ["test"],
   });
 
@@ -28,22 +36,11 @@ const PersonalRecommend = () => {
 
   //입력한 userChar
   const insertUserCharMutation = useMutation({
-    mutationFn: addUserChar,
+    mutationFn: insertUserChar,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["userChar"] });
     },
   });
-
-  //퍼스널 뮤직진단 결과 추가
-  const onUserCharHandler = () => {
-    const personalUser: UserChar = {
-      age: 15,
-      mbti: "ENFJ",
-      gender: false,
-      resultSentence: "당신은 R&B만 듣는 감성인입니다.",
-    };
-    insertUserCharMutation.mutate({ userId: userInfo.uid, personalUser });
-  };
 
   return (
     <div>
@@ -63,7 +60,6 @@ const PersonalRecommend = () => {
           <br />
         </div>
       ))}
-      <button onClick={onUserCharHandler}>유저정보 저장</button>
     </div>
   );
 };
