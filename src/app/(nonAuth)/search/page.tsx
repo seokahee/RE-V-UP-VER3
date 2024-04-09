@@ -63,5 +63,3 @@ const Search = () => {
 }
 
 export default Search
-
-// 검색 결과가 없을 때 서치페이지를 거치치 않는 방법
