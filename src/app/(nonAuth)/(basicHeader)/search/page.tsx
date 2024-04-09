@@ -6,7 +6,7 @@ import {
   getSearchedMusicData,
 } from '@/shared/search/api'
 import { useSearchedStore } from '@/shared/store/searchStore'
-import { CommunityType } from '@/types/types'
+import { CommunityType } from '@/types/community/type'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
@@ -63,5 +63,3 @@ const Search = () => {
 }
 
 export default Search
-
-// 검색 결과가 없을 때 서치페이지를 거치치 않는 방법

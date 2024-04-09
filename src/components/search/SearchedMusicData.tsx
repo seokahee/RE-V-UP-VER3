@@ -1,5 +1,6 @@
 'use client'
-import { MusicInfoType } from '@/types/types'
+
+import { MusicInfoType } from '@/types/musicPlayer/types'
 
 const SearchedMusicData = ({ item }: { item: MusicInfoType }) => {
   return (
