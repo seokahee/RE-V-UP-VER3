@@ -1,12 +1,12 @@
-import { useState } from "react";
-import MusicSearchModal from "./MusicSearchModal";
+import { useState } from 'react'
+import MusicSearchModal from './MusicSearchModal'
 
 const MusicSearch = () => {
-  const [isModal, setIsModal] = useState<boolean>(false);
+  const [isModal, setIsModal] = useState<boolean>(false)
 
   const onModalOpenHandler = () => {
-    setIsModal(true);
-  };
+    setIsModal(true)
+  }
 
   return (
     <div>
@@ -17,7 +17,7 @@ const MusicSearch = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default MusicSearch;
+export default MusicSearch

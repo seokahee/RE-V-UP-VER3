@@ -1,9 +1,9 @@
-import React from 'react'
+import CommunityDetailRead from '@/components/communityDetail/CommunityDetailRead'
 
 const CommunityPage = () => {
   return (
     <div>
-      CommunityPage
+      <CommunityDetailRead />
     </div>
   )
 }
