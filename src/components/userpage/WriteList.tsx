@@ -1,23 +1,23 @@
-'use client'
-
+import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
 import { getMyWriteListCount, getMyWriteListData } from '@/shared/mypage/api'
 import { useStore } from '@/shared/store'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useParams } from 'next/navigation'
 import React, { useState } from 'react'
-import Pagination from './Pagination'
-import BoardItem from './BoardItem'
-import BoardNoData from './BoardNoData'
-import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
+import BoardItem from '../mypage/BoardItem'
+import BoardNoData from '../mypage/BoardNoData'
+import Pagination from '../mypage/Pagination'
 
 const WriteList = () => {
   const { userInfo } = useStore()
+  const { id } = useParams<{ id: string }>()
   const [currentPage, setCurrentPage] = useState(1)
   const queryClient = useQueryClient()
 
   const { data: totalCount } = useQuery({
-    queryFn: () => getMyWriteListCount(userInfo.uid),
-    queryKey: ['myWriteListAllCount'],
-    enabled: !!userInfo.uid,
+    queryFn: () => getMyWriteListCount(id),
+    queryKey: ['userWriteListAllCount'],
+    enabled: !!id,
   })
 
   const PER_PAGE = 2
@@ -26,9 +26,9 @@ const WriteList = () => {
   const end = currentPage * PER_PAGE - 1
 
   const { data, isLoading, isError } = useQuery({
-    queryFn: () => getMyWriteListData(userInfo.uid, start, end),
-    queryKey: ['myWriteList', currentPage],
-    enabled: !!userInfo.uid,
+    queryFn: () => getMyWriteListData(id, start, end),
+    queryKey: ['userWriteList', currentPage],
+    enabled: !!id,
   })
 
   const { data: playListCurrent } = useQuery({
@@ -75,8 +75,8 @@ const WriteList = () => {
 
   return (
     <section>
-      <ul className='mb-8'>
-        {data ? (
+      <ul>
+        {data && data?.length > 0 ? (
           data?.map((item) => {
             return (
               <BoardItem

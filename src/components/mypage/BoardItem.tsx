@@ -4,7 +4,13 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-const BoardItem = ({ data: item }: { data: Board }) => {
+const BoardItem = ({
+  data: item,
+  onClick,
+}: {
+  data: Board
+  onClick: () => void
+}) => {
   return (
     <li className='flex justify-between p-4 border-b border-black border-solid'>
       <figure>
@@ -42,7 +48,9 @@ const BoardItem = ({ data: item }: { data: Board }) => {
             />
           )}
         </figure>
-        <button type='button'>재생</button>
+        <button type='button' onClick={onClick}>
+          재생
+        </button>
       </div>
     </li>
   )
