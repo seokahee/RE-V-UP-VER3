@@ -9,7 +9,7 @@ import React from 'react'
 const UserPage = () => {
   const tabArr = [
     { id: 0, title: '프로필', content: <UserInfo /> },
-    { id: 1, title: '내가 쓴 글', content: <WriteList /> },
+    { id: 1, title: '작성한 게시글', content: <WriteList /> },
     { id: 2, title: '좋아요 한 글', content: <LikeBoardList /> },
   ]
 
