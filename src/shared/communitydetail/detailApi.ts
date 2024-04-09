@@ -39,7 +39,7 @@ export const addCommnityBoard = async (
 
 export const updateCommnityBoard = () => {}
 
-export const deleteCommunityMutation = async (boardId: string) => {
+export const deleteCommunityMutation = async (boardId: string | string[]) => {
   const { error } = await supabase
     .from('community')
     .delete()
