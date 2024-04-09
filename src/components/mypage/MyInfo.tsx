@@ -26,7 +26,7 @@ const MyInfo = () => {
   const [checkText, setCheckText] = useState('')
   const nicknameRef = useRef<HTMLInputElement>(null)
 
-  const [isOpen, setIsOpen] = useState({
+  const [isVisibility, setIsVisibility] = useState({
     mbtiOpen: false,
     personalMusicOpen: false,
     playlistOpen: false,
@@ -35,7 +35,7 @@ const MyInfo = () => {
   })
 
   const queryClient = useQueryClient()
-
+  //훅으로 만들어보기
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getUserAndPlaylistData(userInfo.uid),
     queryKey: ['mypage', userInfo.uid],
@@ -64,7 +64,7 @@ const MyInfo = () => {
     setIsModal(false)
     if (data) {
       setNickname(data.nickname)
-      setIsOpen({
+      setIsVisibility({
         mbtiOpen: data.mbtiOpen,
         personalMusicOpen: data.personalMusicOpen,
         playlistOpen: data.playlistOpen,
@@ -77,11 +77,11 @@ const MyInfo = () => {
 
   const onChangeCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      setIsOpen((prev) => {
+      setIsVisibility((prev) => {
         return { ...prev, [e.target.name]: true }
       })
     } else {
-      setIsOpen((prev) => {
+      setIsVisibility((prev) => {
         return { ...prev, [e.target.name]: false }
       })
     }
@@ -99,7 +99,7 @@ const MyInfo = () => {
       personalMusicOpen,
       playlistOpen,
       postsOpen,
-    } = isOpen
+    } = isVisibility
     updateNicknameMutation.mutate({
       userId: userInfo.uid,
       nickname,
@@ -162,7 +162,7 @@ const MyInfo = () => {
     if (data) {
       setNickname(data.nickname)
       setUserImage(data?.userImage)
-      setIsOpen({
+      setIsVisibility({
         mbtiOpen: data.mbtiOpen,
         personalMusicOpen: data.personalMusicOpen,
         playlistOpen: data.playlistOpen,
@@ -248,7 +248,7 @@ const MyInfo = () => {
                 <input
                   type='checkbox'
                   name='personalMusicOpen'
-                  checked={isOpen.personalMusicOpen}
+                  checked={isVisibility.personalMusicOpen}
                   onChange={onChangeCheck}
                 />{' '}
                 퍼스널 뮤직
@@ -259,7 +259,7 @@ const MyInfo = () => {
                 <input
                   type='checkbox'
                   name='mbtiOpen'
-                  checked={isOpen.mbtiOpen}
+                  checked={isVisibility.mbtiOpen}
                   onChange={onChangeCheck}
                 />{' '}
                 MBTI
@@ -270,7 +270,7 @@ const MyInfo = () => {
                 <input
                   type='checkbox'
                   name='postsOpen'
-                  checked={isOpen.postsOpen}
+                  checked={isVisibility.postsOpen}
                   onChange={onChangeCheck}
                 />{' '}
                 작성한 게시물
@@ -281,7 +281,7 @@ const MyInfo = () => {
                 <input
                   type='checkbox'
                   name='likedPostsOpen'
-                  checked={isOpen.likedPostsOpen}
+                  checked={isVisibility.likedPostsOpen}
                   onChange={onChangeCheck}
                 />{' '}
                 좋아요 한 글
@@ -292,7 +292,7 @@ const MyInfo = () => {
                 <input
                   type='checkbox'
                   name='playlistOpen'
-                  checked={isOpen.playlistOpen}
+                  checked={isVisibility.playlistOpen}
                   onChange={onChangeCheck}
                 />{' '}
                 플레이리스트
