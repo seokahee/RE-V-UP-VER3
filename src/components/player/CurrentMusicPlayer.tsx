@@ -56,6 +56,7 @@ const CurrentMusicPlayer = () => {
   const updateMutation = useMutation({
     mutationFn: updateMyPlayMusic,
     onSuccess: () => {
+      console.log('뮤테이션이란다')
       queryClient.invalidateQueries({ queryKey: ['getMyMusicList'] })
     },
   })
@@ -111,15 +112,27 @@ const CurrentMusicPlayer = () => {
         console.log('myPlayList', myPlayList)
         console.log('checkedList', checkedList)
 
-        const myIndex = myPlayList.map((item) => {
+        // 마플리의 중첩을 풀고 뮤직아이디배열 반환
+        const myIndex = myPlayList.flatMap((item) => {
           return item.myMusicIds
         })
+        // .flat() 평탄화 , 중첩 요소를 하나로 만들어줌 / flatMap -중첩 배열을 하나로 만들어줌 메서드 체이닝을 사용하지않고 한번에 중첩배열을 풀어 요소를 반복하며 새 배열을 반환해준다
         console.log('myIndex', myIndex)
-        const uniqueValues = checkedList.filter((value) => {
-          return myIndex.some((my) => {
-            return !my?.includes(value)
-          })
+
+        // 뮤직아이디배열에 선택한 뮤직아이디의 값과 같지않은것을 반환
+        // set을 사용한 이유 - 중복값을 확인하기위해 아래 코드와도 같은로직이긴함
+        const setIndex = new Set(myIndex)
+        console.log('setIndex', setIndex)
+        const uniqueValues = checkedList.filter((val) => {
+          return !setIndex.has(val)
         })
+
+        // const uniqueValues = checkedList.filter((value) => {
+        //   return myIndex.some((item) => {
+        //     console.log('item', item)
+        //     return !item?.includes(value)
+        //   })
+        // })
 
         console.log('uniqueValues', uniqueValues)
         if (uniqueValues.length === 0) {
@@ -127,11 +140,9 @@ const CurrentMusicPlayer = () => {
           setCheckedList([])
           return
         } else {
-          const addMyMusicList = uniqueValues.forEach((item) => {
-            return myIndex[0]?.push(item)
-          })
-          console.log('addMyMusicList', addMyMusicList)
-          updateMutation.mutate({ userId: uid, myMusicList: addMyMusicList })
+          console.log('addMyMusicList', uniqueValues)
+          const updateList = [...myIndex, ...uniqueValues]
+          updateMutation.mutate({ userId: uid, myMusicList: updateList })
           alert('마이플레이리스트에 추가 되었습니다.')
           setCheckedList([])
         }
@@ -142,9 +153,6 @@ const CurrentMusicPlayer = () => {
       }
     }
   }
-
-  // 새로고침해야 반영됨, 중복이 하나라도 있으면 추가가 안됨
-  // 포이치 반환값 없음 배열에 값 담아야함
 
   return (
     <div>
