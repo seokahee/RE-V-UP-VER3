@@ -1,22 +1,6 @@
 'use client'
-import { supabase } from '@/shared/supabase/supabase'
 import { CommunityType } from '@/types/types'
 import { onDateHandler } from '@/util/util'
-
-export const getCommunityData = async (keyword: string) => {
-  const { data } = await supabase
-    .from('community')
-    .select(
-      'boardId, boardTitle, likeList, date, userId, userInfo(nickname, userImage), musicInfo(thumbnail)',
-    )
-    .like('boardTitle', `%${keyword}%`)
-    .order('date', { ascending: false })
-  return { data }
-}
-
-export type CommunityDataType = Awaited<
-  ReturnType<typeof getCommunityData>
->['data']
 
 const SearchedCommunityData = ({ item }: { item: CommunityType }) => {
   return (

@@ -1,20 +1,18 @@
-'use client'
-
-import { getMyWriteListCount, getMyWriteListData } from '@/shared/mypage/api'
+import { getLikeBoardCount, getLikeBoardData } from '@/shared/mypage/api'
 import { useStore } from '@/shared/store'
 import { useQuery } from '@tanstack/react-query'
 import React, { useState } from 'react'
-import Pagination from './Pagination'
 import BoardItem from './BoardItem'
+import Pagination from './Pagination'
 import BoardNoData from './BoardNoData'
 
-const WriteList = () => {
+const LikeBoardList = () => {
   const { userInfo } = useStore()
   const [currentPage, setCurrentPage] = useState(1)
 
   const { data: totalCount } = useQuery({
-    queryFn: () => getMyWriteListCount(userInfo.uid),
-    queryKey: ['myWriteListAllCount'],
+    queryFn: () => getLikeBoardCount(userInfo.uid),
+    queryKey: ['likeBoardAllCount'],
     enabled: !!userInfo.uid,
   })
 
@@ -23,11 +21,19 @@ const WriteList = () => {
   const start = (currentPage - 1) * PER_PAGE
   const end = currentPage * PER_PAGE - 1
 
-  const { data } = useQuery({
-    queryFn: () => getMyWriteListData(userInfo.uid, start, end),
-    queryKey: ['myWriteList', currentPage],
+  const { data, isLoading, isError } = useQuery({
+    queryFn: () => getLikeBoardData(userInfo.uid, start, end),
+    queryKey: ['likeBoard', userInfo.uid],
     enabled: !!userInfo.uid,
   })
+
+  if (isError) {
+    return '에러가 발생했어요!'
+  }
+
+  if (isLoading) {
+    return '데이터를 불러오는 중입니다.'
+  }
 
   const nextPage = () => {
     setCurrentPage((prev) => prev + 1)
@@ -39,7 +45,7 @@ const WriteList = () => {
 
   return (
     <section>
-      <ul className='mb-8'>
+      <ul>
         {data ? (
           data?.map((item) => {
             return <BoardItem key={item.boardId} data={item} />
@@ -63,4 +69,4 @@ const WriteList = () => {
   )
 }
 
-export default WriteList
+export default LikeBoardList

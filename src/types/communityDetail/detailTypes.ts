@@ -7,8 +7,8 @@ export type readCommuDetail = {
   likeList?: string[]
   userId?: string
   userInfo?: {
-    nickname?: string
-    userImage?: string
+    nickname: string
+    userImage: string
   }
   comment?: {
     commentId?: string
@@ -19,4 +19,10 @@ export type readCommuDetail = {
     artist?: string
     thumbnail?: string
   }
+}
+
+export type addCommnityBoard = () => {
+  boardTitle?: string
+  musicId?: string
+  content?: string
 }
