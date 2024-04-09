@@ -157,20 +157,38 @@ const CurrentMusicPlayer = () => {
       return;
     }
     if (window.confirm("선택한 곡을 마이플레이 리스트에 추가하시겠습니까?")) {
+      // 마이플레이리스트 배열을 가져옴
       if (myPlayList && myPlayList.length > 0) {
-        const myPlayIds = myPlayList[0].myMusicIds;
-        if (myPlayIds?.find((el) => el === checkedList[currentIndex])) {
+        console.log("myPlayList", myPlayList);
+        console.log("checkedList", checkedList);
+
+        const myIndex = myPlayList.map((item) => {
+          return item.myMusicIds;
+        });
+        console.log("myIndex", myIndex);
+        const uniqueValues = checkedList.filter(
+          (value) => !myIndex[0]?.includes(value)
+        );
+
+        console.log("uniqueValues", uniqueValues);
+        if (!uniqueValues) {
           alert("이미 추가된 노래입니다.");
           setCheckedList([]);
           return;
+        } else {
+          const addMyMusicList = uniqueValues.forEach((item) => {
+            return myIndex[0]?.push(item);
+          });
+          console.log("addMyMusicList", addMyMusicList);
+          updateMutation.mutate({ userId: uid, myMusicList: addMyMusicList });
+          alert("마이플레이리스트에 추가 되었습니다.");
+          setCheckedList([]);
         }
-        myPlayIds?.push(checkedList[currentIndex]);
-        updateMutation.mutate({ userId: uid, myMusicList: myPlayIds });
       } else {
-        await insertMutation.mutateAsync({ userId: uid, musicId: checkedList });
+        insertMutation.mutate({ userId: uid, musicId: checkedList });
+        alert("현재 재생목록에 추가 되었습니다.");
+        setCheckedList([]);
       }
-      alert("현재 재생목록에 추가 되었습니다.");
-      setCheckedList([]);
     }
   };
 
