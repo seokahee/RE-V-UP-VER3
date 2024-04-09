@@ -23,6 +23,7 @@ const PersonalMusic = () => {
   const [SN, setSN] = useState<string>('')
   const [TF, setTF] = useState<string>('')
   const [PJ, setPJ] = useState<string>('')
+  const [isResult, setIsResult] = useState<boolean>(false)
 
   //유저 정보 조회
   const { data: userData } = useQuery({
@@ -74,6 +75,7 @@ const PersonalMusic = () => {
     setSN('')
     setTF('')
     setPJ('')
+    setIsResult(true)
   }
 
   console.log('userChar', userChar)
@@ -192,6 +194,7 @@ const PersonalMusic = () => {
         </label>
       </div>
       <button onClick={submitResult}>결과보러가기</button>
+      <div>{isResult ? '결과 테스트 ' : ''}</div>
     </div>
   )
 }
