@@ -1,4 +1,4 @@
-import type { PlaylistMy, UserInfo } from '@/types/mypage/types'
+import type { Board, PlaylistMy, UserInfo } from '@/types/mypage/types'
 import { supabase } from '../supabase/supabase'
 
 export const getUserAndPlaylistData = async (
@@ -69,14 +69,31 @@ export const updateMyMusicIds = async ({
 export const updateNickname = async ({
   userId,
   nickname,
+  likedPostsOpen,
+  mbtiOpen,
+  personalMusicOpen,
+  playlistOpen,
+  postsOpen,
 }: {
   userId: string
   nickname: string
+  likedPostsOpen: boolean
+  mbtiOpen: boolean
+  personalMusicOpen: boolean
+  playlistOpen: boolean
+  postsOpen: boolean
 }) => {
   try {
     const { data, error } = await supabase
       .from('userInfo')
-      .update({ nickname })
+      .update({
+        nickname,
+        likedPostsOpen,
+        mbtiOpen,
+        personalMusicOpen,
+        playlistOpen,
+        postsOpen,
+      })
       .eq('userId', userId)
       .select()
   } catch (error) {
@@ -123,12 +140,12 @@ export const getMyWriteListData = async (
   userId: string,
   start: number,
   end: number,
-) => {
+): Promise<Board[]> => {
   try {
     const { data, error } = await supabase
       .from('community')
       .select(
-        '*, musicInfo(musicId, thumbnail, musicTitle), userInfo(nickname, userImage), comment(commentId)',
+        '*, musicInfo(thumbnail, musicTitle), userInfo(nickname, userImage), comment(commentId)',
       )
       .eq('userId', userId)
       .range(start, end)
@@ -138,9 +155,10 @@ export const getMyWriteListData = async (
       return []
     }
 
-    return data
+    return data as Board[]
   } catch (error) {
     console.log(error)
+    return []
   }
 }
 
@@ -207,4 +225,48 @@ export const updateFollow = async ({
   }
 
   return
+}
+
+export const getLikeBoardData = async (
+  userId: string,
+  start: number,
+  end: number,
+): Promise<Board[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('community')
+      .select(
+        '*, musicInfo(thumbnail, musicTitle), userInfo(nickname, userImage), comment(commentId)',
+      )
+      .contains('likeList', [userId])
+      .range(start, end)
+    if (error) {
+      console.error(error)
+      return []
+    }
+
+    return data as Board[]
+  } catch (error) {
+    console.log(error)
+    return []
+  }
+}
+
+export const getLikeBoardCount = async (userId: string): Promise<number> => {
+  try {
+    const { data, error } = await supabase
+      .from('community')
+      .select('boardId')
+      .contains('likeList', [userId])
+
+    if (error) {
+      console.error(error)
+      return 0
+    }
+
+    return data?.length
+  } catch (error) {
+    console.log(error)
+    return 0
+  }
 }

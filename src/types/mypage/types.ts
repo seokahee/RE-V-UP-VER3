@@ -35,3 +35,24 @@ export type PlaylistMy = {
   release: string
   thumbnail: string
 }
+
+export type Board = {
+  boardId: string
+  boardTitle: string
+  content: string
+  date: string
+  likeList: string[]
+  musicId: string
+  userId: string
+  musicInfo: {
+    thumbnail: string
+    musicTitle: string
+  }
+  userInfo: {
+    nickname: string
+    userImage?: string
+  }
+  comment: {
+    commentId: string
+  }[]
+}
