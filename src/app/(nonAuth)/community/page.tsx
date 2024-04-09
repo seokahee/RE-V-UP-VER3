@@ -1,6 +1,4 @@
 'use client'
-import MusicSearchModal from '@/components/search/MusicSearch'
-import SearchForm from '@/components/search/SearchForm'
 import { getCommunityList } from '@/shared/community/api'
 import { CommunityType } from '@/types/types'
 import { onDateHandler } from '@/util/util'
@@ -29,8 +27,6 @@ const Community = () => {
 
   return (
     <div>
-      <SearchForm />
-      <MusicSearchModal />
       <Link href='/communitycreate'>글 등록하기</Link>
       <div className='flex gap-2 m-10'>
         <p
