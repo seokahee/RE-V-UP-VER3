@@ -39,8 +39,6 @@ const MusicSearchModal = ({
 
   const onAddMusicBoardHandler = async (e: FormEvent) => {
     e.preventDefault()
-    // store에 정보 저장
-    //
   }
 
   return (
