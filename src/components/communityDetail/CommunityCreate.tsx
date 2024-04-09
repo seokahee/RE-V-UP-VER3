@@ -29,6 +29,7 @@ const CommunityCreate = () => {
     await addCommnityBoard(boardTitle, content, uid, musicId)
     alert('등록이 완료됐습니다.')
     reset()
+    router.push('/community')
   }
 
   return (
@@ -47,6 +48,7 @@ const CommunityCreate = () => {
           </div>
         </div>
         <button>등록</button>
+
         <div>
           <div>
             <input

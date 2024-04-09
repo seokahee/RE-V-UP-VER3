@@ -14,9 +14,14 @@ export const useCommunityQuery = (boardId: string | string[]) => {
   return { readCommunityDetailQuery }
 }
 
-export const useMutationItem = (uid: string) => {
+export const useMutationItem = (
+  uid: string,
+  boardTitle: string,
+  content: string,
+  musicId: string,
+) => {
   const addCommunityMutation = useMutation({
-    mutationFn: addCommnityBoard,
+    mutationFn: () => addCommnityBoard(boardTitle, content, uid, musicId),
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: [COMMUNITY_QUERY_KEY.ADD_BOARD, uid],

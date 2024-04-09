@@ -36,3 +36,16 @@ export const addCommnityBoard = async (
   }
   return data
 }
+
+export const updateCommnityBoard = () => {}
+
+export const deleteCommunityMutation = async (boardId: string) => {
+  const { error } = await supabase
+    .from('community')
+    .delete()
+    .eq('boardId', boardId)
+
+  if (error) {
+    throw new Error('오류로 인해 삭제할 수 없습니다. 문의해주세요.')
+  }
+}

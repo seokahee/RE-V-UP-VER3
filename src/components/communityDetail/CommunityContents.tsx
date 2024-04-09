@@ -1,9 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { FormEvent, MouseEvent, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, useRouter } from 'next/navigation'
-import { readCommunityDetail } from '@/shared/communitydetail/detailApi'
+import {
+  deleteCommunityMutation,
+  readCommunityDetail,
+} from '@/shared/communitydetail/detailApi'
 import { COMMUNITY_QUERY_KEY } from '@/query/communityDetail/communityQueryKey'
 import Image from 'next/image'
 import { onDateHandler } from '@/util/util'
@@ -23,6 +26,11 @@ const CommunityContents = () => {
     queryKey: [COMMUNITY_QUERY_KEY.READ_BOARD, id],
     queryFn: () => readCommunityDetail(id.toString()),
   })
+
+  const onDeleteBoardHandler = async (e: MouseEvent) => {
+    e.preventDefault()
+    await deleteCommunityMutation(id)
+  }
 
   const onBackButtonHandler = () => {
     router.back()
@@ -53,6 +61,9 @@ const CommunityContents = () => {
           return (
             <div>
               <button onClick={onBackButtonHandler}>이전으로 가기</button>
+              <button type='button' onClick={onDeleteBoardHandler}>
+                삭제
+              </button>
               <div key={boardId}>
                 <div>{boardTitle}</div>
                 <div>{nickname}</div>
