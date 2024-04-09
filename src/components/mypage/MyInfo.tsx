@@ -42,22 +42,6 @@ const MyInfo = () => {
     enabled: !!userInfo.uid,
   })
 
-  const { data: playlistMyData } = useQuery({
-    queryFn: () =>
-      getUserPlaylistMyMusicInfoData(
-        data?.playlistMy?.[0].myMusicIds as string[],
-      ),
-    queryKey: ['myMusicIds', data?.playlistMy],
-    enabled: !!data?.playlistMy?.length,
-  })
-
-  const deleteMutation = useMutation({
-    mutationFn: updateMyMusicIds,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['mypage'] })
-    },
-  })
-
   const updateNicknameMutation = useMutation({
     mutationFn: updateNickname,
     onSuccess: () => {

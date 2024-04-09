@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react'
 
 const BoardNoData = () => {
-  return <li>데이터가 없습니다.</li>;
-};
+  return <li>데이터가 없습니다.</li>
+}
 
-export default BoardNoData;
+export default BoardNoData
