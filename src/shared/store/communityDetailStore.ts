@@ -6,8 +6,8 @@ type MusicSearchedKeywordStore = {
     keyword: string
   }
   editValue: {
-    boardTitle: string
-    content: string
+    editBoardTitle: string
+    editContent: string
   }
   setMusicSearchKeyword: (keyword: string) => void
   setBoardContents: (boardTitle: string, content: string) => void
@@ -19,8 +19,8 @@ const initialState = {
     keyword: '',
   },
   editValue: {
-    boardTitle: '',
-    content: '',
+    editBoardTitle: '',
+    editContent: '',
   },
 }
 
@@ -30,8 +30,8 @@ export const useMusicSearchedStore = create(
       ...initialState,
       setMusicSearchKeyword: (keyword: string) =>
         set({ musicSearchKeyword: { keyword } }),
-      setBoardContents: (boardTitle: string, content: string) =>
-        set({ editValue: { boardTitle, content } }),
+      setBoardContents: (editBoardTitle: string, editContent: string) =>
+        set({ editValue: { editBoardTitle, editContent } }),
     }),
     {
       name: 'store',

@@ -1,7 +1,7 @@
 'use client'
 
-import { FormEvent, MouseEvent, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { MouseEvent, useState } from 'react'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useParams, useRouter } from 'next/navigation'
 import {
   deleteCommunityBoard,
@@ -12,25 +12,33 @@ import { COMMUNITY_QUERY_KEY } from '@/query/communityDetail/communityQueryKey'
 import Image from 'next/image'
 import { onDateHandler } from '@/util/util'
 import LikeButton from './LikeButton'
-import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
-import useInput from '@/hooks/useInput'
 import { useStore } from '@/shared/store'
+import useInput from '@/hooks/useInput'
+import { queryClient } from '@/app/provider'
+import { useCoummunityItem } from '@/query/communityDetail/communityMutation'
+import {
+  readCommuDetail,
+  readCommuDetailDataType,
+} from '@/types/communityDetail/detailTypes'
 
 const CommunityContents = () => {
   const router = useRouter()
-  const { id } = useParams()
-  console.log(id)
+  const [isEdit, setIsEdit] = useState<boolean>(false)
+  const { id }: { id: string } = useParams()
+  const { userInfo: userUid } = useStore()
+  const { updateCommunityMutation, deleteCommunityMutation } =
+    useCoummunityItem()
+  const { uid } = userUid
   const {
     data: readDetailData,
     isPending,
     isLoading,
     error,
   } = useQuery({
-    queryKey: [COMMUNITY_QUERY_KEY.READ_BOARD, id],
     queryFn: () => readCommunityDetail(id.toString()),
-    // enabled: !!uid,
+    queryKey: [COMMUNITY_QUERY_KEY.COMMUNITY_DETAIL],
   })
-  if (!readDetailData) return
+
   const {
     boardId,
     boardTitle,
@@ -40,54 +48,42 @@ const CommunityContents = () => {
     userInfo,
     comment,
     musicInfo,
-  } = readDetailData
-  const { nickname, userImage } = userInfo!
-  const { musicTitle, artist, thumbnail } = musicInfo!
-  console.log(boardTitle, content)
-  if (!boardTitle || !content) return null
-  // const {
-  //   form: editForm,
-  //   setForm: setEditForm,
-  //   onChange: onChangeEditForm,
-  //   reset,
-  // } = useInput({ boardTitle, content })
-
-  const { userInfo: userUid } = useStore()
-  const [isEdit, setIsEdit] = useState<boolean>(false)
-  const { uid } = userUid
-  const [editForm, setEditForm] = useState({ boardTitle, content })
-  const editValueTitle = editForm.boardTitle
-  const editValueContent = editForm.content
-
-  if (!likeList) return
+  } = readDetailData || ({} as readCommuDetail)
+  const { nickname, userImage, userId } = userInfo || {}
+  const { musicTitle, artist, thumbnail } = musicInfo || {}
+  const {
+    form: editForm,
+    setForm: setEditForm,
+    onChange: onChangeEditForm,
+    reset,
+  } = useInput({ boardTitle, content })
+  const { boardTitle: updatedTitle, content: updatedContent } = editForm
 
   const onBoardEditHandler = (e: MouseEvent) => {
     e.preventDefault()
+
     setIsEdit(!isEdit)
     setEditForm({ boardTitle, content })
   }
-
   const onBoardEditCompleteHandler = async (e: MouseEvent) => {
     e.preventDefault()
-    setEditForm((preEditForm) => {
-      if (boardId === id) {
-        return {
-          ...preEditForm,
-          boardTitle: editValueTitle,
-          content: editValueContent,
-        }
-      }
-      return preEditForm
-    })
-    alert('내용을 수정하셨습니다.')
 
-    await updateCommnityBoard(boardId, editValueTitle, editValueContent)
+    if (boardId && updatedTitle && updatedContent) {
+      updateCommunityMutation.mutate({
+        boardId,
+        boardTitle: updatedTitle,
+        content: updatedContent,
+      })
+    }
+    alert('내용을 수정하셨습니다.')
     setIsEdit(false)
   }
-
   const onDeleteBoardHandler = async (e: MouseEvent) => {
     e.preventDefault()
-    await deleteCommunityBoard(id)
+
+    deleteCommunityMutation.mutate(id)
+    alert('삭제되었습니다.')
+    router.back()
   }
 
   const onEditCancelHandler = () => {
@@ -97,6 +93,8 @@ const CommunityContents = () => {
     setIsEdit(false)
     router.back()
   }
+  if (!boardTitle || !content || !comment || !date) return null
+  if (!likeList) return null
 
   if (isPending && isLoading) {
     return <div>정보를 가져오고 있습니다..로딩바자리임</div>
@@ -108,34 +106,26 @@ const CommunityContents = () => {
     <div>
       <div>
         <div>
-          {/* <button onClick={onBackButtonHandler}>이전으로 가기</button>
+          <button onClick={onBackButtonHandler}>이전으로 가기</button>
           {isEdit ? (
-            <button onClick={onEditCancelHandler}>수정취소</button>
-          ) : (
-            <></>
-          )}
-
-          {isEdit ? (
-            <button onClick={onBoardEditCompleteHandler}>수정완료</button>
-          ) : (
-            <></>
-          )}
+            <div>
+              <button onClick={onEditCancelHandler}>수정취소</button>
+              <button onClick={onBoardEditCompleteHandler}>수정완료</button>
+            </div>
+          ) : null}
         </div>
-        {isEdit ? (
-          <div></div>
-        ) : (
-          <button onClick={onBoardEditHandler}>수정</button>
+        {userId === uid && <button onClick={onBoardEditHandler}>수정</button>}
+        {userId === uid && (
+          <button type='button' onClick={onDeleteBoardHandler}>
+            삭제
+          </button>
         )}
-
-        <button type='button' onClick={onDeleteBoardHandler}>
-          삭제
-        </button>
-        <div key={boardId}>
+        <div>
           {isEdit ? (
             <input
               type='text'
               name='boardTitle'
-              value={editValueTitle}
+              value={updatedTitle}
               onChange={onChangeEditForm}
             />
           ) : (
@@ -167,7 +157,7 @@ const CommunityContents = () => {
             <textarea
               id='content'
               name='content'
-              value={editValueContent}
+              value={updatedContent}
               onChange={onChangeEditForm}
               cols={30}
               rows={10}
@@ -179,7 +169,7 @@ const CommunityContents = () => {
             <LikeButton />
             {likeList.length}
           </div>
-          <div>{comment.length}</div> */}
+          <div>{comment.length ? comment.length : 0}</div>
         </div>
       </div>
     </div>
