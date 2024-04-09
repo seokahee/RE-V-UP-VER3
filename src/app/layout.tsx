@@ -2,7 +2,10 @@ import type { Metadata } from 'next'
 import './globals.css'
 import QueryProvider from './provider'
 import { NextAuthProvider } from './NextAuthProvider'
-import Header from '@/components/Header'
+import Header from '@/components/LogoHeader'
+import BasicHeader from '@/components/LogoHeader'
+import NonSearchHeader from '@/components/NonSerachHader'
+import SearchHeader from '@/components/SearchHeader'
 
 export const metadata: Metadata = {
   title: 'Volume Up',
@@ -18,10 +21,7 @@ export default function RootLayout({
     <NextAuthProvider>
       <QueryProvider>
         <html lang='en'>
-          <body>
-            <Header />
-            {children}
-          </body>
+          <body>{children}</body>
         </html>
       </QueryProvider>
     </NextAuthProvider>

@@ -8,6 +8,7 @@ export const getComments = async (): Promise<comment[]> => {
     .select(
       'commentId,commentContent,commentDate,commentLikeList,userInfo(userId, nickname, userImage)',
     )
+    .order('commentDate', { ascending: true })
   if (error) {
     throw error.message
   }
