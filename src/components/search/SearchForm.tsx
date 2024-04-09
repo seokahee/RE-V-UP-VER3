@@ -23,7 +23,7 @@ const SearchForm = () => {
     searched(keyword, selectedTabs) // 스토어 set 함수에 저장할 값 넣어주기 (디스패치에 페이로드 넣어주는것과 같음)
     router.push('/search')
   }
-
+  //검색페이지를 벗어나면 초기화
   return (
     <div>
       <form onSubmit={onSubmitHandler}>
