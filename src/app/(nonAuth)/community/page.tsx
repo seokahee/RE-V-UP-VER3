@@ -1,6 +1,7 @@
 'use client'
+import Pagination from '@/components/mypage/Pagination'
 import { getCommunityList } from '@/shared/community/api'
-import { CommunityType } from '@/types/types'
+import { CommunityType } from '@/types/community/type'
 import { onDateHandler } from '@/util/util'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
@@ -8,6 +9,7 @@ import { useEffect, useState } from 'react'
 
 const Community = () => {
   const [isSort, setIsSort] = useState(true)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const { data, refetch } = useQuery({
     queryFn: () => getCommunityList(isSort),
@@ -24,6 +26,25 @@ const Community = () => {
   const filteredData = data.filter((item) => {
     return item && item.userInfo && item.musicInfo
   }) as CommunityType[]
+
+  const itemsPerPage = 10
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage)
+
+  const indexOfLastItem = currentPage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem)
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
+    }
+  }
 
   return (
     <div>
@@ -46,8 +67,7 @@ const Community = () => {
           좋아요
         </p>
       </div>
-
-      {filteredData.map((item) => {
+      {currentItems.map((item) => {
         return (
           <div key={item!.boardId} className='flex items-center'>
             <img
@@ -55,7 +75,11 @@ const Community = () => {
               alt=''
               className='w-28'
             />
-            <img src={item.musicInfo.thumbnail} alt='' className='w-28' />
+            <img
+              src={item.musicInfo.thumbnail}
+              alt='thumbnail'
+              className='w-28'
+            />
             <div className='flex flex-col gap-2'>
               <div>{item!.boardTitle}</div>
               <div className='flex gap-2'>
@@ -67,6 +91,13 @@ const Community = () => {
           </div>
         )
       })}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        prevPage={prevPage}
+        nextPage={nextPage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   )
 }

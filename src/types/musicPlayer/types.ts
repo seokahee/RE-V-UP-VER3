@@ -1,17 +1,3 @@
-export type CommunityType = {
-  boardId: string
-  boardTitle: string
-  date: string
-  likeList: string[]
-  userInfo: {
-    nickname: string
-    userImage: string
-  }
-  musicInfo: {
-    thumbnail: string
-  }
-}
-
 export type MusicInfoType = {
   artist: string
   musicId: string
@@ -32,6 +18,7 @@ export type CurrentPlaylistType = {
   musicTitle: string
   release: string
   thumbnail: string
+  runTime: string
   userInfo: {
     userId: string
   }
