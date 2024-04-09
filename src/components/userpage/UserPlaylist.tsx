@@ -6,8 +6,15 @@ import CheckboxItem from '../mypage/CheckboxItem'
 import Image from 'next/image'
 import { useStore } from '@/shared/store'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
+import LockContens from './LockContens'
 
-const UserPlaylist = ({ data }: { data: UserInfo }) => {
+const UserPlaylist = ({
+  data,
+  isVisibility,
+}: {
+  data: UserInfo
+  isVisibility: boolean
+}) => {
   const { userInfo } = useStore()
   const [checkedList, setCheckedList] = useState<string[]>([])
   const [myCurrentMusicList, setMyCurrentMusicList] = useState<string[]>([])
@@ -131,44 +138,53 @@ const UserPlaylist = ({ data }: { data: UserInfo }) => {
   return (
     <div className='mt-[5rem]'>
       <h2>{data?.nickname}님의 플레이리스트</h2>
-      <button type='button' onClick={onClickAllAddHandler}>
-        전체 재생 하기
-      </button>
-      <div>
-        <button type='button' onClick={onClickAddHandler}>
-          {checkedList.length}곡 재생
-        </button>
-      </div>
-      <ul className='list-none'>
-        {playlistUserMyData?.map((item) => {
-          return (
-            <li key={item.musicId}>
-              <div>
-                <CheckboxItem
-                  checked={checkedList.includes(item.musicId)}
-                  id={item.musicId}
-                  onChangeCheckMusicHandler={(e) =>
-                    onChangeCheckMusicHandler(e.target.checked, item.musicId)
-                  }
-                />
-                <figure>
-                  <Image
-                    src={item.thumbnail}
-                    width={56}
-                    height={56}
-                    alt={`${item.musicTitle} 앨범 이미지`}
-                  />
-                </figure>
-                <label htmlFor={item.musicId} className='flex flex-col'>
-                  {item.musicTitle}
-                  <span>{item.artist}</span>
-                </label>
-              </div>
-              <span>재생시간..</span>
-            </li>
-          )
-        })}
-      </ul>
+      {isVisibility ? (
+        <>
+          <button type='button' onClick={onClickAllAddHandler}>
+            전체 재생 하기
+          </button>
+          <div>
+            <button type='button' onClick={onClickAddHandler}>
+              {checkedList.length}곡 재생
+            </button>
+          </div>
+          <ul className='list-none'>
+            {playlistUserMyData?.map((item) => {
+              return (
+                <li key={item.musicId}>
+                  <div>
+                    <CheckboxItem
+                      checked={checkedList.includes(item.musicId)}
+                      id={item.musicId}
+                      onChangeCheckMusicHandler={(e) =>
+                        onChangeCheckMusicHandler(
+                          e.target.checked,
+                          item.musicId,
+                        )
+                      }
+                    />
+                    <figure>
+                      <Image
+                        src={item.thumbnail}
+                        width={56}
+                        height={56}
+                        alt={`${item.musicTitle} 앨범 이미지`}
+                      />
+                    </figure>
+                    <label htmlFor={item.musicId} className='flex flex-col'>
+                      {item.musicTitle}
+                      <span>{item.artist}</span>
+                    </label>
+                  </div>
+                  <span>재생시간..</span>
+                </li>
+              )
+            })}
+          </ul>
+        </>
+      ) : (
+        <LockContens />
+      )}
     </div>
   )
 }

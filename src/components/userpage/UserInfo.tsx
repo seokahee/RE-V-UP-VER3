@@ -114,7 +114,7 @@ const UserInfo = () => {
           {data?.personalMusicOpen ? data?.personalMusic?.resultSentence : ' '}
         </p>
       </div>
-      <UserPlaylist data={data!} />
+      <UserPlaylist data={data!} isVisibility={data?.playlistOpen!} />
     </section>
   )
 }

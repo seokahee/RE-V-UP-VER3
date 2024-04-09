@@ -7,6 +7,8 @@ import React, { useState } from 'react'
 import BoardItem from '../mypage/BoardItem'
 import BoardNoData from '../mypage/BoardNoData'
 import Pagination from '../mypage/Pagination'
+import { getUserVisibilityData } from '@/shared/userpage/api'
+import LockContens from './LockContens'
 
 const WriteList = () => {
   const { userInfo } = useStore()
@@ -35,6 +37,12 @@ const WriteList = () => {
     queryFn: () => getCurrentMusicData(userInfo.uid),
     queryKey: ['playListCurrent'],
     enabled: !!userInfo.uid,
+  })
+
+  const { data: UserVisibilityData } = useQuery({
+    queryFn: () => getUserVisibilityData(id),
+    queryKey: ['userVisibilitys', id],
+    enabled: !!id,
   })
 
   const updateMutation = useMutation({
@@ -75,31 +83,37 @@ const WriteList = () => {
 
   return (
     <section>
-      <ul>
-        {data && data?.length > 0 ? (
-          data?.map((item) => {
-            return (
-              <BoardItem
-                key={item.boardId}
-                data={item}
-                onClick={() => onClickAddCurrentMusicHandler(item.musicId)}
-              />
-            )
-          })
-        ) : (
-          <BoardNoData />
-        )}
-      </ul>
-      {data && data?.length > 0 ? (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          nextPage={nextPage}
-          prevPage={prevPage}
-          setCurrentPage={setCurrentPage}
-        />
+      {UserVisibilityData?.postsOpen ? (
+        <>
+          <ul>
+            {data && data?.length > 0 ? (
+              data?.map((item) => {
+                return (
+                  <BoardItem
+                    key={item.boardId}
+                    data={item}
+                    onClick={() => onClickAddCurrentMusicHandler(item.musicId)}
+                  />
+                )
+              })
+            ) : (
+              <BoardNoData />
+            )}
+          </ul>
+          {data && data?.length > 0 ? (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              nextPage={nextPage}
+              prevPage={prevPage}
+              setCurrentPage={setCurrentPage}
+            />
+          ) : (
+            ''
+          )}{' '}
+        </>
       ) : (
-        ''
+        <LockContens />
       )}
     </section>
   )
