@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react'
 
 const LikeButton = () => {
-  return <div>LikeButton</div>;
-};
+  return <div>LikeButton</div>
+}
 
-export default LikeButton;
+export default LikeButton

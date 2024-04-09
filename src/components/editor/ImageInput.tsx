@@ -1,45 +1,45 @@
-import React, { useRef } from "react";
+import React, { useRef } from 'react'
 
 const ImageInput = () => {
-  const imageSelectorRef = useRef<HTMLInputElement>(null);
+  const imageSelectorRef = useRef<HTMLInputElement>(null)
 
   const imageButtonClickHandler = () => {
     if (imageSelectorRef.current) {
-      imageSelectorRef.current.click();
+      imageSelectorRef.current.click()
     }
-  };
+  }
 
   const imageChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.[0]
     if (file) {
-      insertImageData(file);
+      insertImageData(file)
     }
-  };
+  }
 
   const insertImageData = (file: File) => {
-    const reader = new FileReader();
+    const reader = new FileReader()
     reader.onload = (e: ProgressEvent<FileReader>) => {
-      document.execCommand("insertImage", false, e.target?.result as string);
-    };
-    reader.readAsDataURL(file);
-  };
+      document.execCommand('insertImage', false, e.target?.result as string)
+    }
+    reader.readAsDataURL(file)
+  }
 
   return (
     <>
       <button
-        className="w-[150px] h-[30px] border border-solid border-black rounded"
+        className='w-[150px] h-[30px] border border-solid border-black rounded'
         onClick={imageButtonClickHandler}
       >
         이미지 삽입하기
       </button>
       <input
-        type="file"
-        className="hidden"
+        type='file'
+        className='hidden'
         ref={imageSelectorRef}
         onChange={imageChangeHandler}
       />
     </>
-  );
-};
+  )
+}
 
-export default ImageInput;
+export default ImageInput

@@ -1,5 +1,5 @@
-import React from "react";
-import CommunityContents from "./CommunityContents";
+import React from 'react'
+import CommunityContents from './CommunityContents'
 
 const CommunityDetailRead = () => {
   return (
@@ -7,7 +7,7 @@ const CommunityDetailRead = () => {
       <CommunityContents />
       {/* 댓글컴포넌트 */}
     </div>
-  );
-};
+  )
+}
 
-export default CommunityDetailRead;
+export default CommunityDetailRead
