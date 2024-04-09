@@ -1,165 +1,224 @@
-"use client";
+'use client'
 
-import { getUserAndPlaylistData, updateNickname, uploadUserThumbnail } from "@/shared/mypage/api";
-import { useStore } from "@/shared/store";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
-import Modal from "./Modal";
-import Link from "next/link";
-import TabMenu from "./TabMenu";
-import FollowList from "./FollowList";
-import MyPlaylist from "./MyPlaylist";
+import {
+  getUserAndPlaylistData,
+  updateNickname,
+  uploadUserThumbnail,
+} from '@/shared/mypage/api'
+import { useStore } from '@/shared/store'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import Image from 'next/image'
+import React, { useEffect, useRef, useState } from 'react'
+import Modal from './Modal'
+import Link from 'next/link'
+import TabMenu from './TabMenu'
+import FollowList from './FollowList'
+import MyPlaylist from './MyPlaylist'
 
 const MyInfo = () => {
-  const { userInfo } = useStore();
+  const { userInfo } = useStore()
 
-  const [userImage, setUserImage] = useState("");
+  const [userImage, setUserImage] = useState('')
 
-  const [isModal, setIsModal] = useState(false);
-  const [isFollowModal, setIsFollowModal] = useState(false);
-  const [nickname, setNickname] = useState("");
-  const [checkText, setCheckText] = useState("");
-  const nicknameRef = useRef<HTMLInputElement>(null);
+  const [isModal, setIsModal] = useState(false)
+  const [isFollowModal, setIsFollowModal] = useState(false)
+  const [nickname, setNickname] = useState('')
+  const [checkText, setCheckText] = useState('')
+  const nicknameRef = useRef<HTMLInputElement>(null)
 
   const [isOpen, setIsOpen] = useState({
     mbtiOpen: false,
     personalMusicOpen: false,
     playlistOpen: false,
     postsOpen: false,
-    likedPostsOpen: false
-  });
+    likedPostsOpen: false,
+  })
 
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getUserAndPlaylistData(userInfo.uid),
-    queryKey: ["mypage", userInfo.uid],
-    enabled: !!userInfo.uid
-  });
+    queryKey: ['mypage', userInfo.uid],
+    enabled: !!userInfo.uid,
+  })
+
+  const { data: playlistMyData } = useQuery({
+    queryFn: () =>
+      getUserPlaylistMyMusicInfoData(
+        data?.playlistMy?.[0].myMusicIds as string[],
+      ),
+    queryKey: ['myMusicIds', data?.playlistMy],
+    enabled: !!data?.playlistMy?.length,
+  })
+
+  const deleteMutation = useMutation({
+    mutationFn: updateMyMusicIds,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['mypage'] })
+    },
+  })
 
   const updateNicknameMutation = useMutation({
     mutationFn: updateNickname,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["mypage"] });
-    }
-  });
+      queryClient.invalidateQueries({ queryKey: ['mypage'] })
+    },
+  })
 
   const updateUserThumbnailMutation = useMutation({
     mutationFn: uploadUserThumbnail,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["mypage"] });
-    }
-  });
+      queryClient.invalidateQueries({ queryKey: ['mypage'] })
+    },
+  })
 
   const onClickViewModalHandler = () => {
-    setIsModal(true);
-  };
+    setIsModal(true)
+  }
 
   const onClickCloseModalHandler = () => {
-    setIsModal(false);
+    setIsModal(false)
     if (data) {
-      setNickname(data.nickname);
+      setNickname(data.nickname)
       setIsOpen({
         mbtiOpen: data.mbtiOpen,
         personalMusicOpen: data.personalMusicOpen,
         playlistOpen: data.playlistOpen,
         postsOpen: data.postsOpen,
-        likedPostsOpen: data.likedPostsOpen
-      });
+        likedPostsOpen: data.likedPostsOpen,
+      })
     }
-    setCheckText("");
-  };
+    setCheckText('')
+  }
 
   const onChangeCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       setIsOpen((prev) => {
-        return { ...prev, [e.target.name]: true };
-      });
+        return { ...prev, [e.target.name]: true }
+      })
     } else {
       setIsOpen((prev) => {
-        return { ...prev, [e.target.name]: false };
-      });
+        return { ...prev, [e.target.name]: false }
+      })
     }
-  };
+  }
 
   const onClickUpdateHandler = () => {
     if (!nickname.trim()) {
-      setCheckText("닉네임을 입력해주세요");
-      nicknameRef.current?.focus();
-      return;
+      setCheckText('닉네임을 입력해주세요')
+      nicknameRef.current?.focus()
+      return
     }
-    const { likedPostsOpen, mbtiOpen, personalMusicOpen, playlistOpen, postsOpen } = isOpen;
-    updateNicknameMutation.mutate({ userId: userInfo.uid, nickname, likedPostsOpen, mbtiOpen, personalMusicOpen, playlistOpen, postsOpen });
-    alert("정보 변경이 완료되었습니다.");
-    onClickCloseModalHandler();
-  };
+    const {
+      likedPostsOpen,
+      mbtiOpen,
+      personalMusicOpen,
+      playlistOpen,
+      postsOpen,
+    } = isOpen
+    updateNicknameMutation.mutate({
+      userId: userInfo.uid,
+      nickname,
+      likedPostsOpen,
+      mbtiOpen,
+      personalMusicOpen,
+      playlistOpen,
+      postsOpen,
+    })
+    alert('정보 변경이 완료되었습니다.')
+    onClickCloseModalHandler()
+  }
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const nickname = e.target.value;
-    setNickname(nickname);
-  };
+    const nickname = e.target.value
+    setNickname(nickname)
+  }
 
   const selectFileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files![0] as File;
+    const file = e.target.files![0] as File
 
-    if (window.confirm("선택한 이미지로 업로드를 진행할까요?")) {
-      const data = await updateUserThumbnailMutation.mutateAsync({ userId: userInfo.uid, file });
-      setUserImage(data?.[0].userImage as string);
-      alert("업로드 완료!");
+    if (window.confirm('선택한 이미지로 업로드를 진행할까요?')) {
+      const data = await updateUserThumbnailMutation.mutateAsync({
+        userId: userInfo.uid,
+        file,
+      })
+      setUserImage(data?.[0].userImage as string)
+      alert('업로드 완료!')
     }
-  };
+  }
 
   const onClickCloseFollowModalHandler = () => {
-    setIsFollowModal(false);
-  };
+    setIsFollowModal(false)
+  }
 
   const onClickViewFollowModalHandler = () => {
-    setIsFollowModal(true);
-  };
+    setIsFollowModal(true)
+  }
 
   const tabArr = [
-    { id: 0, title: "팔로잉", content: <FollowList data={data?.following!} dataKey={"following"} /> },
-    { id: 1, title: "팔로워", content: <FollowList data={data?.follower!} dataKey={"follower"} myFollowing={data?.following!} /> }
-  ];
+    {
+      id: 0,
+      title: '팔로잉',
+      content: <FollowList data={data?.following!} dataKey={'following'} />,
+    },
+    {
+      id: 1,
+      title: '팔로워',
+      content: (
+        <FollowList
+          data={data?.follower!}
+          dataKey={'follower'}
+          myFollowing={data?.following!}
+        />
+      ),
+    },
+  ]
 
   useEffect(() => {
     if (data) {
-      setNickname(data.nickname);
-      setUserImage(data?.userImage);
+      setNickname(data.nickname)
+      setUserImage(data?.userImage)
       setIsOpen({
         mbtiOpen: data.mbtiOpen,
         personalMusicOpen: data.personalMusicOpen,
         playlistOpen: data.playlistOpen,
         postsOpen: data.postsOpen,
-        likedPostsOpen: data.likedPostsOpen
-      });
+        likedPostsOpen: data.likedPostsOpen,
+      })
     }
-  }, [data]);
+  }, [data])
 
   if (isError) {
-    return <>에러발생</>;
+    return <>에러발생</>
   }
 
   if (isLoading) {
-    return <>로딩중</>;
+    return <>로딩중</>
   }
 
   return (
-    <section className="p-[40px]">
+    <section className='p-[40px]'>
       <div>
-        <div className="flex justify-between">
+        <div className='flex justify-between'>
           <div>
-            <figure className="w-[80px] h-[80px] flex overflow-hidden rounded-full bg-slate-200">
-              {userImage && <Image src={userImage} width={80} height={80} alt={`${data?.nickname} 프로필 이미지`} priority={true} />}
+            <figure className='w-[80px] h-[80px] flex overflow-hidden rounded-full bg-slate-200'>
+              {userImage && (
+                <Image
+                  src={userImage}
+                  width={80}
+                  height={80}
+                  alt={`${data?.nickname} 프로필 이미지`}
+                  priority={true}
+                />
+              )}
             </figure>
           </div>
-          <Link href="/personal-music">퍼스널 뮤직 진단 다시받기</Link>
+          <Link href='/personal-music'>퍼스널 뮤직 진단 다시받기</Link>
         </div>
-        <span className="cursor-pointer" onClick={onClickViewModalHandler}>
+        <span className='cursor-pointer' onClick={onClickViewModalHandler}>
           {data?.nickname} &gt;
         </span>
-        <p onClick={onClickViewFollowModalHandler} className="cursor-pointer">
+        <p onClick={onClickViewFollowModalHandler} className='cursor-pointer'>
           팔로잉 {data?.following.length} 팔로워 {data?.follower.length}
         </p>
         <p>
@@ -170,51 +229,97 @@ const MyInfo = () => {
       <MyPlaylist data={data!} />
       {isModal && (
         <Modal onClick={onClickCloseModalHandler}>
-          <label className="[&>input]:hidden">
-            <figure className="w-[80px] h-[80px] flex overflow-hidden rounded-full bg-slate-200">
-              {userImage && <Image src={userImage} width={80} height={80} alt={`${data?.nickname} 프로필 이미지`} priority={true} />}
+          <label className='[&>input]:hidden'>
+            <figure className='w-[80px] h-[80px] flex overflow-hidden rounded-full bg-slate-200'>
+              {userImage && (
+                <Image
+                  src={userImage}
+                  width={80}
+                  height={80}
+                  alt={`${data?.nickname} 프로필 이미지`}
+                  priority={true}
+                />
+              )}
             </figure>
-            <input type="file" onChange={selectFileHandler} accept="image/*" />
+            <input type='file' onChange={selectFileHandler} accept='image/*' />
           </label>
           <label>
-            <input type="text" value={nickname} className="w-full" ref={nicknameRef} onChange={onChangeInput} placeholder="변경할 닉네임을 입력해주세요" />
+            <input
+              type='text'
+              value={nickname}
+              className='w-full'
+              ref={nicknameRef}
+              onChange={onChangeInput}
+              placeholder='변경할 닉네임을 입력해주세요'
+            />
           </label>
-          <p className="h-5 text-sm text-red-500">{checkText}</p>
+          <p className='h-5 text-sm text-red-500'>{checkText}</p>
           <h3>
-            내 활동 공개여부 <span>*체크 비활성화 시 다른 유저에게 보이지 않습니다.</span>
+            내 활동 공개여부{' '}
+            <span>*체크 비활성화 시 다른 유저에게 보이지 않습니다.</span>
           </h3>
-          <ul className="list-none text-white">
+          <ul className='list-none text-white'>
             <li>
               <label>
-                <input type="checkbox" name="personalMusicOpen" checked={isOpen.personalMusicOpen} onChange={onChangeCheck} /> 퍼스널 뮤직
+                <input
+                  type='checkbox'
+                  name='personalMusicOpen'
+                  checked={isOpen.personalMusicOpen}
+                  onChange={onChangeCheck}
+                />{' '}
+                퍼스널 뮤직
               </label>
             </li>
             <li>
               <label>
-                <input type="checkbox" name="mbtiOpen" checked={isOpen.mbtiOpen} onChange={onChangeCheck} /> MBTI
+                <input
+                  type='checkbox'
+                  name='mbtiOpen'
+                  checked={isOpen.mbtiOpen}
+                  onChange={onChangeCheck}
+                />{' '}
+                MBTI
               </label>
             </li>
             <li>
               <label>
-                <input type="checkbox" name="postsOpen" checked={isOpen.postsOpen} onChange={onChangeCheck} /> 작성한 게시물
+                <input
+                  type='checkbox'
+                  name='postsOpen'
+                  checked={isOpen.postsOpen}
+                  onChange={onChangeCheck}
+                />{' '}
+                작성한 게시물
               </label>
             </li>
             <li>
               <label>
-                <input type="checkbox" name="likedPostsOpen" checked={isOpen.likedPostsOpen} onChange={onChangeCheck} /> 좋아요 한 글
+                <input
+                  type='checkbox'
+                  name='likedPostsOpen'
+                  checked={isOpen.likedPostsOpen}
+                  onChange={onChangeCheck}
+                />{' '}
+                좋아요 한 글
               </label>
             </li>
             <li>
               <label>
-                <input type="checkbox" name="playlistOpen" checked={isOpen.playlistOpen} onChange={onChangeCheck} /> 플레이리스트
+                <input
+                  type='checkbox'
+                  name='playlistOpen'
+                  checked={isOpen.playlistOpen}
+                  onChange={onChangeCheck}
+                />{' '}
+                플레이리스트
               </label>
             </li>
           </ul>
-          <div className="mt-4 flex justify-between">
-            <button type="button" onClick={onClickCloseModalHandler}>
+          <div className='mt-4 flex justify-between'>
+            <button type='button' onClick={onClickCloseModalHandler}>
               취소
             </button>
-            <button type="button" onClick={onClickUpdateHandler}>
+            <button type='button' onClick={onClickUpdateHandler}>
               수정하기
             </button>
           </div>
@@ -223,11 +328,11 @@ const MyInfo = () => {
 
       {isFollowModal && (
         <Modal onClick={onClickCloseFollowModalHandler}>
-          <TabMenu data={tabArr} width={"w-1/2"} />
+          <TabMenu data={tabArr} width={'w-1/2'} />
         </Modal>
       )}
     </section>
-  );
-};
+  )
+}
 
-export default MyInfo;
+export default MyInfo

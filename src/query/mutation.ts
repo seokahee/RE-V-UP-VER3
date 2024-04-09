@@ -1,16 +1,16 @@
-import { queryClient } from "@/app/provider";
-import { useMutation } from "@tanstack/react-query";
+import { queryClient } from '@/app/provider'
+import { useMutation } from '@tanstack/react-query'
 
 export const addMutation = (
   fc: (variable: any) => Promise<void>,
-  queryKey: string
+  queryKey: string,
 ) => {
   const mutation = useMutation({
     mutationFn: fc,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [queryKey] }),
     onError: () => {
-      console.error("오류가 발생했습니다.");
+      console.error('오류가 발생했습니다.')
     },
-  });
-  return { mutation };
-};
+  })
+  return { mutation }
+}

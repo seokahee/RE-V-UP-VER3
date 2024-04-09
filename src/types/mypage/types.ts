@@ -1,58 +1,58 @@
 export type UserInfo = {
-  userId: string;
-  email: string;
-  userType: number;
-  nickname: string;
-  following: string[];
-  follower: string[];
+  userId: string
+  email: string
+  userType: number
+  nickname: string
+  following: string[]
+  follower: string[]
   userChar?: {
-    gender?: boolean;
-    age?: number;
-    mbti?: number;
-  };
-  mbtiOpen: boolean;
-  personalMusicOpen: boolean;
-  playlistOpen: boolean;
-  postsOpen: boolean;
-  likedPostsOpen: boolean;
-  userImage: string;
+    gender?: boolean
+    age?: number
+    mbti?: number
+  }
+  mbtiOpen: boolean
+  personalMusicOpen: boolean
+  playlistOpen: boolean
+  postsOpen: boolean
+  likedPostsOpen: boolean
+  userImage: string
   personalMusic?: {
-    resultSentence?: string;
-  };
+    resultSentence?: string
+  }
   playlistMy?: {
-    myMusicIds?: string[];
-    playlistId?: string;
-  }[];
-};
+    myMusicIds?: string[]
+    playlistId?: string
+  }[]
+}
 
 export type PlaylistMy = {
-  artist: string;
-  genre: number;
-  lyrics: string;
-  musicId: string;
-  musicSource: string;
-  musicTitle: string;
-  release: string;
-  thumbnail: string;
-};
+  artist: string
+  genre: number
+  lyrics: string
+  musicId: string
+  musicSource: string
+  musicTitle: string
+  release: string
+  thumbnail: string
+}
 
 export type Board = {
-  boardId: string;
-  boardTitle: string;
-  content: string;
-  date: string;
-  likeList: string[];
-  musicId: string;
-  userId: string;
+  boardId: string
+  boardTitle: string
+  content: string
+  date: string
+  likeList: string[]
+  musicId: string
+  userId: string
   musicInfo: {
-    thumbnail: string;
-    musicTitle: string;
-  };
+    thumbnail: string
+    musicTitle: string
+  }
   userInfo: {
-    nickname: string;
-    userImage?: string;
-  };
+    nickname: string
+    userImage?: string
+  }
   comment: {
-    commentId: string;
-  }[];
-};
+    commentId: string
+  }[]
+}
