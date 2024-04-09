@@ -37,6 +37,10 @@ const MusicSearchModal = ({
     getMusicData(keyword)
   }
 
+  const onAddMusicBoardHandler = async (e: FormEvent) => {
+    e.preventDefault()
+  }
+
   return (
     <div className='fixed w-full h-screen inset-0 flex flex-col justify-center items-center z-50 bg-black bg-opacity-50'>
       <div className='bg-white h-3/5 w-3/5 flex flex-col items-center rounded-md pb-10'>

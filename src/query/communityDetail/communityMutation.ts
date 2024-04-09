@@ -7,7 +7,7 @@ import {
 } from '@/shared/communitydetail/detailApi'
 
 export const useCommunityQuery = (uid: string) => {
-  const readCommunityDetailQuery: unknown = useQuery({
+  const readCommunityDetailQuery = useQuery({
     queryKey: [COMMUNITY_QUERY_KEY.READ_BOARD, uid],
     queryFn: readCommunityDetail,
   })
