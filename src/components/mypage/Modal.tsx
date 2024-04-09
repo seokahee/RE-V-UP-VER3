@@ -15,7 +15,7 @@ const Modal = ({ children, onClick }: Modal) => {
       <div
         className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[516px]  max-w-[80%] rounded-[2rem] bg-[#3d3d3d91] ${modalShadow}`}
       >
-        <div className='relative m-[4px] p-4 h-[680px] max-h-[80%] border-4 border-solid border-[#474747] bg-[#3D3D3D] rounded-[2rem]'>
+        <div className='relative m-[4px] p-4 h-[680px] max-h-[80vh] overflow-y-auto border-4 border-solid border-[#474747] bg-[#3D3D3D] rounded-[2rem]'>
           <button
             type='button'
             onClick={onClick}
