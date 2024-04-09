@@ -1,5 +1,3 @@
-import { Tables } from './supabase'
-
 export type CommunityType = {
   boardId: string
   boardTitle: string
@@ -21,4 +19,20 @@ export type MusicInfoType = {
   musicTitle: string
   release: string
   thumbnail: string
+}
+
+export type CurrentPlaylistType = {
+  currentId: string
+  currentMusicIds: string[]
+  artist: string
+  genre: number
+  lyrics: string
+  musicId: string
+  musicSource: string
+  musicTitle: string
+  release: string
+  thumbnail: string
+  userInfo: {
+    userId: string
+  }
 }
