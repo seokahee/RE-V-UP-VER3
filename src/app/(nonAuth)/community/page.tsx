@@ -31,7 +31,7 @@ const Community = () => {
     <div>
       <SearchForm />
       <MusicSearchModal />
-      <Link href='communitycreate'></Link>
+      <Link href='/communitycreate'>글 등록하기</Link>
       <div className='flex gap-2 m-10'>
         <p
           onClick={() => {

@@ -77,7 +77,7 @@ const MusicSearchModal = ({
                   <button>선택</button>
                   <button onClick={() => setIsModal(false)}>취소</button>
                 </div>
-              </button>
+              </div>
             </div>
           )
         })}
