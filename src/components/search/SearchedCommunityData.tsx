@@ -1,5 +1,5 @@
 'use client'
-import { CommunityType } from '@/types/types'
+import { CommunityType } from '@/types/musicPlayer/types'
 import { onDateHandler } from '@/util/util'
 
 const SearchedCommunityData = ({ item }: { item: CommunityType }) => {
