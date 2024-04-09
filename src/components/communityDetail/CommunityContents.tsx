@@ -1,14 +1,13 @@
 'use client'
 
-import { useParams, useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { useParams, useRouter } from 'next/navigation'
 import { readCommunityDetail } from '@/shared/communitydetail/detailApi'
 import { COMMUNITY_QUERY_KEY } from '@/query/communityDetail/communityQueryKey'
-import { onDateHandler } from '@/util/util'
 import Image from 'next/image'
+import { onDateHandler } from '@/util/util'
 import LikeButton from './LikeButton'
-import useInput from '@/hooks/useInput'
-import { useState } from 'react'
 
 const CommunityContents = () => {
   const router = useRouter()
@@ -21,7 +20,7 @@ const CommunityContents = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: [COMMUNITY_QUERY_KEY.READ_BOARD],
+    queryKey: [COMMUNITY_QUERY_KEY.READ_BOARD, id],
     queryFn: () => readCommunityDetail(id.toString()),
   })
 

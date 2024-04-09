@@ -6,10 +6,10 @@ import {
   readCommunityDetail,
 } from '@/shared/communitydetail/detailApi'
 
-export const useCommunityQuery = (uid: string) => {
+export const useCommunityQuery = (boardId: string | string[]) => {
   const readCommunityDetailQuery = useQuery({
-    queryKey: [COMMUNITY_QUERY_KEY.READ_BOARD, uid],
-    queryFn: readCommunityDetail,
+    queryKey: [COMMUNITY_QUERY_KEY.READ_BOARD],
+    queryFn: () => readCommunityDetail(boardId.toString()),
   })
   return { readCommunityDetailQuery }
 }

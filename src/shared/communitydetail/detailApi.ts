@@ -1,17 +1,14 @@
-import {
-  addCommnityBoard,
-  readCommuDetail,
-} from '@/types/communityDetail/detailTypes'
+import { readCommuDetail } from '@/types/communityDetail/detailTypes'
 import { supabase } from '../supabase/supabase'
 
-export const readCommunityDetail = async (id: string) => {
+export const readCommunityDetail = async (boardId: string) => {
   try {
     const { data, error } = await supabase
       .from('community')
       .select(
         'boardId, boardTitle, date, musicId, content, likeList, userId, userInfo(nickname, userImage), comment(commentId), musicInfo(musicId, musicTitle, artist, thumbnail)',
       )
-      .eq('boardId', id)
+      .eq('boardId', boardId)
 
     if (!data) {
       return null
@@ -23,13 +20,19 @@ export const readCommunityDetail = async (id: string) => {
   }
 }
 
-export const addCommnityBoard = async ({
-  boardTitle,
-  content,
-  musicId,
-}: addCommnityBoard) => {
+export const addCommnityBoard = async (
+  boardTitle: string,
+  content: string,
+  uid: string,
+  musicId: string,
+) => {
   const { data, error } = await supabase
     .from('community')
-    .insert([{ boardTitle, content, musicId }])
+    .insert([{ boardTitle, content, userId: uid, musicId }])
     .select()
+
+  if (error) {
+    return
+  }
+  return data
 }
