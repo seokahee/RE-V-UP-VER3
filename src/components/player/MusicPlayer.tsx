@@ -25,8 +25,6 @@ const MusicPlayer = () => {
   const { uid } = userInfo
   const router = useRouter()
 
-  console.log('uid', uid)
-
   const { data: currentPlayList } = useQuery({
     queryFn: ({ queryKey }) => {
       return getCurrentMusicList(queryKey[1])
@@ -88,13 +86,11 @@ const MusicPlayer = () => {
     }
   }
 
-  // 삭제버튼
   const onDeleteCurrentMusicHandler = async () => {
     if (window.confirm('현재 재생 목록에서 선택 항목을 삭제하시겠습니까?')) {
       const currentMusicData = currentPlayList
         .filter((music) => !checkedList.includes(music.musicId))
         .map((music) => music.musicId)
-      console.log('currentMusicData', currentMusicData)
       deleteMutation.mutate({ uid, currentMusicData })
     }
   }
@@ -176,7 +172,9 @@ const MusicPlayer = () => {
           </div>
 
           <AudioPlayer
+            // autoPlay
             loop={false}
+            // 볼륨 나중에 0.5로 변경할것!, 테스트중으로 자동 재생설정함
             volume={0.1}
             showSkipControls={true}
             onClickPrevious={onPreviousHandler}

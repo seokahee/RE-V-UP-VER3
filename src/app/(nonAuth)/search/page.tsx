@@ -6,7 +6,7 @@ import {
   getSearchedMusicData,
 } from '@/shared/search/api'
 import { useSearchedStore } from '@/shared/store/searchStore'
-import { CommunityType } from '@/types/musicPlayer/types'
+import { CommunityType } from '@/types/community/type'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
