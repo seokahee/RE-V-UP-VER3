@@ -1,7 +1,8 @@
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react'
+import { supabase } from '@/shared/supabase/supabase'
+import { useEffect, useState } from 'react'
 import { getToday } from '@/util/util'
 import { useStore } from '@/shared/store'
 import { useQuery } from '@tanstack/react-query'
@@ -12,18 +13,16 @@ import {
   deleteComment,
   updateComment,
   addLikeComment,
-  cancelLikeComment,
 } from '@/shared/comment/commentApi'
 
 const CommentsList = () => {
   const { userInfo } = useStore()
   const queryClient = useQueryClient()
-  const [isLike, setIsLike] = useState<boolean>(false)
 
   //댓글 목록 조회
   const { data: commentsData } = useQuery({
-    queryFn: () => getComments(),
-    queryKey: ['comments'],
+    queryFn: getComments,
+    queryKey: ['comment'],
   })
 
   //댓글 삭제
@@ -60,30 +59,36 @@ const CommentsList = () => {
   const likeCommentMutation = useMutation({
     mutationFn: addLikeComment,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['like'] })
+      queryClient.invalidateQueries({ queryKey: ['comment'] })
     },
   })
 
   const onLikeHandler = (commentId: string) => {
     const userId = userInfo.uid
-    alert('좋아요')
+    if (!userId) {
+      alert('로그인 후 이용해 주세요')
+      return
+    }
+
+    alert('좋아요 테스트중')
     likeCommentMutation.mutate({ commentId, userId })
   }
 
   //좋아요 취소
-  const cancelLikeCommentMutation = useMutation({
-    mutationFn: cancelLikeComment,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['like'] })
-    },
-  })
+  // const cancelLikeCommentMutation = useMutation({
+  //   mutationFn: cancelLikeComment,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ['comment'] })
+  //   },
+  // })
 
-  const onCancleLikeHandler = (commentId: string) => {
-    const userId = userInfo.uid
+  // const onCancleLikeHandler = (commentId: string) => {
+  //   const userId = userInfo.uid
+  //   //댓글 목록 조회
 
-    alert('취소')
-    cancelLikeCommentMutation.mutate({ commentId, userId })
-  }
+  //   alert('취소')
+  //   cancelLikeCommentMutation.mutate({ commentId, userId })
+  // }
 
   return (
     <div>
@@ -112,6 +117,10 @@ const CommentsList = () => {
           </div>
           <div className='flex flex-row'>
             <div className='basis-1/2'> {item.commentContent}</div>
+            <div>
+              {' '}
+              {item.commentLikeList?.includes(item.userInfo.userId) ? '1' : '2'}
+            </div>
             <div className='basis-1/2'>
               {item.userInfo?.userId === userInfo.uid ? (
                 <>
@@ -129,20 +138,12 @@ const CommentsList = () => {
                   <button onClick={() => onLikeHandler(item.commentId)}>
                     좋아요 {item.commentLikeList.length}
                   </button>{' '}
-                  <br />
-                  <button onClick={() => onCancleLikeHandler(item.commentId)}>
-                    취소
-                  </button>
                 </>
               ) : (
                 <>
                   <button onClick={() => onLikeHandler(item.commentId)}>
                     좋아요 {item.commentLikeList.length}
                   </button>{' '}
-                  <br />
-                  <button onClick={() => onCancleLikeHandler(item.commentId)}>
-                    취소
-                  </button>
                 </>
               )}
             </div>

@@ -64,70 +64,102 @@ export const addLikeComment = async ({
   userId: string
   commentId: string
 }) => {
-  //좋아요 조회
-  let { data: commentLiked, error } = await supabase
-    .from('comment')
-    .select('commentLikeList')
-    .eq('commentId', commentId)
-    .single()
+  try {
+    // 댓글이 존재하는지 확인하고 좋아요 목록을 가져옵니다.
+    let { data: commentLiked, error } = await supabase
+      .from('comment')
+      .select('commentLikeList')
+      .eq('commentId', commentId)
+      .single()
 
-  if (error) {
-    console.log(error.message)
-  }
+    if (error) {
+      throw new Error(error.message)
+    }
 
-  if (!commentLiked) {
-    console.log('좋아요 한 유저가 없습니다.')
+    if (!commentLiked) {
+      return null
+    }
+
+    console.log('commentLiked', commentLiked)
+
+    //이미 좋아요를 누른 경우
+    if (commentLiked.commentLikeList?.includes(userId)) {
+      const likeListStatus = commentLiked.commentLikeList?.filter(
+        (likedId) => likedId !== userId,
+      )
+
+      const { data, error: likeError } = await supabase
+        .from('comment')
+        .update({
+          commentLikeList: likeListStatus,
+        })
+        .eq('commentId', commentId)
+
+      if (likeError) {
+        throw new Error(likeError.message)
+      }
+
+      return data
+    }
+
+    //좋아요를 누르지 않은 경우
+    const updatedLikeList: (string | null)[] = [
+      ...(commentLiked.commentLikeList || []),
+      userId,
+    ]
+
+    const { data: updatedData, error: updateError } = await supabase
+      .from('comment')
+      .update({
+        commentLikeList: updatedLikeList,
+      })
+      .eq('commentId', commentId)
+
+    if (updateError) {
+      throw new Error(updateError.message)
+    }
+
+    return updatedData
+  } catch (error) {
+    console.error('Error occurred:', error)
     return null
   }
-
-  console.log('commentLiked', commentLiked)
-
-  const updatedLikeList = [...commentLiked.commentLikeList, userId]
-
-  const { data } = await supabase
-    .from('comment')
-    .update({
-      commentLikeList: updatedLikeList,
-    })
-    .eq('commentId)', commentId)
-
-  return data
 }
 
 //좋아요 취소
-export const cancelLikeComment = async ({
-  userId,
-  commentId,
-}: {
-  userId: string
-  commentId: string
-}) => {
-  let { data: commentLiked, error } = await supabase
-    .from('comment')
-    .select('commentLikeList,userInfo(userId)')
-    .eq('commentId', commentId)
-    .single()
+// export const cancelLikeComment = async ({
+//   userId,
+//   commentId,
+// }: {
+//   userId: string
+//   commentId: string
+// }) => {
+//   let { data: commentLiked, error } = await supabase
+//     .from('comment')
+//     .select('commentLikeList,userInfo(userId)')
+//     .eq('commentId', commentId)
+//     .single()
 
-  if (error) {
-    console.log(error.message)
-  }
+//   if (error) {
+//     console.log(error.message)
+//   }
 
-  if (!commentLiked) {
-    console.log('좋아요 한 유저가 없습니다.')
-    return null
-  }
+//   if (!commentLiked) {
+//     console.log('좋아요 한 유저가 없습니다.')
+//     return null
+//   }
 
-  const likeListStatus = commentLiked.commentLikeList.filter(
-    (likedId) => likedId !== userId,
-  )
+//   const likeListStatus = commentLiked.commentLikeList?.filter(
+//     (likedId) => likedId !== userId,
+//   )
 
-  const { data, error: likeError } = await supabase
-    .from('comment')
-    .update({
-      commentLikeList: likeListStatus,
-    })
-    .eq('commentId)', commentId)
-  return data
-}
+//   const { data, error: likeError } = await supabase
+//     .from('comment')
+//     .update({
+//       commentLikeList: likeListStatus,
+//     })
+//     .eq('commentId)', commentId)
+//   return data
+// }
 
 //대댓글(?)
