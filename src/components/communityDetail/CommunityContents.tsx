@@ -159,9 +159,8 @@ const CommunityContents = () => {
           )}
           <div>
             <LikeButton boardId={id} />
-            {/* {likeList.length} */}
+            <div>{comment.length ? comment.length : 0}</div>
           </div>
-          <div>{comment.length ? comment.length : 0}</div>
         </div>
       </div>
     </div>
