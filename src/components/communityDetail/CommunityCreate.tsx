@@ -6,6 +6,7 @@ import MusicSearch from '../search/MusicSearch'
 import { useRouter } from 'next/navigation'
 import { useStore } from '@/shared/store'
 import { useCoummunityItem } from '@/query/communityDetail/communityMutation'
+import LikeButton from './LikeButton'
 
 const CommunityCreate = () => {
   const router = useRouter()

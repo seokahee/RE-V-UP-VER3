@@ -1,5 +1,6 @@
 import {
   addCommnity,
+  getLikeListCommunity,
   readCommuDetail,
   updateCommuity,
 } from '@/types/communityDetail/detailTypes'
@@ -67,5 +68,54 @@ export const deleteCommunityBoard = async (boardId: string) => {
 
   if (error) {
     throw new Error('오류로 인해 삭제할 수 없습니다. 문의해주세요.')
+  }
+}
+
+export const getClickLikedUser = async (
+  boardId: string,
+): Promise<getLikeListCommunity> => {
+  const { data: clickLikedUser, error } = await supabase
+    .from('community')
+    .select('likeList')
+    .eq('boardId', boardId)
+    .single()
+  console.log(clickLikedUser)
+  if (error) {
+    console.error('정보를 가져오지 못 하고 있습니다.', error)
+    return {} as getLikeListCommunity
+  }
+
+  return clickLikedUser as getLikeListCommunity
+}
+
+export const addLikedUser = async (
+  likeList: string[],
+  boardId: string,
+  uid: string,
+) => {
+  const { data, error } = await supabase
+    .from('community')
+    .update({ likeList: [...likeList, uid] })
+    .eq('boardId', boardId)
+    .select()
+
+  if (error) {
+    throw error
+  }
+}
+
+export const removeLikedUser = async (
+  likeList: string[],
+  boardId: string,
+  uid: string,
+) => {
+  const { data, error } = await supabase
+    .from('community')
+    .update({ likeList: likeList.filter((id) => id !== uid) })
+    .eq('boardId', boardId)
+    .select()
+
+  if (error) {
+    throw error
   }
 }

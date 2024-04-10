@@ -63,3 +63,17 @@ export type updateCommuity = {
   boardTitle: string
   content: string
 }
+
+export type getLikeListCommunity = {
+  boardId: string
+  boardTitle: string
+  content: string
+  date: string
+  likeList: string[] | null
+  musicId: string
+  userId: string
+}
+
+export type Props = {
+  boardId: string
+}
