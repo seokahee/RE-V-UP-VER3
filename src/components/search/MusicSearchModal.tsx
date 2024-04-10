@@ -60,8 +60,11 @@ const MusicSearchModal = ({
         </form>
         {musicList.map((item) => {
           return (
-            <div key={item.musicId} className='flex flex-col gap-2'>
-              <div>
+            <div key={item.musicId} className='flex flex-col gap-4'>
+              <div
+                onClick={onAddMusicBoardHandler}
+                className='flex items-center border border-solid rounded-[4px] cursor-pointer'
+              >
                 <Image
                   src={item.thumbnail}
                   alt='Album Thumbnail'
@@ -72,7 +75,6 @@ const MusicSearchModal = ({
                 <div>가수 {item.artist}</div>
                 <div>발매일 {item.release}</div>
                 <div className='flex mt-5 gap-3'>
-                  <button>선택</button>
                   <button onClick={() => setIsModal(false)}>취소</button>
                 </div>
               </div>
