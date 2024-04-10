@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import CheckboxItem from './CheckboxItem'
 import {
   getUserPlaylistMyMusicInfoData,
@@ -79,9 +79,6 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       const addData = checkedList.filter(
         (el) => !playListCurrentIds.includes(el),
       )
-      console.log('playListCurrent', playListCurrentIds)
-      console.log('checkedList', checkedList)
-      console.log('addData', addData)
 
       if (addData.length === 0) {
         alert(
@@ -119,10 +116,9 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     }
 
     if ((playListCurrentIds?.length as number) > 0) {
-      const addData = playListMyIds.filter((el) => {
-        console.log('el', el)
-        return !playListCurrentIds.includes(el)
-      })
+      const addData = playListMyIds.filter(
+        (el) => !playListCurrentIds.includes(el),
+      )
 
       if (addData.length === 0) {
         alert(`${playListMyIds.length}개 모두 이미 추가되어 있습니다.`)
