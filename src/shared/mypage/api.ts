@@ -77,7 +77,7 @@ export const updateMyMusicIds = async ({
   }
 }
 
-export const updateNickname = async ({
+export const updateUserInfo = async ({
   userId,
   nickname,
   likedPostsOpen,

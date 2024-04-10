@@ -76,7 +76,7 @@ const WriteList = () => {
   return (
     <section>
       <ul className='mb-8'>
-        {data ? (
+        {data && data?.length > 0 ? (
           data?.map((item) => {
             return (
               <BoardItem
