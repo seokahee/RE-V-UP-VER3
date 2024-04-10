@@ -1,13 +1,24 @@
-import React from "react";
+import React from 'react'
 
-type CheckboxItme = {
-  onChangeCheckMusicHandler: React.ChangeEventHandler<HTMLInputElement>;
-  checked: boolean;
-  id: string;
-};
+type CheckboxItem = {
+  onChangeCheckMusicHandler: React.ChangeEventHandler<HTMLInputElement>
+  checked: boolean
+  id: string
+}
 
-const CheckboxItem = ({ onChangeCheckMusicHandler, id, checked }: CheckboxItme) => {
-  return <input type="checkbox" id={id} checked={checked} onChange={onChangeCheckMusicHandler} />;
-};
+const CheckboxItem = ({
+  onChangeCheckMusicHandler,
+  id,
+  checked,
+}: CheckboxItem) => {
+  return (
+    <input
+      type='checkbox'
+      id={id}
+      checked={checked}
+      onChange={onChangeCheckMusicHandler}
+    />
+  )
+}
 
-export default CheckboxItem;
+export default CheckboxItem

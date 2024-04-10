@@ -1,28 +1,28 @@
-import { supabase } from "../supabase/supabase";
+import { supabase } from '../supabase/supabase'
 
 //댓글 조회
 export const getComments = async () => {
   let { data: comment, error } = await supabase
-    .from("comment")
+    .from('comment')
     .select(
-      "commentId,commentContent,commentDate,userInfo(userId, nickname, userImage)"
-    );
+      'commentId,commentContent,commentDate,userInfo(userId, nickname, userImage)',
+    )
   if (error) {
-    throw error.message;
+    throw error.message
   }
-  return comment;
-};
+  return comment
+}
 
 //댓글 추가
 export const addComment = async () => {
   const { data, error } = await supabase
-    .from("comment")
-    .insert([{ commentContent: "commentContent", commentDate: "commentDate" }])
-    .select();
+    .from('comment')
+    .insert([{ commentContent: 'commentContent', commentDate: 'commentDate' }])
+    .select()
   if (error) {
-    throw error.message;
+    throw error.message
   }
-};
+}
 
 //댓글 삭제
 

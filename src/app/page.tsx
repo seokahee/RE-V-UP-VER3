@@ -1,11 +1,10 @@
-import GenreMusicList from "@/components/main/GenreMusicList";
-import MainBanner from "@/components/main/MainBanner";
-import TopLikedBoard from "@/components/main/TopLikedBoard";
-import MusicPlayer from "@/components/player/MusicPlayer";
-import React from "react";
-import UserProvider from "./UserProvider";
-import PersonalModal from "@/components/personal/PersonalModal";
-import Footer from "@/components/Footer";
+import Footer from '@/components/Footer'
+import GenreMusicList from '@/components/main/GenreMusicList'
+import MainBanner from '@/components/main/MainBanner'
+import TopLikedBoard from '@/components/main/TopLikedBoard'
+import MusicPlayer from '@/components/player/MusicPlayer'
+import UserProvider from './UserProvider'
+import PersonalModal from '@/components/personal/PersonalModal'
 
 const Home = () => {
   return (
@@ -19,7 +18,7 @@ const Home = () => {
         <Footer />
       </UserProvider>
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

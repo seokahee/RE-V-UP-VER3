@@ -1,30 +1,29 @@
-"use client";
-import React, { useState } from "react";
-import { useSurvey } from "@/shared/store/personalStore";
-import { useStore } from "@/shared/store";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUserChar } from "@/shared/main/api";
-import { insertUserChar } from "@/shared/personal/personalApi";
-import PersonalTestResult from "./PersonalTestResult";
+'use client'
+import React, { useState } from 'react'
+import { useSurvey } from '@/shared/store/personalStore'
+import { useStore } from '@/shared/store'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { getUserChar } from '@/shared/main/api'
+import { insertUserChar } from '@/shared/personal/personalApi'
+import PersonalTestResult from './PersonalTestResult'
 
 type UserChar = {
-  mbti: string;
-  gender: string;
-  resultSentence: string;
-};
+  mbti: string
+  gender: string
+}
 
 const PersonalSubTest = () => {
-  const { addUserChar } = useSurvey();
-  const { userInfo } = useStore();
-  const queryClient = useQueryClient();
+  const { addUserChar } = useSurvey()
+  const { userInfo } = useStore()
+  const queryClient = useQueryClient()
 
   //state
-  const [gender, setGender] = useState<string>("");
-  const [EI, setEI] = useState<string>("");
-  const [SN, setSN] = useState<string>("");
-  const [TF, setTF] = useState<string>("");
-  const [PJ, setPJ] = useState<string>("");
-  const [isResult, setIsResult] = useState<boolean>(false);
+  const [gender, setGender] = useState<string>('')
+  const [EI, setEI] = useState<string>('')
+  const [SN, setSN] = useState<string>('')
+  const [TF, setTF] = useState<string>('')
+  const [PJ, setPJ] = useState<string>('')
+  const [isResult, setIsResult] = useState<boolean>(false)
 
   //유저 정보 조회
   //   const { data: userData } = useQuery({
@@ -37,47 +36,47 @@ const PersonalSubTest = () => {
   const insertUserCharMutation = useMutation({
     mutationFn: insertUserChar,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["userChar"] });
+      queryClient.invalidateQueries({ queryKey: ['userChar'] })
     },
-  });
+  })
 
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (name === "gender") {
-      setGender(value);
-    } else if (name === "EI") {
-      setEI(value);
-    } else if (name === "SN") {
-      setSN(value);
-    } else if (name === "TF") {
-      setTF(value);
-    } else if (name === "PJ") {
-      setPJ(value);
+    const { name, value } = e.target
+    if (name === 'gender') {
+      setGender(value)
+    } else if (name === 'EI') {
+      setEI(value)
+    } else if (name === 'SN') {
+      setSN(value)
+    } else if (name === 'TF') {
+      setTF(value)
+    } else if (name === 'PJ') {
+      setPJ(value)
     }
-  };
+  }
 
   const calculateMBTI = () => {
-    return EI + SN + TF + PJ;
-  };
+    return EI + SN + TF + PJ
+  }
 
-  const mbti = calculateMBTI();
+  const mbti = calculateMBTI()
 
   const submitResult = () => {
-    addUserChar({ gender, mbti });
+    addUserChar({ gender, mbti, uid: userInfo.uid })
     const personalUser: UserChar = {
       mbti: mbti,
       gender: gender,
-      resultSentence: "당신은 힙합을 좋아하는 국힙원탑입니다.",
-    };
-    insertUserCharMutation.mutate({ userId: userInfo.uid, personalUser });
+    }
 
-    setGender("");
-    setEI("");
-    setSN("");
-    setTF("");
-    setPJ("");
-    setIsResult(true);
-  };
+    insertUserCharMutation.mutate({ userId: userInfo.uid, personalUser })
+
+    setGender('')
+    setEI('')
+    setSN('')
+    setTF('')
+    setPJ('')
+    setIsResult(true)
+  }
 
   return (
     <div>
@@ -85,24 +84,24 @@ const PersonalSubTest = () => {
       <div>
         {!isResult ? (
           <>
-            {" "}
+            {' '}
             <div>
               <label>
                 <input
-                  type="radio"
-                  name="gender"
-                  value="male"
-                  checked={gender === "male"}
+                  type='radio'
+                  name='gender'
+                  value='male'
+                  checked={gender === 'male'}
                   onChange={onChangeHandler}
                 />
                 남자
               </label>
               <label>
                 <input
-                  type="radio"
-                  name="gender"
-                  value="female"
-                  checked={gender === "female"}
+                  type='radio'
+                  name='gender'
+                  value='female'
+                  checked={gender === 'female'}
                   onChange={onChangeHandler}
                 />
                 여자
@@ -111,20 +110,20 @@ const PersonalSubTest = () => {
             <div>
               <label>
                 <input
-                  type="radio"
-                  name="EI"
-                  value="E"
-                  checked={EI === "E"}
+                  type='radio'
+                  name='EI'
+                  value='E'
+                  checked={EI === 'E'}
                   onChange={onChangeHandler}
                 />
                 E
               </label>
               <label>
                 <input
-                  type="radio"
-                  name="EI"
-                  value="I"
-                  checked={EI === "I"}
+                  type='radio'
+                  name='EI'
+                  value='I'
+                  checked={EI === 'I'}
                   onChange={onChangeHandler}
                 />
                 I
@@ -133,20 +132,20 @@ const PersonalSubTest = () => {
             <div>
               <label>
                 <input
-                  type="radio"
-                  name="SN"
-                  value="S"
-                  checked={SN === "S"}
+                  type='radio'
+                  name='SN'
+                  value='S'
+                  checked={SN === 'S'}
                   onChange={onChangeHandler}
                 />
                 S
               </label>
               <label>
                 <input
-                  type="radio"
-                  name="SN"
-                  value="N"
-                  checked={SN === "N"}
+                  type='radio'
+                  name='SN'
+                  value='N'
+                  checked={SN === 'N'}
                   onChange={onChangeHandler}
                 />
                 N
@@ -155,20 +154,20 @@ const PersonalSubTest = () => {
             <div>
               <label>
                 <input
-                  type="radio"
-                  name="TF"
-                  value="T"
-                  checked={TF === "T"}
+                  type='radio'
+                  name='TF'
+                  value='T'
+                  checked={TF === 'T'}
                   onChange={onChangeHandler}
                 />
                 T
               </label>
               <label>
                 <input
-                  type="radio"
-                  name="TF"
-                  value="F"
-                  checked={TF === "F"}
+                  type='radio'
+                  name='TF'
+                  value='F'
+                  checked={TF === 'F'}
                   onChange={onChangeHandler}
                 />
                 F
@@ -177,20 +176,20 @@ const PersonalSubTest = () => {
             <div>
               <label>
                 <input
-                  type="radio"
-                  name="PJ"
-                  value="P"
-                  checked={PJ === "P"}
+                  type='radio'
+                  name='PJ'
+                  value='P'
+                  checked={PJ === 'P'}
                   onChange={onChangeHandler}
                 />
                 P
               </label>
               <label>
                 <input
-                  type="radio"
-                  name="PJ"
-                  value="J"
-                  checked={PJ === "J"}
+                  type='radio'
+                  name='PJ'
+                  value='J'
+                  checked={PJ === 'J'}
                   onChange={onChangeHandler}
                 />
                 J
@@ -203,7 +202,7 @@ const PersonalSubTest = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PersonalSubTest;
+export default PersonalSubTest

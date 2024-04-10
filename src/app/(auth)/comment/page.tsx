@@ -1,14 +1,14 @@
-import CommentForm from "@/components/comments/CommentForm";
-import CommentsList from "@/components/comments/CommentsList";
-import React from "react";
+import CommentForm from '@/components/comment/CommentForm'
+import CommentsList from '@/components/comment/CommentsList'
+import React from 'react'
 
-const page = () => {
+const CommentsPage = () => {
   return (
     <>
       <CommentsList />
       <CommentForm />
     </>
-  );
-};
+  )
+}
 
-export default page;
+export default CommentsPage

@@ -1,76 +1,76 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import PersonalTestResult from "./PersonalTestResult";
+import { useState } from 'react'
+import PersonalTestResult from './PersonalTestResult'
 
 const PersonalTest = () => {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(0)
 
   const questionList = [
     {
-      q: ["성별이 어떻게 되십니까?"],
+      q: ['성별이 어떻게 되십니까?'],
       a: [
-        { type: "M", text: "남자" },
-        { type: "W", text: "여자" },
+        { type: 'M', text: '남자' },
+        { type: 'W', text: '여자' },
       ],
     },
     {
-      q: ["외향/내향"],
+      q: ['외향/내향'],
       a: [
-        { type: "E", text: "E" },
-        { type: "I", text: "I" },
+        { type: 'E', text: 'E' },
+        { type: 'I', text: 'I' },
       ],
     },
     {
-      q: ["사고/감각"],
+      q: ['사고/감각'],
       a: [
-        { type: "F", text: "F" },
-        { type: "T", text: "T" },
+        { type: 'F', text: 'F' },
+        { type: 'T', text: 'T' },
       ],
     },
     {
-      q: ["감각/직관"],
+      q: ['감각/직관'],
       a: [
-        { type: "S", text: "S" },
-        { type: "N", text: "N" },
+        { type: 'S', text: 'S' },
+        { type: 'N', text: 'N' },
       ],
     },
     {
-      q: ["판단/인식"],
+      q: ['판단/인식'],
       a: [
-        { type: "P", text: "P" },
-        { type: "J", text: "J" },
+        { type: 'P', text: 'P' },
+        { type: 'J', text: 'J' },
       ],
     },
     {
-      q: ["결과보러가기"],
-      a: [{ type: "", text: "결과쓰~~" }],
+      q: ['결과보러가기'],
+      a: [{ type: '', text: '결과쓰~~' }],
     },
-  ];
+  ]
 
   const [mbtiList, setMbtiList] = useState([
-    { name: "I", count: 0 },
-    { name: "E", count: 0 },
-    { name: "S", count: 0 },
-    { name: "N", count: 0 },
-    { name: "T", count: 0 },
-    { name: "P", count: 0 },
-    { name: "F", count: 0 },
-    { name: "J", count: 0 },
-  ]);
+    { name: 'I', count: 0 },
+    { name: 'E', count: 0 },
+    { name: 'S', count: 0 },
+    { name: 'N', count: 0 },
+    { name: 'T', count: 0 },
+    { name: 'P', count: 0 },
+    { name: 'F', count: 0 },
+    { name: 'J', count: 0 },
+  ])
 
   const handleCkAnswer = (type, idx) => {
-    let ls = mbtiList;
+    let ls = mbtiList
     for (let i = 0; i < ls.length; i++) {
       if (ls[i].name === type) {
-        ls[i].count = ls[i].count + 1;
+        ls[i].count = ls[i].count + 1
       }
     }
-    setPage(page + 1);
+    setPage(page + 1)
     if (idx + 1 === questionList.length) {
-      alert("결과");
+      alert('결과')
     }
-  };
+  }
 
   return (
     <div>
@@ -83,7 +83,7 @@ const PersonalTest = () => {
           <div>{`${page} / ${questionList.length}`}</div>
           <div>
             {questionList.map((val, idx) => (
-              <div style={{ display: page === idx + 1 ? "flex" : "none" }}>
+              <div style={{ display: page === idx + 1 ? 'flex' : 'none' }}>
                 <div>
                   {val.q.map((qval, qidx) => (
                     <div>{qval}</div>
@@ -104,7 +104,7 @@ const PersonalTest = () => {
         <PersonalTestResult />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default PersonalTest;
+export default PersonalTest

@@ -1,24 +1,24 @@
-"use client";
-import { useQuery } from "@tanstack/react-query";
-import { getComments } from "@/shared/comments/commentsApi";
-import Image from "next/image";
-import { onCommentHandler } from "@/util/util";
+'use client'
+import { useQuery } from '@tanstack/react-query'
+import { getComments } from '@/shared/comments/commentsApi'
+import Image from 'next/image'
+import { onCommentHandler } from '@/util/util'
 
 const CommentsList = () => {
   const { data: commentsData } = useQuery({
     queryFn: () => getComments(),
-    queryKey: ["comments"],
-  });
+    queryKey: ['comments'],
+  })
 
   return (
     <div>
       {commentsData?.map((item) => (
         <div>
-          <span className="w-5 h-5 flex overflow-hidden rounded-full bg-slate-200">
+          <span className='w-5 h-5 flex overflow-hidden rounded-full bg-slate-200'>
             {item.userInfo?.userImage && (
               <Image
                 src={item.userInfo.userImage}
-                alt=""
+                alt=''
                 width={20}
                 height={20}
               />
@@ -31,7 +31,7 @@ const CommentsList = () => {
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default CommentsList;
+export default CommentsList

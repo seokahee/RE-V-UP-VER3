@@ -1,23 +1,24 @@
-import { useState } from "react";
-import MusicSearchModal from "./MusicSearchModal";
+import { MouseEvent, useState } from 'react'
+import MusicSearchModal from './MusicSearchModal'
 
 const MusicSearch = () => {
-  const [isModal, setIsModal] = useState<boolean>(false);
+  const [isModal, setIsModal] = useState<boolean>(false)
 
-  const onModalOpenHandler = () => {
-    setIsModal(true);
-  };
+  const onModalOpenHandler = (e: MouseEvent) => {
+    e.preventDefault()
+    setIsModal(true)
+  }
 
   return (
     <div>
-      <button onClick={onModalOpenHandler}>검색</button>
+      <button onClick={onModalOpenHandler}>음악 등록하기</button>
       {isModal && (
         <div>
           <MusicSearchModal isModal={isModal} setIsModal={setIsModal} />
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default MusicSearch;
+export default MusicSearch
