@@ -85,6 +85,7 @@ export const saveSignUpInProviderUserInfo = async ({
 
   if (error) {
     if (error.details.includes('0 rows') || error.details.includes('already')) {
+      console.log(error.details)
       return
     }
     alert('정보를 받아오지 못하고 있습니다. 문의해주세요')
@@ -119,6 +120,7 @@ export const updateInProviderUserInfo = async ({
 
   if (error) {
     if (error.details.includes('0 rows') || error.details.includes('already')) {
+      console.log(error)
       return
     }
     alert('정보를 받아오지 못하고 있습니다. 문의해주세요')

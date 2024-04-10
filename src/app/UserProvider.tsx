@@ -3,17 +3,17 @@
 import { ReactNode, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useStore } from '@/shared/store'
-import { getUserUid, getUserUidProviderUserInfo } from '@/shared/login/loginApi'
 import {
   saveSignUpInProviderUserInfo,
   updateInProviderUserInfo,
 } from '@/shared/join/joinApi'
+import { getUserUid, getUserUidProviderUserInfo } from '@/shared/login/loginApi'
 
 type Props = {
   children?: ReactNode
 }
 const UserProvider = ({ children }: Props) => {
-  const { setUserInfo } = useStore()
+  const { setUserInfo, setUserType } = useStore()
   const { data: userSessionInfo } = useSession()
 
   useEffect(() => {
@@ -30,8 +30,8 @@ const UserProvider = ({ children }: Props) => {
 
         const { uid, name, email } = userSessionInfo.user
         const password = 'noPassword'
+        const emailType = 0
         const userType = 1
-
         const googleUserData = {
           userId: uid,
           email,
@@ -42,20 +42,20 @@ const UserProvider = ({ children }: Props) => {
 
         if (userData) {
           const userId = userData.userId
+          setUserType(emailType)
           setUserInfo(userId)
         }
 
         if (providerUserData) {
           if (providerUserData.userId.includes(uid)) {
-            await updateInProviderUserInfo(googleUserData)
             setUserInfo(uid)
-          } else {
-            await saveSignUpInProviderUserInfo(googleUserData)
-            setUserInfo(uid)
+            return await updateInProviderUserInfo(googleUserData)
           }
-        } else {
-          await saveSignUpInProviderUserInfo(googleUserData)
+        }
+
+        if (!providerUserData && !userData) {
           setUserInfo(uid)
+          return await saveSignUpInProviderUserInfo(googleUserData)
         }
       }
     }
