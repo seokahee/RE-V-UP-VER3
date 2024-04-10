@@ -79,7 +79,7 @@ export const getClickLikedUser = async (
     .select('likeList')
     .eq('boardId', boardId)
     .single()
-  console.log(clickLikedUser)
+
   if (error) {
     console.error('정보를 가져오지 못 하고 있습니다.', error)
     return {} as getLikeListCommunity
