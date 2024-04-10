@@ -1,21 +1,20 @@
 'use client'
 
-import { FormEvent, MouseEvent, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { MouseEvent } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import Image from 'next/image'
+import { useQuery } from '@tanstack/react-query'
 import {
   deleteCommunityMutation,
   readCommunityDetail,
 } from '@/shared/communitydetail/detailApi'
 import { COMMUNITY_QUERY_KEY } from '@/query/communityDetail/communityQueryKey'
-import Image from 'next/image'
 import { onDateHandler } from '@/util/util'
 import LikeButton from './LikeButton'
 
 const CommunityContents = () => {
   const router = useRouter()
   const { id } = useParams()
-  const [isEdit, setIsEdit] = useState<boolean>(false)
 
   const {
     data: readDetailData,
