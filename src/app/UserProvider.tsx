@@ -15,7 +15,7 @@ type Props = {
 const UserProvider = ({ children }: Props) => {
   const { setUserInfo } = useStore()
   const { data: userSessionInfo } = useSession()
-  console.log(userSessionInfo?.user)
+
   useEffect(() => {
     const saveStoreUserUid = async () => {
       if (
@@ -27,8 +27,7 @@ const UserProvider = ({ children }: Props) => {
         const providerUserData = await getUserUidProviderUserInfo(
           userSessionInfo.user.email,
         )
-        console.log(userData)
-        console.log(providerUserData)
+
         const { uid, name, email } = userSessionInfo.user
         const password = 'noPassword'
         const userType = 1
@@ -40,7 +39,7 @@ const UserProvider = ({ children }: Props) => {
           password,
           userType,
         }
-        console.log(googleUserData)
+
         if (userData) {
           const userId = userData.userId
           setUserInfo(userId)
