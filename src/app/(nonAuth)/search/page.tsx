@@ -38,11 +38,12 @@ const Search = () => {
     queryKey: ['getSearchedCommunityData', keyword, selectedTabs],
   })
 
-  if (musicDataIsLoading && communityDataIsLoading) {
+  const isLoadingSate = musicDataIsLoading && communityDataIsLoading
+  const isErrorState = musicDataIsError && communityDataIsError
+  if (isLoadingSate) {
     return <div>정보를 가져오고 있습니다</div>
   }
-
-  if (musicDataIsError && communityDataIsError) {
+  if (isErrorState) {
     console.error('검색 결과를 가져오지 못했습니다')
   }
 
@@ -54,11 +55,12 @@ const Search = () => {
     return item && item.musicId
   }) as MusicInfoType[]
 
+  const isFilteredCommunity =
+    filteredCommunity && filteredCommunity.length === 0
+  const isFilteredMusic = filteredMusic && filteredMusic.length === 0
+
   useEffect(() => {
-    if (
-      (filteredCommunity && filteredCommunity.length === 0) ||
-      (filteredMusic && filteredMusic.length === 0)
-    ) {
+    if (isFilteredCommunity || isFilteredMusic) {
       alert('검색 결과가 없습니다')
       router.push('/')
     }

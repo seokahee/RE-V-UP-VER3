@@ -12,34 +12,21 @@ const Player = ({
   onPreviousHandler,
   onNextTrackHandler,
 }: PlayerProps) => {
+  const isCurrentPlayList = isRandom
+    ? currentPlayList[randomIndex]
+    : currentPlayList[currentIndex]
   return (
     <div>
       <div>
-        <div>
-          {isRandom
-            ? currentPlayList[randomIndex].musicTitle
-            : currentPlayList[currentIndex].musicTitle}
-        </div>
-        <div>
-          {isRandom
-            ? currentPlayList[randomIndex].artist
-            : currentPlayList[currentIndex].artist}
-        </div>
+        <div>{isCurrentPlayList.musicTitle}</div>
+        <div>{isCurrentPlayList.artist}</div>
         <Image
-          src={
-            isRandom
-              ? currentPlayList[randomIndex].thumbnail
-              : currentPlayList[currentIndex].thumbnail
-          }
+          src={isCurrentPlayList.thumbnail}
           alt='Album Thumbnail'
           width={100}
           height={100}
         />
-        <div>
-          {isRandom
-            ? currentPlayList[randomIndex].lyrics
-            : currentPlayList[currentIndex].lyrics}
-        </div>
+        <div>{isCurrentPlayList.lyrics}</div>
       </div>
       <AudioPlayer
         loop={false}
@@ -48,11 +35,7 @@ const Player = ({
         showSkipControls={true}
         onClickPrevious={onPreviousHandler}
         onClickNext={onNextTrackHandler}
-        src={
-          isRandom
-            ? currentPlayList[randomIndex].musicSource
-            : currentPlayList[currentIndex].musicSource
-        }
+        src={isCurrentPlayList.musicSource}
         onEnded={onNextTrackHandler}
       />
     </div>

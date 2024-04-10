@@ -37,7 +37,7 @@ const CurrentMusicList = ({
         )
       })}
       <button onClick={onRandomMusicHandler}>
-        {isRandom ? '랜덤' : '셔플'}
+        {isRandom ? '랜덤재생중' : '랜덤재생하기'}
       </button>
       <button
         type='button'
