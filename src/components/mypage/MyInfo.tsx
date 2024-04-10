@@ -2,7 +2,7 @@
 
 import {
   getUserAndPlaylistData,
-  updateNickname,
+  updateUserInfo,
   uploadUserThumbnail,
 } from '@/shared/mypage/api'
 import { useStore } from '@/shared/store'
@@ -42,8 +42,8 @@ const MyInfo = () => {
     enabled: !!userInfo.uid,
   })
 
-  const updateNicknameMutation = useMutation({
-    mutationFn: updateNickname,
+  const updateUserInfoMutation = useMutation({
+    mutationFn: updateUserInfo,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['mypage'] })
     },
@@ -100,7 +100,7 @@ const MyInfo = () => {
       playlistOpen,
       postsOpen,
     } = isVisibility
-    updateNicknameMutation.mutate({
+    updateUserInfoMutation.mutate({
       userId: userInfo.uid,
       nickname,
       likedPostsOpen,
