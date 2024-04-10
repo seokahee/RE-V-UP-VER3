@@ -18,7 +18,9 @@ const LogOutButton = () => {
 
   return (
     <div>
-      <button onClick={onLogOutHandler}>로그아웃</button>
+      <button onClick={onLogOutHandler} className='text-white'>
+        로그아웃
+      </button>
     </div>
   )
 }
