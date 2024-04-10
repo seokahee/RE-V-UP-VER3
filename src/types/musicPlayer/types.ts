@@ -42,7 +42,6 @@ export type SearchResultType = {
 }
 
 export type MusicListProps = {
-  item: CurrentPlaylistType
   currentItems: CurrentPlaylistType[]
   checkedList: string[]
   isRandom: boolean

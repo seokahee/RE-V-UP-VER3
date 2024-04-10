@@ -6,7 +6,7 @@ type CurrentMusicStore = {
   currentMusicData: {
     currentItems: CurrentPlaylistType[]
   }
-  currentMusic: (music: CurrentPlaylistType[]) => void
+  currentMusic: (currentItems: CurrentPlaylistType[]) => void
 }
 
 const currentMusicState = {

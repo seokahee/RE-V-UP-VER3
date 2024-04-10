@@ -1,4 +1,5 @@
 'use client'
+import MusicPlayer from '@/components/player/MusicPlayer'
 import SearchedCommunityData from '@/components/search/SearchedCommunityData'
 import SearchedMusicData from '@/components/search/SearchedMusicData'
 import {

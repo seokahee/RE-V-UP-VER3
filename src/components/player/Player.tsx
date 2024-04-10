@@ -1,6 +1,7 @@
 import { useCurrentMusicStore } from '@/shared/store/playerStore'
 import { PlayerProps } from '@/types/musicPlayer/types'
 import Image from 'next/image'
+import { useState } from 'react'
 import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
 
@@ -27,11 +28,15 @@ const Player = ({
   // // 뫄뫄가 있으면 실행해라
 
   // 현재 실행중인 노래 데이터를 쥬스탄드에 담아
+  // 뮤직아이디로 인덱스를 탐색해서 보여주면 되겠구나
 
-  const currentMusic = useCurrentMusicStore((state) => state.currentMusic)
+  // const currentMusic = useCurrentMusicStore((state) => state.currentMusic)
   // currentMusic(currentItems)
-  console.log('currentItems', currentItems[musicIndex].musicSource)
-
+  // const { currentMusicData } = useCurrentMusicStore()
+  // const { currentItems } = currentMusicData
+  // console.log('playMusic', currentItems)
+  // console.log('currentItems', currentItems[musicIndex].musicTitle)
+  const [isPlay, setIsPlay] = useState()
   return (
     <div>
       <div>
@@ -54,9 +59,19 @@ const Player = ({
         onClickNext={onNextTrackHandler}
         src={currentItems[musicIndex].musicSource}
         onEnded={onNextTrackHandler}
+        // onPlay={() => {
+        //   currentMusic(currentItems)
+        // }}
       />
     </div>
   )
 }
 
 export default Player
+
+// 검색 페이지네이션 후 값을 못받아옴
+// 페이지 전환시 노래가 유지안됨
+
+// 일단 0번 인덱스를 띄우고 다음을 누르면 다음인덱스가 나오면됨
+// 제목을 누르면 아이디를 전달해서 아이디값으로 데이터를 출력하고
+// 근데 또... 그 노래가 끝나면 순서대로 재생되어야하자노아

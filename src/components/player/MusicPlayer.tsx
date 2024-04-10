@@ -19,7 +19,7 @@ import CurrentMusicList from './CurrentMusicList'
 import Player from './Player'
 import { useCurrentMusicStore } from '@/shared/store/playerStore'
 
-const MusicPlayer = () => {
+const MusicPlayer = ({ children }: { children: React.ReactNode }) => {
   const [musicIndex, setMusicIndex] = useState<number>(0)
   const [checkedList, setCheckedList] = useState<string[]>([])
   const [currentPage, setCurrentPage] = useState(1)
@@ -28,6 +28,10 @@ const MusicPlayer = () => {
   const { uid } = userInfo
   const router = useRouter()
   // const currentMusic = useCurrentMusicStore((state) => state.currentMusic)
+
+  //   const { currentMusicData } = useCurrentMusicStore()
+  // const { currentItems } = currentMusicData
+  // console.log('currentItems', currentItems)
 
   const {
     data: currentPlayList,
@@ -86,7 +90,10 @@ const MusicPlayer = () => {
       return !prev
     })
   }
-
+  // const lastIndex=currentPlayList.pop()
+  // const firstIndex=currentPlayList.shift()
+  // const[musicPlay,setMusicPlay]=useState<any[]>([])
+  // setMusicPlay(currentPlayList)
   const onPreviousHandler = () => {
     if (!isRandom) {
       if (musicIndex === 0) {
@@ -173,7 +180,8 @@ const MusicPlayer = () => {
   )
 
   // currentMusic(currentItems)
-  // console.log('currentItems.musicId', currentItems.musicId)
+  // currentMusic(currentItems[musicIndex])
+  console.log('currentItems.musicId', currentItems[musicIndex])
 
   return (
     <div>
@@ -187,22 +195,16 @@ const MusicPlayer = () => {
             onPreviousHandler={onPreviousHandler}
             onNextTrackHandler={onNextTrackHandler}
           />
-          {currentItems.map((item: any) => {
-            return (
-              <CurrentMusicList
-                key={item.musicId}
-                item={item}
-                currentItems={currentItems as CurrentPlaylistType[]}
-                checkedList={checkedList}
-                onChangeCheckMusicHandler={onChangeCheckMusicHandler}
-                onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
-                onInsertMyPlayListHandler={onInsertMyPlayListHandler}
-                onRandomMusicHandler={onRandomMusicHandler}
-                isRandom={isRandom}
-                setMusicIndex={setMusicIndex}
-              />
-            )
-          })}
+          <CurrentMusicList
+            currentItems={currentItems}
+            checkedList={checkedList}
+            onChangeCheckMusicHandler={onChangeCheckMusicHandler}
+            onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
+            onInsertMyPlayListHandler={onInsertMyPlayListHandler}
+            onRandomMusicHandler={onRandomMusicHandler}
+            isRandom={isRandom}
+            setMusicIndex={setMusicIndex}
+          />
         </div>
       )}
       <Pagination
@@ -212,6 +214,7 @@ const MusicPlayer = () => {
         nextPage={nextPage}
         setCurrentPage={setCurrentPage}
       />
+      {children}
     </div>
   )
 }
