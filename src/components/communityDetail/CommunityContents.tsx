@@ -1,25 +1,17 @@
 'use client'
 
 import { MouseEvent, useState } from 'react'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useParams, useRouter } from 'next/navigation'
-import {
-  deleteCommunityBoard,
-  readCommunityDetail,
-  updateCommnityBoard,
-} from '@/shared/communitydetail/detailApi'
 import { COMMUNITY_QUERY_KEY } from '@/query/communityDetail/communityQueryKey'
+import { useCoummunityItem } from '@/query/communityDetail/communityMutation'
+import { readCommuDetail } from '@/types/communityDetail/detailTypes'
+import { readCommunityDetail } from '@/shared/communitydetail/detailApi'
+import { useStore } from '@/shared/store'
 import Image from 'next/image'
 import { onDateHandler } from '@/util/util'
-import LikeButton from './LikeButton'
-import { useStore } from '@/shared/store'
 import useInput from '@/hooks/useInput'
-import { queryClient } from '@/app/provider'
-import { useCoummunityItem } from '@/query/communityDetail/communityMutation'
-import {
-  readCommuDetail,
-  readCommuDetailDataType,
-} from '@/types/communityDetail/detailTypes'
+import LikeButton from './LikeButton'
 
 const CommunityContents = () => {
   const router = useRouter()
@@ -166,10 +158,9 @@ const CommunityContents = () => {
             <div>{`내용 : ${content}`}</div>
           )}
           <div>
-            <LikeButton />
-            {likeList.length}
+            <LikeButton boardId={id} />
+            <div>{comment.length ? comment.length : 0}</div>
           </div>
-          <div>{comment.length ? comment.length : 0}</div>
         </div>
       </div>
     </div>
