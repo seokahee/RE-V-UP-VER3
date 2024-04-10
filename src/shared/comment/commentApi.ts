@@ -2,13 +2,14 @@ import { comment, isEditComment, newComment } from '@/types/comment/type'
 import { supabase } from '../supabase/supabase'
 
 //댓글 조회
-export const getComments = async (): Promise<comment[]> => {
+export const getComments = async (boardId: string): Promise<comment[]> => {
   let { data: comment, error } = await supabase
     .from('comment')
     .select(
       'commentId,commentContent,commentDate,commentLikeList,userInfo(userId, nickname, userImage)',
     )
     .order('commentDate', { ascending: true })
+    .eq('boardId', boardId)
   if (error) {
     throw error.message
   }
@@ -126,41 +127,5 @@ export const addLikeComment = async ({
     return null
   }
 }
-
-//좋아요 취소
-// export const cancelLikeComment = async ({
-//   userId,
-//   commentId,
-// }: {
-//   userId: string
-//   commentId: string
-// }) => {
-//   let { data: commentLiked, error } = await supabase
-//     .from('comment')
-//     .select('commentLikeList,userInfo(userId)')
-//     .eq('commentId', commentId)
-//     .single()
-
-//   if (error) {
-//     console.log(error.message)
-//   }
-
-//   if (!commentLiked) {
-//     console.log('좋아요 한 유저가 없습니다.')
-//     return null
-//   }
-
-//   const likeListStatus = commentLiked.commentLikeList?.filter(
-//     (likedId) => likedId !== userId,
-//   )
-
-//   const { data, error: likeError } = await supabase
-//     .from('comment')
-//     .update({
-//       commentLikeList: likeListStatus,
-//     })
-//     .eq('commentId)', commentId)
-//   return data
-// }
 
 //대댓글(?)

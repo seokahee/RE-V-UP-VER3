@@ -1,12 +1,10 @@
 'use client'
 
 import Image from 'next/image'
-import { supabase } from '@/shared/supabase/supabase'
-import { useEffect, useState } from 'react'
 import { getToday } from '@/util/util'
 import { useStore } from '@/shared/store'
 import { useQuery } from '@tanstack/react-query'
-import { onCommentHandler } from '@/util/comment/util'
+import { onCommentHandler } from '@/util/util'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   getComments,
@@ -15,13 +13,14 @@ import {
   addLikeComment,
 } from '@/shared/comment/commentApi'
 
-const CommentsList = () => {
+const CommentsList = ({ boardId }: { boardId: string }) => {
+  console.log(boardId, '댓글 리스트')
   const { userInfo } = useStore()
   const queryClient = useQueryClient()
 
   //댓글 목록 조회
   const { data: commentsData } = useQuery({
-    queryFn: getComments,
+    queryFn: () => getComments(boardId),
     queryKey: ['comment'],
   })
 
@@ -73,22 +72,6 @@ const CommentsList = () => {
     alert('좋아요 테스트중')
     likeCommentMutation.mutate({ commentId, userId })
   }
-
-  //좋아요 취소
-  // const cancelLikeCommentMutation = useMutation({
-  //   mutationFn: cancelLikeComment,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['comment'] })
-  //   },
-  // })
-
-  // const onCancleLikeHandler = (commentId: string) => {
-  //   const userId = userInfo.uid
-  //   //댓글 목록 조회
-
-  //   alert('취소')
-  //   cancelLikeCommentMutation.mutate({ commentId, userId })
-  // }
 
   return (
     <div>
