@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CheckboxItem from './CheckboxItem'
 import {
   getUserPlaylistMyMusicInfoData,
@@ -8,6 +8,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { UserInfo } from '@/types/mypage/types'
 import { useStore } from '@/shared/store'
 import Image from 'next/image'
+import { updateCurrentMusic } from '@/shared/main/api'
 
 const MyPlaylist = ({ data }: { data: UserInfo }) => {
   const { userInfo } = useStore()
@@ -24,8 +25,15 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     enabled: !!data?.playlistMy?.length,
   })
 
-  const deleteMutation = useMutation({
+  const updateMyPlayListMutation = useMutation({
     mutationFn: updateMyMusicIds,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['mypage'] })
+    },
+  })
+
+  const updateCurrentPlayListMutation = useMutation({
+    mutationFn: updateCurrentMusic,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['mypage'] })
     },
@@ -48,20 +56,109 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     const myMusicIds = data?.playlistMy?.[0].myMusicIds as string[]
     const newData = myMusicIds.filter((el) => !checkedList.includes(el))
 
-    deleteMutation.mutate({ userId: userInfo.uid, myMusicIds: newData })
+    updateMyPlayListMutation.mutate({
+      userId: userInfo.uid,
+      myMusicIds: newData,
+    })
     alert('삭제가 완료되었습니다.')
     setCheckedList([])
   }
 
+  const onClickAddHandler = () => {
+    if (checkedList.length === 0) {
+      alert('추가할 노래를 선택해주세요!')
+      return
+    }
+
+    const playListCurrentIds = !data.playlistCurrent?.[0].currentMusicIds
+      ? []
+      : data.playlistCurrent?.[0].currentMusicIds
+    let newData = []
+
+    if ((playListCurrentIds?.length as number) > 0) {
+      const addData = checkedList.filter(
+        (el) => !playListCurrentIds.includes(el),
+      )
+      console.log('playListCurrent', playListCurrentIds)
+      console.log('checkedList', checkedList)
+      console.log('addData', addData)
+
+      if (addData.length === 0) {
+        alert(
+          `선택하신 ${checkedList.length}개의 곡 모두 이미 추가되어 있습니다.`,
+        )
+        return
+      }
+
+      newData = [...playListCurrentIds, ...addData]
+    } else {
+      newData = [...checkedList]
+    }
+
+    updateCurrentPlayListMutation.mutate({
+      userId: userInfo.uid,
+      currentList: newData,
+    })
+
+    alert('추가가 완료되었습니다.')
+    setCheckedList([])
+  }
+
+  const onClickAllAddHandler = () => {
+    const playListCurrentIds = !data.playlistCurrent?.[0].currentMusicIds
+      ? []
+      : data.playlistCurrent?.[0].currentMusicIds
+    const playListMyIds = !data.playlistMy?.[0].myMusicIds
+      ? []
+      : data.playlistMy?.[0].myMusicIds
+    let newData = []
+
+    if (playListMyIds?.length === 0) {
+      alert('추가할 곡이 없습니다.')
+      return
+    }
+
+    if ((playListCurrentIds?.length as number) > 0) {
+      const addData = playListMyIds.filter((el) => {
+        console.log('el', el)
+        return !playListCurrentIds.includes(el)
+      })
+
+      if (addData.length === 0) {
+        alert(`${playListMyIds.length}개 모두 이미 추가되어 있습니다.`)
+        return
+      }
+
+      newData = [...playListCurrentIds, ...addData]
+    } else {
+      newData = [...playListMyIds]
+    }
+
+    updateCurrentPlayListMutation.mutate({
+      userId: userInfo.uid,
+      currentList: newData,
+    })
+    alert('추가가 완료되었습니다.')
+    setCheckedList([])
+  }
+
+  useEffect(() => {
+    console.log(checkedList)
+  }, [checkedList])
+
   return (
     <div className='mt-[5rem]'>
       <h2>{data?.nickname}님의 플레이리스트</h2>
-      <button type='button'>전체 재생 하기</button>
+      <button type='button' onClick={onClickAllAddHandler}>
+        전체 재생 하기
+      </button>
       <div>
         <button type='button' onClick={onClickDeleteHandler}>
           삭제
         </button>
-        <button type='button'>{checkedList.length}곡 재생</button>
+        <button type='button' onClick={onClickAddHandler}>
+          {checkedList.length}곡 재생
+        </button>
       </div>
       <ul className='list-none'>
         {playlistMyData?.map((item) => {
