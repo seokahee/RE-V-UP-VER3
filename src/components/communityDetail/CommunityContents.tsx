@@ -106,7 +106,9 @@ const CommunityContents = () => {
             </div>
           ) : null}
         </div>
-        {userId === uid && <button onClick={onBoardEditHandler}>수정</button>}
+        {userId === uid && !isEdit && (
+          <button onClick={onBoardEditHandler}>수정</button>
+        )}
         {userId === uid && (
           <button type='button' onClick={onDeleteBoardHandler}>
             삭제
