@@ -1,23 +1,25 @@
-'use client'
-
+import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
 import { getMyWriteListCount, getMyWriteListData } from '@/shared/mypage/api'
 import { useStore } from '@/shared/store'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useParams } from 'next/navigation'
 import React, { useState } from 'react'
-import Pagination from './Pagination'
-import BoardItem from './BoardItem'
-import BoardNoData from './BoardNoData'
-import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
+import BoardItem from '../mypage/BoardItem'
+import BoardNoData from '../mypage/BoardNoData'
+import Pagination from '../mypage/Pagination'
+import { getUserVisibilityData } from '@/shared/userpage/api'
+import LockContents from './LockContents'
 
 const WriteList = () => {
   const { userInfo } = useStore()
+  const { id } = useParams<{ id: string }>()
   const [currentPage, setCurrentPage] = useState(1)
   const queryClient = useQueryClient()
 
   const { data: totalCount } = useQuery({
-    queryFn: () => getMyWriteListCount(userInfo.uid),
-    queryKey: ['myWriteListAllCount'],
-    enabled: !!userInfo.uid,
+    queryFn: () => getMyWriteListCount(id),
+    queryKey: ['userWriteListAllCount'],
+    enabled: !!id,
   })
 
   const PER_PAGE = 2
@@ -26,15 +28,21 @@ const WriteList = () => {
   const end = currentPage * PER_PAGE - 1
 
   const { data, isLoading, isError } = useQuery({
-    queryFn: () => getMyWriteListData(userInfo.uid, start, end),
-    queryKey: ['myWriteList', currentPage],
-    enabled: !!userInfo.uid,
+    queryFn: () => getMyWriteListData(id, start, end),
+    queryKey: ['userWriteList', currentPage],
+    enabled: !!id,
   })
 
   const { data: playListCurrent } = useQuery({
     queryFn: () => getCurrentMusicData(userInfo.uid),
     queryKey: ['playListCurrent'],
     enabled: !!userInfo.uid,
+  })
+
+  const { data: UserVisibilityData } = useQuery({
+    queryFn: () => getUserVisibilityData(id),
+    queryKey: ['userVisibilitys', id],
+    enabled: !!id,
   })
 
   const updateMutation = useMutation({
@@ -75,31 +83,37 @@ const WriteList = () => {
 
   return (
     <section>
-      <ul className='mb-8'>
-        {data && data?.length > 0 ? (
-          data?.map((item) => {
-            return (
-              <BoardItem
-                key={item.boardId}
-                data={item}
-                onClick={() => onClickAddCurrentMusicHandler(item.musicId)}
-              />
-            )
-          })
-        ) : (
-          <BoardNoData />
-        )}
-      </ul>
-      {data && data?.length > 0 ? (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          nextPage={nextPage}
-          prevPage={prevPage}
-          setCurrentPage={setCurrentPage}
-        />
+      {UserVisibilityData?.postsOpen ? (
+        <>
+          <ul>
+            {data && data?.length > 0 ? (
+              data?.map((item) => {
+                return (
+                  <BoardItem
+                    key={item.boardId}
+                    data={item}
+                    onClick={() => onClickAddCurrentMusicHandler(item.musicId)}
+                  />
+                )
+              })
+            ) : (
+              <BoardNoData />
+            )}
+          </ul>
+          {data && data?.length > 0 ? (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              nextPage={nextPage}
+              prevPage={prevPage}
+              setCurrentPage={setCurrentPage}
+            />
+          ) : (
+            ''
+          )}{' '}
+        </>
       ) : (
-        ''
+        <LockContents />
       )}
     </section>
   )

@@ -3,59 +3,38 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { COMMUNITY_QUERY_KEY } from './communityQueryKey'
 import {
   addCommnityBoard,
-  readCommunityDetail,
+  deleteCommunityBoard,
+  updateCommnityBoard,
 } from '@/shared/communitydetail/detailApi'
+import { addCommnity } from '@/types/communityDetail/detailTypes'
 
-export const useCommunityQuery = (boardId: string | string[]) => {
-  const readCommunityDetailQuery = useQuery({
-    queryKey: [COMMUNITY_QUERY_KEY.READ_BOARD],
-    queryFn: () => readCommunityDetail(boardId.toString()),
-  })
-  return { readCommunityDetailQuery }
-}
-
-export const useMutationItem = (
-  uid: string,
-  boardTitle: string,
-  content: string,
-  musicId: string,
-) => {
-  const addCommunityMutation = useMutation({
-    mutationFn: () => addCommnityBoard(boardTitle, content, uid, musicId),
-    onSuccess: () =>
-      queryClient.invalidateQueries({
-        queryKey: [COMMUNITY_QUERY_KEY.ADD_BOARD, uid],
-      }),
-    onError: () => {
-      throw new Error('오류가 발생했습니다.')
-    },
-  })
-
+export const useCoummunityItem = () => {
   const updateCommunityMutation = useMutation({
     mutationFn: updateCommnityBoard,
     onSuccess: () =>
       queryClient.invalidateQueries({
-        queryKey: [COMMUNITY_QUERY_KEY.UPDATE_BOARD, uid],
+        queryKey: [COMMUNITY_QUERY_KEY.COMMUNITY_DETAIL],
       }),
-    onError: () => {
-      throw new Error('오류가 발생했습니다.')
-    },
   })
 
   const deleteCommunityMutation = useMutation({
-    mutationFn: deleteCommnityBoard,
+    mutationFn: deleteCommunityBoard,
     onSuccess: () =>
       queryClient.invalidateQueries({
-        queryKey: [COMMUNITY_QUERY_KEY.DELETE_BOARD, uid],
+        queryKey: [COMMUNITY_QUERY_KEY.COMMUNITY_DETAIL],
       }),
-    onError: () => {
-      console.error('오류가 발생했습니다.')
-    },
   })
 
+  const addCommunityMutation = useMutation({
+    mutationFn: addCommnityBoard,
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: [COMMUNITY_QUERY_KEY.COMMUNITY_DETAIL],
+      }),
+  })
   return {
-    addCommunityMutation,
     updateCommunityMutation,
     deleteCommunityMutation,
+    addCommunityMutation,
   }
 }

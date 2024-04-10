@@ -58,9 +58,9 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
           <div>제목 : {item.musicTitle}</div>
           <div>가수 : {item.artist}</div>
           <br />
-          <button onClick={testOnSubmit}>추가</button>
         </div>
       ))}
+      <button onClick={testOnSubmit}>DB에 결과진단 추가</button>
     </div>
   )
 }

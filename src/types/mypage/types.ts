@@ -24,6 +24,10 @@ export type UserInfo = {
     myMusicIds?: string[]
     playlistId?: string
   }[]
+  playlistCurrent?: {
+    currentMusicIds?: string[]
+    currentId?: string
+  }[]
 }
 
 export type PlaylistMy = {

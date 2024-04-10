@@ -8,7 +8,7 @@ export const getUserAndPlaylistData = async (
     const { data, error } = await supabase
       .from('userInfo')
       .select(
-        'userId, email, userType, nickname, following, follower, userChar, mbtiOpen, personalMusicOpen, playlistOpen, postsOpen, likedPostsOpen, userImage, personalMusic(resultSentence), playlistMy(myMusicIds, playlistId)',
+        'userId, email, userType, nickname, following, follower, userChar, mbtiOpen, personalMusicOpen, playlistOpen, postsOpen, likedPostsOpen, userImage, personalMusic(resultSentence), playlistMy(myMusicIds, playlistId), playlistCurrent(currentId, currentMusicIds)',
       )
       .eq('userId', userId)
       .limit(1)
@@ -18,6 +18,17 @@ export const getUserAndPlaylistData = async (
       const newData = { userId, myMusicIds: [] }
       const { error: insertError } = await supabase
         .from('playlistMy')
+        .insert(newData)
+
+      if (insertError) {
+        console.error('Error inserting data:', insertError.message)
+      }
+    }
+
+    if (data?.playlistCurrent.length === 0) {
+      const newData = { userId, currentMusicIds: [] }
+      const { error: insertError } = await supabase
+        .from('playlistCurrent')
         .insert(newData)
 
       if (insertError) {
@@ -66,7 +77,7 @@ export const updateMyMusicIds = async ({
   }
 }
 
-export const updateNickname = async ({
+export const updateUserInfo = async ({
   userId,
   nickname,
   likedPostsOpen,

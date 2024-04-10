@@ -1,21 +1,27 @@
+'use client'
+
 import { getLikeBoardCount, getLikeBoardData } from '@/shared/mypage/api'
-import { useStore } from '@/shared/store'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useParams } from 'next/navigation'
 import React, { useState } from 'react'
-import BoardItem from './BoardItem'
-import Pagination from './Pagination'
-import BoardNoData from './BoardNoData'
+import BoardItem from '../mypage/BoardItem'
+import BoardNoData from '../mypage/BoardNoData'
+import Pagination from '../mypage/Pagination'
+import { useStore } from '@/shared/store'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
+import { getUserVisibilityData } from '@/shared/userpage/api'
+import LockContents from './LockContents'
 
 const LikeBoardList = () => {
   const { userInfo } = useStore()
+  const { id } = useParams<{ id: string }>()
   const [currentPage, setCurrentPage] = useState(1)
   const queryClient = useQueryClient()
 
   const { data: totalCount } = useQuery({
-    queryFn: () => getLikeBoardCount(userInfo.uid),
-    queryKey: ['likeBoardAllCount'],
-    enabled: !!userInfo.uid,
+    queryFn: () => getLikeBoardCount(id),
+    queryKey: ['userLikeBoardAllCount'],
+    enabled: !!id,
   })
 
   const PER_PAGE = 2
@@ -24,15 +30,21 @@ const LikeBoardList = () => {
   const end = currentPage * PER_PAGE - 1
 
   const { data, isLoading, isError } = useQuery({
-    queryFn: () => getLikeBoardData(userInfo.uid, start, end),
-    queryKey: ['likeBoard', currentPage],
-    enabled: !!userInfo.uid,
+    queryFn: () => getLikeBoardData(id, start, end),
+    queryKey: ['userLikeBoard', currentPage],
+    enabled: !!id,
   })
 
   const { data: playListCurrent } = useQuery({
     queryFn: () => getCurrentMusicData(userInfo.uid),
     queryKey: ['playListCurrent'],
     enabled: !!userInfo.uid,
+  })
+
+  const { data: UserVisibilityData } = useQuery({
+    queryFn: () => getUserVisibilityData(id),
+    queryKey: ['userVisibilitys', id],
+    enabled: !!id,
   })
 
   const updateMutation = useMutation({
@@ -73,31 +85,37 @@ const LikeBoardList = () => {
 
   return (
     <section>
-      <ul>
-        {data && data?.length > 0 ? (
-          data?.map((item) => {
-            return (
-              <BoardItem
-                key={item.boardId}
-                data={item}
-                onClick={() => onClickAddCurrentMusicHandler(item.musicId)}
-              />
-            )
-          })
-        ) : (
-          <BoardNoData />
-        )}
-      </ul>
-      {data && data?.length > 0 ? (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          nextPage={nextPage}
-          prevPage={prevPage}
-          setCurrentPage={setCurrentPage}
-        />
+      {UserVisibilityData?.postsOpen ? (
+        <>
+          <ul>
+            {data && data?.length > 0 ? (
+              data?.map((item) => {
+                return (
+                  <BoardItem
+                    key={item.boardId}
+                    data={item}
+                    onClick={() => onClickAddCurrentMusicHandler(item.musicId)}
+                  />
+                )
+              })
+            ) : (
+              <BoardNoData />
+            )}
+          </ul>
+          {data && data?.length > 0 ? (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              nextPage={nextPage}
+              prevPage={prevPage}
+              setCurrentPage={setCurrentPage}
+            />
+          ) : (
+            ''
+          )}{' '}
+        </>
       ) : (
-        ''
+        <LockContents />
       )}
     </section>
   )

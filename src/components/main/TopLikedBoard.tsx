@@ -48,10 +48,13 @@ const TopLikedBoard = () => {
         >
           {data
             ?.sort((a, b) => {
-              return b.likeList.length - a.likeList.length
+              return (
+                (!b.likeList ? 0 : b.likeList?.length) -
+                (!a.likeList ? 0 : a.likeList?.length)
+              )
             })
             .map((item) => {
-              const likedLength = item.likeList.length
+              const likedLength = item.likeList ? item.likeList.length : 0
 
               return (
                 <li
@@ -78,7 +81,8 @@ const TopLikedBoard = () => {
                     {item.boardTitle}
                   </Link>
                   <div className='mt-4 text-right'>
-                    댓글 {item.comment.length} 좋아요 {likedLength}
+                    댓글 {item.comment ? item.comment.length : 0} 좋아요{' '}
+                    {likedLength}
                   </div>
                 </li>
               )
