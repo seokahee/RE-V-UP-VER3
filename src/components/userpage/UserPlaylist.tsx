@@ -6,7 +6,7 @@ import CheckboxItem from '../mypage/CheckboxItem'
 import Image from 'next/image'
 import { useStore } from '@/shared/store'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
-import LockContens from './LockContens'
+import LockContens from './LockContents'
 
 const UserPlaylist = ({
   data,
@@ -17,17 +17,17 @@ const UserPlaylist = ({
 }) => {
   const { userInfo } = useStore()
   const [checkedList, setCheckedList] = useState<string[]>([])
-  const [myCurrentMusicList, setMyCurrentMusicList] = useState<string[]>([])
+  // const [myCurrentMusicList, setMyCurrentMusicList] = useState<string[]>([])
 
   const queryClient = useQueryClient()
 
-  const { data: playlistUMyData } = useQuery({
+  const { data: myPlaylistCurrentData } = useQuery({
     queryFn: () => getCurrentMusicData(userInfo.uid),
     queryKey: ['playListCurrent', userInfo.uid],
     enabled: !!userInfo.uid,
   })
 
-  const { data: playlistUserMyData } = useQuery({
+  const { data: userPlaylistMyData } = useQuery({
     queryFn: () =>
       getUserPlaylistMyMusicInfoData(
         data?.playlistMy?.[0].myMusicIds as string[],
@@ -58,24 +58,22 @@ const UserPlaylist = ({
       return
     }
 
-    const myCurrentMusicIds = playlistUMyData?.[0].currentMusicIds!
+    const myCurrentMusicIds = myPlaylistCurrentData?.[0].currentMusicIds!
     let newData = []
 
     if ((myCurrentMusicIds?.length as number) > 0) {
-      const set = new Set([...myCurrentMusicIds, ...checkedList])
-      const arr = Array.from(set)
-      // const addData = myCurrentMusicList.filter(
-      //   (el, idx) => !checkedList!.includes(myCurrentMusicList[idx]),
-      // )
+      const addData = checkedList.filter(
+        (el) => !myCurrentMusicIds.includes(el),
+      )
 
-      // if (addData.length === 0) {
-      //   alert(
-      //     `선택하신 ${checkedList.length}개의 곡 모두 이미 추가되어 있습니다.`,
-      //   )
-      //   return
-      // }
+      if (addData.length === 0) {
+        alert(
+          `선택하신 ${checkedList.length}개의 곡 모두 이미 추가되어 있습니다.`,
+        )
+        return
+      }
 
-      newData = [...arr]
+      newData = [...myCurrentMusicIds, ...addData]
     } else {
       newData = [...checkedList]
     }
@@ -93,32 +91,32 @@ const UserPlaylist = ({
     const userPlaylistCurrent = !data.playlistCurrent?.[0].currentMusicIds
       ? []
       : data.playlistCurrent?.[0].currentMusicIds
-    const myPlayListCurrent = !playlistUMyData?.[0].currentMusicIds
+    const myPlayListCurrent = !myPlaylistCurrentData?.[0].currentMusicIds
       ? []
-      : playlistUMyData?.[0].currentMusicIds
+      : myPlaylistCurrentData?.[0].currentMusicIds
     let newData = []
     if (userPlaylistCurrent?.length === 0) {
       alert('추가할 곡이 없습니다.')
       return
     }
     if ((myPlayListCurrent?.length as number) > 0) {
-      const set = new Set([...myPlayListCurrent, ...userPlaylistCurrent])
-      const arr = Array.from(set)
+      // const set = new Set([...myPlayListCurrent, ...userPlaylistCurrent])
+      // const arr = Array.from(set)
 
-      const addData = myCurrentMusicList.filter(
-        (el) => !userPlaylistCurrent!.includes(el),
+      const addData = userPlaylistCurrent.filter(
+        (el) => !myPlayListCurrent!.includes(el),
       )
 
       if (addData.length === 0) {
-        alert(`모두 이미 추가되어 있습니다.`)
+        alert(`${userPlaylistCurrent.length}개 모두 이미 추가되어 있습니다.`)
         return
       }
 
-      newData = [...arr]
+      newData = [...myPlayListCurrent, ...addData]
     } else {
       newData = [...userPlaylistCurrent!]
     }
-
+    debugger
     updateMutation.mutate({
       userId: userInfo.uid,
       currentList: newData,
@@ -126,14 +124,6 @@ const UserPlaylist = ({
     alert('추가가 완료되었습니다.')
     setCheckedList([])
   }
-
-  useEffect(() => {
-    console.log('checkedList', checkedList)
-  }, [checkedList])
-
-  useEffect(() => {
-    setMyCurrentMusicList(playlistUMyData?.[0].currentMusicIds!)
-  }, [playlistUMyData])
 
   return (
     <div className='mt-[5rem]'>
@@ -149,7 +139,7 @@ const UserPlaylist = ({
             </button>
           </div>
           <ul className='list-none'>
-            {playlistUserMyData?.map((item) => {
+            {userPlaylistMyData?.map((item) => {
               return (
                 <li key={item.musicId}>
                   <div>
