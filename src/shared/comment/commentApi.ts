@@ -5,9 +5,7 @@ import { supabase } from '../supabase/supabase'
 export const getComments = async (boardId: string): Promise<comment[]> => {
   let { data: comment, error } = await supabase
     .from('comment')
-    .select(
-      'commentId,commentContent,commentDate,commentLikeList,userInfo(userId, nickname, userImage)',
-    )
+    .select('*,userInfo(userId, nickname, userImage)')
     .order('commentDate', { ascending: true })
     .eq('boardId', boardId)
   if (error) {

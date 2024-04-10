@@ -12,11 +12,13 @@ import {
   updateComment,
   addLikeComment,
 } from '@/shared/comment/commentApi'
+import { useState } from 'react'
 
 const CommentsList = ({ boardId }: { boardId: string }) => {
-  console.log(boardId, '댓글 리스트')
   const { userInfo } = useStore()
   const queryClient = useQueryClient()
+  const [editMode, setEditMode] = useState<boolean>(false)
+  const [editedText, setEditedText] = useState<string>('')
 
   //댓글 목록 조회
   const { data: commentsData } = useQuery({
@@ -46,12 +48,17 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
   })
 
   const onUpdateCommentHandler = (commentId: string) => {
+    if (editedText === '') {
+      alert('수정된 내용이 없습니다')
+      return
+    }
+    alert('수정 하시겠습니까?')
     const editedComment = {
       commentDate: getToday(),
-      commentContent: '수정 테스트',
+      commentContent: editedText,
     }
     updateCommentMutation.mutate({ commentId, editedComment })
-    alert('수정 하시겠습니까?')
+    setEditMode(false)
   }
 
   //좋아요
@@ -71,6 +78,10 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
 
     alert('좋아요 테스트중')
     likeCommentMutation.mutate({ commentId, userId })
+  }
+
+  const onChangeEditmode = () => {
+    setEditMode(true)
   }
 
   return (
@@ -99,9 +110,8 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
             </div>
           </div>
           <div className='flex flex-row'>
-            <div className='basis-1/2'> {item.commentContent}</div>
+            <div className='basis-1/2'>{item.commentContent}</div>
             <div>
-              {' '}
               {item.commentLikeList?.includes(item.userInfo.userId) ? '1' : '2'}
             </div>
             <div className='basis-1/2'>
@@ -112,12 +122,7 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
                   >
                     삭제
                   </button>
-                  <button
-                    onClick={() => onUpdateCommentHandler(item.commentId)}
-                  >
-                    수정
-                  </button>
-                  <br />
+                  <button onClick={onChangeEditmode}>수정하기</button>
                   <button onClick={() => onLikeHandler(item.commentId)}>
                     좋아요 {item.commentLikeList.length}
                   </button>{' '}
@@ -127,6 +132,20 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
                   <button onClick={() => onLikeHandler(item.commentId)}>
                     좋아요 {item.commentLikeList.length}
                   </button>{' '}
+                </>
+              )}
+              {editMode && (
+                <>
+                  <input
+                    type='text'
+                    defaultValue={item.commentContent}
+                    onChange={(e) => setEditedText(e.target.value)}
+                  />
+                  <button
+                    onClick={() => onUpdateCommentHandler(item.commentId)}
+                  >
+                    완료
+                  </button>
                 </>
               )}
             </div>

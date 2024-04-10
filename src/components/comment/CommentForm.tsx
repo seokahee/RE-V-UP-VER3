@@ -7,7 +7,6 @@ import { addComment } from '@/shared/comment/commentApi'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const CommentForm = ({ boardId }: { boardId: string }) => {
-  console.log(boardId, '댓글 폼')
   const { userInfo } = useStore()
   const queryClient = useQueryClient()
   const [comment, setComment] = useState<string>('')
@@ -35,7 +34,6 @@ const CommentForm = ({ boardId }: { boardId: string }) => {
       return
     }
 
-    //boardId : 일단 원래있는 데이터 가져와끌어오기
     const newComment = {
       userId: userInfo.uid,
       boardId: boardId,

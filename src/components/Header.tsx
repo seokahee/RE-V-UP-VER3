@@ -2,8 +2,9 @@
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import LogOutButton from './logout/LogOutButton'
+import SearchComponent from '@/components/search/SearchForm'
 
-const NonSearchHeader = () => {
+const Header = () => {
   const { data: user } = useSession()
 
   return (
@@ -20,6 +21,9 @@ const NonSearchHeader = () => {
         <Link href='/'>
           <p>V-UP</p>
         </Link>
+      </nav>
+      <nav>
+        <SearchComponent />
       </nav>
       <nav className='flex justify-between'>
         <Link href='/community'>
@@ -58,7 +62,7 @@ const NonSearchHeader = () => {
         ) : (
           <>
             {' '}
-            <Link href='/join'>
+            <Link href='/mypage'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 width='24'
@@ -82,4 +86,4 @@ const NonSearchHeader = () => {
   )
 }
 
-export default NonSearchHeader
+export default Header
