@@ -142,10 +142,6 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     setCheckedList([])
   }
 
-  useEffect(() => {
-    console.log(checkedList)
-  }, [checkedList])
-
   return (
     <div className='mt-[5rem]'>
       <h2>{data?.nickname}님의 플레이리스트</h2>
