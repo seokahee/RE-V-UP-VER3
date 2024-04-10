@@ -35,7 +35,7 @@ const MyInfo = () => {
   })
 
   const queryClient = useQueryClient()
-  //훅으로 만들어보기
+
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getUserAndPlaylistData(userInfo.uid),
     queryKey: ['mypage', userInfo.uid],
