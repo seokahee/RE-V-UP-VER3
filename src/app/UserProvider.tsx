@@ -27,11 +27,12 @@ const UserProvider = ({ children }: Props) => {
         const providerUserData = await getUserUidProviderUserInfo(
           userSessionInfo.user.email,
         )
+
         const { uid, name, email } = userSessionInfo.user
         const password = 'noPassword'
         const emailType = 0
         const userType = 1
-
+        console.log(uid)
         const googleUserData = {
           userId: uid,
           email,

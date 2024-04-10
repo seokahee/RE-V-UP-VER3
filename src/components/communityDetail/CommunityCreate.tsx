@@ -13,6 +13,7 @@ const CommunityCreate = () => {
   const { userInfo } = useStore()
   const { addCommunityMutation } = useCoummunityItem()
   const { uid } = userInfo
+  console.log(uid)
   const musicId = 'b5e50b6b-36cd-4809-b881-0c3a781a3347'
   const nickname = '둥둥'
   const thumbnail =

@@ -71,10 +71,6 @@ const handler = NextAuth({
       user: {
         ...session.user,
         uid: token.sub,
-        token: token,
-      },
-      session: {
-        jwt: true,
       },
     }),
   },
