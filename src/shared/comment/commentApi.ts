@@ -1,7 +1,6 @@
 import { comment, isEditComment, newComment } from '@/types/comment/type'
 import { supabase } from '../supabase/supabase'
 
-//댓글 조회
 export const getComments = async (boardId: string): Promise<comment[]> => {
   let { data: comment, error } = await supabase
     .from('comment')
@@ -14,7 +13,6 @@ export const getComments = async (boardId: string): Promise<comment[]> => {
   return comment as comment[]
 }
 
-//추가
 export const addComment = async (newComment: newComment) => {
   const { data, error } = await supabase
     .from('comment')
@@ -26,7 +24,6 @@ export const addComment = async (newComment: newComment) => {
   return data
 }
 
-//댓글 삭제
 export const deleteComment = async (commentId: string) => {
   const { error } = await supabase
     .from('comment')
@@ -37,7 +34,6 @@ export const deleteComment = async (commentId: string) => {
   }
 }
 
-//댓글 수정
 export const updateComment = async ({
   commentId,
   editedComment,
@@ -56,7 +52,6 @@ export const updateComment = async ({
   return data
 }
 
-//댓글 좋아요
 export const addLikeComment = async ({
   userId,
   commentId,
@@ -65,7 +60,6 @@ export const addLikeComment = async ({
   commentId: string
 }) => {
   try {
-    // 댓글이 존재하는지 확인하고 좋아요 목록을 가져옵니다.
     let { data: commentLiked, error } = await supabase
       .from('comment')
       .select('commentLikeList')
@@ -80,9 +74,6 @@ export const addLikeComment = async ({
       return null
     }
 
-    console.log('commentLiked', commentLiked)
-
-    //이미 좋아요를 누른 경우
     if (commentLiked.commentLikeList?.includes(userId)) {
       const likeListStatus = commentLiked.commentLikeList?.filter(
         (likedId) => likedId !== userId,
@@ -102,8 +93,7 @@ export const addLikeComment = async ({
       return data
     }
 
-    //좋아요를 누르지 않은 경우
-    const updatedLikeList: (string | null)[] = [
+    const updatedLikeList: string[] = [
       ...(commentLiked.commentLikeList || []),
       userId,
     ]
@@ -125,5 +115,3 @@ export const addLikeComment = async ({
     return null
   }
 }
-
-//대댓글(?)

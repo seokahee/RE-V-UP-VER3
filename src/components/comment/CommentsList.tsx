@@ -20,13 +20,11 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
   const [editMode, setEditMode] = useState<boolean>(false)
   const [editedText, setEditedText] = useState<string>('')
 
-  //댓글 목록 조회
   const { data: commentsData } = useQuery({
     queryFn: () => getComments(boardId),
     queryKey: ['comment'],
   })
 
-  //댓글 삭제
   const deleteCommentMutation = useMutation({
     mutationFn: deleteComment,
     onSuccess: () => {
@@ -39,7 +37,6 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
     alert('삭제 하시겠습니까?')
   }
 
-  //댓글 수정
   const updateCommentMutation = useMutation({
     mutationFn: updateComment,
     onSuccess: () => {
@@ -61,7 +58,6 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
     setEditMode(false)
   }
 
-  //좋아요
   const likeCommentMutation = useMutation({
     mutationFn: addLikeComment,
     onSuccess: () => {

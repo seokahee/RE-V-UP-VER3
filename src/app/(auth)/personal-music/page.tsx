@@ -1,7 +1,7 @@
 import React from 'react'
 
-const page = () => {
-  return <div></div>
+const PersonalMusic = () => {
+  return <div>PersonalMusic</div>
 }
 
-export default page
+export default PersonalMusic
