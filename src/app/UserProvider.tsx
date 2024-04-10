@@ -15,7 +15,7 @@ type Props = {
 const UserProvider = ({ children }: Props) => {
   const { setUserInfo, setUserType } = useStore()
   const { data: userSessionInfo } = useSession()
-  console.log(userSessionInfo)
+
   useEffect(() => {
     const saveStoreUserUid = async () => {
       if (
@@ -32,7 +32,6 @@ const UserProvider = ({ children }: Props) => {
         const password = 'noPassword'
         const emailType = 0
         const userType = 1
-        console.log(uid)
         const googleUserData = {
           userId: uid,
           email,
@@ -42,15 +41,12 @@ const UserProvider = ({ children }: Props) => {
         }
 
         if (userData) {
-          console.log(1)
-
           const userId = userData.userId
           setUserType(emailType)
           setUserInfo(userId)
         }
 
         if (providerUserData) {
-          console.log(2)
           if (providerUserData.userId.includes(uid)) {
             setUserInfo(uid)
             return await updateInProviderUserInfo(googleUserData)
@@ -58,7 +54,6 @@ const UserProvider = ({ children }: Props) => {
         }
 
         if (!providerUserData && !userData) {
-          console.log(3)
           setUserInfo(uid)
           return await saveSignUpInProviderUserInfo(googleUserData)
         }
