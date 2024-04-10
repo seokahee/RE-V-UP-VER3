@@ -15,7 +15,7 @@ type Props = {
 const UserProvider = ({ children }: Props) => {
   const { setUserInfo, setUserType } = useStore()
   const { data: userSessionInfo } = useSession()
-
+  console.log(userSessionInfo)
   useEffect(() => {
     const saveStoreUserUid = async () => {
       if (
