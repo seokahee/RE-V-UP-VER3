@@ -2,40 +2,40 @@ import { MusicListProps } from '@/types/musicPlayer/types'
 import CheckboxItem from '../mypage/CheckboxItem'
 
 const CurrentMusicList = ({
-  currentItems,
+  item,
   checkedList,
+  currentItems,
   onChangeCheckMusicHandler,
   onDeleteCurrentMusicHandler,
   onInsertMyPlayListHandler,
   onRandomMusicHandler,
   isRandom,
-  setRandomIndex,
-  setCurrentIndex,
+  setMusicIndex,
 }: MusicListProps) => {
+  const musicIndex = currentItems.findIndex(
+    (arr) => arr.musicId === item.musicId,
+  )
   return (
     <div>
-      {currentItems.map((item: any, index: number) => {
-        return (
-          <div key={item.musicId} className='flex gap-5'>
-            <CheckboxItem
-              checked={checkedList.includes(item.musicId)}
-              id={item.musicId}
-              onChangeCheckMusicHandler={(e) =>
-                onChangeCheckMusicHandler(e.target.checked, item.musicId)
-              }
-            />
-            <p
-              onClick={() => {
-                isRandom ? setRandomIndex(index) : setCurrentIndex(index)
-              }}
-            >
-              {item.musicTitle}
-            </p>
-            <span>{item.artist}</span>
-            <span>{item.runTime}</span>
-          </div>
-        )
-      })}
+      <div>
+        <CheckboxItem
+          checked={checkedList.includes(item.musicId)}
+          id={item.musicId}
+          onChangeCheckMusicHandler={(e) =>
+            onChangeCheckMusicHandler(e.target.checked, item.musicId)
+          }
+        />
+        <p
+          onClick={() => {
+            setMusicIndex(musicIndex)
+          }}
+        >
+          {item.musicTitle}
+        </p>
+        <span>{item.artist}</span>
+        <span>{item.runTime}</span>
+      </div>
+
       <button onClick={onRandomMusicHandler}>
         {isRandom ? '랜덤재생중' : '랜덤재생하기'}
       </button>

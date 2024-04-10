@@ -42,22 +42,20 @@ export type SearchResultType = {
 }
 
 export type MusicListProps = {
-  currentItems: MusicInfoType[]
+  item: CurrentPlaylistType
+  currentItems: CurrentPlaylistType[]
   checkedList: string[]
   isRandom: boolean
   onChangeCheckMusicHandler: (checked: boolean, id: string) => void
   onDeleteCurrentMusicHandler: () => void
   onInsertMyPlayListHandler: () => void
   onRandomMusicHandler: () => void
-  setCurrentIndex: (index: number) => void
-  setRandomIndex: (index: number) => void
+  setMusicIndex: (index: number) => void
 }
 
 export type PlayerProps = {
-  isRandom: boolean
-  currentPlayList: CurrentPlaylistType[]
-  randomIndex: number
-  currentIndex: number
+  currentItems: CurrentPlaylistType[]
+  musicIndex: number
   onPreviousHandler: () => void
   onNextTrackHandler: () => void
 }

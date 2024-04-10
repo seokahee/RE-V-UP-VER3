@@ -9,26 +9,31 @@ import {
 } from '@/shared/musicPlayer/api'
 import { useStore } from '@/shared/store'
 import { CurrentPlaylistType } from '@/types/musicPlayer/types'
+import Pagination from '@/util/Pagination '
 import { paging } from '@/util/util'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import 'react-h5-audio-player/lib/styles.css'
 import CurrentMusicList from './CurrentMusicList'
 import Player from './Player'
-import Pagination from '@/util/Pagination '
+import { useCurrentMusicStore } from '@/shared/store/playerStore'
 
 const MusicPlayer = () => {
-  const [currentIndex, setCurrentIndex] = useState<number>(0)
-  const [randomIndex, setRandomIndex] = useState<number>(0)
+  const [musicIndex, setMusicIndex] = useState<number>(0)
   const [checkedList, setCheckedList] = useState<string[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [isRandom, setIsRandom] = useState(false)
   const { userInfo } = useStore()
   const { uid } = userInfo
   const router = useRouter()
+  // const currentMusic = useCurrentMusicStore((state) => state.currentMusic)
 
-  const { data: currentPlayList } = useQuery({
+  const {
+    data: currentPlayList,
+    isLoading,
+    isError,
+  } = useQuery({
     queryFn: ({ queryKey }) => {
       return getCurrentMusicList(queryKey[1])
     },
@@ -63,30 +68,46 @@ const MusicPlayer = () => {
     },
   })
 
+  if (isLoading) {
+    return <div>정보를 가져오고 있습니다</div>
+  }
   if (!currentPlayList) {
     return
   }
+  if (isError) {
+    console.error('현재 플레이리스트를 가져오지 못했습니다')
+    return
+  }
 
-  const onPreviousHandler = () => {
-    setCurrentIndex((prev) => {
-      return (
-        (prev - 1 + currentPlayList[currentIndex].musicSource.length) %
-        currentPlayList[currentIndex].musicSource.length
-      )
+  const randomIndex = Math.floor(Math.random() * currentPlayList.length)
+
+  const onRandomMusicHandler = () => {
+    setIsRandom((prev) => {
+      return !prev
     })
   }
 
-  const onNextTrackHandler = () => {
-    setCurrentIndex((prev) => (prev + 1) % currentPlayList.length)
+  const onPreviousHandler = () => {
+    if (!isRandom) {
+      if (musicIndex === 0) {
+        setMusicIndex(currentPlayList.length - 1) // 마지막 곡으로 이동
+      } else {
+        setMusicIndex((prev) => prev - 1) // 이전 곡으로 이동
+      }
+    } else {
+      setMusicIndex(randomIndex)
+    }
   }
 
-  const onRandomMusicHandler = () => {
-    setIsRandom((prev) => !prev)
-    if (isRandom) {
-      const randomIndex = Math.floor(Math.random() * currentPlayList.length)
-      setRandomIndex(randomIndex)
+  const onNextTrackHandler = () => {
+    if (!isRandom) {
+      if (musicIndex === currentPlayList.length - 1) {
+        setMusicIndex(0) // 첫 번째 곡으로 돌아감
+      } else {
+        setMusicIndex((prev) => prev + 1) // 다음 곡으로 이동
+      }
     } else {
-      setRandomIndex(0)
+      setMusicIndex(randomIndex)
     }
   }
 
@@ -107,7 +128,6 @@ const MusicPlayer = () => {
       deleteMutation.mutate({ uid, currentMusicData })
     }
   }
-
   const onInsertMyPlayListHandler = async () => {
     if (checkedList.length === 0) {
       alert('노래를 선택해주세요')
@@ -146,12 +166,14 @@ const MusicPlayer = () => {
       }
     }
   }
-
   const { currentItems, nextPage, prevPage, totalPages } = paging(
     currentPlayList,
     currentPage,
     setCurrentPage,
   )
+
+  // currentMusic(currentItems)
+  // console.log('currentItems.musicId', currentItems.musicId)
 
   return (
     <div>
@@ -160,25 +182,27 @@ const MusicPlayer = () => {
       ) : (
         <div>
           <Player
-            isRandom={isRandom}
-            currentPlayList={currentPlayList as CurrentPlaylistType[]}
-            randomIndex={randomIndex}
-            currentIndex={currentIndex}
+            currentItems={currentItems}
+            musicIndex={musicIndex}
             onPreviousHandler={onPreviousHandler}
             onNextTrackHandler={onNextTrackHandler}
           />
-
-          <CurrentMusicList
-            currentItems={currentItems}
-            checkedList={checkedList}
-            onChangeCheckMusicHandler={onChangeCheckMusicHandler}
-            onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
-            onInsertMyPlayListHandler={onInsertMyPlayListHandler}
-            onRandomMusicHandler={onRandomMusicHandler}
-            isRandom={isRandom}
-            setRandomIndex={setRandomIndex}
-            setCurrentIndex={setCurrentIndex}
-          />
+          {currentItems.map((item: any) => {
+            return (
+              <CurrentMusicList
+                key={item.musicId}
+                item={item}
+                currentItems={currentItems as CurrentPlaylistType[]}
+                checkedList={checkedList}
+                onChangeCheckMusicHandler={onChangeCheckMusicHandler}
+                onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
+                onInsertMyPlayListHandler={onInsertMyPlayListHandler}
+                onRandomMusicHandler={onRandomMusicHandler}
+                isRandom={isRandom}
+                setMusicIndex={setMusicIndex}
+              />
+            )
+          })}
         </div>
       )}
       <Pagination

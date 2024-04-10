@@ -45,6 +45,7 @@ const Search = () => {
   }
   if (isErrorState) {
     console.error('검색 결과를 가져오지 못했습니다')
+    return
   }
 
   const filteredCommunity = communityResult?.filter((item) => {

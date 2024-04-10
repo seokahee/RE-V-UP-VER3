@@ -13,7 +13,7 @@ const Community = () => {
   const [isSort, setIsSort] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
 
-  const { data, refetch } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryFn: () => getCommunityList(isSort),
     queryKey: ['getCommunityList'],
   })
@@ -22,7 +22,16 @@ const Community = () => {
     refetch()
   }, [isSort, refetch])
 
+  if (isLoading) {
+    return <div>정보를 가져오고 있습니다</div>
+  }
+
   if (!data) {
+    return
+  }
+
+  if (isError) {
+    console.error('커뮤니티 리스트를 가져오지 못했습니다')
     return
   }
   const filteredData = data.filter((item) => {
