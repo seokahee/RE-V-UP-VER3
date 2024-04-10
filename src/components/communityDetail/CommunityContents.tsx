@@ -10,8 +10,8 @@ import { COMMUNITY_QUERY_KEY } from '@/query/communityDetail/communityQueryKey'
 import { useCoummunityItem } from '@/query/communityDetail/communityMutation'
 import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
 import { onDateHandler } from '@/util/util'
-import LikeButton from './LikeButton'
 import useInput from '@/hooks/useInput'
+import LikeButton from './LikeButton'
 
 const CommunityContents = () => {
   const router = useRouter()
@@ -158,10 +158,9 @@ const CommunityContents = () => {
             <div>{`내용 : ${content}`}</div>
           )}
           <div>
-            <LikeButton />
-            {likeList.length}
+            <LikeButton boardId={id} />
+            <div>{comment.length ? comment.length : 0}</div>
           </div>
-          <div>{comment.length ? comment.length : 0}</div>
         </div>
       </div>
     </div>

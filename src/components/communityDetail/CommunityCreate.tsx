@@ -6,6 +6,7 @@ import MusicSearch from '../search/MusicSearch'
 import { useRouter } from 'next/navigation'
 import { useStore } from '@/shared/store'
 import { useCoummunityItem } from '@/query/communityDetail/communityMutation'
+import Image from 'next/image'
 
 const CommunityCreate = () => {
   const router = useRouter()
@@ -13,9 +14,18 @@ const CommunityCreate = () => {
   const { addCommunityMutation } = useCoummunityItem()
   const { uid } = userInfo
   const musicId = 'b5e50b6b-36cd-4809-b881-0c3a781a3347'
+  const nickname = '둥둥'
+  const thumbnail =
+    'https://hxavgjouatzlrjtjgrth.supabase.co/storage/v1/object/public/musicThumbnail/Extraterrestrial.png'
+  const musicTitle = 'Extraterrestrial'
+  const artist = 'v-up'
+  const release = '2024-04-03 utc'
+  const musicSource =
+    'https://hxavgjouatzlrjtjgrth.supabase.co/storage/v1/object/public/music/Extraterrestrial.mp3'
+  const runTime = '1:33'
+
   const {
     form: communityForm,
-    setForm,
     onChange: onChangeHandler,
     reset,
   } = useInput({
@@ -78,9 +88,27 @@ const CommunityCreate = () => {
           />
         </div>
       </form>
-      <div>
+      <article>
         <MusicSearch />
-      </div>
+      </article>
+      <article>
+        <div>
+          <Image
+            src={`${thumbnail}`}
+            alt='노래앨범이미지'
+            width={80}
+            height={80}
+          />
+        </div>
+        <div>{nickname}</div>
+        <div>
+          <p>{musicTitle}</p>
+          <p>{artist}</p>
+        </div>
+        <div>
+          <p>{runTime}</p>
+        </div>
+      </article>
     </div>
   )
 }
