@@ -40,6 +40,7 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
 
   const testOnSubmit = () => {
     inssertPersonalMusicMutation.mutate({ userChar, recommend })
+    alert('추가')
   }
   return (
     <div>

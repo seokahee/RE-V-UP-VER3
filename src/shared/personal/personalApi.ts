@@ -124,6 +124,15 @@ export const inssertPersonalMusic = async (personalMusic) => {
   const mbtiSentence = SentenceMatch(userChar.mbti)
   const musicIds = recommend.map((item) => item.musicId)
 
+  // let { data: personalUid } = await supabase
+  //   .from('personalMusic')
+  //   .select('userId')
+
+  // if (personalUid?.[0].userId.includes(userChar.uid)) {
+  //   console.log('존재하는 유저')
+  //   return
+  // }
+
   const { data, error } = await supabase
     .from('personalMusic')
     .insert([
