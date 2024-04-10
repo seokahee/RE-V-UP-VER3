@@ -1,14 +1,5 @@
-import React from 'react'
+import { MusicListProps } from '@/types/musicPlayer/types'
 import CheckboxItem from '../mypage/CheckboxItem'
-
-type MusicListProps = {
-  currentItems: any[]
-  checkedList: string[]
-  onChangeCheckMusicHandler: (checked: boolean, id: string) => void
-  onDeleteCurrentMusicHandler: () => void
-  onInsertMyPlayListHandler: () => void
-  setCurrentIndex: (index: number) => void
-}
 
 const CurrentMusicList = ({
   currentItems,
@@ -16,6 +7,9 @@ const CurrentMusicList = ({
   onChangeCheckMusicHandler,
   onDeleteCurrentMusicHandler,
   onInsertMyPlayListHandler,
+  onRandomMusicHandler,
+  isRandom,
+  setRandomIndex,
   setCurrentIndex,
 }: MusicListProps) => {
   return (
@@ -32,7 +26,7 @@ const CurrentMusicList = ({
             />
             <p
               onClick={() => {
-                setCurrentIndex(index)
+                isRandom ? setRandomIndex(index) : setCurrentIndex(index)
               }}
             >
               {item.musicTitle}
@@ -42,12 +36,15 @@ const CurrentMusicList = ({
           </div>
         )
       })}
+      <button onClick={onRandomMusicHandler}>
+        {isRandom ? '랜덤' : '셔플'}
+      </button>
       <button
         type='button'
         onClick={onDeleteCurrentMusicHandler}
         className='m-3'
       >
-        삭제
+        {`${checkedList.length}곡 삭제`}
       </button>
       <button type='button' onClick={onInsertMyPlayListHandler}>
         마플리
