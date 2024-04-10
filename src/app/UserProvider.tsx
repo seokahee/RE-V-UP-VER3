@@ -42,12 +42,15 @@ const UserProvider = ({ children }: Props) => {
         }
 
         if (userData) {
+          console.log(1)
+
           const userId = userData.userId
           setUserType(emailType)
           setUserInfo(userId)
         }
 
         if (providerUserData) {
+          console.log(2)
           if (providerUserData.userId.includes(uid)) {
             setUserInfo(uid)
             return await updateInProviderUserInfo(googleUserData)
@@ -55,6 +58,7 @@ const UserProvider = ({ children }: Props) => {
         }
 
         if (!providerUserData && !userData) {
+          console.log(3)
           setUserInfo(uid)
           return await saveSignUpInProviderUserInfo(googleUserData)
         }
