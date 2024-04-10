@@ -1,3 +1,5 @@
+'use client'
+
 import { getSession, signOut } from 'next-auth/react'
 import { supabase } from '@/shared/supabase/supabase'
 

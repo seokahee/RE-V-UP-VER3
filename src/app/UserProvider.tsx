@@ -27,6 +27,7 @@ const UserProvider = ({ children }: Props) => {
         const providerUserData = await getUserUidProviderUserInfo(
           userSessionInfo.user.email,
         )
+
         const { uid, name, email } = userSessionInfo.user
         const password = 'noPassword'
         const userType = 1
@@ -37,6 +38,11 @@ const UserProvider = ({ children }: Props) => {
           nickname: name,
           password,
           userType,
+        }
+
+        if (userData) {
+          const userId = userData.userId
+          setUserInfo(userId)
         }
 
         if (providerUserData) {
@@ -50,11 +56,6 @@ const UserProvider = ({ children }: Props) => {
         } else {
           await saveSignUpInProviderUserInfo(googleUserData)
           setUserInfo(uid)
-        }
-
-        if (userData) {
-          const userId = userData.userId
-          setUserInfo(userId)
         }
       }
     }
