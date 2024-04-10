@@ -78,7 +78,9 @@ const CommunityCreate = () => {
           />
         </div>
       </form>
-      <MusicSearch />
+      <div>
+        <MusicSearch />
+      </div>
     </div>
   )
 }
