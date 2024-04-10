@@ -88,7 +88,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
                   <span>{item.artist}</span>
                 </label>
               </div>
-              <span>재생시간..</span>
+              <span>{item.runTime}</span>
             </li>
           )
         })}
