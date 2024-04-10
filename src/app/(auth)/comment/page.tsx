@@ -1,12 +1,15 @@
+'use client'
+
 import CommentForm from '@/components/comment/CommentForm'
 import CommentsList from '@/components/comment/CommentsList'
-import React from 'react'
+import { useParams } from 'next/navigation'
 
 const CommentsPage = () => {
+  const { id: boardId }: { id: string } = useParams()
   return (
     <>
-      <CommentsList />
-      <CommentForm />
+      <CommentsList boardId={boardId} />
+      <CommentForm boardId={boardId} />
     </>
   )
 }
