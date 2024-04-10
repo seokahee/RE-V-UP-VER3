@@ -3,6 +3,7 @@ import './globals.css'
 import QueryProvider from './provider'
 import { NextAuthProvider } from './NextAuthProvider'
 import Header from '@/components/Header'
+import { urbanist } from '@/util/font'
 
 export const metadata: Metadata = {
   title: 'Volume Up',
@@ -18,7 +19,7 @@ export default function RootLayout({
     <NextAuthProvider>
       <QueryProvider>
         <html lang='en'>
-          <body>
+          <body className={urbanist}>
             <Header />
             {children}
           </body>
