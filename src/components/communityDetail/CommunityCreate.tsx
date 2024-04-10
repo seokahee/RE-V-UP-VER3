@@ -4,17 +4,28 @@ import React, { FormEvent } from 'react'
 import useInput from '@/hooks/useInput'
 import MusicSearch from '../search/MusicSearch'
 import { useRouter } from 'next/navigation'
-import { addCommnityBoard } from '@/shared/communitydetail/detailApi'
 import { useStore } from '@/shared/store'
+import { useCoummunityItem } from '@/query/communityDetail/communityMutation'
+import Image from 'next/image'
 
 const CommunityCreate = () => {
   const router = useRouter()
   const { userInfo } = useStore()
+  const { addCommunityMutation } = useCoummunityItem()
   const { uid } = userInfo
   const musicId = 'b5e50b6b-36cd-4809-b881-0c3a781a3347'
+  const nickname = '둥둥'
+  const thumbnail =
+    'https://hxavgjouatzlrjtjgrth.supabase.co/storage/v1/object/public/musicThumbnail/Extraterrestrial.png'
+  const musicTitle = 'Extraterrestrial'
+  const artist = 'v-up'
+  const release = '2024-04-03 utc'
+  const musicSource =
+    'https://hxavgjouatzlrjtjgrth.supabase.co/storage/v1/object/public/music/Extraterrestrial.mp3'
+  const runTime = '1:33'
+
   const {
     form: communityForm,
-    setForm,
     onChange: onChangeHandler,
     reset,
   } = useInput({
@@ -26,7 +37,13 @@ const CommunityCreate = () => {
 
   const onSumitHandler = async (e: FormEvent) => {
     e.preventDefault()
-    await addCommnityBoard(boardTitle, content, uid, musicId)
+    const newData = {
+      boardTitle,
+      content,
+      userId: uid,
+      musicId,
+    }
+    addCommunityMutation.mutate(newData)
     alert('등록이 완료됐습니다.')
     reset()
     router.push('/community')
@@ -37,7 +54,8 @@ const CommunityCreate = () => {
       <form onSubmit={onSumitHandler}>
         <div>
           <button
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault()
               router.replace('/community')
             }}
           >
@@ -70,7 +88,27 @@ const CommunityCreate = () => {
           />
         </div>
       </form>
-      <MusicSearch />
+      <article>
+        <MusicSearch />
+      </article>
+      <article>
+        <div>
+          <Image
+            src={`${thumbnail}`}
+            alt='노래앨범이미지'
+            width={80}
+            height={80}
+          />
+        </div>
+        <div>{nickname}</div>
+        <div>
+          <p>{musicTitle}</p>
+          <p>{artist}</p>
+        </div>
+        <div>
+          <p>{runTime}</p>
+        </div>
+      </article>
     </div>
   )
 }
