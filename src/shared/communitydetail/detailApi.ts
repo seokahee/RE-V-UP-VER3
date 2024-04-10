@@ -33,10 +33,11 @@ export const addCommnityBoard = async ({
 }: addCommnity) => {
   const { data, error } = await supabase
     .from('community')
-    .insert([{ boardTitle, content, userId, musicId }])
+    .insert([{ boardTitle, content, userId, musicId, likeList: [] }])
     .select()
 
   if (error) {
+    console.log(error)
     throw new Error('내용을 저장하는 중에 오류가 생겼습니다. 문의해주세요.')
   }
 }

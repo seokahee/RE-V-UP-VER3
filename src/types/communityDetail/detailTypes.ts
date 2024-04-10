@@ -52,7 +52,7 @@ export type readCommuDetailDataType = {
 }
 
 export type addCommnity = {
-  boardTitle: string
+  boardTitle?: string
   content: string
   musicId: string
   userId: string
