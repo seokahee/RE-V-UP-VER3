@@ -1,12 +1,12 @@
 import { getUserPlaylistMyMusicInfoData } from '@/shared/mypage/api'
 import type { UserInfo } from '@/types/mypage/types'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import CheckboxItem from '../mypage/CheckboxItem'
 import Image from 'next/image'
 import { useStore } from '@/shared/store'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
-import LockContens from './LockContents'
+import LockContents from './LockContents'
 
 const UserPlaylist = ({
   data,
@@ -17,8 +17,6 @@ const UserPlaylist = ({
 }) => {
   const { userInfo } = useStore()
   const [checkedList, setCheckedList] = useState<string[]>([])
-  // const [myCurrentMusicList, setMyCurrentMusicList] = useState<string[]>([])
-
   const queryClient = useQueryClient()
 
   const { data: myPlaylistCurrentData } = useQuery({
@@ -95,14 +93,13 @@ const UserPlaylist = ({
       ? []
       : myPlaylistCurrentData?.[0].currentMusicIds
     let newData = []
+
     if (userPlaylistCurrent?.length === 0) {
       alert('추가할 곡이 없습니다.')
       return
     }
-    if ((myPlayListCurrent?.length as number) > 0) {
-      // const set = new Set([...myPlayListCurrent, ...userPlaylistCurrent])
-      // const arr = Array.from(set)
 
+    if ((myPlayListCurrent?.length as number) > 0) {
       const addData = userPlaylistCurrent.filter(
         (el) => !myPlayListCurrent!.includes(el),
       )
@@ -116,7 +113,7 @@ const UserPlaylist = ({
     } else {
       newData = [...userPlaylistCurrent!]
     }
-    debugger
+
     updateMutation.mutate({
       userId: userInfo.uid,
       currentList: newData,
@@ -173,7 +170,7 @@ const UserPlaylist = ({
           </ul>
         </>
       ) : (
-        <LockContens />
+        <LockContents />
       )}
     </div>
   )

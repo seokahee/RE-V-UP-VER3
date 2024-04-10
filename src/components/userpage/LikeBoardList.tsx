@@ -10,7 +10,7 @@ import Pagination from '../mypage/Pagination'
 import { useStore } from '@/shared/store'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
 import { getUserVisibilityData } from '@/shared/userpage/api'
-import LockContens from './LockContens'
+import LockContents from './LockContents'
 
 const LikeBoardList = () => {
   const { userInfo } = useStore()
@@ -115,7 +115,7 @@ const LikeBoardList = () => {
           )}{' '}
         </>
       ) : (
-        <LockContens />
+        <LockContents />
       )}
     </section>
   )
