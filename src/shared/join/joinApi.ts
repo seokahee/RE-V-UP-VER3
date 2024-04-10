@@ -119,7 +119,8 @@ export const updateInProviderUserInfo = async ({
 
   if (error) {
     if (error.details.includes('0 rows') || error.details.includes('already')) {
-      return
+      const errorMessage = '이미 존재하는 이메일 입니다.'
+      return errorMessage
     }
     alert('정보를 받아오지 못하고 있습니다. 문의해주세요')
     return

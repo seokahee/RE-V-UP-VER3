@@ -6,7 +6,6 @@ import MusicSearch from '../search/MusicSearch'
 import { useRouter } from 'next/navigation'
 import { useStore } from '@/shared/store'
 import { useCoummunityItem } from '@/query/communityDetail/communityMutation'
-import LikeButton from './LikeButton'
 
 const CommunityCreate = () => {
   const router = useRouter()
@@ -16,7 +15,6 @@ const CommunityCreate = () => {
   const musicId = 'b5e50b6b-36cd-4809-b881-0c3a781a3347'
   const {
     form: communityForm,
-    setForm,
     onChange: onChangeHandler,
     reset,
   } = useInput({

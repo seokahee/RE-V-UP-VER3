@@ -1,13 +1,14 @@
 'use client'
 
-import React from 'react'
 import Image from 'next/image'
+import { signIn } from 'next-auth/react'
+import { useStore } from '@/shared/store'
+import { supabase } from '@/shared/supabase/supabase'
 import googleImg from '@/../public/images/google.svg'
 import kakaoImg from '@/../public/images/kakao.svg'
-import { signIn, useSession } from 'next-auth/react'
-import { supabase } from '@/shared/supabase/supabase'
 
 const SocialLogin = () => {
+  const { setUserType } = useStore()
   const onGoogleLoginHandler = async () => {
     signIn('google', { redirect: true, callbackUrl: '/' })
     const { data, error } = await supabase.auth.signInWithOAuth({
@@ -19,6 +20,10 @@ const SocialLogin = () => {
         },
       },
     })
+    const userType = 1
+
+    alert('V-UP에 오신 걸 환영합니다!')
+    setUserType(userType)
 
     if (error) {
       throw new Error('오류로 인해 로그인이 되지 않았습니다. 문의해주세요.')
@@ -35,6 +40,12 @@ const SocialLogin = () => {
         },
       },
     })
+
+    const userType = 2
+
+    setUserType(userType)
+    alert('V-UP에 오신 걸 환영합니다!')
+
     if (error) {
       throw new Error('카카오 로그인 중에 에러가 났습니다.')
     }
