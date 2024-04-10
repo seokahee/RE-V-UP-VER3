@@ -16,7 +16,7 @@ export const getToday = () => {
   return date
 }
 
-export const onCommentHandler = (itemDate: string) => {
+export const onDateTimeHandler = (itemDate: string) => {
   const date = new Date(itemDate).toLocaleString('ko-KR', {
     year: 'numeric',
     month: '2-digit',
