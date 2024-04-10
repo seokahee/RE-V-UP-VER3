@@ -8,7 +8,7 @@ import BoardItem from '../mypage/BoardItem'
 import BoardNoData from '../mypage/BoardNoData'
 import Pagination from '../mypage/Pagination'
 import { getUserVisibilityData } from '@/shared/userpage/api'
-import LockContens from './LockContens'
+import LockContents from './LockContents'
 
 const WriteList = () => {
   const { userInfo } = useStore()
@@ -113,7 +113,7 @@ const WriteList = () => {
           )}{' '}
         </>
       ) : (
-        <LockContens />
+        <LockContents />
       )}
     </section>
   )
