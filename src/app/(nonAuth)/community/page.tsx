@@ -85,7 +85,7 @@ const Community = () => {
               <div className='flex gap-2'>
                 <div>{item?.userInfo?.nickname ?? ''}</div>
                 <div>{onDateHandler(item!.date)}</div>
-                <div>좋아요 {item?.likeList.length}</div>
+                <div>좋아요 {item?.likeList?.length}</div>
               </div>
             </div>
           </div>

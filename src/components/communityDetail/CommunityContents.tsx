@@ -1,39 +1,101 @@
 'use client'
 
-import { MouseEvent } from 'react'
+import { MouseEvent, useState } from 'react'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
 import {
-  deleteCommunityMutation,
+  deleteCommunityBoard,
   readCommunityDetail,
+  updateCommnityBoard,
 } from '@/shared/communitydetail/detailApi'
 import { COMMUNITY_QUERY_KEY } from '@/query/communityDetail/communityQueryKey'
 import { onDateHandler } from '@/util/util'
 import LikeButton from './LikeButton'
+import { useStore } from '@/shared/store'
+import useInput from '@/hooks/useInput'
+import { queryClient } from '@/app/provider'
+import { useCoummunityItem } from '@/query/communityDetail/communityMutation'
+import {
+  readCommuDetail,
+  readCommuDetailDataType,
+} from '@/types/communityDetail/detailTypes'
 
 const CommunityContents = () => {
   const router = useRouter()
-  const { id } = useParams()
-
+  const [isEdit, setIsEdit] = useState<boolean>(false)
+  const { id }: { id: string } = useParams()
+  const { userInfo: userUid } = useStore()
+  const { updateCommunityMutation, deleteCommunityMutation } =
+    useCoummunityItem()
+  const { uid } = userUid
   const {
     data: readDetailData,
     isPending,
     isLoading,
     error,
   } = useQuery({
-    queryKey: [COMMUNITY_QUERY_KEY.READ_BOARD, id],
     queryFn: () => readCommunityDetail(id.toString()),
+    queryKey: [COMMUNITY_QUERY_KEY.COMMUNITY_DETAIL],
   })
 
+  const {
+    boardId,
+    boardTitle,
+    date,
+    content,
+    likeList,
+    userInfo,
+    comment,
+    musicInfo,
+  } = readDetailData || ({} as readCommuDetail)
+  const { nickname, userImage, userId } = userInfo || {}
+  const { musicTitle, artist, thumbnail } = musicInfo || {}
+  const {
+    form: editForm,
+    setForm: setEditForm,
+    onChange: onChangeEditForm,
+    reset,
+  } = useInput({ boardTitle, content })
+  const { boardTitle: updatedTitle, content: updatedContent } = editForm
+
+  const onBoardEditHandler = (e: MouseEvent) => {
+    e.preventDefault()
+
+    setIsEdit(!isEdit)
+    setEditForm({ boardTitle, content })
+  }
+  const onBoardEditCompleteHandler = async (e: MouseEvent) => {
+    e.preventDefault()
+
+    if (boardId && updatedTitle && updatedContent) {
+      updateCommunityMutation.mutate({
+        boardId,
+        boardTitle: updatedTitle,
+        content: updatedContent,
+      })
+    }
+    alert('내용을 수정하셨습니다.')
+    setIsEdit(false)
+  }
   const onDeleteBoardHandler = async (e: MouseEvent) => {
     e.preventDefault()
-    await deleteCommunityMutation(id)
-  }
 
-  const onBackButtonHandler = () => {
+    deleteCommunityMutation.mutate(id)
+    alert('삭제되었습니다.')
     router.back()
   }
+
+  const onEditCancelHandler = () => {
+    setIsEdit(false)
+  }
+  const onBackButtonHandler = () => {
+    setIsEdit(false)
+    router.back()
+  }
+  if (!boardTitle || !content || !comment || !date) return null
+  if (!likeList) return null
 
   if (isPending && isLoading) {
     return <div>정보를 가져오고 있습니다..로딩바자리임</div>
@@ -43,61 +105,74 @@ const CommunityContents = () => {
   }
   return (
     <div>
-      {readDetailData?.map(
-        ({
-          boardId,
-          boardTitle,
-          date,
-          content,
-          likeList,
-          userInfo,
-          comment,
-          musicInfo,
-        }) => {
-          const { nickname, userImage } = userInfo!
-          const { musicTitle, artist, thumbnail } = musicInfo!
-          if (!likeList || !date || !comment || !thumbnail) return
-          return (
+      <div>
+        <div>
+          <button onClick={onBackButtonHandler}>이전으로 가기</button>
+          {isEdit ? (
             <div>
-              <button onClick={onBackButtonHandler}>이전으로 가기</button>
-              <button type='button' onClick={onDeleteBoardHandler}>
-                삭제
-              </button>
-              <div key={boardId}>
-                <div>{boardTitle}</div>
-                <div>{nickname}</div>
-                <figure>
-                  {userImage ? (
-                    <Image
-                      src={`${userImage}`}
-                      alt='유저 이미지'
-                      width={56}
-                      height={56}
-                    />
-                  ) : null}
-                </figure>
-                <div>{onDateHandler(date)}</div>
-                <figure>
-                  <Image
-                    src={thumbnail}
-                    alt='노래 앨범 이미지'
-                    width={56}
-                    height={56}
-                  />
-                </figure>
-                <div>{musicTitle}</div>
-                <div>{artist}</div>
-                <div>{content}</div>
-                <div>
-                  <LikeButton />
-                  {likeList.length}
-                </div>
-                <div>{comment.length}</div>
-              </div>
+              <button onClick={onEditCancelHandler}>수정취소</button>
+              <button onClick={onBoardEditCompleteHandler}>수정완료</button>
             </div>
-          )
-        },
-      )}
+          ) : null}
+        </div>
+        {userId === uid && <button onClick={onBoardEditHandler}>수정</button>}
+        {userId === uid && (
+          <button type='button' onClick={onDeleteBoardHandler}>
+            삭제
+          </button>
+        )}
+        <div>
+          {isEdit ? (
+            <input
+              type='text'
+              name='boardTitle'
+              value={updatedTitle}
+              onChange={onChangeEditForm}
+            />
+          ) : (
+            <div>{`제목 : ${boardTitle}`}</div>
+          )}
+          <div>{nickname}</div>
+          <figure>
+            {userImage ? (
+              <Image
+                src={`${userImage}`}
+                alt='유저 이미지'
+                width={56}
+                height={56}
+              />
+            ) : null}
+          </figure>
+          <div>{onDateHandler(date)}</div>
+          <figure>
+            <Image
+              src={`${thumbnail}`}
+              alt='노래 앨범 이미지'
+              width={56}
+              height={56}
+            />
+          </figure>
+          <div>{musicTitle}</div>
+          <div>{artist}</div>
+          {isEdit ? (
+            <textarea
+              id='content'
+              name='content'
+              value={updatedContent}
+              onChange={onChangeEditForm}
+              cols={30}
+              rows={10}
+            ></textarea>
+          ) : (
+            <div>{`내용 : ${content}`}</div>
+          )}
+          <div>
+            <LikeButton />
+            {likeList.length}
+          </div>
+          <div>{comment.length ? comment.length : 0}</div>
+        </div>
+      </div>
     </div>
   )
 }
