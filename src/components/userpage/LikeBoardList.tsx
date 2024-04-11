@@ -7,13 +7,14 @@ import React, { useState } from 'react'
 import BoardItem from '../mypage/BoardItem'
 import BoardNoData from '../mypage/BoardNoData'
 import Pagination from '../mypage/Pagination'
-import { useStore } from '@/shared/store'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
 import { getUserVisibilityData } from '@/shared/userpage/api'
 import LockContents from './LockContents'
+import { useSession } from 'next-auth/react'
 
 const LikeBoardList = () => {
-  const { userInfo } = useStore()
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user?.uid as string
   const { id } = useParams<{ id: string }>()
   const [currentPage, setCurrentPage] = useState(1)
   const queryClient = useQueryClient()
@@ -36,9 +37,9 @@ const LikeBoardList = () => {
   })
 
   const { data: playListCurrent } = useQuery({
-    queryFn: () => getCurrentMusicData(userInfo.uid),
+    queryFn: () => getCurrentMusicData(uid),
     queryKey: ['playListCurrent'],
-    enabled: !!userInfo.uid,
+    enabled: !!uid,
   })
 
   const { data: UserVisibilityData } = useQuery({
@@ -63,7 +64,7 @@ const LikeBoardList = () => {
       return
     }
     currentList.push(musicId)
-    updateMutation.mutate({ userId: userInfo.uid, currentList })
+    updateMutation.mutate({ userId: uid, currentList })
     alert('현재 재생목록에 추가 되었습니다.')
   }
 

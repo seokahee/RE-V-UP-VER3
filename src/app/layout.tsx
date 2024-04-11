@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { NextAuthProvider } from './NextAuthProvider'
 import './globals.css'
 import QueryProvider from './provider'
+import { FontClassNames } from '@/util/font'
 
 export const metadata: Metadata = {
   title: 'Volume Up',
@@ -18,7 +19,7 @@ export default function RootLayout({
     <NextAuthProvider>
       <QueryProvider>
         <html lang='en'>
-          <body>
+          <body className={FontClassNames}>
             <Header />
             {children}
           </body>

@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { getToday } from '@/util/util'
 import { useStore } from '@/shared/store'
 import { useQuery } from '@tanstack/react-query'
-import { onCommentHandler } from '@/util/util'
+import { onDateTimeHandler } from '@/util/util'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   getComments,
@@ -102,7 +102,7 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
               <p>{item.userInfo?.nickname}</p>
             </div>
             <div className='basis-1/2'>
-              {onCommentHandler(item.commentDate)}
+              {onDateTimeHandler(item.commentDate)}
             </div>
           </div>
           <div className='flex flex-row'>

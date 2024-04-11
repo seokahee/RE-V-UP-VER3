@@ -1,23 +1,24 @@
 'use client'
 
 import { getMyWriteListCount, getMyWriteListData } from '@/shared/mypage/api'
-import { useStore } from '@/shared/store'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import Pagination from './Pagination'
 import BoardItem from './BoardItem'
 import BoardNoData from './BoardNoData'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
+import { useSession } from 'next-auth/react'
 
 const WriteList = () => {
-  const { userInfo } = useStore()
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user?.uid as string
   const [currentPage, setCurrentPage] = useState(1)
   const queryClient = useQueryClient()
 
   const { data: totalCount } = useQuery({
-    queryFn: () => getMyWriteListCount(userInfo.uid),
+    queryFn: () => getMyWriteListCount(uid),
     queryKey: ['myWriteListAllCount'],
-    enabled: !!userInfo.uid,
+    enabled: !!uid,
   })
 
   const PER_PAGE = 5
@@ -26,15 +27,15 @@ const WriteList = () => {
   const end = currentPage * PER_PAGE - 1
 
   const { data, isLoading, isError } = useQuery({
-    queryFn: () => getMyWriteListData(userInfo.uid, start, end),
+    queryFn: () => getMyWriteListData(uid, start, end),
     queryKey: ['myWriteList', currentPage],
-    enabled: !!userInfo.uid,
+    enabled: !!uid,
   })
 
   const { data: playListCurrent } = useQuery({
-    queryFn: () => getCurrentMusicData(userInfo.uid),
+    queryFn: () => getCurrentMusicData(uid),
     queryKey: ['playListCurrent'],
-    enabled: !!userInfo.uid,
+    enabled: !!uid,
   })
 
   const updateMutation = useMutation({
@@ -53,7 +54,7 @@ const WriteList = () => {
       return
     }
     currentList.push(musicId)
-    updateMutation.mutate({ userId: userInfo.uid, currentList })
+    updateMutation.mutate({ userId: uid, currentList })
     alert('현재 재생목록에 추가 되었습니다.')
   }
 

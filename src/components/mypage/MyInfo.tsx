@@ -5,7 +5,6 @@ import {
   updateUserInfo,
   uploadUserThumbnail,
 } from '@/shared/mypage/api'
-import { useStore } from '@/shared/store'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
@@ -14,9 +13,11 @@ import Link from 'next/link'
 import TabMenu from './TabMenu'
 import FollowList from './FollowList'
 import MyPlaylist from './MyPlaylist'
+import { useSession } from 'next-auth/react'
 
 const MyInfo = () => {
-  const { userInfo } = useStore()
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user?.uid as string
 
   const [userImage, setUserImage] = useState('')
 
@@ -37,9 +38,9 @@ const MyInfo = () => {
   const queryClient = useQueryClient()
 
   const { data, isLoading, isError } = useQuery({
-    queryFn: () => getUserAndPlaylistData(userInfo.uid),
-    queryKey: ['mypage', userInfo.uid],
-    enabled: !!userInfo.uid,
+    queryFn: () => getUserAndPlaylistData(uid),
+    queryKey: ['mypage', uid],
+    enabled: !!uid,
   })
 
   const updateUserInfoMutation = useMutation({
@@ -101,7 +102,7 @@ const MyInfo = () => {
       postsOpen,
     } = isVisibility
     updateUserInfoMutation.mutate({
-      userId: userInfo.uid,
+      userId: uid,
       nickname,
       likedPostsOpen,
       mbtiOpen,
@@ -127,7 +128,7 @@ const MyInfo = () => {
         return
       }
       const data = await updateUserThumbnailMutation.mutateAsync({
-        userId: userInfo.uid,
+        userId: uid,
         file,
       })
 

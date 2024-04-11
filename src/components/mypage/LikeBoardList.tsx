@@ -1,21 +1,22 @@
 import { getLikeBoardCount, getLikeBoardData } from '@/shared/mypage/api'
-import { useStore } from '@/shared/store'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import BoardItem from './BoardItem'
 import Pagination from './Pagination'
 import BoardNoData from './BoardNoData'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
+import { useSession } from 'next-auth/react'
 
 const LikeBoardList = () => {
-  const { userInfo } = useStore()
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user?.uid as string
   const [currentPage, setCurrentPage] = useState(1)
   const queryClient = useQueryClient()
 
   const { data: totalCount } = useQuery({
-    queryFn: () => getLikeBoardCount(userInfo.uid),
+    queryFn: () => getLikeBoardCount(uid),
     queryKey: ['likeBoardAllCount'],
-    enabled: !!userInfo.uid,
+    enabled: !!uid,
   })
 
   const PER_PAGE = 5
@@ -24,15 +25,15 @@ const LikeBoardList = () => {
   const end = currentPage * PER_PAGE - 1
 
   const { data, isLoading, isError } = useQuery({
-    queryFn: () => getLikeBoardData(userInfo.uid, start, end),
+    queryFn: () => getLikeBoardData(uid, start, end),
     queryKey: ['likeBoard', currentPage],
-    enabled: !!userInfo.uid,
+    enabled: !!uid,
   })
 
   const { data: playListCurrent } = useQuery({
-    queryFn: () => getCurrentMusicData(userInfo.uid),
+    queryFn: () => getCurrentMusicData(uid),
     queryKey: ['playListCurrent'],
-    enabled: !!userInfo.uid,
+    enabled: !!uid,
   })
 
   const updateMutation = useMutation({
@@ -51,7 +52,7 @@ const LikeBoardList = () => {
       return
     }
     currentList.push(musicId)
-    updateMutation.mutate({ userId: userInfo.uid, currentList })
+    updateMutation.mutate({ userId: uid, currentList })
     alert('현재 재생목록에 추가 되었습니다.')
   }
 
