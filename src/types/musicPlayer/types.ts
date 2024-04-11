@@ -23,3 +23,38 @@ export type CurrentPlaylistType = {
     userId: string
   }
 }
+
+export type SearchResultType = {
+  artist: string
+  musicId: string
+  musicSource: string
+  musicTitle: string
+  release: string
+  thumbnail: string
+  boardId: string
+  boardTitle: string
+  date: string
+  likeList: string[]
+  userInfo: {
+    nickname: string
+    userImage: string
+  }
+}
+
+export type MusicListProps = {
+  currentPlayList: CurrentPlaylistType[]
+  checkedList: string[]
+  isRandom: boolean
+  onChangeCheckMusicHandler: (checked: boolean, id: string) => void
+  onDeleteCurrentMusicHandler: () => void
+  onInsertMyPlayListHandler: () => void
+  onRandomMusicHandler: () => void
+  setMusicIndex: (index: number) => void
+}
+
+export type PlayerProps = {
+  // currentItems: CurrentPlaylistType[]
+  // musicIndex: number
+  onPreviousHandler: () => void
+  onNextTrackHandler: () => void
+}
