@@ -84,10 +84,17 @@ export const saveSignUpInProviderUserInfo = async ({
     .select()
 
   if (error) {
-    if (error.details.includes('0 rows') || error.details.includes('already')) {
+    if (
+      error.details &&
+      (error.details.includes('0 rows') || error.details.includes('already'))
+    ) {
+      console.log(error.details)
       return
     }
-    alert('정보를 받아오지 못하고 있습니다. 문의해주세요')
+    if (error.code === '22P02') {
+      alert('정보를 받아오지 못하고 있습니다. 문의해주세요')
+    }
+    console.log(error)
     return
   }
 
@@ -119,6 +126,7 @@ export const updateInProviderUserInfo = async ({
 
   if (error) {
     if (error.details.includes('0 rows') || error.details.includes('already')) {
+      console.log(error)
       return
     }
     alert('정보를 받아오지 못하고 있습니다. 문의해주세요')

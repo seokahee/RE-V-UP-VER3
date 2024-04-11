@@ -5,15 +5,16 @@ type Store = {
   userInfo: {
     uid: string
   }
-  count: number
-  inc: () => void
+  userType?: number
   setUserInfo: (uid: string) => void
+  setUserType: (userType: number) => void
 }
 
 const initialState = {
   userInfo: {
     uid: '',
   },
+  userType: 0,
 }
 
 export const useStore = create(
@@ -21,8 +22,7 @@ export const useStore = create(
     (set, get) => ({
       ...initialState,
       setUserInfo: (uid: string) => set({ userInfo: { uid } }),
-      count: 1,
-      inc: () => set((state) => ({ count: state.count + 1 })),
+      setUserType: (userType: number) => set({ userType }),
     }),
     {
       name: 'store',

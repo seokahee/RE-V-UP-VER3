@@ -1,63 +1,103 @@
 'use client'
+import NoSearchResult from '@/components/search/NoSearchResult'
 import SearchedCommunityData from '@/components/search/SearchedCommunityData'
 import SearchedMusicData from '@/components/search/SearchedMusicData'
 import {
   getSearchedCommunityData,
   getSearchedMusicData,
 } from '@/shared/search/api'
-import { useSearchedStore } from '@/shared/store/searchStore'
+import {
+  useSearchedKeywordStore,
+  useSearchedResultStore,
+} from '@/shared/store/searchStore'
 import { CommunityType } from '@/types/community/type'
+import { CurrentPlaylistType } from '@/types/musicPlayer/types'
+import Pagination from '@/util/Pagination '
+import { paging } from '@/util/util'
 import { useQuery } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useState } from 'react'
 
 const Search = () => {
-  const { searchedKeyword } = useSearchedStore()
+  const [currentPage, setCurrentPage] = useState(1)
+  const { searchedKeyword } = useSearchedKeywordStore()
   const { keyword, selectedTabs } = searchedKeyword
-  const router = useRouter()
+  const searchResultData = useSearchedResultStore(
+    (state) => state.searchResultData,
+  )
 
-  const { data: musicResult } = useQuery({
+  const {
+    data: musicResult,
+    isLoading: musicDataIsLoading,
+    isError: musicDataIsError,
+  } = useQuery({
     queryFn: () => getSearchedMusicData(keyword, selectedTabs),
     queryKey: ['getSearchedMusicData', keyword, selectedTabs],
   })
 
-  const { data: communityResult } = useQuery({
+  const {
+    data: communityResult,
+    isLoading: communityDataIsLoading,
+    isError: communityDataIsError,
+  } = useQuery({
     queryFn: () => getSearchedCommunityData(keyword, selectedTabs),
     queryKey: ['getSearchedCommunityData', keyword, selectedTabs],
   })
 
-  const filteredData = communityResult?.filter((item) => {
+  const isLoadingSate = musicDataIsLoading && communityDataIsLoading
+  const isErrorState = musicDataIsError && communityDataIsError
+  if (isLoadingSate) {
+    return <div>정보를 가져오고 있습니다</div>
+  }
+
+  if (isErrorState) {
+    console.error('검색 결과를 가져오지 못했습니다')
+    return
+  }
+
+  const filteredCommunity = communityResult?.filter((item) => {
     return item && item.userInfo && item.musicInfo
   }) as CommunityType[]
 
-  useEffect(() => {
-    if (
-      (filteredData && filteredData.length === 0) ||
-      (musicResult && musicResult.length === 0)
-    ) {
-      alert('검색 결과가 없습니다')
-      router.push('/')
-    }
-  }, [filteredData, musicResult])
+  const filteredMusic = musicResult?.filter((item) => {
+    return item
+  }) as CurrentPlaylistType[]
+
+  const searchedResult =
+    selectedTabs === 'musicInfo' ? filteredMusic : filteredCommunity
+
+  const isSearchedResult = searchedResult && searchedResult.length > 0
+
+  const { currentItems, nextPage, prevPage, totalPages } = paging(
+    searchedResult,
+    currentPage,
+    setCurrentPage,
+  )
+
+  if (!keyword) {
+    return
+  }
+  searchResultData(
+    selectedTabs === 'musicInfo' ? currentItems : [],
+    selectedTabs === 'community' ? currentItems : [],
+  )
 
   return (
     <div>
-      <div>
-        {selectedTabs === 'musicInfo' && musicResult && (
-          <div>
-            {musicResult.map((item) => (
-              <SearchedMusicData key={item.musicId} item={item} />
-            ))}
-          </div>
-        )}
-        {selectedTabs !== 'musicInfo' && communityResult && (
-          <div>
-            {filteredData.map((item) => (
-              <SearchedCommunityData key={item.boardId} item={item} />
-            ))}
-          </div>
-        )}
-      </div>
+      {isSearchedResult ? (
+        <div>
+          <SearchedMusicData />
+          <SearchedCommunityData />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            prevPage={prevPage}
+            nextPage={nextPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </div>
+      ) : (
+        <NoSearchResult />
+      )}
     </div>
   )
 }

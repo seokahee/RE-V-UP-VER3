@@ -122,12 +122,21 @@ const MyInfo = () => {
     const file = e.target.files![0] as File
 
     if (window.confirm('선택한 이미지로 업로드를 진행할까요?')) {
+      if (!file) {
+        alert('선택된 이미지가 없습니다. 이미지를 선택해주세요.')
+        return
+      }
       const data = await updateUserThumbnailMutation.mutateAsync({
         userId: userInfo.uid,
         file,
       })
-      setUserImage(data?.[0].userImage as string)
-      alert('업로드 완료!')
+
+      if (data) {
+        setUserImage(data?.[0].userImage as string)
+        alert('업로드 완료!')
+      } else {
+        alert('파일이 업로드 되지 않았습니다.')
+      }
     }
   }
 

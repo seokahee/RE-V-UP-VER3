@@ -24,7 +24,7 @@ const LikeBoardList = () => {
     enabled: !!id,
   })
 
-  const PER_PAGE = 2
+  const PER_PAGE = 5
   const totalPages = Math.ceil(totalCount! / PER_PAGE)
   const start = (currentPage - 1) * PER_PAGE
   const end = currentPage * PER_PAGE - 1

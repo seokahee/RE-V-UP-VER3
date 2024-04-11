@@ -1,8 +1,8 @@
+import Header from '@/components/Header'
 import type { Metadata } from 'next'
+import { NextAuthProvider } from './NextAuthProvider'
 import './globals.css'
 import QueryProvider from './provider'
-import { NextAuthProvider } from './NextAuthProvider'
-import Header from '@/components/Header'
 import { FontClassNames } from '@/util/font'
 
 export const metadata: Metadata = {
