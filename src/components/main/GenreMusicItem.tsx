@@ -8,18 +8,19 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import { useStore } from '@/shared/store'
+import { useSession } from 'next-auth/react'
 
 const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
   const queryClient = useQueryClient()
   const router = useRouter()
 
-  const { userInfo } = useStore()
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user?.uid as string
 
   const { data: playListCurrent } = useQuery({
-    queryFn: () => getCurrentMusicData(userInfo.uid),
+    queryFn: () => getCurrentMusicData(uid),
     queryKey: ['playListCurrent'],
-    enabled: !!userInfo.uid,
+    enabled: !!uid,
   })
 
   const insertMutation = useMutation({
@@ -37,7 +38,7 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
   })
 
   const onClickAddCurrentMusicHandler = (userId: string, musicId: string) => {
-    if (userId === '') {
+    if (!userId) {
       alert(
         '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
       )
@@ -73,9 +74,7 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
         <button
           type='button'
           className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
-          onClick={() =>
-            onClickAddCurrentMusicHandler(userInfo.uid, item.musicId)
-          }
+          onClick={() => onClickAddCurrentMusicHandler(uid, item.musicId)}
         >
           +
         </button>

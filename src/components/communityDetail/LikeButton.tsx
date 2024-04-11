@@ -7,13 +7,13 @@ import {
   getClickLikedUser,
   removeLikedUser,
 } from '@/shared/communitydetail/detailApi'
-import { useStore } from '@/shared/store'
 import touchFullLike from '@/../public/images/likeFullHeart.svg'
 import { Props } from '@/types/communityDetail/detailTypes'
+import { useSession } from 'next-auth/react'
 
 const LikeButton = ({ boardId }: Props) => {
-  const { userInfo } = useStore()
-  const { uid } = userInfo
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user.uid
   const [like, setLike] = useState<boolean | null>(null)
   const [likeList, setLikeList] = useState<string[]>([])
 
@@ -22,6 +22,7 @@ const LikeButton = ({ boardId }: Props) => {
       const clickLikedUser = await getClickLikedUser(boardId)
 
       if (
+        uid &&
         clickLikedUser &&
         clickLikedUser?.likeList &&
         clickLikedUser.likeList.includes(uid)

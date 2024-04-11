@@ -1,27 +1,45 @@
 import React, { useState } from 'react'
 import CheckboxItem from './CheckboxItem'
 import {
+  getMyMusicCount,
   getUserPlaylistMyMusicInfoData,
   updateMyMusicIds,
 } from '@/shared/mypage/api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { UserInfo } from '@/types/mypage/types'
-import { useStore } from '@/shared/store'
 import Image from 'next/image'
 import { updateCurrentMusic } from '@/shared/main/api'
+import Pagination from './Pagination'
+import { useSession } from 'next-auth/react'
 
 const MyPlaylist = ({ data }: { data: UserInfo }) => {
-  const { userInfo } = useStore()
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user?.uid as string
+  const [currentPage, setCurrentPage] = useState(1)
   const [checkedList, setCheckedList] = useState<string[]>([])
 
   const queryClient = useQueryClient()
+
+  const { data: totalCount } = useQuery({
+    queryFn: () =>
+      getMyMusicCount(data?.playlistMy?.[0].myMusicIds as string[]),
+    queryKey: ['myMusicAllCount'],
+    enabled: !!data?.playlistMy?.length,
+  })
+
+  const PER_PAGE = 5
+  const totalPages = Math.ceil(totalCount! / PER_PAGE)
+  const start = (currentPage - 1) * PER_PAGE
+  const end = currentPage * PER_PAGE - 1
 
   const { data: playlistMyData } = useQuery({
     queryFn: () =>
       getUserPlaylistMyMusicInfoData(
         data?.playlistMy?.[0].myMusicIds as string[],
+        start,
+        end,
       ),
-    queryKey: ['myMusicIds', data?.playlistMy],
+    queryKey: ['myMusicIds', currentPage],
     enabled: !!data?.playlistMy?.length,
   })
 
@@ -57,7 +75,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     const newData = myMusicIds.filter((el) => !checkedList.includes(el))
 
     updateMyPlayListMutation.mutate({
-      userId: userInfo.uid,
+      userId: uid,
       myMusicIds: newData,
     })
     alert('삭제가 완료되었습니다.')
@@ -72,7 +90,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
 
     const playListCurrentIds = !data.playlistCurrent?.[0].currentMusicIds
       ? []
-      : data.playlistCurrent?.[0].currentMusicIds
+      : data.playlistCurrent?.[0]?.currentMusicIds
     let newData = []
 
     if ((playListCurrentIds?.length as number) > 0) {
@@ -93,7 +111,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     }
 
     updateCurrentPlayListMutation.mutate({
-      userId: userInfo.uid,
+      userId: uid,
       currentList: newData,
     })
 
@@ -102,7 +120,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
   }
 
   const onClickAllAddHandler = () => {
-    const playListCurrentIds = !data.playlistCurrent?.[0].currentMusicIds
+    const playListCurrentIds = !data.playlistCurrent?.[0]?.currentMusicIds
       ? []
       : data.playlistCurrent?.[0].currentMusicIds
     const playListMyIds = !data.playlistMy?.[0].myMusicIds
@@ -131,11 +149,19 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     }
 
     updateCurrentPlayListMutation.mutate({
-      userId: userInfo.uid,
+      userId: uid,
       currentList: newData,
     })
     alert('추가가 완료되었습니다.')
     setCheckedList([])
+  }
+
+  const nextPage = () => {
+    setCurrentPage((prev) => prev + 1)
+  }
+
+  const prevPage = () => {
+    setCurrentPage((prev) => prev - 1)
   }
 
   return (
@@ -153,35 +179,51 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
         </button>
       </div>
       <ul className='list-none'>
-        {playlistMyData?.map((item) => {
-          return (
-            <li key={item.musicId}>
-              <div>
-                <CheckboxItem
-                  checked={checkedList.includes(item.musicId)}
-                  id={item.musicId}
-                  onChangeCheckMusicHandler={(e) =>
-                    onChangeCheckMusicHandler(e.target.checked, item.musicId)
-                  }
-                />
-                <figure>
-                  <Image
-                    src={item.thumbnail}
-                    width={56}
-                    height={56}
-                    alt={`${item.musicTitle} 앨범 이미지`}
-                  />
-                </figure>
-                <label htmlFor={item.musicId} className='flex flex-col'>
-                  {item.musicTitle}
-                  <span>{item.artist}</span>
-                </label>
-              </div>
-              <span>재생시간..</span>
-            </li>
-          )
-        })}
+        {playlistMyData && playlistMyData?.length > 0
+          ? playlistMyData?.map((item) => {
+              return (
+                <li key={item.musicId}>
+                  <div>
+                    <CheckboxItem
+                      checked={checkedList.includes(item.musicId)}
+                      id={item.musicId}
+                      onChangeCheckMusicHandler={(e) =>
+                        onChangeCheckMusicHandler(
+                          e.target.checked,
+                          item.musicId,
+                        )
+                      }
+                    />
+                    <figure>
+                      <Image
+                        src={item.thumbnail}
+                        width={56}
+                        height={56}
+                        alt={`${item.musicTitle} 앨범 이미지`}
+                      />
+                    </figure>
+                    <label htmlFor={item.musicId} className='flex flex-col'>
+                      {item.musicTitle}
+                      <span>{item.artist}</span>
+                    </label>
+                  </div>
+                  <span>{item.runTime}</span>
+                </li>
+              )
+            })
+          : '데이터가 없습니다'}
       </ul>
+      {playlistMyData && playlistMyData?.length > 0 ? (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          nextPage={nextPage}
+          prevPage={prevPage}
+          setCurrentPage={setCurrentPage}
+        />
+      ) : (
+        ''
+      )}
     </div>
   )
 }

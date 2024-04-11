@@ -1,4 +1,4 @@
-// utility function
+import { Dispatch, SetStateAction } from 'react'
 
 export const onDateHandler = (itemDate: string) => {
   const date = new Date(itemDate).toLocaleString('ko-KR', {
@@ -15,7 +15,75 @@ export const getToday = () => {
   return date
 }
 
-export const onCommentHandler = (itemDate: string) => {
+export const paging = (
+  data: any,
+  currentPage: number,
+  setCurrentPage: Dispatch<SetStateAction<number>>,
+) => {
+  if (!data)
+    return {
+      currentItems: [],
+      nextPage: () => {},
+      prevPage: () => {},
+      totalPages: 0,
+    }
+
+  const itemsPerPage = 10
+  const totalPages = Math.ceil(data.length / itemsPerPage)
+  const indexOfLastItem = currentPage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem)
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
+    }
+  }
+  return { currentItems, nextPage, prevPage, totalPages }
+}
+
+export const modalPaging = (
+  data: any,
+  currentPage: number,
+  setCurrentPage: Dispatch<SetStateAction<number>>,
+) => {
+  if (!data) {
+    return {
+      currentItems: [],
+      nextPage: () => {},
+      prevPage: () => {},
+      totalPages: 0,
+    }
+  }
+
+  const itemsPerPage = 5
+  const totalPages = Math.ceil(data.length / itemsPerPage)
+  const indexOfLastItem = currentPage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem)
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
+    }
+  }
+
+  return { currentItems, nextPage, prevPage, totalPages }
+}
+
+export const onDateTimeHandler = (itemDate: string) => {
   const date = new Date(itemDate).toLocaleString('ko-KR', {
     year: 'numeric',
     month: '2-digit',

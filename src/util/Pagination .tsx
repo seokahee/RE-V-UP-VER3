@@ -33,6 +33,7 @@ const Pagination = ({
               </button>
             )
           })}
+
       {currentPage !== totalPages && <button onClick={nextPage}>next</button>}
     </div>
   )

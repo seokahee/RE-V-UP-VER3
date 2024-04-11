@@ -3,3 +3,8 @@ export type personalMusicTest = {
   resultSentence: string
   result: string[]
 }
+
+export type PersonalInfo = {
+  mbti: string
+  gender: string
+}

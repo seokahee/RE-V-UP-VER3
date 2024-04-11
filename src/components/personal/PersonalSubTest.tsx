@@ -1,20 +1,17 @@
 'use client'
 import React, { useState } from 'react'
 import { useSurvey } from '@/shared/store/personalStore'
-import { useStore } from '@/shared/store'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { getUserChar } from '@/shared/main/api'
+import { useSession } from 'next-auth/react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { insertUserChar } from '@/shared/personal/personalApi'
 import PersonalTestResult from './PersonalTestResult'
 
-type UserChar = {
-  mbti: string
-  gender: string
-}
+import type { PersonalInfo } from '@/types/personal/type'
 
 const PersonalSubTest = () => {
   const { addUserChar } = useSurvey()
-  const { userInfo } = useStore()
+  const { data: userSessionInfo } = useSession()
+  const userId = userSessionInfo?.user?.uid as string
   const queryClient = useQueryClient()
 
   //state
@@ -24,13 +21,6 @@ const PersonalSubTest = () => {
   const [TF, setTF] = useState<string>('')
   const [PJ, setPJ] = useState<string>('')
   const [isResult, setIsResult] = useState<boolean>(false)
-
-  //유저 정보 조회
-  //   const { data: userData } = useQuery({
-  //     queryFn: () => getUserChar(userInfo.uid),
-  //     queryKey: ["userChar"],
-  //   });
-  //   console.log("로그인한 데이터", userData);
 
   //입력한 userChar
   const insertUserCharMutation = useMutation({
@@ -62,13 +52,13 @@ const PersonalSubTest = () => {
   const mbti = calculateMBTI()
 
   const submitResult = () => {
-    addUserChar({ gender, mbti, uid: userInfo.uid })
-    const personalUser: UserChar = {
+    addUserChar({ gender, mbti, uid: userId })
+    const personalUser: PersonalInfo = {
       mbti: mbti,
       gender: gender,
     }
 
-    insertUserCharMutation.mutate({ userId: userInfo.uid, personalUser })
+    insertUserCharMutation.mutate({ userId: userId, personalUser })
 
     setGender('')
     setEI('')

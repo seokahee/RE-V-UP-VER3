@@ -1,16 +1,18 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useStore } from '@/shared/store'
+import { useSession } from 'next-auth/react'
 
 const PersonalModalDetail = ({ isOpen, onClose }) => {
   const router = useRouter()
-  const { userInfo } = useStore()
-  const { uid } = userInfo
+
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user?.uid as string
+
   if (!isOpen) return null
 
   const onPersonalTestHandler = () => {
-    if (uid === '') {
+    if (!uid) {
       router.push('/login')
     } else {
       router.push('/personal-music')

@@ -1,43 +1,29 @@
 'use client'
 
-import React from 'react'
 import Image from 'next/image'
+import { signIn } from 'next-auth/react'
+import { useStore } from '@/shared/store'
 import googleImg from '@/../public/images/google.svg'
 import kakaoImg from '@/../public/images/kakao.svg'
-import { signIn, useSession } from 'next-auth/react'
-import { supabase } from '@/shared/supabase/supabase'
 
 const SocialLogin = () => {
+  const { setUserType } = useStore()
   const onGoogleLoginHandler = async () => {
     signIn('google', { redirect: true, callbackUrl: '/' })
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        queryParams: {
-          access_type: 'offline',
-          prompt: 'consent',
-        },
-      },
-    })
 
-    if (error) {
-      throw new Error('오류로 인해 로그인이 되지 않았습니다. 문의해주세요.')
-    }
+    const userType = 1
+
+    alert('V-UP에 오신 걸 환영합니다!')
+    setUserType(userType)
   }
+
   const onKakadoLoginHandler = async () => {
     signIn('kakao', { redirect: true, callbackUrl: '/' })
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'kakao',
-      options: {
-        queryParams: {
-          access_type: 'offline',
-          prompt: 'consent',
-        },
-      },
-    })
-    if (error) {
-      throw new Error('카카오 로그인 중에 에러가 났습니다.')
-    }
+
+    const userType = 2
+
+    setUserType(userType)
+    alert('V-UP에 오신 걸 환영합니다!')
   }
 
   return (

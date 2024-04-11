@@ -4,8 +4,10 @@ import { FormEvent } from 'react'
 import Link from 'next/link'
 import { saveSignUpInUserInfo, signUp } from '@/shared/join/joinApi'
 import useInput from '@/hooks/useInput'
+import { useRouter } from 'next/navigation'
 
 const Join = () => {
+  const router = useRouter()
   const joinState = {
     userEmail: '',
     userPw: '',
@@ -49,6 +51,7 @@ const Join = () => {
       alert('약관 동의는 필수입니다')
       return
     }
+
     let signUpResult = await signUp({
       email: userEmail,
       password: userPw,
@@ -57,12 +60,16 @@ const Join = () => {
     const userId = signUpResult?.data?.user?.id
     if (signUpResult) {
       if (signUpResult.data?.user?.identities?.length === 0) {
-        alert('이미 존재하는 아이디입니다.')
+        alert('이미 존재하는 이메일입니다.')
         return
       }
 
-      if (signUpResult.error) {
-        alert(signUpResult.error.message)
+      if (
+        (signUpResult.error && signUpResult.error.message.includes('0 rows')) ||
+        (signUpResult.error && signUpResult.error.message.includes('already'))
+      ) {
+        const errorMessage = '이미 존재하는 이메일 입니다.'
+        alert(errorMessage)
         return
       }
     }
@@ -74,7 +81,7 @@ const Join = () => {
       nickname: userNickname,
       userType: 0,
     })
-
+    router.push('/login')
     reset()
   }
 

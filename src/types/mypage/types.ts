@@ -39,6 +39,7 @@ export type PlaylistMy = {
   musicTitle: string
   release: string
   thumbnail: string
+  runTime: string
 }
 
 export type Board = {

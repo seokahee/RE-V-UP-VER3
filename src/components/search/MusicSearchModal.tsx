@@ -1,8 +1,11 @@
 import useInput from '@/hooks/useInput'
 import { modalMusicSearchData } from '@/shared/search/api'
+import { useModalMusicResultStore } from '@/shared/store/searchStore'
 import { MusicInfoType } from '@/types/musicPlayer/types'
-import Image from 'next/image'
+import Pagination from '@/util/Pagination '
+import { modalPaging } from '@/util/util'
 import React, { FormEvent, useRef, useState } from 'react'
+import ModalMusicData from './ModalMusicData'
 
 const MusicSearchModal = ({
   setIsModal,
@@ -11,11 +14,15 @@ const MusicSearchModal = ({
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
   const [musicList, setMusicList] = useState<MusicInfoType[]>([])
+  const [currentPage, setCurrentPage] = useState(1)
   const { form: keywordInput, onChange } = useInput({
     keyword: '',
   })
   const { keyword } = keywordInput
   const keywordRef = useRef<HTMLInputElement>(null)
+  const modalMusicResult = useModalMusicResultStore(
+    (state) => state.modalMusicResult,
+  )
 
   const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -27,6 +34,7 @@ const MusicSearchModal = ({
 
     const getMusicData = async (keyword: string) => {
       const data = await modalMusicSearchData(keyword)
+      modalMusicResult(data as MusicInfoType[])
 
       if (data && data?.length > 0) {
         setMusicList(data)
@@ -41,9 +49,15 @@ const MusicSearchModal = ({
     e.preventDefault()
   }
 
+  const { currentItems, nextPage, prevPage, totalPages } = modalPaging(
+    musicList,
+    currentPage,
+    setCurrentPage,
+  )
+
   return (
     <div className='fixed w-full h-screen inset-0 flex flex-col justify-center items-center z-50 bg-black bg-opacity-50'>
-      <div className='bg-white h-3/5 w-3/5 flex flex-col items-center rounded-md pb-10'>
+      <div className='bg-white h-4/5 w-3/5 flex flex-col items-center rounded-md pb-10'>
         <form onSubmit={onSubmitHandler}>
           <input
             type='text'
@@ -58,29 +72,20 @@ const MusicSearchModal = ({
           </button>
           <button onClick={() => setIsModal(false)}>닫기</button>
         </form>
-        {musicList.map((item) => {
-          return (
-            <div key={item.musicId} className='flex flex-col gap-4'>
-              <div
-                onClick={onAddMusicBoardHandler}
-                className='flex items-center border border-solid rounded-[4px] cursor-pointer'
-              >
-                <Image
-                  src={item.thumbnail}
-                  alt='Album Thumbnail'
-                  width={100}
-                  height={100}
-                />
-                <div>제목 {item.musicTitle}</div>
-                <div>가수 {item.artist}</div>
-                <div>발매일 {item.release}</div>
-                <div className='flex mt-5 gap-3'>
-                  <button onClick={() => setIsModal(false)}>취소</button>
-                </div>
-              </div>
-            </div>
-          )
+        {currentItems.map((item: any) => {
+          return <ModalMusicData key={item.musicId} item={item} />
         })}
+        <button>선택</button>
+        <button onClick={() => setIsModal(false)}>취소</button>
+        {currentItems && currentItems.length > 0 ? (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            prevPage={prevPage}
+            nextPage={nextPage}
+            setCurrentPage={setCurrentPage}
+          />
+        ) : null}
       </div>
     </div>
   )

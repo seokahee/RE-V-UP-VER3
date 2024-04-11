@@ -83,7 +83,7 @@ export type Database = {
           boardTitle: string
           content: string
           date: string
-          likeList: string[] | null
+          likeList: string[]
           musicId: string
           userId: string
         }
@@ -92,7 +92,7 @@ export type Database = {
           boardTitle?: string
           content?: string
           date?: string
-          likeList?: string[] | null
+          likeList: string[]
           musicId?: string
           userId?: string
         }
@@ -101,7 +101,7 @@ export type Database = {
           boardTitle?: string
           content?: string
           date?: string
-          likeList?: string[] | null
+          likeList?: string[]
           musicId?: string
           userId?: string
         }
@@ -356,6 +356,7 @@ export type Database = {
           personalMusicOpen: boolean
           playlistOpen: boolean
           postsOpen: boolean
+          socialUserId: string | null
           userChar: Json
           userId: string
           userImage: string | null
@@ -372,6 +373,7 @@ export type Database = {
           personalMusicOpen?: boolean
           playlistOpen?: boolean
           postsOpen?: boolean
+          socialUserId?: string | null
           userChar: Json
           userId?: string
           userImage?: string | null
@@ -388,6 +390,7 @@ export type Database = {
           personalMusicOpen?: boolean
           playlistOpen?: boolean
           postsOpen?: boolean
+          socialUserId?: string | null
           userChar?: Json
           userId?: string
           userImage?: string | null
