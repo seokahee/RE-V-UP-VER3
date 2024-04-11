@@ -4,7 +4,6 @@ import Image from 'next/image'
 const ModalMusicData = ({ item }: { item: MusicInfoType }) => {
   return (
     <div key={item.musicId} className='flex items-center space-x-3'>
-      {/* 이미지 */}
       <div>
         <Image
           src={item.thumbnail}
@@ -14,7 +13,6 @@ const ModalMusicData = ({ item }: { item: MusicInfoType }) => {
           className='rounded-lg'
         />
       </div>
-      {/* 정보 */}
       <div className='flex flex-col'>
         <div className='font-bold'>Title {item.musicTitle}</div>
         <div className='text-gray-600'>Artist {item.artist}</div>

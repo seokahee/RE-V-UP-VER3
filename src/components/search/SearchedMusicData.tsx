@@ -23,14 +23,12 @@ const SearchedMusicData = () => {
     queryKey: ['playListCurrent'],
     enabled: !!uid,
   })
-
   const insertMutation = useMutation({
     mutationFn: insertCurrentMusic,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
     },
   })
-
   const updateMutation = useMutation({
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
