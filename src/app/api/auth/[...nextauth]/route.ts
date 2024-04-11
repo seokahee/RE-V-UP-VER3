@@ -63,7 +63,7 @@ const handler = NextAuth({
   ],
   session: {
     strategy: 'jwt',
-    maxAge: 60 * 24 * 60 * 60, // 로그인 유지 기간 (=3일)
+    maxAge: 60 * 24 * 60 * 60,
   },
   callbacks: {
     session: ({ session, token }) => ({
@@ -71,9 +71,6 @@ const handler = NextAuth({
       user: {
         ...session.user,
         uid: token.sub,
-      },
-      session: {
-        jwt: true,
       },
     }),
   },
