@@ -6,19 +6,19 @@ import {
 } from '@/shared/main/api'
 import { useSearchedResultStore } from '@/shared/store/searchStore'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
-import { useStore } from '@/shared/store'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 const SearchedMusicData = () => {
   const { searchedData } = useSearchedResultStore()
   const { musicData } = searchedData
-  //
-  const { userInfo } = useStore()
-  const { uid } = userInfo
-  //
-  // const { data: userSessionInfo } = useSession()
-  // const uid = userSessionInfo?.user.uid
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user.uid
+
+  console.log('userSessionInfo', userSessionInfo)
+  console.log('uid', uid)
+
   const queryClient = useQueryClient()
   const router = useRouter()
 

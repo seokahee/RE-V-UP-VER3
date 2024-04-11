@@ -24,6 +24,8 @@ const MusicPlayer = () => {
   const { uid } = userInfo
   const router = useRouter()
 
+  console.log('uid', uid)
+
   const {
     data: currentPlayList,
     isLoading,
