@@ -122,7 +122,7 @@ const MyInfo = () => {
     const file = e.target.files![0] as File
 
     if (window.confirm('선택한 이미지로 업로드를 진행할까요?')) {
-      if (file) {
+      if (!file) {
         alert('선택된 이미지가 없습니다. 이미지를 선택해주세요.')
         return
       }
