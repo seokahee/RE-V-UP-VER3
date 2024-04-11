@@ -120,9 +120,10 @@ export const uploadUserThumbnail = async ({
   file: File
 }) => {
   try {
+    const fileName = crypto.randomUUID()
     const { data, error } = await supabase.storage
       .from('userThumbnail')
-      .upload(`${userId}/${file.name}`, file)
+      .upload(`${userId}/${fileName}`, file)
 
     if (error) {
       console.log('파일이 업로드 되지 않습니다.', error)
