@@ -26,7 +26,7 @@ export const findUserPassword = async (spendEmail: string) => {
   let { data, error } = await supabase.auth.resetPasswordForEmail(spendEmail, {
     redirectTo: 'http://localhost:3000/new-password',
   })
-  if (!data || error) {
+  if (!data) {
     console.log(error)
     alert('이메일을 다시 입력해주세요!')
     return

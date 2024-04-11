@@ -12,7 +12,7 @@ const FindPassword = () => {
   const findPassword = async (e: FormEvent) => {
     e.preventDefault()
     if (!newPassword) {
-      alert('이메일을 입력해주세요!')
+      alert('비밀번호를 입력해주세요!')
       return
     }
 
@@ -23,11 +23,12 @@ const FindPassword = () => {
 
         if (data) {
           alert('비밀번호를 변경했습니다!')
-          router
+          router.push('/login')
         }
       }
     } catch (error) {
-      console.error('error', error)
+      alert('오류로 인해 비밀번호 변경이 되지 않았습니다. 문의해주세요')
+      return
     }
   }
   return (
