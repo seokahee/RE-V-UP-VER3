@@ -21,6 +21,14 @@ export const paging = (
   currentPage: number,
   setCurrentPage: Dispatch<SetStateAction<number>>,
 ) => {
+  if (!data)
+    return {
+      currentItems: [],
+      nextPage: () => {},
+      prevPage: () => {},
+      totalPages: 0,
+    }
+
   const itemsPerPage = 10
   const totalPages = Math.ceil(data.length / itemsPerPage)
   const indexOfLastItem = currentPage * itemsPerPage
@@ -38,5 +46,40 @@ export const paging = (
       setCurrentPage(currentPage - 1)
     }
   }
+  return { currentItems, nextPage, prevPage, totalPages }
+}
+
+export const modalPaging = (
+  data: any,
+  currentPage: number,
+  setCurrentPage: Dispatch<SetStateAction<number>>,
+) => {
+  if (!data) {
+    return {
+      currentItems: [],
+      nextPage: () => {},
+      prevPage: () => {},
+      totalPages: 0,
+    }
+  }
+
+  const itemsPerPage = 5
+  const totalPages = Math.ceil(data.length / itemsPerPage)
+  const indexOfLastItem = currentPage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem)
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
+    }
+  }
+
   return { currentItems, nextPage, prevPage, totalPages }
 }

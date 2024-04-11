@@ -9,7 +9,7 @@ type PaginationProps = {
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>
 }
 
-const Pagination = ({
+const ModalPagination = ({
   currentPage,
   totalPages,
   prevPage,
@@ -33,10 +33,9 @@ const Pagination = ({
               </button>
             )
           })}
-
       {currentPage !== totalPages && <button onClick={nextPage}>next</button>}
     </div>
   )
 }
 
-export default Pagination
+export default ModalPagination
