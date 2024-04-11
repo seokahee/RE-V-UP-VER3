@@ -7,24 +7,24 @@ import {
   updateCurrentMusic,
   updateMyPlayMusic,
 } from '@/shared/musicPlayer/api'
-import { useStore } from '@/shared/store'
-import { useCurrentMusicStore } from '@/shared/store/playerStore'
+import { CurrentPlaylistType } from '@/types/musicPlayer/types'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import 'react-h5-audio-player/lib/styles.css'
 import CurrentMusicList from './CurrentMusicList'
 import Player from './Player'
-import { CurrentPlaylistType } from '@/types/musicPlayer/types'
 
 const MusicPlayer = () => {
   const [musicIndex, setMusicIndex] = useState<number>(0)
   const [checkedList, setCheckedList] = useState<string[]>([])
   const [isRandom, setIsRandom] = useState(false)
-  const { userInfo } = useStore()
-  const { uid } = userInfo
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user.uid as string
   const router = useRouter()
-  const currentMusic = useCurrentMusicStore((state) => state.currentMusic)
+
+  console.log('uid', uid)
 
   const {
     data: currentPlayList,
@@ -142,9 +142,13 @@ const MusicPlayer = () => {
         const myIndex = myPlayList.flatMap((item) => {
           return item.myMusicIds
         })
-        const setIndex = new Set(myIndex)
-        const uniqueValues = checkedList.filter((val) => {
-          return !setIndex.has(val)
+
+        // some - || / every - &&
+        const uniqueValues = checkedList.filter((value) => {
+          return myIndex.every((item) => {
+            console.log('item', item)
+            return item !== value
+          })
         })
         if (uniqueValues.length === 0) {
           alert('이미 추가된 노래입니다.')
@@ -164,8 +168,6 @@ const MusicPlayer = () => {
     }
   }
 
-  console.log('currentPlayList', currentPlayList, musicIndex)
-  currentMusic(currentPlayList as CurrentPlaylistType[], musicIndex)
   return (
     <div>
       {currentPlayList?.length === 0 ? (
@@ -173,6 +175,8 @@ const MusicPlayer = () => {
       ) : (
         <div>
           <Player
+            currentPlayList={currentPlayList as CurrentPlaylistType[]}
+            musicIndex={musicIndex}
             onPreviousHandler={onPreviousHandler}
             onNextTrackHandler={onNextTrackHandler}
           />

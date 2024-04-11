@@ -1,25 +1,29 @@
 'use client'
-import MusicPlayer from '@/components/player/MusicPlayer'
+import NoSearchResult from '@/components/search/NoSearchResult'
 import SearchedCommunityData from '@/components/search/SearchedCommunityData'
 import SearchedMusicData from '@/components/search/SearchedMusicData'
 import {
   getSearchedCommunityData,
   getSearchedMusicData,
 } from '@/shared/search/api'
-import { useSearchedKeywordStore } from '@/shared/store/searchStore'
+import {
+  useSearchedKeywordStore,
+  useSearchedResultStore,
+} from '@/shared/store/searchStore'
 import { CommunityType } from '@/types/community/type'
-import { MusicInfoType } from '@/types/musicPlayer/types'
+import { CurrentPlaylistType } from '@/types/musicPlayer/types'
 import Pagination from '@/util/Pagination '
 import { paging } from '@/util/util'
 import { useQuery } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 const Search = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const { searchedKeyword } = useSearchedKeywordStore()
   const { keyword, selectedTabs } = searchedKeyword
-  const router = useRouter()
+  const searchResultData = useSearchedResultStore(
+    (state) => state.searchResultData,
+  )
 
   const {
     data: musicResult,
@@ -44,29 +48,19 @@ const Search = () => {
   if (isLoadingSate) {
     return <div>정보를 가져오고 있습니다</div>
   }
+
   if (isErrorState) {
     console.error('검색 결과를 가져오지 못했습니다')
     return
   }
 
   const filteredCommunity = communityResult?.filter((item) => {
-    return item && item.userInfo && item.musicInfo && item.boardId
+    return item && item.userInfo && item.musicInfo
   }) as CommunityType[]
 
   const filteredMusic = musicResult?.filter((item) => {
-    return item && item.musicId
-  }) as MusicInfoType[]
-
-  const isFilteredCommunity =
-    filteredCommunity && filteredCommunity.length === 0
-  const isFilteredMusic = filteredMusic && filteredMusic.length === 0
-
-  useEffect(() => {
-    if (isFilteredCommunity || isFilteredMusic) {
-      alert('검색 결과가 없습니다')
-      router.push('/')
-    }
-  }, [filteredCommunity, filteredMusic])
+    return item
+  }) as CurrentPlaylistType[]
 
   const searchedResult =
     selectedTabs === 'musicInfo' ? filteredMusic : filteredCommunity
@@ -79,39 +73,31 @@ const Search = () => {
     setCurrentPage,
   )
 
+  if (!keyword) {
+    return
+  }
+  searchResultData(
+    selectedTabs === 'musicInfo' ? currentItems : [],
+    selectedTabs === 'community' ? currentItems : [],
+  )
+
   return (
     <div>
-      <div>
-        {isSearchedResult && (
-          <div>
-            {currentItems.map((item: any, idx: any) => (
-              <SearchedMusicData
-                // key={item.musicId}
-                // key={idx}
-                item={item as MusicInfoType}
-              />
-            ))}
-          </div>
-        )}
-        {isSearchedResult && (
-          <div>
-            {currentItems.map((item: any, idx: any) => (
-              <SearchedCommunityData
-                // key={item.boardId}
-                // key={idx}
-                item={item as CommunityType}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        prevPage={prevPage}
-        nextPage={nextPage}
-        setCurrentPage={setCurrentPage}
-      />
+      {isSearchedResult ? (
+        <div>
+          <SearchedMusicData />
+          <SearchedCommunityData />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            prevPage={prevPage}
+            nextPage={nextPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </div>
+      ) : (
+        <NoSearchResult />
+      )}
     </div>
   )
 }
