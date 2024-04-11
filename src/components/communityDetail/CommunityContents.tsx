@@ -4,12 +4,11 @@ import { MouseEvent, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
-import { useStore } from '@/shared/store'
 import { readCommunityDetail } from '@/shared/communitydetail/detailApi'
 import { COMMUNITY_QUERY_KEY } from '@/query/communityDetail/communityQueryKey'
 import { useCoummunityItem } from '@/query/communityDetail/communityMutation'
 import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
-import { onDateHandler } from '@/util/util'
+import { onDateTimeHandler } from '@/util/util'
 import useInput from '@/hooks/useInput'
 import LikeButton from './LikeButton'
 import { useSession } from 'next-auth/react'
@@ -143,7 +142,7 @@ const CommunityContents = () => {
               />
             ) : null}
           </figure>
-          <div>{onDateHandler(date)}</div>
+          <div>{onDateTimeHandler(date)}</div>
           <figure>
             <Image
               src={`${thumbnail}`}
