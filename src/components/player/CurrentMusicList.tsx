@@ -1,26 +1,22 @@
-import React from 'react'
+import { MusicListProps } from '@/types/musicPlayer/types'
 import CheckboxItem from '../mypage/CheckboxItem'
 
-type MusicListProps = {
-  currentItems: any[]
-  checkedList: string[]
-  onChangeCheckMusicHandler: (checked: boolean, id: string) => void
-  onDeleteCurrentMusicHandler: () => void
-  onInsertMyPlayListHandler: () => void
-  setCurrentIndex: (index: number) => void
-}
-
 const CurrentMusicList = ({
-  currentItems,
   checkedList,
+  currentPlayList,
   onChangeCheckMusicHandler,
   onDeleteCurrentMusicHandler,
   onInsertMyPlayListHandler,
-  setCurrentIndex,
+  onRandomMusicHandler,
+  isRandom,
+  setMusicIndex,
 }: MusicListProps) => {
   return (
     <div>
-      {currentItems.map((item: any, index: number) => {
+      {currentPlayList.map((item) => {
+        const musicIndex = currentPlayList.findIndex(
+          (arr) => arr.musicId === item.musicId,
+        )
         return (
           <div key={item.musicId} className='flex gap-5'>
             <CheckboxItem
@@ -32,7 +28,7 @@ const CurrentMusicList = ({
             />
             <p
               onClick={() => {
-                setCurrentIndex(index)
+                setMusicIndex(musicIndex)
               }}
             >
               {item.musicTitle}
@@ -42,12 +38,15 @@ const CurrentMusicList = ({
           </div>
         )
       })}
+      <button onClick={onRandomMusicHandler}>
+        {isRandom ? '랜덤재생중' : '랜덤재생하기'}
+      </button>
       <button
         type='button'
         onClick={onDeleteCurrentMusicHandler}
         className='m-3'
       >
-        삭제
+        {`${checkedList.length}곡 삭제`}
       </button>
       <button type='button' onClick={onInsertMyPlayListHandler}>
         마플리

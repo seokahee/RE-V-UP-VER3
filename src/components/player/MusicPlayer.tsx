@@ -8,24 +8,29 @@ import {
   updateMyPlayMusic,
 } from '@/shared/musicPlayer/api'
 import { useStore } from '@/shared/store'
+import { useCurrentMusicStore } from '@/shared/store/playerStore'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
-import Pagination from '../mypage/Pagination'
 import CurrentMusicList from './CurrentMusicList'
+import Player from './Player'
+import { CurrentPlaylistType } from '@/types/musicPlayer/types'
 
 const MusicPlayer = () => {
-  const [currentIndex, setCurrentIndex] = useState<number>(0)
+  const [musicIndex, setMusicIndex] = useState<number>(0)
   const [checkedList, setCheckedList] = useState<string[]>([])
-  const [currentPage, setCurrentPage] = useState(1)
+  const [isRandom, setIsRandom] = useState(false)
   const { userInfo } = useStore()
   const { uid } = userInfo
   const router = useRouter()
+  const currentMusic = useCurrentMusicStore((state) => state.currentMusic)
 
-  const { data: currentPlayList } = useQuery({
+  const {
+    data: currentPlayList,
+    isLoading,
+    isError,
+  } = useQuery({
     queryFn: ({ queryKey }) => {
       return getCurrentMusicList(queryKey[1])
     },
@@ -60,21 +65,47 @@ const MusicPlayer = () => {
     },
   })
 
+  if (isLoading) {
+    return <div>정보를 가져오고 있습니다</div>
+  }
   if (!currentPlayList) {
     return
   }
+  if (isError) {
+    console.error('현재 플레이리스트를 가져오지 못했습니다')
+    return
+  }
 
-  const onPreviousHandler = () => {
-    setCurrentIndex((prev) => {
-      return (
-        (prev - 1 + currentPlayList[currentIndex].musicSource.length) %
-        currentPlayList[currentIndex].musicSource.length
-      )
+  const randomIndex = Math.floor(Math.random() * currentPlayList.length)
+
+  const onRandomMusicHandler = () => {
+    setIsRandom((prev) => {
+      return !prev
     })
   }
 
+  const onPreviousHandler = () => {
+    if (!isRandom) {
+      if (musicIndex === 0) {
+        setMusicIndex(currentPlayList.length - 1) // 마지막 곡으로 이동
+      } else {
+        setMusicIndex((prev) => prev - 1) // 이전 곡으로 이동
+      }
+    } else {
+      setMusicIndex(randomIndex)
+    }
+  }
+
   const onNextTrackHandler = () => {
-    setCurrentIndex((prev) => (prev + 1) % currentPlayList.length)
+    if (!isRandom) {
+      if (musicIndex === currentPlayList.length - 1) {
+        setMusicIndex(0) // 첫 번째 곡으로 돌아감
+      } else {
+        setMusicIndex((prev) => prev + 1) // 다음 곡으로 이동
+      }
+    } else {
+      setMusicIndex(randomIndex)
+    }
   }
 
   const onChangeCheckMusicHandler = (checked: boolean, id: string) => {
@@ -94,7 +125,6 @@ const MusicPlayer = () => {
       deleteMutation.mutate({ uid, currentMusicData })
     }
   }
-
   const onInsertMyPlayListHandler = async () => {
     if (checkedList.length === 0) {
       alert('노래를 선택해주세요')
@@ -134,150 +164,32 @@ const MusicPlayer = () => {
     }
   }
 
-  const itemsPerPage = 10
-  const totalPages = Math.ceil(currentPlayList.length / itemsPerPage)
-
-  const indexOfLastItem = currentPage * itemsPerPage
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = currentPlayList.slice(indexOfFirstItem, indexOfLastItem)
-
-  const nextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1)
-    }
-  }
-
-  const prevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
-    }
-  }
-
+  console.log('currentPlayList', currentPlayList, musicIndex)
+  currentMusic(currentPlayList as CurrentPlaylistType[], musicIndex)
   return (
     <div>
       {currentPlayList?.length === 0 ? (
         <div>현재 재생 목록이 없습니다</div>
       ) : (
         <div>
-          <div>
-            <div>{currentPlayList[currentIndex].musicTitle}</div>
-            <div>{currentPlayList[currentIndex].artist}</div>
-            <Image
-              src={currentPlayList[currentIndex].thumbnail}
-              alt='Album Thumbnail'
-              width={100}
-              height={100}
-            />
-            <div>{currentPlayList[currentIndex].lyrics}</div>
-          </div>
-
-          <AudioPlayer
-            // autoPlay
-            loop={false}
-            // 볼륨 나중에 0.5로 변경할것!, 테스트중으로 자동 재생설정함
-            volume={0.1}
-            showSkipControls={true}
-            onClickPrevious={onPreviousHandler}
-            onClickNext={onNextTrackHandler}
-            src={currentPlayList[currentIndex].musicSource}
-            onEnded={onNextTrackHandler}
+          <Player
+            onPreviousHandler={onPreviousHandler}
+            onNextTrackHandler={onNextTrackHandler}
           />
-
           <CurrentMusicList
-            currentItems={currentItems}
+            currentPlayList={currentPlayList as CurrentPlaylistType[]}
             checkedList={checkedList}
             onChangeCheckMusicHandler={onChangeCheckMusicHandler}
             onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
             onInsertMyPlayListHandler={onInsertMyPlayListHandler}
-            setCurrentIndex={setCurrentIndex}
+            onRandomMusicHandler={onRandomMusicHandler}
+            isRandom={isRandom}
+            setMusicIndex={setMusicIndex}
           />
         </div>
       )}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        prevPage={prevPage}
-        nextPage={nextPage}
-        setCurrentPage={setCurrentPage}
-      />
     </div>
   )
 }
 
 export default MusicPlayer
-
-// return (
-//   <div>
-//     {currentPlayList?.length === 0 ? (
-//       <div>현재 재생 목록이 없습니다</div>
-//     ) : (
-//       <div>
-//         <div>
-//           <div>{currentPlayList[currentIndex].musicTitle}</div>
-//           <div>{currentPlayList[currentIndex].artist}</div>
-//           <Image
-//             src={currentPlayList[currentIndex].thumbnail}
-//             alt='Album Thumbnail'
-//             width={100}
-//             height={100}
-//           />
-//           <div>{currentPlayList[currentIndex].lyrics}</div>
-//         </div>
-
-//         <AudioPlayer
-//           // autoPlay
-//           loop={false}
-//           // 볼륨 나중에 0.5로 변경할것!, 테스트중으로 자동 재생설정함
-//           volume={0.1}
-//           showSkipControls={true}
-//           onClickPrevious={onPreviousHandler}
-//           onClickNext={onNextTrackHandler}
-//           src={currentPlayList[currentIndex].musicSource}
-//           onEnded={onNextTrackHandler}
-//         />
-//         <div>
-//           {currentItems?.map((item: any, index: number) => {
-//             return (
-//               <div key={item.musicId} className='flex gap-5'>
-//                 <CheckboxItem
-//                   checked={checkedList.includes(item.musicId)}
-//                   id={item.musicId}
-//                   onChangeCheckMusicHandler={(e) =>
-//                     onChangeCheckMusicHandler(e.target.checked, item.musicId)
-//                   }
-//                 />
-//                 <p
-//                   onClick={() => {
-//                     setCurrentIndex(index)
-//                   }}
-//                 >
-//                   {item.musicTitle}
-//                 </p>
-//                 <span>{item.artist}</span>
-//                 <span>{item.runTime}</span>
-//               </div>
-//             )
-//           })}
-
-//           <button
-//             type='button'
-//             onClick={onDeleteCurrentMusicHandler}
-//             className='m-3'
-//           >
-//             삭제
-//           </button>
-//           <button type='button' onClick={onInsertMyPlayListHandler}>
-//             마플리
-//           </button>
-//         </div>
-//       </div>
-//     )}
-//     <Pagination
-//       currentPage={currentPage}
-//       totalPages={totalPages}
-//       prevPage={prevPage}
-//       nextPage={nextPage}
-//       setCurrentPage={setCurrentPage}
-//     />
-//   </div>
-// )
