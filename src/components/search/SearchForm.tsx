@@ -1,6 +1,6 @@
 'use client'
 import useInput from '@/hooks/useInput'
-import { useSearchedStore } from '@/shared/store/searchStore'
+import { useSearchedKeywordStore } from '@/shared/store/searchStore'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useRef } from 'react'
 
@@ -14,7 +14,7 @@ const SearchForm = () => {
     selectedTabs: 'musicInfo',
   })
   const { keyword, selectedTabs } = keywordInput
-  const searched = useSearchedStore((state) => state.searched)
+  const searched = useSearchedKeywordStore((state) => state.searched)
   const router = useRouter()
   const keywordRef = useRef<HTMLInputElement>(null)
 
