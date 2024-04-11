@@ -74,10 +74,6 @@ const LoginPage = () => {
     }
   }
 
-  if (status === 'authenticated') {
-    alert('이미 로그인된 유저입니다.')
-    router.replace('/')
-  }
   if (status === 'loading') {
     return <div>로딩주우우웅</div>
   }
