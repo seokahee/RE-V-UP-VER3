@@ -5,13 +5,14 @@ import { useQuery } from '@tanstack/react-query'
 import React from 'react'
 import RecommendationMusicList from './RecommendationMusicList'
 import RandomMusicList from './RandomMusicList'
-import { useStore } from '@/shared/store'
+import { useSession } from 'next-auth/react'
 
 const GenreMusicList = () => {
-  const { userInfo } = useStore()
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user?.uid as string
 
   const { data: userData } = useQuery({
-    queryFn: () => getUserChar(userInfo.uid),
+    queryFn: () => getUserChar(uid),
     queryKey: ['userChar'],
   })
 
