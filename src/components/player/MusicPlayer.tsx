@@ -8,30 +8,23 @@ import {
   updateMyPlayMusic,
 } from '@/shared/musicPlayer/api'
 import { useStore } from '@/shared/store'
-import { CurrentPlaylistType } from '@/types/musicPlayer/types'
-import Pagination from '@/util/Pagination '
-import { paging } from '@/util/util'
+import { useCurrentMusicStore } from '@/shared/store/playerStore'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import 'react-h5-audio-player/lib/styles.css'
 import CurrentMusicList from './CurrentMusicList'
 import Player from './Player'
-import { useCurrentMusicStore } from '@/shared/store/playerStore'
+import { CurrentPlaylistType } from '@/types/musicPlayer/types'
 
-const MusicPlayer = ({ children }: { children: React.ReactNode }) => {
+const MusicPlayer = () => {
   const [musicIndex, setMusicIndex] = useState<number>(0)
   const [checkedList, setCheckedList] = useState<string[]>([])
-  const [currentPage, setCurrentPage] = useState(1)
   const [isRandom, setIsRandom] = useState(false)
   const { userInfo } = useStore()
   const { uid } = userInfo
   const router = useRouter()
-  // const currentMusic = useCurrentMusicStore((state) => state.currentMusic)
-
-  //   const { currentMusicData } = useCurrentMusicStore()
-  // const { currentItems } = currentMusicData
-  // console.log('currentItems', currentItems)
+  const currentMusic = useCurrentMusicStore((state) => state.currentMusic)
 
   const {
     data: currentPlayList,
@@ -90,10 +83,7 @@ const MusicPlayer = ({ children }: { children: React.ReactNode }) => {
       return !prev
     })
   }
-  // const lastIndex=currentPlayList.pop()
-  // const firstIndex=currentPlayList.shift()
-  // const[musicPlay,setMusicPlay]=useState<any[]>([])
-  // setMusicPlay(currentPlayList)
+
   const onPreviousHandler = () => {
     if (!isRandom) {
       if (musicIndex === 0) {
@@ -173,30 +163,21 @@ const MusicPlayer = ({ children }: { children: React.ReactNode }) => {
       }
     }
   }
-  const { currentItems, nextPage, prevPage, totalPages } = paging(
-    currentPlayList,
-    currentPage,
-    setCurrentPage,
-  )
 
-  // currentMusic(currentItems)
-  // currentMusic(currentItems[musicIndex])
-  console.log('currentItems.musicId', currentItems[musicIndex])
-
+  console.log('currentPlayList', currentPlayList, musicIndex)
+  currentMusic(currentPlayList as CurrentPlaylistType[], musicIndex)
   return (
     <div>
-      {currentItems?.length === 0 ? (
+      {currentPlayList?.length === 0 ? (
         <div>현재 재생 목록이 없습니다</div>
       ) : (
         <div>
           <Player
-            currentItems={currentItems}
-            musicIndex={musicIndex}
             onPreviousHandler={onPreviousHandler}
             onNextTrackHandler={onNextTrackHandler}
           />
           <CurrentMusicList
-            currentItems={currentItems}
+            currentPlayList={currentPlayList as CurrentPlaylistType[]}
             checkedList={checkedList}
             onChangeCheckMusicHandler={onChangeCheckMusicHandler}
             onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
@@ -207,14 +188,6 @@ const MusicPlayer = ({ children }: { children: React.ReactNode }) => {
           />
         </div>
       )}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        prevPage={prevPage}
-        nextPage={nextPage}
-        setCurrentPage={setCurrentPage}
-      />
-      {children}
     </div>
   )
 }

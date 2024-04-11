@@ -3,7 +3,7 @@ import CheckboxItem from '../mypage/CheckboxItem'
 
 const CurrentMusicList = ({
   checkedList,
-  currentItems,
+  currentPlayList,
   onChangeCheckMusicHandler,
   onDeleteCurrentMusicHandler,
   onInsertMyPlayListHandler,
@@ -13,8 +13,8 @@ const CurrentMusicList = ({
 }: MusicListProps) => {
   return (
     <div>
-      {currentItems.map((item: any, index: number) => {
-        const musicIndex = currentItems.findIndex(
+      {currentPlayList.map((item) => {
+        const musicIndex = currentPlayList.findIndex(
           (arr) => arr.musicId === item.musicId,
         )
         return (

@@ -10,41 +10,10 @@ type SearchedKeywordStore = {
   searched: (keyword: string, selectedTabs: string) => void
 }
 
-// type SearchedResultStore = {
-//   searchedResultData: {
-//     musicData: MusicInfoType[]
-//     communityData: CommunityType[]
-//   }
-//   searchedResult: (
-//     musicData: MusicInfoType[],
-//     communityData: CommunityType[],
-//   ) => void
-// }
-
-type ModalMusicResultStore = {
-  modalMusicData: {
-    musicData: MusicInfoType[]
-  }
-  modalMusicResult: (musicData: MusicInfoType[]) => void
-}
-
 const keywordState = {
   searchedKeyword: {
     keyword: '',
     selectedTabs: 'musicInfo',
-  },
-}
-
-// const resultState = {
-//   searchedResultData: {
-//     musicData: [],
-//     communityData: [],
-//   },
-// }
-
-const modalMusicState = {
-  modalMusicData: {
-    musicData: [],
   },
 }
 
@@ -54,15 +23,18 @@ export const useSearchedKeywordStore = create<SearchedKeywordStore>((set) => ({
     set({ searchedKeyword: { keyword, selectedTabs } }),
 }))
 
-// export const useSearchedResultStore = create<SearchedResultStore>((set) => ({
-//   ...resultState,
-//   searchedResult: (
-//     musicData: MusicInfoType[],
-//     communityData: CommunityType[],
-//   ) => {
-//     set({ searchedResultData: { musicData, communityData } })
-//   },
-// }))
+type ModalMusicResultStore = {
+  modalMusicData: {
+    musicData: MusicInfoType[]
+  }
+  modalMusicResult: (musicData: MusicInfoType[]) => void
+}
+
+const modalMusicState = {
+  modalMusicData: {
+    musicData: [],
+  },
+}
 
 export const useModalMusicResultStore = create(
   persist<ModalMusicResultStore>(
@@ -77,3 +49,31 @@ export const useModalMusicResultStore = create(
     },
   ),
 )
+
+// type SearchedResultStore = {
+//   searchedResultData: {
+//     musicData: MusicInfoType[]
+//     communityData: CommunityType[]
+//   }
+//   searchedResult: (
+//     musicData: MusicInfoType[],
+//     communityData: CommunityType[],
+//   ) => void
+// }
+
+// const resultState = {
+//   searchedResultData: {
+//     musicData: [],
+//     communityData: [],
+//   },
+// }
+
+// export const useSearchedResultStore = create<SearchedResultStore>((set) => ({
+//   ...resultState,
+//   searchedResult: (
+//     musicData: MusicInfoType[],
+//     communityData: CommunityType[],
+//   ) => {
+//     set({ searchedResultData: { musicData, communityData } })
+//   },
+// }))

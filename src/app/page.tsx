@@ -9,12 +9,11 @@ const Home = () => {
   return (
     <>
       <UserProvider>
-        <MusicPlayer>
-          <GenreMusicList />
-          <MainBanner />
-          <TopLikedBoard />
-          <Footer />
-        </MusicPlayer>
+        <GenreMusicList />
+        <MainBanner />
+        <TopLikedBoard />
+        <MusicPlayer />
+        <Footer />
       </UserProvider>
     </>
   )

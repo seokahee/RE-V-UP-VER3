@@ -6,8 +6,7 @@ import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
 
 const Player = ({
-  currentItems,
-  musicIndex,
+  // musicIndex,
   onPreviousHandler,
   onNextTrackHandler,
 }: PlayerProps) => {
@@ -32,23 +31,45 @@ const Player = ({
 
   // const currentMusic = useCurrentMusicStore((state) => state.currentMusic)
   // currentMusic(currentItems)
-  // const { currentMusicData } = useCurrentMusicStore()
-  // const { currentItems } = currentMusicData
+
+  const { currentMusicData } = useCurrentMusicStore()
+  const { currentPlayList, musicIndex } = currentMusicData
+
   // console.log('playMusic', currentItems)
   // console.log('currentItems', currentItems[musicIndex].musicTitle)
-  const [isPlay, setIsPlay] = useState()
+  const [onPlay, setOnPlay] = useState(0)
+  // const [currentMusicIndex, setCurrentMusicIndex] = useState(musicIndex)
+  const [isPlaying, setIsPlaying] = useState(false)
+  // const onPlayMusic = () => {
+  //   // const audioElement =currentItems[musicIndex]
+  //   // setOnPlay(audioElement)
+  // }
+  //   const onPlayMusic=()=>{
+  // console.log("object",);
+  //   }
+
+  // const { currentPageData } = useCurrentMusicPageStore()
+  // const { musicIndex, currentPage } = currentPageData
+  console.log('musicIndex', musicIndex)
+
+  // const onMusicPlayHandler = () => {
+  //   setIsPlaying(true)
+  //   setCurrentMusicIndex(musicIndex)
+  //   console.log('여어어ㅓ 현재 재생되는곡인걸', currentMusicIndex)
+  // }
+  console.log('scr임이이이이이ㅣ이임', currentPlayList[musicIndex])
   return (
     <div>
       <div>
-        <div>{currentItems[musicIndex].musicTitle}</div>
-        <div>{currentItems[musicIndex].artist}</div>
+        <div>{currentPlayList[musicIndex].musicTitle}</div>
+        <div>{currentPlayList[musicIndex].artist}</div>
         <Image
-          src={currentItems[musicIndex].thumbnail}
+          src={currentPlayList[musicIndex].thumbnail}
           alt='Album Thumbnail'
           width={100}
           height={100}
         />
-        <div>{currentItems[musicIndex].lyrics}</div>
+        <div>{currentPlayList[musicIndex].lyrics}</div>
       </div>
       <AudioPlayer
         loop={false}
@@ -57,11 +78,11 @@ const Player = ({
         showSkipControls={true}
         onClickPrevious={onPreviousHandler}
         onClickNext={onNextTrackHandler}
-        src={currentItems[musicIndex].musicSource}
+        src={currentPlayList[musicIndex].musicSource}
         onEnded={onNextTrackHandler}
-        // onPlay={() => {
-        //   currentMusic(currentItems)
-        // }}
+        // onCanPlay={()=>{onPlayMusic(currentItems[musicIndex])}}
+        // onCanPlay={onPlayMusic}
+        // onPlay={onMusicPlayHandler}
       />
     </div>
   )
@@ -69,9 +90,5 @@ const Player = ({
 
 export default Player
 
-// 검색 페이지네이션 후 값을 못받아옴
-// 페이지 전환시 노래가 유지안됨
-
-// 일단 0번 인덱스를 띄우고 다음을 누르면 다음인덱스가 나오면됨
-// 제목을 누르면 아이디를 전달해서 아이디값으로 데이터를 출력하고
-// 근데 또... 그 노래가 끝나면 순서대로 재생되어야하자노아
+// 다음 이전 자동으로 넘어갈 때 페이지가 같이 넘어가도록 해야함
+// 현재 재생목록에 현재 페이지에 현재 인덱스의 데이터를 추출해야함
