@@ -34,7 +34,7 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
 
   const onDeleteCommentHandler = (commentId: string) => {
     deleteCommentMutation.mutate(commentId)
-    alert('삭제 하시겠습니까?')
+    alert('선택한 댓글을 삭제하시겠습니까?')
   }
 
   const updateCommentMutation = useMutation({
@@ -72,14 +72,14 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
       return
     }
 
-    alert('좋아요 테스트중')
+    alert('좋아요!')
     likeCommentMutation.mutate({ commentId, userId })
   }
 
   return (
     <div>
       {commentsData?.map((item) => (
-        <div key={item.commentId} className=''>
+        <div key={item.commentId} className=' border border-gray-100'>
           <div className='flex flex-row  '>
             <div className='flex flex-row basis-1/2'>
               <p>

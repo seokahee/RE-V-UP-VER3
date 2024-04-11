@@ -43,7 +43,7 @@ const CommentForm = ({ boardId }: { boardId: string }) => {
       commentContent: comment,
     }
     addCommentMutation.mutate(newComment)
-    alert('등록이 완료됐습니다.')
+    alert('댓글 등록이 완료됐습니다.')
   }
   return (
     <>
