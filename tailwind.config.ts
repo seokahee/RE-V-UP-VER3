@@ -1,5 +1,4 @@
 import type { Config } from 'tailwindcss'
-import { urbanistFont } from '@/util/font'
 
 const config: Config = {
   content: [
@@ -14,8 +13,8 @@ const config: Config = {
       md: { max: '767px' },
       sm: { max: '639px' },
     },
+
     extend: {
-      screens: {},
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
@@ -30,7 +29,10 @@ const config: Config = {
         gray: '#d9d9d9',
         'player-btn': '#292929',
       },
-      fontFamily: {},
+      fontFamily: {
+        custom: ['var(--urbanist)'],
+      },
+
       borderRadius: { rounded: '0.25rem', xl: '0.75rem', '2xl': '1rem' },
     },
   },
