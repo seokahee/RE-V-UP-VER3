@@ -1,32 +1,30 @@
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react'
 import { getToday } from '@/util/util'
 import { useStore } from '@/shared/store'
 import { useQuery } from '@tanstack/react-query'
-import { onCommentHandler } from '@/util/comment/util'
+import { onCommentHandler } from '@/util/util'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   getComments,
   deleteComment,
   updateComment,
   addLikeComment,
-  cancelLikeComment,
 } from '@/shared/comment/commentApi'
+import { useState } from 'react'
 
-const CommentsList = () => {
+const CommentsList = ({ boardId }: { boardId: string }) => {
   const { userInfo } = useStore()
   const queryClient = useQueryClient()
-  const [isLike, setIsLike] = useState<boolean>(false)
+  const [editMode, setEditMode] = useState<boolean>(false)
+  const [editedText, setEditedText] = useState<string>('')
 
-  //댓글 목록 조회
   const { data: commentsData } = useQuery({
-    queryFn: () => getComments(),
-    queryKey: ['comments'],
+    queryFn: () => getComments(boardId),
+    queryKey: ['comment'],
   })
 
-  //댓글 삭제
   const deleteCommentMutation = useMutation({
     mutationFn: deleteComment,
     onSuccess: () => {
@@ -39,7 +37,6 @@ const CommentsList = () => {
     alert('삭제 하시겠습니까?')
   }
 
-  //댓글 수정
   const updateCommentMutation = useMutation({
     mutationFn: updateComment,
     onSuccess: () => {
@@ -48,41 +45,39 @@ const CommentsList = () => {
   })
 
   const onUpdateCommentHandler = (commentId: string) => {
+    if (editedText === '') {
+      alert('수정된 내용이 없습니다')
+      return
+    }
+    alert('수정 하시겠습니까?')
     const editedComment = {
       commentDate: getToday(),
-      commentContent: '수정 테스트',
+      commentContent: editedText,
     }
     updateCommentMutation.mutate({ commentId, editedComment })
-    alert('수정 하시겠습니까?')
+    setEditMode(false)
   }
 
-  //좋아요
   const likeCommentMutation = useMutation({
     mutationFn: addLikeComment,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['like'] })
+      queryClient.invalidateQueries({ queryKey: ['comment'] })
     },
   })
 
   const onLikeHandler = (commentId: string) => {
     const userId = userInfo.uid
-    alert('좋아요')
+    if (!userId) {
+      alert('로그인 후 이용해 주세요')
+      return
+    }
+
+    alert('좋아요 테스트중')
     likeCommentMutation.mutate({ commentId, userId })
   }
 
-  //좋아요 취소
-  const cancelLikeCommentMutation = useMutation({
-    mutationFn: cancelLikeComment,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['like'] })
-    },
-  })
-
-  const onCancleLikeHandler = (commentId: string) => {
-    const userId = userInfo.uid
-
-    alert('취소')
-    cancelLikeCommentMutation.mutate({ commentId, userId })
+  const onChangeEditmode = () => {
+    setEditMode(true)
   }
 
   return (
@@ -111,7 +106,10 @@ const CommentsList = () => {
             </div>
           </div>
           <div className='flex flex-row'>
-            <div className='basis-1/2'> {item.commentContent}</div>
+            <div className='basis-1/2'>{item.commentContent}</div>
+            <div>
+              {item.commentLikeList?.includes(item.userInfo.userId) ? '1' : '2'}
+            </div>
             <div className='basis-1/2'>
               {item.userInfo?.userId === userInfo.uid ? (
                 <>
@@ -120,28 +118,29 @@ const CommentsList = () => {
                   >
                     삭제
                   </button>
-                  <button
-                    onClick={() => onUpdateCommentHandler(item.commentId)}
-                  >
-                    수정
-                  </button>
-                  <br />
+                  <button onClick={onChangeEditmode}>수정하기</button>
                   <button onClick={() => onLikeHandler(item.commentId)}>
                     좋아요 {item.commentLikeList.length}
                   </button>{' '}
-                  <br />
-                  <button onClick={() => onCancleLikeHandler(item.commentId)}>
-                    취소
-                  </button>
                 </>
               ) : (
                 <>
                   <button onClick={() => onLikeHandler(item.commentId)}>
                     좋아요 {item.commentLikeList.length}
                   </button>{' '}
-                  <br />
-                  <button onClick={() => onCancleLikeHandler(item.commentId)}>
-                    취소
+                </>
+              )}
+              {editMode && (
+                <>
+                  <input
+                    type='text'
+                    defaultValue={item.commentContent}
+                    onChange={(e) => setEditedText(e.target.value)}
+                  />
+                  <button
+                    onClick={() => onUpdateCommentHandler(item.commentId)}
+                  >
+                    완료
                   </button>
                 </>
               )}

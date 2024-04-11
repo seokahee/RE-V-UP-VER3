@@ -74,7 +74,7 @@ const LikeBoardList = () => {
   return (
     <section>
       <ul>
-        {data ? (
+        {data && data?.length > 0 ? (
           data?.map((item) => {
             return (
               <BoardItem

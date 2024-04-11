@@ -81,7 +81,8 @@ const TopLikedBoard = () => {
                     {item.boardTitle}
                   </Link>
                   <div className='mt-4 text-right'>
-                    댓글 {item.comment.length} 좋아요 {likedLength}
+                    댓글 {item.comment ? item.comment.length : 0} 좋아요{' '}
+                    {likedLength}
                   </div>
                 </li>
               )

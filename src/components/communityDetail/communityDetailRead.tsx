@@ -1,11 +1,12 @@
 import React from 'react'
 import CommunityContents from './CommunityContents'
+import CommentsPage from '@/app/(auth)/comment/page'
 
 const CommunityDetailRead = () => {
   return (
     <div>
       <CommunityContents />
-      {/* 댓글컴포넌트 */}
+      <CommentsPage />
     </div>
   )
 }
