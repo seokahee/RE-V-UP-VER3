@@ -37,7 +37,7 @@ const TopLikedBoard = () => {
 
   return (
     <section className='p-4'>
-      <h2 className='my-4z'>지금 핫한 게시글 🔥</h2>
+      <h2 className='my-4'>지금 핫한 게시글 🔥</h2>
       <div className='relative flex overflow-hidden' ref={slideRef}>
         <ul
           className='flex flex-nowrap'
