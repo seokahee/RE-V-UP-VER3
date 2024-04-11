@@ -1,19 +1,20 @@
 'use client'
 
 import { getBannerData } from '@/shared/main/api'
-import { useStore } from '@/shared/store'
 import { useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import React, { useState } from 'react'
 
 const MainBanner = () => {
-  const { userInfo } = useStore()
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user?.uid as string
   const [slide, setSlide] = useState(0)
 
   const { data, isLoading, isError } = useQuery({
-    queryFn: () => getBannerData(userInfo.uid),
-    queryKey: ['mainBanner', userInfo.uid],
-    enabled: !!userInfo.uid,
+    queryFn: () => getBannerData(uid),
+    queryKey: ['mainBanner', uid],
+    enabled: !!uid,
   })
 
   const onClickPrevHandler = () => {
