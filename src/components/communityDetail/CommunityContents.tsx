@@ -12,15 +12,16 @@ import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
 import { onDateHandler } from '@/util/util'
 import useInput from '@/hooks/useInput'
 import LikeButton from './LikeButton'
+import { useSession } from 'next-auth/react'
 
 const CommunityContents = () => {
   const router = useRouter()
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const { id }: { id: string } = useParams()
-  const { userInfo: userUid } = useStore()
+  const { data: userSessionInfo } = useSession()
   const { updateCommunityMutation, deleteCommunityMutation } =
     useCoummunityItem()
-  const { uid } = userUid
+  const uid = userSessionInfo?.user.uid
   const {
     data: readDetailData,
     isPending,
@@ -43,11 +44,11 @@ const CommunityContents = () => {
   } = readDetailData || ({} as readCommuDetail)
   const { nickname, userImage, userId } = userInfo || {}
   const { musicTitle, artist, thumbnail } = musicInfo || {}
+
   const {
     form: editForm,
     setForm: setEditForm,
     onChange: onChangeEditForm,
-    reset,
   } = useInput({ boardTitle, content })
   const { boardTitle: updatedTitle, content: updatedContent } = editForm
 
@@ -57,6 +58,7 @@ const CommunityContents = () => {
     setIsEdit(!isEdit)
     setEditForm({ boardTitle, content })
   }
+
   const onBoardEditCompleteHandler = async (e: MouseEvent) => {
     e.preventDefault()
 
@@ -70,6 +72,7 @@ const CommunityContents = () => {
     alert('내용을 수정하셨습니다.')
     setIsEdit(false)
   }
+
   const onDeleteBoardHandler = async (e: MouseEvent) => {
     e.preventDefault()
 
@@ -81,19 +84,23 @@ const CommunityContents = () => {
   const onEditCancelHandler = () => {
     setIsEdit(false)
   }
+
   const onBackButtonHandler = () => {
     setIsEdit(false)
     router.back()
   }
+
   if (!boardTitle || !content || !comment || !date) return null
   if (!likeList) return null
 
   if (isPending && isLoading) {
     return <div>정보를 가져오고 있습니다..로딩바자리임</div>
   }
+
   if (error) {
     return <div>정보를 가져오지 못하고 있습니다. 로딩바자뤼</div>
   }
+
   return (
     <div>
       <div>

@@ -29,12 +29,11 @@ export const readCommunityDetail = async (boardId: string) => {
 export const addCommnityBoard = async ({
   boardTitle,
   content,
-  userId,
   musicId,
 }: addCommnity) => {
   const { data, error } = await supabase
     .from('community')
-    .insert([{ boardTitle, content, userId, musicId, likeList: [] }])
+    .insert([{ boardTitle, content, musicId, likeList: [] }])
     .select()
 
   if (error) {

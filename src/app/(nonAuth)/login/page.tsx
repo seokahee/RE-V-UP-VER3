@@ -17,12 +17,17 @@ const LoginPage = () => {
   const { status } = useSession()
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [spendEmail, setSpendEmail] = useState<string>('')
+  const [submitEmail, setSubmitEmail] = useState<boolean>(false)
   const needLoginInfo = { email: '', password: '' }
 
   const { form: userlogin, onChange: onChangeHandler } = useInput(needLoginInfo)
   const { email, password } = userlogin
 
-  const openModal = () => setIsModalOpen(true)
+  const openModal = (e: FormEvent) => {
+    e.preventDefault()
+    setIsModalOpen(true)
+    setSubmitEmail(submitEmail)
+  }
   const closeModal = () => setIsModalOpen(false)
 
   const onLoginHandler = async (e: FormEvent) => {
@@ -50,18 +55,29 @@ const LoginPage = () => {
 
   const findPassword = async (e: FormEvent) => {
     e.preventDefault()
+    if (!spendEmail) {
+      alert('이메일을 입력해주세요!')
+      return
+    }
+
     if (spendEmail) {
       const data = await findUserPassword(spendEmail)
+      console.log(data)
+      setSpendEmail('')
       if (!data) {
         alert('존재하지 않는 정보입니다!')
       } else {
         alert('비밀번호를 복구하는 이메일을 보냈습니다!')
+        setSubmitEmail(true)
       }
-
-      setSpendEmail('')
+      setSubmitEmail(false)
     }
   }
 
+  if (status === 'authenticated') {
+    alert('이미 로그인된 유저입니다.')
+    router.replace('/')
+  }
   if (status === 'loading') {
     return <div>로딩주우우웅</div>
   }
@@ -70,14 +86,14 @@ const LoginPage = () => {
     <div className='min-h-screen bg-black flex flex-col items-center justify-center text-white'>
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
         <div className='text-black z-1500'>
-          <div>비밀번호 찾기 모달입니다</div>
+          <div>비밀번호 찾기</div>
           <input
             type='email'
             value={spendEmail}
             onChange={(e) => setSpendEmail(e.target.value)}
           />
           <button onClick={findPassword} className='cursor-pointer'>
-            비밀번호 찾기
+            {submitEmail ? '전송완료!' : '전송'}
           </button>
         </div>
       </Modal>
@@ -90,7 +106,7 @@ const LoginPage = () => {
             <div className='flex flex-col gap-[16px]'>
               <div>
                 <label htmlFor='email' className='flex flex-col '>
-                  <p className='text-white-30'>이메일</p>
+                  <p className='text-black'>이메일</p>
                   <input
                     type='email'
                     id='email'

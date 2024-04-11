@@ -36,7 +36,7 @@ const handler = NextAuth({
         const { email, password } = credentials
         const { data, error } = await supabase
           .from('userInfo')
-          .select('userId, email, nickname, password')
+          .select('userId, email, nickname, password, userImage')
           .eq('email', email)
           .single()
 
