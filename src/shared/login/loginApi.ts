@@ -21,9 +21,10 @@ export const getUserUid = async (email: string) => {
   return user
 }
 
-export const findUserPassword = async (loginEmail: string) => {
-  let { data, error } = await supabase.auth.resetPasswordForEmail(loginEmail)
+export const findUserPassword = async (spendEmail: string) => {
+  let { data, error } = await supabase.auth.resetPasswordForEmail(spendEmail)
   if (!data || error) {
+    console.log(error)
     alert('이메일을 다시 입력해주세요!')
     return
   }

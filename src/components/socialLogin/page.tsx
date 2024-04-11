@@ -3,7 +3,6 @@
 import Image from 'next/image'
 import { signIn } from 'next-auth/react'
 import { useStore } from '@/shared/store'
-import { supabase } from '@/shared/supabase/supabase'
 import googleImg from '@/../public/images/google.svg'
 import kakaoImg from '@/../public/images/kakao.svg'
 

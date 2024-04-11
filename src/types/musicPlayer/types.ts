@@ -5,7 +5,6 @@ export type MusicInfoType = {
   musicTitle: string
   release: string
   thumbnail: string
-  genre: number
 }
 
 // export type SearchMusicInfoType = {

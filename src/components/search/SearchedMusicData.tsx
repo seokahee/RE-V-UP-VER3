@@ -18,7 +18,6 @@ const SearchedMusicData = () => {
   const { uid } = userInfo
   //
   // const { data: userSessionInfo } = useSession()
-
   // const uid = userSessionInfo?.user.uid
   const queryClient = useQueryClient()
   const router = useRouter()
@@ -92,7 +91,6 @@ const SearchedMusicData = () => {
             </div>
             <strong>{item.musicTitle}</strong>
             <span>{item.artist}</span>
-            장르 : {item.genre}
           </li>
         )
       })}
