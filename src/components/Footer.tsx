@@ -10,7 +10,6 @@ const Footer = () => {
             <section className=' flex flex-row gap-8'>
               <section className=' w-40'>front-end Developer</section>
               <ul className=' grid grid-cols-5 gap-4 list-none'>
-                <li>조연진</li>
                 <li>성예지</li>
                 <li>남해리</li>
                 <li>강지수</li>
