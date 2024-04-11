@@ -16,3 +16,22 @@ export type PersonalRecommendProps = {
     uid: string
   }
 }
+
+export type ResultChartProps = {
+  userChar: {
+    gender: string
+    mbti: string
+  }
+}
+
+export type recommend = {
+  artist: string
+  genre: string
+  lyrics: string
+  musicId: string
+  musicSource: string
+  musicTitle: string
+  release: string
+  runTime: string
+  thumbnail: string
+}

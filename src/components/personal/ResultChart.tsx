@@ -6,12 +6,7 @@ import React from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { getPreference, getDislike } from '@/shared/personal/personalApi'
 
-type ResultChartProps = {
-  userChar: {
-    gender: string
-    mbti: string
-  }
-}
+import type { ResultChartProps } from '@/types/personal/type'
 
 const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
   const mbtiStatus = userChar.mbti

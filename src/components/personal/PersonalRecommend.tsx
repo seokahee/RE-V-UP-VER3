@@ -3,7 +3,7 @@ import Image from 'next/image'
 import {
   recommendMusic,
   getRecommendMusic,
-  inssertPersonalMusic,
+  insertPersonalMusic,
   getCurrentMusics,
   insertPersonalResult,
 } from '@/shared/personal/personalApi'
@@ -21,6 +21,8 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     queryKey: ['test'],
   })
 
+  console.log(musicPreferenceData, 'musicPreferenceData')
+
   const { data: recommend } = useQuery({
     queryFn: () => getRecommendMusic(musicPreferenceData),
     queryKey: ['testaaa'],
@@ -28,18 +30,16 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
 
   const { data: current } = useQuery({
     queryFn: () => getCurrentMusics(userChar.uid),
-    queryKey: ['testbbb'],
+    queryKey: ['currentMusic'],
   })
 
   const currentList = current?.[0].currentMusicIds
   console.log('현재 재생 음악', current?.[0].currentMusicIds)
-
-  // console.log('장르코드', musicPreferenceData)
-  // console.log('추천음악', recommend)
+  console.log('현재 재생 음악', current)
 
   //퍼스널 결과 디비에
-  const inssertPersonalMusicMutation = useMutation({
-    mutationFn: inssertPersonalMusic,
+  const insertPersonalMusicMutation = useMutation({
+    mutationFn: insertPersonalMusic,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['personal'] })
     },
@@ -49,19 +49,20 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
   const personalResultMutation = useMutation({
     mutationFn: insertPersonalResult,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['testbbb'] })
+      queryClient.invalidateQueries({ queryKey: ['currentMusic'] })
     },
   })
 
-  const testOnSubmit = () => {
-    inssertPersonalMusicMutation.mutate({ userChar, recommend })
-    alert('추가')
+  const onSubmitPersonalMusic = () => {
+    insertPersonalMusicMutation.mutate({ userChar, recommend })
+    alert('디비에 추가 완료 ')
   }
 
-  const testArr = () => {
+  const onSubmitCurrentMusic = () => {
     const musicList = [...currentList, checked]
     console.log(musicList)
     personalResultMutation.mutate({ userId: userChar.uid, musicList })
+    onSubmitPersonalMusic()
   }
   return (
     <div>
@@ -86,11 +87,10 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
           <br />
         </div>
       ))}
-      <button disabled={!checked} onClick={testArr}>
+      <button disabled={!checked} onClick={onSubmitCurrentMusic}>
         현재 재생 목록에 추가
       </button>
       <br />
-      <button onClick={testOnSubmit}>DB에 결과진단 추가</button>
     </div>
   )
 }
