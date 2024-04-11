@@ -14,11 +14,7 @@ const SearchedMusicData = () => {
   const { searchedData } = useSearchedResultStore()
   const { musicData } = searchedData
   const { data: userSessionInfo } = useSession()
-  const uid = userSessionInfo?.user.uid
-
-  console.log('userSessionInfo', userSessionInfo)
-  console.log('uid', uid)
-
+  const uid = userSessionInfo?.user.uid as string
   const queryClient = useQueryClient()
   const router = useRouter()
 

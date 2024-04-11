@@ -7,9 +7,9 @@ import {
   updateCurrentMusic,
   updateMyPlayMusic,
 } from '@/shared/musicPlayer/api'
-import { useStore } from '@/shared/store'
 import { CurrentPlaylistType } from '@/types/musicPlayer/types'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import 'react-h5-audio-player/lib/styles.css'
@@ -20,8 +20,8 @@ const MusicPlayer = () => {
   const [musicIndex, setMusicIndex] = useState<number>(0)
   const [checkedList, setCheckedList] = useState<string[]>([])
   const [isRandom, setIsRandom] = useState(false)
-  const { userInfo } = useStore()
-  const { uid } = userInfo
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user.uid as string
   const router = useRouter()
 
   console.log('uid', uid)

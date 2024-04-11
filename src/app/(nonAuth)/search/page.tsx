@@ -15,7 +15,7 @@ import { CurrentPlaylistType } from '@/types/musicPlayer/types'
 import Pagination from '@/util/Pagination '
 import { paging } from '@/util/util'
 import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const Search = () => {
   const [currentPage, setCurrentPage] = useState(1)
