@@ -89,7 +89,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
 
     const playListCurrentIds = !data.playlistCurrent?.[0].currentMusicIds
       ? []
-      : data.playlistCurrent?.[0].currentMusicIds
+      : data.playlistCurrent?.[0]?.currentMusicIds
     let newData = []
 
     if ((playListCurrentIds?.length as number) > 0) {
@@ -119,7 +119,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
   }
 
   const onClickAllAddHandler = () => {
-    const playListCurrentIds = !data.playlistCurrent?.[0].currentMusicIds
+    const playListCurrentIds = !data.playlistCurrent?.[0]?.currentMusicIds
       ? []
       : data.playlistCurrent?.[0].currentMusicIds
     const playListMyIds = !data.playlistMy?.[0].myMusicIds
