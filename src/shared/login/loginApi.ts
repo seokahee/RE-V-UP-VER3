@@ -1,3 +1,4 @@
+import Email from 'next-auth/providers/email'
 import { supabase } from '../supabase/supabase'
 
 export const getUserUid = async (email: string) => {
@@ -22,7 +23,9 @@ export const getUserUid = async (email: string) => {
 }
 
 export const findUserPassword = async (spendEmail: string) => {
-  let { data, error } = await supabase.auth.resetPasswordForEmail(spendEmail)
+  let { data, error } = await supabase.auth.resetPasswordForEmail(spendEmail, {
+    redirectTo: 'http://localhost:3000/new-password',
+  })
   if (!data || error) {
     console.log(error)
     alert('이메일을 다시 입력해주세요!')
@@ -50,4 +53,17 @@ export const getUserUidProviderUserInfo = async (email: string) => {
     alert('정보를 받아오지 못하고 있습니다. 문의해주세요')
     return
   }
+}
+
+export const updateUserPassword = async (newPassword: string) => {
+  const { data, error } = await supabase.auth.updateUser({
+    password: newPassword,
+  })
+  if (!data || error) {
+    console.log(error)
+    alert('비밀번호를 다시 입력해주세요!')
+    return
+  }
+
+  return data
 }
