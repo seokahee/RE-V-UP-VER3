@@ -62,10 +62,10 @@ const LoginPage = () => {
 
     if (spendEmail) {
       const data = await findUserPassword(spendEmail)
-      console.log(data)
       setSpendEmail('')
+
       if (!data) {
-        alert('존재하지 않는 정보입니다!')
+        alert('이미 이메일을 보냈습니다!')
       } else {
         alert('비밀번호를 복구하는 이메일을 보냈습니다!')
         setSubmitEmail(true)
