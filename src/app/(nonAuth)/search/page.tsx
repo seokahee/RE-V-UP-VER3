@@ -30,8 +30,8 @@ const Search = () => {
     isLoading: musicDataIsLoading,
     isError: musicDataIsError,
   } = useQuery({
-    queryFn: () => getSearchedMusicData(keyword, selectedTabs),
-    queryKey: ['getSearchedMusicData', keyword, selectedTabs],
+    queryFn: () => getSearchedMusicData(keyword),
+    queryKey: ['getSearchedMusicData', keyword],
   })
 
   const {
@@ -39,8 +39,8 @@ const Search = () => {
     isLoading: communityDataIsLoading,
     isError: communityDataIsError,
   } = useQuery({
-    queryFn: () => getSearchedCommunityData(keyword, selectedTabs),
-    queryKey: ['getSearchedCommunityData', keyword, selectedTabs],
+    queryFn: () => getSearchedCommunityData(keyword),
+    queryKey: ['getSearchedCommunityData', keyword],
   })
 
   const isLoadingSate = musicDataIsLoading && communityDataIsLoading

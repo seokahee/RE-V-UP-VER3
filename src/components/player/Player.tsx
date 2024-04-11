@@ -23,6 +23,7 @@ const Player = ({
         <div>{currentPlayList[musicIndex].lyrics}</div>
       </div>
       <AudioPlayer
+        autoPlay={false}
         loop={false}
         // 볼륨 나중에 0.5로 변경할것!, 테스트중으로 자동 재생설정함
         volume={0.1}
