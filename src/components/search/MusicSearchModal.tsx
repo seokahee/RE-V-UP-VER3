@@ -42,10 +42,6 @@ const MusicSearchModal = ({
     getMusicData(keyword)
   }
 
-  const onAddMusicBoardHandler = async (e: FormEvent) => {
-    e.preventDefault()
-  }
-
   return (
     <div className='fixed w-full h-screen inset-0 flex flex-col justify-center items-center z-50 bg-black bg-opacity-50'>
       <div className='bg-white h-3/5 w-3/5 flex flex-col items-center rounded-md pb-10'>
@@ -63,16 +59,20 @@ const MusicSearchModal = ({
           </button>
           <button onClick={() => setIsModal(false)}>닫기</button>
         </form>
-
-        {musicList.map((item) => {
-          return (
-            <ModalMusicData
-              key={item.musicId}
-              item={item}
-              setIsModal={setIsModal}
-            />
-          )
-        })}
+        <div className='flex'>
+          {musicList.map((item) => {
+            return (
+              <ModalMusicData
+                key={item.musicId}
+                item={item}
+                setIsModal={setIsModal}
+              />
+            )
+          })}
+        </div>
+        <div>
+          <button>등록</button>
+        </div>
       </div>
     </div>
   )

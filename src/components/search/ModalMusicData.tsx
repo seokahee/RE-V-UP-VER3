@@ -9,8 +9,13 @@ const ModalMusicData = ({
   item: MusicInfoType
   setIsModal: Dispatch<SetStateAction<boolean>>
 }) => {
+  const onAddMusicBoardHandler = () => {}
   return (
-    <div key={item.musicId} className='flex flex-col gap-2'>
+    <div
+      key={item.musicId}
+      className='flex flex-col gap-2'
+      onClick={onAddMusicBoardHandler}
+    >
       <div>
         <Image
           src={item.thumbnail}
@@ -22,7 +27,6 @@ const ModalMusicData = ({
         <div>가수 {item.artist}</div>
         <div>발매일 {item.release}</div>
         <div className='flex mt-5 gap-3'>
-          <button>선택</button>
           <button onClick={() => setIsModal(false)}>취소</button>
         </div>
       </div>
