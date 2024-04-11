@@ -45,17 +45,41 @@ export const getUserAndPlaylistData = async (
 
 export const getUserPlaylistMyMusicInfoData = async (
   myMusicIds: string[],
+  start: number,
+  end: number,
 ): Promise<PlaylistMy[]> => {
   try {
     const { data, error } = await supabase
       .from('musicInfo')
       .select('*')
       .in('musicId', myMusicIds)
+      .range(start, end)
 
     return data as PlaylistMy[]
   } catch (error) {
     console.error(error)
     return []
+  }
+}
+
+export const getMyMusicCount = async (
+  myMusicIds: string[],
+): Promise<number> => {
+  try {
+    const { data, error } = await supabase
+      .from('musicInfo')
+      .select('*')
+      .in('musicId', myMusicIds)
+
+    if (error) {
+      console.error(error)
+      return 0
+    }
+
+    return data?.length
+  } catch (error) {
+    console.error(error)
+    return 0
   }
 }
 
