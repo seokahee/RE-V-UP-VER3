@@ -1,18 +1,15 @@
 'use client'
-
 import { getMusicPreferenceData, getUserChar } from '@/shared/main/api'
+import { useStore } from '@/shared/store'
 import { useQuery } from '@tanstack/react-query'
-import React from 'react'
-import RecommendationMusicList from './RecommendationMusicList'
-import RandomMusicList from './RandomMusicList'
-import { useSession } from 'next-auth/react'
+import GenreMusicRecommendations from './GenreMusicRecommendations'
+import GenreRandomMusic from './GenreRandomMusic'
 
-const GenreMusicList = () => {
-  const { data: userSessionInfo } = useSession()
-  const uid = userSessionInfo?.user?.uid as string
+const NoSearchResult = () => {
+  const { userInfo } = useStore()
 
   const { data: userData } = useQuery({
-    queryFn: () => getUserChar(uid),
+    queryFn: () => getUserChar(userInfo.uid),
     queryKey: ['userChar'],
   })
 
@@ -25,12 +22,12 @@ const GenreMusicList = () => {
   return (
     <>
       {musicPreferenceData ? (
-        <RecommendationMusicList musicPreferenceData={musicPreferenceData} />
+        <GenreMusicRecommendations musicPreferenceData={musicPreferenceData} />
       ) : (
-        <RandomMusicList />
+        <GenreRandomMusic />
       )}
     </>
   )
 }
 
-export default GenreMusicList
+export default NoSearchResult

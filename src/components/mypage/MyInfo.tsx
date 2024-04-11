@@ -5,7 +5,6 @@ import {
   updateUserInfo,
   uploadUserThumbnail,
 } from '@/shared/mypage/api'
-import { useStore } from '@/shared/store'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
@@ -14,9 +13,11 @@ import Link from 'next/link'
 import TabMenu from './TabMenu'
 import FollowList from './FollowList'
 import MyPlaylist from './MyPlaylist'
+import { useSession } from 'next-auth/react'
 
 const MyInfo = () => {
-  const { userInfo } = useStore()
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user?.uid as string
 
   const [userImage, setUserImage] = useState('')
 
@@ -37,9 +38,9 @@ const MyInfo = () => {
   const queryClient = useQueryClient()
 
   const { data, isLoading, isError } = useQuery({
-    queryFn: () => getUserAndPlaylistData(userInfo.uid),
-    queryKey: ['mypage', userInfo.uid],
-    enabled: !!userInfo.uid,
+    queryFn: () => getUserAndPlaylistData(uid),
+    queryKey: ['mypage', uid],
+    enabled: !!uid,
   })
 
   const updateUserInfoMutation = useMutation({
@@ -101,7 +102,7 @@ const MyInfo = () => {
       postsOpen,
     } = isVisibility
     updateUserInfoMutation.mutate({
-      userId: userInfo.uid,
+      userId: uid,
       nickname,
       likedPostsOpen,
       mbtiOpen,
@@ -122,12 +123,21 @@ const MyInfo = () => {
     const file = e.target.files![0] as File
 
     if (window.confirm('선택한 이미지로 업로드를 진행할까요?')) {
+      if (!file) {
+        alert('선택된 이미지가 없습니다. 이미지를 선택해주세요.')
+        return
+      }
       const data = await updateUserThumbnailMutation.mutateAsync({
-        userId: userInfo.uid,
+        userId: uid,
         file,
       })
-      setUserImage(data?.[0].userImage as string)
-      alert('업로드 완료!')
+
+      if (data) {
+        setUserImage(data?.[0].userImage as string)
+        alert('업로드 완료!')
+      } else {
+        alert('파일이 업로드 되지 않았습니다.')
+      }
     }
   }
 

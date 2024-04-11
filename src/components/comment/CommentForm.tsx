@@ -2,14 +2,15 @@
 
 import { useState } from 'react'
 import { getToday } from '@/util/util'
-import { useStore } from '@/shared/store'
+import { useSession } from 'next-auth/react'
 import { addComment } from '@/shared/comment/commentApi'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const CommentForm = ({ boardId }: { boardId: string }) => {
-  const { userInfo } = useStore()
-  const queryClient = useQueryClient()
   const [comment, setComment] = useState<string>('')
+  const queryClient = useQueryClient()
+  const { data: userSessionInfo } = useSession()
+  const userId = userSessionInfo?.user.uid as string
 
   const addCommentMutation = useMutation({
     mutationFn: addComment,
@@ -24,7 +25,7 @@ const CommentForm = ({ boardId }: { boardId: string }) => {
   ) => {
     e.preventDefault()
 
-    if (userInfo.uid === '') {
+    if (userId === '') {
       alert('로그인 후 이용해 주세요')
       return
     }
@@ -35,7 +36,7 @@ const CommentForm = ({ boardId }: { boardId: string }) => {
     }
 
     const newComment = {
-      userId: userInfo.uid,
+      userId: userId,
       boardId: boardId,
       commentLikeList: [],
       commentDate: getToday(),

@@ -1,8 +1,6 @@
-'use client'
-
+import React, { useState } from 'react'
 import Image from 'next/image'
 import { getToday } from '@/util/util'
-import { useStore } from '@/shared/store'
 import { useQuery } from '@tanstack/react-query'
 import { onDateTimeHandler } from '@/util/util'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -12,13 +10,15 @@ import {
   updateComment,
   addLikeComment,
 } from '@/shared/comment/commentApi'
-import { useState } from 'react'
+import { useSession } from 'next-auth/react'
 
 const CommentsList = ({ boardId }: { boardId: string }) => {
-  const { userInfo } = useStore()
+  const { data: userSessionInfo } = useSession()
   const queryClient = useQueryClient()
-  const [editMode, setEditMode] = useState<boolean>(false)
+  const [editedCommentId, setEditedCommentId] = useState<string | null>(null)
   const [editedText, setEditedText] = useState<string>('')
+
+  const userId = userSessionInfo?.user.uid as string
 
   const { data: commentsData } = useQuery({
     queryFn: () => getComments(boardId),
@@ -55,7 +55,8 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
       commentContent: editedText,
     }
     updateCommentMutation.mutate({ commentId, editedComment })
-    setEditMode(false)
+    setEditedCommentId(null)
+    setEditedText('')
   }
 
   const likeCommentMutation = useMutation({
@@ -66,7 +67,6 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
   })
 
   const onLikeHandler = (commentId: string) => {
-    const userId = userInfo.uid
     if (!userId) {
       alert('로그인 후 이용해 주세요')
       return
@@ -76,20 +76,13 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
     likeCommentMutation.mutate({ commentId, userId })
   }
 
-  const onChangeEditmode = () => {
-    setEditMode(true)
-  }
-
   return (
     <div>
       {commentsData?.map((item) => (
-        <div
-          key={item.commentId}
-          className='border border-solid border-black w-[750px] h-24 p-4'
-        >
-          <div className=' flex flex-row'>
-            <div className=' basis-1/2 flex flex-row'>
-              <p className='w-5 h-5 flex overflow-hidden rounded-full bg-slate-200'>
+        <div key={item.commentId} className=''>
+          <div className='flex flex-row  '>
+            <div className='flex flex-row basis-1/2'>
+              <p>
                 {item.userInfo?.userImage && (
                   <Image
                     src={item.userInfo.userImage}
@@ -99,53 +92,72 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
                   />
                 )}
               </p>
-              <p>{item.userInfo?.nickname}</p>
+              <p className='basis-1/2'>{item.userInfo?.nickname}</p>
             </div>
-            <div className='basis-1/2'>
-              {onDateTimeHandler(item.commentDate)}
-            </div>
+            <div>{onDateTimeHandler(item.commentDate)}</div>
           </div>
-          <div className='flex flex-row'>
-            <div className='basis-1/2'>{item.commentContent}</div>
+          {editedCommentId === item.commentId ? (
             <div>
-              {item.commentLikeList?.includes(item.userInfo.userId) ? '1' : '2'}
+              <input
+                type='text'
+                value={editedText}
+                onChange={(e) => setEditedText(e.target.value)}
+              />
+              <button onClick={() => onUpdateCommentHandler(item.commentId)}>
+                수정 완료
+              </button>
             </div>
-            <div className='basis-1/2'>
-              {item.userInfo?.userId === userInfo.uid ? (
-                <>
-                  <button
-                    onClick={() => onDeleteCommentHandler(item.commentId)}
-                  >
-                    삭제
-                  </button>
-                  <button onClick={onChangeEditmode}>수정하기</button>
+          ) : (
+            <div>
+              <p>{item.commentContent}</p>
+              <div>
+                {item.userInfo?.userId === userId ? (
+                  <>
+                    <button
+                      onClick={() => onDeleteCommentHandler(item.commentId)}
+                    >
+                      삭제
+                    </button>
+                    <button
+                      onClick={() => {
+                        setEditedCommentId(item.commentId)
+                        setEditedText(item.commentContent)
+                      }}
+                    >
+                      수정하기
+                    </button>
+                    <button onClick={() => onLikeHandler(item.commentId)}>
+                      {item.commentLikeList.includes(userId) ? (
+                        <>
+                          <p>좋아요 취소</p>
+                          <p>{item.commentLikeList.length}</p>
+                        </>
+                      ) : (
+                        <>
+                          <p>좋아요</p>
+                          <p>{item.commentLikeList.length}</p>
+                        </>
+                      )}
+                    </button>
+                  </>
+                ) : (
                   <button onClick={() => onLikeHandler(item.commentId)}>
-                    좋아요 {item.commentLikeList.length}
-                  </button>{' '}
-                </>
-              ) : (
-                <>
-                  <button onClick={() => onLikeHandler(item.commentId)}>
-                    좋아요 {item.commentLikeList.length}
-                  </button>{' '}
-                </>
-              )}
-              {editMode && (
-                <>
-                  <input
-                    type='text'
-                    defaultValue={item.commentContent}
-                    onChange={(e) => setEditedText(e.target.value)}
-                  />
-                  <button
-                    onClick={() => onUpdateCommentHandler(item.commentId)}
-                  >
-                    완료
+                    {item.commentLikeList.includes(userId) ? (
+                      <>
+                        <p>좋아요 취소</p>
+                        <p>{item.commentLikeList.length}</p>
+                      </>
+                    ) : (
+                      <>
+                        <p>좋아요</p>
+                        <p>{item.commentLikeList.length}</p>
+                      </>
+                    )}
                   </button>
-                </>
-              )}
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       ))}
     </div>

@@ -4,11 +4,12 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import UserPlaylist from './UserPlaylist'
-import { useStore } from '@/shared/store'
+import { useSession } from 'next-auth/react'
 
 const UserInfo = () => {
   const { id } = useParams<{ id: string }>()
-  const { userInfo } = useStore()
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user?.uid as string
   const queryClient = useQueryClient()
 
   const [isFollow, setIsFollow] = useState(false)
@@ -20,26 +21,24 @@ const UserInfo = () => {
   })
 
   const { data: myInfo } = useQuery({
-    queryFn: () => getUserAndPlaylistData(id),
-    queryKey: ['mypage', userInfo.uid],
-    enabled: !!userInfo.uid,
+    queryFn: () => getUserAndPlaylistData(uid),
+    queryKey: ['mypage', uid],
+    enabled: !!uid,
   })
 
   const unFollowMutation = useMutation({
     mutationFn: updateFollow,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['mypage'] })
+      queryClient.invalidateQueries({ queryKey: ['userpage'] })
     },
   })
 
   const onClickUnFollow = () => {
     const newData = myInfo?.following.filter((item) => item !== id)!
-    const newTargetData = data?.follower?.filter(
-      (item) => item !== userInfo.uid,
-    )!
+    const newTargetData = data?.follower?.filter((item) => item !== uid)!
 
     unFollowMutation.mutate({
-      userId: userInfo.uid,
+      userId: uid,
       targetId: id,
       followingData: newData,
       newTargetData,
@@ -51,10 +50,10 @@ const UserInfo = () => {
     const newData = myInfo?.following?.slice()!
     newData.push(id)
     const newTargetData = data?.follower.slice()!
-    newTargetData?.push(userInfo.uid)
+    newTargetData?.push(uid)
 
     unFollowMutation.mutate({
-      userId: userInfo.uid,
+      userId: uid,
       targetId: id,
       followingData: newData,
       newTargetData,
@@ -63,7 +62,7 @@ const UserInfo = () => {
   }
 
   useEffect(() => {
-    if (data?.follower.find((id) => id === userInfo.uid)) {
+    if (data?.follower.find((id) => id === uid)) {
       setIsFollow(true)
     }
   }, [data])
