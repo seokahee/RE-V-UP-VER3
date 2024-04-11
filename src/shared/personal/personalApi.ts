@@ -2,6 +2,7 @@ import type { MusicPreference, UserChar } from '@/types/main/types'
 import { supabase } from '../supabase/supabase'
 import { genreMatch } from '@/util/main/util'
 import { mbtiMatch, SentenceMatch } from '@/util/personal/util'
+import { getCurrentMusicData } from '../main/api'
 
 //mbti 선호도, 비선호도 조회하는 값
 //선호도
@@ -118,25 +119,38 @@ export const insertUserChar = async ({
   }
 }
 
-//퍼스널 뮤직에 추가하는 값
+//퍼스널 뮤직 테이블에 추가하는 값
 export const inssertPersonalMusic = async (personalMusic) => {
   const { userChar, recommend } = personalMusic
   const mbtiSentence = SentenceMatch(userChar.mbti)
   const musicIds = recommend.map((item) => item.musicId)
-
-  // let { data: personalUid } = await supabase
-  //   .from('personalMusic')
-  //   .select('userId')
-
-  // if (personalUid?.[0].userId.includes(userChar.uid)) {
-  //   console.log('존재하는 유저')
-  //   return
-  // }
 
   const { data, error } = await supabase
     .from('personalMusic')
     .insert([
       { resultSentence: mbtiSentence, userId: userChar.uid, result: musicIds },
     ])
+    .select()
+}
+
+export const getCurrentMusics = async (userId: string) => {
+  let { data: playlistCurrent, error } = await supabase
+    .from('playlistCurrent')
+    .select('currentMusicIds')
+    .eq('userId', userId)
+  return playlistCurrent
+}
+
+export const insertPersonalResult = async ({
+  userId,
+  musicList,
+}: {
+  userId: string
+  musicList: string[]
+}) => {
+  const { data, error } = await supabase
+    .from('playlistCurrent')
+    .update({ currentMusicIds: musicList })
+    .eq('userId', userId)
     .select()
 }
