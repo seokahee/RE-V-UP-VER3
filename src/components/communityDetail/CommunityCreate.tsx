@@ -1,18 +1,17 @@
 'use client'
 
 import React, { FormEvent } from 'react'
-import useInput from '@/hooks/useInput'
-import MusicSearch from '../search/MusicSearch'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useStore } from '@/shared/store'
+import MusicSearch from '../search/MusicSearch'
 import { useCoummunityItem } from '@/query/communityDetail/communityMutation'
+import useInput from '@/hooks/useInput'
 import Image from 'next/image'
 
 const CommunityCreate = () => {
   const router = useRouter()
-  const { userInfo } = useStore()
+  const { data: userSessionInfo } = useSession()
   const { addCommunityMutation } = useCoummunityItem()
-  const { uid } = userInfo
   const musicId = 'b5e50b6b-36cd-4809-b881-0c3a781a3347'
   const nickname = '둥둥'
   const thumbnail =
@@ -37,16 +36,23 @@ const CommunityCreate = () => {
 
   const onSumitHandler = async (e: FormEvent) => {
     e.preventDefault()
-    const newData = {
-      boardTitle,
-      content,
-      userId: uid,
-      musicId,
+    if (userSessionInfo && userSessionInfo.user.uid) {
+      const { uid } = userSessionInfo.user
+      const newData = {
+        boardTitle,
+        content,
+        userId: uid,
+        musicId,
+      }
+      addCommunityMutation.mutate(newData)
+      alert('등록이 완료됐습니다.')
+      reset()
+      router.push('/community')
     }
-    addCommunityMutation.mutate(newData)
-    alert('등록이 완료됐습니다.')
-    reset()
-    router.push('/community')
+    if (!userSessionInfo) {
+      alert('오류로 인해 정보를 저장할 수 없습니당.')
+      return
+    }
   }
 
   return (
