@@ -7,13 +7,14 @@ import {
 } from '@/shared/mypage/api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { UserInfo } from '@/types/mypage/types'
-import { useStore } from '@/shared/store'
 import Image from 'next/image'
 import { updateCurrentMusic } from '@/shared/main/api'
 import Pagination from './Pagination'
+import { useSession } from 'next-auth/react'
 
 const MyPlaylist = ({ data }: { data: UserInfo }) => {
-  const { userInfo } = useStore()
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user?.uid as string
   const [currentPage, setCurrentPage] = useState(1)
   const [checkedList, setCheckedList] = useState<string[]>([])
 
@@ -74,7 +75,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     const newData = myMusicIds.filter((el) => !checkedList.includes(el))
 
     updateMyPlayListMutation.mutate({
-      userId: userInfo.uid,
+      userId: uid,
       myMusicIds: newData,
     })
     alert('삭제가 완료되었습니다.')
@@ -110,7 +111,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     }
 
     updateCurrentPlayListMutation.mutate({
-      userId: userInfo.uid,
+      userId: uid,
       currentList: newData,
     })
 
@@ -148,7 +149,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     }
 
     updateCurrentPlayListMutation.mutate({
-      userId: userInfo.uid,
+      userId: uid,
       currentList: newData,
     })
     alert('추가가 완료되었습니다.')
