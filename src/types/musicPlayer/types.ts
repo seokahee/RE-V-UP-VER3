@@ -7,6 +7,19 @@ export type MusicInfoType = {
   thumbnail: string
 }
 
+// export type SearchMusicInfoType = {
+//   artist: string
+//   musicId: string
+//   musicSource: string
+//   musicTitle: string
+//   release: string
+//   thumbnail: string
+//   genre: number
+//   currentId: string
+//   userId: string
+//   currentMusicIds: string[]
+// }
+
 export type CurrentPlaylistType = {
   currentId: string
   currentMusicIds: string[]
@@ -53,8 +66,8 @@ export type MusicListProps = {
 }
 
 export type PlayerProps = {
-  // currentItems: CurrentPlaylistType[]
-  // musicIndex: number
+  currentPlayList: CurrentPlaylistType[]
+  musicIndex: number
   onPreviousHandler: () => void
   onNextTrackHandler: () => void
 }

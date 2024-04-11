@@ -1,34 +1,34 @@
+'use client'
+
 import { MusicInfoType } from '@/types/musicPlayer/types'
 import Image from 'next/image'
-import React, { Dispatch, SetStateAction } from 'react'
+import { useState } from 'react'
 
-const ModalMusicData = ({
-  item,
-  setIsModal,
-}: {
-  item: MusicInfoType
-  setIsModal: Dispatch<SetStateAction<boolean>>
-}) => {
-  const onAddMusicBoardHandler = () => {}
+const ModalMusicData = ({ item }: { item: MusicInfoType }) => {
+  const onAddMusicBoardHandler = async () => {
+    setChooseMusics(item)
+  }
   return (
     <div
       key={item.musicId}
-      className='flex flex-col gap-2'
+      className='flex gap-[2px] items-center space-x-3 cursor-pointer'
       onClick={onAddMusicBoardHandler}
     >
+      {/* 이미지 */}
       <div>
         <Image
           src={item.thumbnail}
           alt='Album Thumbnail'
           width={100}
           height={100}
+          className='rounded-lg'
         />
-        <div>제목 {item.musicTitle}</div>
-        <div>가수 {item.artist}</div>
-        <div>발매일 {item.release}</div>
-        <div className='flex mt-5 gap-3'>
-          <button onClick={() => setIsModal(false)}>취소</button>
-        </div>
+      </div>
+      {/* 정보 */}
+      <div className='flex flex-col'>
+        <div className='font-bold'>Title {item.musicTitle}</div>
+        <div className='text-gray-600'>Artist {item.artist}</div>
+        <div className='text-gray-600'>{item.release}</div>
       </div>
     </div>
   )
