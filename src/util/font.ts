@@ -7,4 +7,4 @@ const urbanist_init = Urbanist({
   variable: '--font-urbanist',
 })
 
-export const urbanist = urbanist_init.variable
+export const urbanistFont = urbanist_init.variable
