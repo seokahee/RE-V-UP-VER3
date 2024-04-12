@@ -85,6 +85,7 @@ const SearchedMusicData = () => {
             </div>
             <strong>{item.musicTitle}</strong>
             <span>{item.artist}</span>
+            <span>{item.runTime}</span>
           </li>
         )
       })}

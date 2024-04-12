@@ -1,5 +1,36 @@
 import { supabase } from '../supabase/supabase'
 
+// export const getCurrentMusicList = async (userId: string) => {
+//   const { data: currentMusic } = await supabase
+//     .from('playlistCurrent')
+//     .select('currentId,currentMusicIds,userInfo(userId)')
+//     .eq('userId', userId)
+
+//   if (currentMusic && currentMusic.length > 0) {
+//     const musicIds = currentMusic.map((item) => {
+//       return item.currentMusicIds
+//     })
+//     if (musicIds && musicIds.length > 0) {
+//       const { data: musicInfo } = await supabase
+//         .from('musicInfo')
+//         .select('*')
+//         .in('musicId', musicIds)
+//         .order('musicTitle', { ascending: false })
+
+//       return musicInfo
+//     }
+//   }
+//   return []
+// }
+
+// export const getMyMusicList = async (userId: string) => {
+//   const { data: playlistMy } = await supabase
+//     .from('playlistMy')
+//     .select('myMusicIds')
+//     .eq('userId', userId)
+//   return playlistMy
+// }
+
 export const getCurrentMusicList = async (userId: string) => {
   const { data: currentMusic } = await supabase
     .from('playlistCurrent')
@@ -17,7 +48,7 @@ export const getCurrentMusicList = async (userId: string) => {
         .in('musicId', musicIds)
         .order('musicTitle', { ascending: false })
 
-      return musicInfo
+      return musicInfo ?? []
     }
   }
   return []
@@ -28,7 +59,7 @@ export const getMyMusicList = async (userId: string) => {
     .from('playlistMy')
     .select('myMusicIds')
     .eq('userId', userId)
-  return playlistMy
+  return playlistMy ?? []
 }
 
 export const updateCurrentMusic = async ({

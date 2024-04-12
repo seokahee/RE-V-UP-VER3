@@ -5,20 +5,8 @@ export type MusicInfoType = {
   musicTitle: string
   release: string
   thumbnail: string
+  runTime: string
 }
-
-// export type SearchMusicInfoType = {
-//   artist: string
-//   musicId: string
-//   musicSource: string
-//   musicTitle: string
-//   release: string
-//   thumbnail: string
-//   genre: number
-//   currentId: string
-//   userId: string
-//   currentMusicIds: string[]
-// }
 
 export type CurrentPlaylistType = {
   currentId: string
@@ -55,7 +43,7 @@ export type SearchResultType = {
 }
 
 export type MusicListProps = {
-  currentPlayList: CurrentPlaylistType[]
+  currentPlayList: CurrentPlaylistType[] | MusicInfoType[]
   checkedList: string[]
   isRandom: boolean
   onChangeCheckMusicHandler: (checked: boolean, id: string) => void
@@ -66,7 +54,7 @@ export type MusicListProps = {
 }
 
 export type PlayerProps = {
-  currentPlayList: CurrentPlaylistType[]
+  currentPlayList: CurrentPlaylistType[] | MusicInfoType[]
   musicIndex: number
   onPreviousHandler: () => void
   onNextTrackHandler: () => void

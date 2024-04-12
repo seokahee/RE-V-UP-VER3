@@ -7,7 +7,6 @@ import {
   updateCurrentMusic,
   updateMyPlayMusic,
 } from '@/shared/musicPlayer/api'
-import { CurrentPlaylistType } from '@/types/musicPlayer/types'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -24,8 +23,6 @@ const MusicPlayer = () => {
   const uid = userSessionInfo?.user.uid as string
   const router = useRouter()
 
-  console.log('uid', uid)
-
   const {
     data: currentPlayList,
     isLoading,
@@ -34,7 +31,7 @@ const MusicPlayer = () => {
     queryFn: ({ queryKey }) => {
       return getCurrentMusicList(queryKey[1])
     },
-    queryKey: ['playListCurrent', uid],
+    queryKey: ['getCurrentMusicList', uid],
   })
 
   const { data: myPlayList } = useQuery({
@@ -167,21 +164,21 @@ const MusicPlayer = () => {
       }
     }
   }
-
+  console.log('currentPlayList', currentPlayList)
   return (
-    <div>
+    <div className='w-388'>
       {currentPlayList?.length === 0 ? (
         <div>현재 재생 목록이 없습니다</div>
       ) : (
         <div>
           <Player
-            currentPlayList={currentPlayList as CurrentPlaylistType[]}
+            currentPlayList={currentPlayList}
             musicIndex={musicIndex}
             onPreviousHandler={onPreviousHandler}
             onNextTrackHandler={onNextTrackHandler}
           />
           <CurrentMusicList
-            currentPlayList={currentPlayList as CurrentPlaylistType[]}
+            currentPlayList={currentPlayList}
             checkedList={checkedList}
             onChangeCheckMusicHandler={onChangeCheckMusicHandler}
             onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
