@@ -13,13 +13,12 @@ import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
 import { getCurrentMusicData } from '@/shared/main/api'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
-import defaultImg from '@/../public/images/vvv.png'
+import defaultImg from '@/../public/images/plz-music.png'
 
 const CommunityCreate = () => {
   const router = useRouter()
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user?.uid as string
-  console.log(uid)
   const { addCommunityMutation } = useCoummunityItem()
   const { chooseMusic } = useMusicSearchedStore()
   const musicId = chooseMusic?.musicId as string
@@ -139,12 +138,21 @@ const CommunityCreate = () => {
       </article>
       <article>
         <div>
-          <Image
-            src={thumbnail || defaultImg}
-            alt='노래앨범이미지'
-            width={80}
-            height={80}
-          />
+          {thumbnail ? (
+            <Image
+              src={thumbnail}
+              alt='노래앨범이미지'
+              width={80}
+              height={80}
+            />
+          ) : (
+            <Image
+              src={defaultImg}
+              alt='노래앨범이미지'
+              width={80}
+              height={80}
+            />
+          )}
         </div>
         <section className='flex gap-[16px] [&_div]:flex [&_div]:gap-[16px]'>
           <div>

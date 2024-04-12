@@ -4,6 +4,7 @@ import { NextAuthProvider } from './NextAuthProvider'
 import './globals.css'
 import QueryProvider from './provider'
 import { FontClassNames } from '@/util/font'
+import UserProvider from './UserReSessionProvider'
 
 export const metadata: Metadata = {
   title: 'Volume Up',
