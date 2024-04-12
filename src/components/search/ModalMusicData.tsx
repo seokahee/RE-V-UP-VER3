@@ -1,24 +1,63 @@
-import { MusicInfoType } from '@/types/musicPlayer/types'
-import Image from 'next/image'
+'use client'
 
-const ModalMusicData = ({ item }: { item: MusicInfoType }) => {
+import Image from 'next/image'
+import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
+import type { MusicInfoType } from '@/types/musicPlayer/types'
+
+const ModalMusicData = ({
+  item,
+  index,
+}: {
+  item: MusicInfoType
+  index: number
+}) => {
+  const {
+    setChooseMusic,
+    isChooseMusic,
+    setIsChooseMusic,
+    selectedCardIndex,
+    setSelectedCardIndex,
+  } = useMusicSearchedStore()
+
+  const onAddMusicBoardHandler = async (index: number | null) => {
+    if (selectedCardIndex === index && isChooseMusic) {
+      setSelectedCardIndex(null)
+      setIsChooseMusic(false)
+      setChooseMusic(null)
+    } else {
+      setSelectedCardIndex(index)
+      setIsChooseMusic(true)
+      setChooseMusic(item)
+    }
+  }
+
   return (
-    <div key={item.musicId} className='flex items-center space-x-3'>
+    <div
+      key={item.musicId}
+      className={`flex gap-[12px] items-center space-x-3 justify-center h-[104px] px-5 py-4 rounded-[16px] cursor-pointer ${
+        selectedCardIndex === index && isChooseMusic
+          ? 'bg-[#685BFF]'
+          : 'bg-#D9D9D9-800'
+      } `}
+      onClick={() => onAddMusicBoardHandler(index)}
+    >
       {/* 이미지 */}
-      <div>
-        <Image
-          src={item.thumbnail}
-          alt='Album Thumbnail'
-          width={100}
-          height={100}
-          className='rounded-lg'
-        />
-      </div>
-      {/* 정보 */}
-      <div className='flex flex-col'>
-        <div className='font-bold'>Title {item.musicTitle}</div>
-        <div className='text-gray-600'>Artist {item.artist}</div>
-        <div className='text-gray-600'>{item.release}</div>
+      <div className='flex gap-[16px]'>
+        <div>
+          <Image
+            src={item.thumbnail}
+            alt='Album Thumbnail'
+            width={100}
+            height={100}
+            className='rounded-lg'
+          />
+        </div>
+        {/* 정보 */}
+        <div className='flex flex-col'>
+          <div className='font-bold'>Title {item.musicTitle}</div>
+          <div className='text-gray-600'>Artist {item.artist}</div>
+          <div className='text-gray-600'>{item.release}</div>
+        </div>
       </div>
     </div>
   )

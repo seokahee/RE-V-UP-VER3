@@ -7,6 +7,7 @@ import {
   updateCommnityBoard,
 } from '@/shared/communitydetail/detailApi'
 import { addCommnity } from '@/types/communityDetail/detailTypes'
+import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
 
 export const useCoummunityItem = () => {
   const updateCommunityMutation = useMutation({
@@ -37,4 +38,21 @@ export const useCoummunityItem = () => {
     deleteCommunityMutation,
     addCommunityMutation,
   }
+}
+
+export const useCoummunityCreateItem = () => {
+  const insertMutation = useMutation({
+    mutationFn: insertCurrentMusic,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
+    },
+  })
+
+  const updateMutation = useMutation({
+    mutationFn: updateCurrentMusic,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
+    },
+  })
+  return { updateMutation, insertMutation }
 }

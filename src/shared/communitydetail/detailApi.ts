@@ -118,3 +118,8 @@ export const removeLikedUser = async (
     throw error
   }
 }
+
+// const { data, error } = await supabase
+//   .from('community')
+//   .insert([{ some_column: 'someValue' }, { some_column: 'otherValue' }])
+//   .select()
