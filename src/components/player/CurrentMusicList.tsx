@@ -13,6 +13,7 @@ const CurrentMusicList = ({
 }: MusicListProps) => {
   return (
     <div>
+      {currentPlayList.length === 0 && <div>현재 재생 목록이 없습니다</div>}
       {currentPlayList.map((item) => {
         const musicIndex = currentPlayList.findIndex(
           (arr) => arr.musicId === item.musicId,

@@ -4,24 +4,30 @@ import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
 
 const Player = ({
+  uid,
   currentPlayList,
   musicIndex,
   onPreviousHandler,
   onNextTrackHandler,
 }: PlayerProps) => {
+  const isPlay = uid && currentPlayList?.length > 0
+
   return (
     <div>
-      <div>
-        <div>{currentPlayList[musicIndex].musicTitle}</div>
-        <div>{currentPlayList[musicIndex].artist}</div>
-        <Image
-          src={currentPlayList[musicIndex].thumbnail}
-          alt='Album Thumbnail'
-          width={100}
-          height={100}
-        />
-        <div>{currentPlayList[musicIndex].lyrics}</div>
-      </div>
+      {isPlay && (
+        <div>
+          <div>{currentPlayList[musicIndex].musicTitle}</div>
+          <div>{currentPlayList[musicIndex].artist}</div>
+          <Image
+            src={currentPlayList[musicIndex].thumbnail}
+            alt='Album Thumbnail'
+            width={100}
+            height={100}
+          />
+          <div>{currentPlayList[musicIndex].lyrics}</div>
+        </div>
+      )}
+
       <AudioPlayer
         autoPlay={false}
         loop={false}
@@ -30,7 +36,7 @@ const Player = ({
         showSkipControls={true}
         onClickPrevious={onPreviousHandler}
         onClickNext={onNextTrackHandler}
-        src={currentPlayList[musicIndex].musicSource}
+        src={isPlay ? currentPlayList[musicIndex].musicSource : ''}
         onEnded={onNextTrackHandler}
       />
     </div>

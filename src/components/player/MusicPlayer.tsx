@@ -14,6 +14,7 @@ import { useState } from 'react'
 import 'react-h5-audio-player/lib/styles.css'
 import CurrentMusicList from './CurrentMusicList'
 import Player from './Player'
+import { CurrentPlaylistType } from '@/types/musicPlayer/types'
 
 const MusicPlayer = () => {
   const [musicIndex, setMusicIndex] = useState<number>(0)
@@ -127,7 +128,7 @@ const MusicPlayer = () => {
       alert('노래를 선택해주세요')
       return
     }
-    if (uid === '') {
+    if (uid === '' || !uid) {
       alert(
         '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
       )
@@ -164,21 +165,19 @@ const MusicPlayer = () => {
       }
     }
   }
-  console.log('currentPlayList', currentPlayList)
   return (
     <div className='w-388'>
-      {currentPlayList?.length === 0 ? (
-        <div>현재 재생 목록이 없습니다</div>
-      ) : (
+      <Player
+        uid={uid}
+        currentPlayList={currentPlayList as CurrentPlaylistType[]}
+        musicIndex={musicIndex}
+        onPreviousHandler={onPreviousHandler}
+        onNextTrackHandler={onNextTrackHandler}
+      />
+      {uid && currentPlayList?.length > 0 && (
         <div>
-          <Player
-            currentPlayList={currentPlayList}
-            musicIndex={musicIndex}
-            onPreviousHandler={onPreviousHandler}
-            onNextTrackHandler={onNextTrackHandler}
-          />
           <CurrentMusicList
-            currentPlayList={currentPlayList}
+            currentPlayList={currentPlayList as CurrentPlaylistType[]}
             checkedList={checkedList}
             onChangeCheckMusicHandler={onChangeCheckMusicHandler}
             onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
