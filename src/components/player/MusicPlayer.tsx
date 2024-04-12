@@ -24,11 +24,7 @@ const MusicPlayer = () => {
   const uid = userSessionInfo?.user.uid as string
   const router = useRouter()
 
-  const {
-    data: currentPlayList,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: currentPlayList, isError } = useQuery({
     queryFn: ({ queryKey }) => {
       return getCurrentMusicList(queryKey[1])
     },
@@ -63,9 +59,6 @@ const MusicPlayer = () => {
     },
   })
 
-  if (isLoading) {
-    return <div>정보를 가져오고 있습니다</div>
-  }
   if (!currentPlayList) {
     return
   }
@@ -167,14 +160,15 @@ const MusicPlayer = () => {
   }
   return (
     <div className='w-388'>
-      <Player
-        uid={uid}
-        currentPlayList={currentPlayList as CurrentPlaylistType[]}
-        musicIndex={musicIndex}
-        onPreviousHandler={onPreviousHandler}
-        onNextTrackHandler={onNextTrackHandler}
-      />
-      {uid && currentPlayList?.length > 0 && (
+      <div>
+        <div>
+          <Player
+            currentPlayList={currentPlayList as CurrentPlaylistType[]}
+            musicIndex={musicIndex}
+            onPreviousHandler={onPreviousHandler}
+            onNextTrackHandler={onNextTrackHandler}
+          />
+        </div>
         <div>
           <CurrentMusicList
             currentPlayList={currentPlayList as CurrentPlaylistType[]}
@@ -187,7 +181,7 @@ const MusicPlayer = () => {
             setMusicIndex={setMusicIndex}
           />
         </div>
-      )}
+      </div>
     </div>
   )
 }

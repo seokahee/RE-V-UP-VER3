@@ -4,13 +4,12 @@ import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
 
 const Player = ({
-  uid,
   currentPlayList,
   musicIndex,
   onPreviousHandler,
   onNextTrackHandler,
 }: PlayerProps) => {
-  const isPlay = uid && currentPlayList?.length > 0
+  const isPlay = currentPlayList?.length > 0
 
   return (
     <div>

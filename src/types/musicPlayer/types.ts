@@ -54,7 +54,6 @@ export type MusicListProps = {
 }
 
 export type PlayerProps = {
-  uid: string
   currentPlayList: CurrentPlaylistType[]
   musicIndex: number
   onPreviousHandler: () => void
