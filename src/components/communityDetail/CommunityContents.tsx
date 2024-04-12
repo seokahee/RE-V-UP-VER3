@@ -1,26 +1,33 @@
 'use client'
 
 import { MouseEvent, useState } from 'react'
+import { useSession } from 'next-auth/react'
 import { useParams, useRouter } from 'next/navigation'
-import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
 import { readCommunityDetail } from '@/shared/communitydetail/detailApi'
 import { COMMUNITY_QUERY_KEY } from '@/query/communityDetail/communityQueryKey'
-import { useCoummunityItem } from '@/query/communityDetail/communityMutation'
+import {
+  useCoummunityItem,
+  useCoummunityCreateItem,
+} from '@/query/communityDetail/communityMutation'
 import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
+import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
+import { getCurrentMusicData } from '@/shared/main/api'
 import { onDateTimeHandler } from '@/util/util'
 import useInput from '@/hooks/useInput'
 import LikeButton from './LikeButton'
-import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 
 const CommunityContents = () => {
   const router = useRouter()
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const { id }: { id: string } = useParams()
   const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user?.uid as string
+  const { chooseMusic } = useMusicSearchedStore()
+  const musicId = chooseMusic?.musicId as string
   const { updateCommunityMutation, deleteCommunityMutation } =
     useCoummunityItem()
-  const uid = userSessionInfo?.user.uid
   const {
     data: readDetailData,
     isPending,
@@ -43,6 +50,13 @@ const CommunityContents = () => {
   } = readDetailData || ({} as readCommuDetail)
   const { nickname, userImage, userId } = userInfo || {}
   const { musicTitle, artist, thumbnail } = musicInfo || {}
+  const { updateMutation, insertMutation } = useCoummunityCreateItem()
+
+  const { data: playListCurrent } = useQuery({
+    queryFn: () => getCurrentMusicData(uid),
+    queryKey: ['playListCurrent'],
+    enabled: !!uid,
+  })
 
   const {
     form: editForm,
@@ -87,6 +101,34 @@ const CommunityContents = () => {
   const onBackButtonHandler = () => {
     setIsEdit(false)
     router.back()
+  }
+
+  const onAddPlayerHandler = (
+    e: MouseEvent,
+    userId: string,
+    musicId: string,
+  ) => {
+    e.preventDefault()
+    if (!userId) {
+      alert(
+        '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
+      )
+      router.replace('/login')
+      return
+    }
+
+    if (playListCurrent && playListCurrent.length > 0) {
+      const currentList = playListCurrent[0].currentMusicIds
+      if (currentList.find((el) => el === musicId)) {
+        alert('이미 추가된 노래입니다.')
+        return
+      }
+      currentList.push(musicId)
+      updateMutation.mutate({ userId: uid, currentList })
+    } else {
+      insertMutation.mutate({ userId: uid, musicId })
+    }
+    alert('현재 재생목록에 추가 되었습니다.')
   }
 
   if (!boardTitle || !content || !comment || !date) return null
@@ -151,8 +193,15 @@ const CommunityContents = () => {
               height={56}
             />
           </figure>
-          <div>{musicTitle}</div>
-          <div>{artist}</div>
+          <div>
+            <div>{musicTitle}</div>
+            <div>{artist}</div>
+            <div>
+              <button onClick={(e) => onAddPlayerHandler(e, uid, musicId)}>
+                플레이어에 음악추가
+              </button>
+            </div>
+          </div>
           {isEdit ? (
             <textarea
               id='content'
@@ -165,6 +214,7 @@ const CommunityContents = () => {
           ) : (
             <div>{`내용 : ${content}`}</div>
           )}
+
           <div>
             <LikeButton boardId={id} />
             <div>{comment.length ? comment.length : 0}</div>
