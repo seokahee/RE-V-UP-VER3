@@ -16,15 +16,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <NextAuthProvider>
-      <QueryProvider>
-        <html lang='en'>
-          <body className={FontClassNames}>
+    <QueryProvider>
+      <html lang='en'>
+        <body className={FontClassNames}>
+          <NextAuthProvider>
             <Header />
             {children}
-          </body>
-        </html>
-      </QueryProvider>
-    </NextAuthProvider>
+          </NextAuthProvider>
+        </body>
+      </html>
+    </QueryProvider>
   )
 }

@@ -29,12 +29,12 @@ const PersonalModalDetail = ({ isOpen, onClose }) => {
   return (
     <div className='fixed inset-0 z-50 flex items-center justify-center'>
       <div className='fixed inset-0 bg-black opacity-50'></div>
-      <div className='fixed z-10 bg-white p-8 h-72 rounded-lg'>
+      <div className='fixed z-10 h-72 rounded-lg bg-white p-8'>
         <div>
           {/* 테스트용 닫기버튼 */}
-          <button className='absolute top-0 right-0 m-2' onClick={onClose}>
+          <button className='absolute right-0 top-0 m-2' onClick={onClose}>
             <svg
-              className='w-6 h-6'
+              className='h-6 w-6'
               fill='none'
               viewBox='0 0 24 24'
               stroke='currentColor'
@@ -57,7 +57,7 @@ const PersonalModalDetail = ({ isOpen, onClose }) => {
           <div>
             <button
               onClick={onPersonalTestHandler}
-              className='border border-rose-600 rounded-full'
+              className='rounded-full border border-rose-600'
             >
               검사하기
             </button>
@@ -65,7 +65,7 @@ const PersonalModalDetail = ({ isOpen, onClose }) => {
           <div>
             <button
               onClick={onCloseModalHandler}
-              className='border border-rose-600 rounded-full'
+              className='rounded-full border border-rose-600'
             >
               오늘은 그만보기
             </button>

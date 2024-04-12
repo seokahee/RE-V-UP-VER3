@@ -74,7 +74,6 @@ const PersonalSubTest = () => {
       <div>
         {!isResult ? (
           <>
-            {' '}
             <div>
               <label>
                 <input

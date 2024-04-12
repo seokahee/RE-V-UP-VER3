@@ -22,8 +22,8 @@ const config: Config = {
       },
       colors: {
         primary: '#685bff',
-        white: '#FFFFFF',
-        black: '#000000',
+        'primary-white': '#FFFFFF',
+        'primary-black': '#000000',
         'modal-black': '#3d3d3d',
         'dim-black': '#474747',
         gray: '#d9d9d9',
