@@ -1,8 +1,8 @@
 'use client'
 
 import { getFollowData, updateFollow } from '@/shared/mypage/api'
-import { useStore } from '@/shared/store'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -14,7 +14,8 @@ type FollowProps = {
 }
 
 const FollowList = ({ data, dataKey, myFollowing }: FollowProps) => {
-  const { userInfo } = useStore()
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user?.uid as string
   const queryClient = useQueryClient()
 
   const {
@@ -96,7 +97,7 @@ const FollowList = ({ data, dataKey, myFollowing }: FollowProps) => {
                 {data.find((el) => el === item.userId) ? (
                   <button
                     type='button'
-                    onClick={() => onClickUnFollow(userInfo.uid, item.userId)}
+                    onClick={() => onClickUnFollow(uid, item.userId)}
                     className='text-red-600'
                   >
                     팔로잉 취소
@@ -104,7 +105,7 @@ const FollowList = ({ data, dataKey, myFollowing }: FollowProps) => {
                 ) : (
                   <button
                     type='button'
-                    onClick={() => onClickFollow(userInfo.uid, item.userId)}
+                    onClick={() => onClickFollow(uid, item.userId)}
                   >
                     팔로우
                   </button>
@@ -115,7 +116,7 @@ const FollowList = ({ data, dataKey, myFollowing }: FollowProps) => {
                 {myFollowing && myFollowing.find((el) => el === item.userId) ? (
                   <button
                     type='button'
-                    onClick={() => onClickUnFollow(userInfo.uid, item.userId)}
+                    onClick={() => onClickUnFollow(uid, item.userId)}
                     className='text-red-600'
                   >
                     팔로잉 취소
@@ -123,7 +124,7 @@ const FollowList = ({ data, dataKey, myFollowing }: FollowProps) => {
                 ) : (
                   <button
                     type='button'
-                    onClick={() => onClickFollow(userInfo.uid, item.userId)}
+                    onClick={() => onClickFollow(uid, item.userId)}
                   >
                     팔로우
                   </button>

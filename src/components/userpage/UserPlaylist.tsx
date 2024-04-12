@@ -7,10 +7,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import CheckboxItem from '../mypage/CheckboxItem'
 import Image from 'next/image'
-import { useStore } from '@/shared/store'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
 import LockContents from './LockContents'
 import Pagination from '../mypage/Pagination'
+import { useSession } from 'next-auth/react'
 
 const UserPlaylist = ({
   data,
@@ -19,15 +19,16 @@ const UserPlaylist = ({
   data: UserInfo
   isVisibility: boolean
 }) => {
-  const { userInfo } = useStore()
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user?.uid as string
   const [checkedList, setCheckedList] = useState<string[]>([])
   const queryClient = useQueryClient()
   const [currentPage, setCurrentPage] = useState(1)
 
   const { data: myPlaylistCurrentData } = useQuery({
-    queryFn: () => getCurrentMusicData(userInfo.uid),
-    queryKey: ['playListCurrent', userInfo.uid],
-    enabled: !!userInfo.uid,
+    queryFn: () => getCurrentMusicData(uid),
+    queryKey: ['playListCurrent', uid],
+    enabled: !!uid,
   })
 
   const { data: totalCount } = useQuery({
@@ -96,7 +97,7 @@ const UserPlaylist = ({
     }
 
     updateMutation.mutate({
-      userId: userInfo.uid,
+      userId: uid,
       currentList: newData,
     })
 
@@ -134,7 +135,7 @@ const UserPlaylist = ({
     }
 
     updateMutation.mutate({
-      userId: userInfo.uid,
+      userId: uid,
       currentList: newData,
     })
     alert('추가가 완료되었습니다.')
