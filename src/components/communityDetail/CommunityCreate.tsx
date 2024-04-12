@@ -1,27 +1,38 @@
 'use client'
 
-import React, { FormEvent } from 'react'
+import React, { FormEvent, MouseEvent } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import MusicSearch from '../search/MusicSearch'
-import { useCoummunityItem } from '@/query/communityDetail/communityMutation'
+import {
+  useCoummunityCreateItem,
+  useCoummunityItem,
+} from '@/query/communityDetail/communityMutation'
 import useInput from '@/hooks/useInput'
 import Image from 'next/image'
+import { useQuery } from '@tanstack/react-query'
+import { getCurrentMusicData } from '@/shared/main/api'
+import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
+import defaultImg from '@/../public/images/vvv.png'
 
 const CommunityCreate = () => {
   const router = useRouter()
   const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user?.uid as string
   const { addCommunityMutation } = useCoummunityItem()
-  const musicId = 'b5e50b6b-36cd-4809-b881-0c3a781a3347'
-  const nickname = '둥둥'
-  const thumbnail =
-    'https://hxavgjouatzlrjtjgrth.supabase.co/storage/v1/object/public/musicThumbnail/Extraterrestrial.png'
-  const musicTitle = 'Extraterrestrial'
-  const artist = 'v-up'
-  const release = '2024-04-03 utc'
-  const musicSource =
-    'https://hxavgjouatzlrjtjgrth.supabase.co/storage/v1/object/public/music/Extraterrestrial.mp3'
-  const runTime = '1:33'
+  const { chooseMusic } = useMusicSearchedStore()
+  const musicId = chooseMusic?.musicId as string
+  const musicTitle = chooseMusic?.musicTitle
+  const artist = chooseMusic?.artist
+  const thumbnail = chooseMusic?.thumbnail
+
+  const { updateMutation, insertMutation } = useCoummunityCreateItem()
+
+  const { data: playListCurrent } = useQuery({
+    queryFn: () => getCurrentMusicData(uid),
+    queryKey: ['playListCurrent'],
+    enabled: !!uid,
+  })
 
   const {
     form: communityForm,
@@ -53,6 +64,34 @@ const CommunityCreate = () => {
       alert('오류로 인해 정보를 저장할 수 없습니당.')
       return
     }
+  }
+
+  const onAddPlayerHandler = (
+    e: MouseEvent,
+    userId: string,
+    musicId: string,
+  ) => {
+    e.preventDefault()
+    if (!userId) {
+      alert(
+        '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
+      )
+      router.replace('/login')
+      return
+    }
+
+    if (playListCurrent && playListCurrent.length > 0) {
+      const currentList = playListCurrent[0].currentMusicIds
+      if (currentList.find((el) => el === musicId)) {
+        alert('이미 추가된 노래입니다.')
+        return
+      }
+      currentList.push(musicId)
+      updateMutation.mutate({ userId, currentList })
+    } else {
+      insertMutation.mutate({ userId, musicId })
+    }
+    alert('현재 재생목록에 추가 되었습니다.')
   }
 
   return (
@@ -100,20 +139,23 @@ const CommunityCreate = () => {
       <article>
         <div>
           <Image
-            src={`${thumbnail}`}
+            src={thumbnail || defaultImg}
             alt='노래앨범이미지'
             width={80}
             height={80}
           />
         </div>
-        <div>{nickname}</div>
-        <div>
-          <p>{musicTitle}</p>
-          <p>{artist}</p>
-        </div>
-        <div>
-          <p>{runTime}</p>
-        </div>
+        <section className='flex gap-[16px] [&_div]:flex [&_div]:gap-[16px]'>
+          <div>
+            <p>{musicTitle}</p>
+            <p>{artist}</p>
+          </div>
+          <div>
+            <button onClick={(e) => onAddPlayerHandler(e, uid, musicId)}>
+              플레이어에 음악추가
+            </button>
+          </div>
+        </section>
       </article>
     </div>
   )

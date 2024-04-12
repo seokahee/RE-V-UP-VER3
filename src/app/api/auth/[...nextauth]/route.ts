@@ -28,7 +28,7 @@ const handler = NextAuth({
           type: 'password',
         },
       },
-      async authorize(credentials, _) {
+      async authorize(credentials, req) {
         if (!credentials || !credentials.email || !credentials.password) {
           throw new Error('이메일과 비밀번호를 입력하세요.')
         }
@@ -61,10 +61,6 @@ const handler = NextAuth({
       },
     }),
   ],
-  session: {
-    strategy: 'jwt',
-    maxAge: 60 * 24 * 60 * 60,
-  },
   callbacks: {
     session: ({ session, token }) => ({
       ...session,
@@ -74,7 +70,6 @@ const handler = NextAuth({
       },
     }),
   },
-
   pages: {
     signIn: '/',
     signOut: '/signout',
