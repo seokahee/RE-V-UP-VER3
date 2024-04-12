@@ -56,8 +56,9 @@ const Join = () => {
       email: userEmail,
       password: userPw,
     })
-
+    console.log(signUpResult)
     const userId = signUpResult?.data?.user?.id
+
     if (signUpResult) {
       if (signUpResult.data?.user?.identities?.length === 0) {
         alert('이미 존재하는 이메일입니다.')

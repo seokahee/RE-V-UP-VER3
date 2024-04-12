@@ -19,6 +19,7 @@ const CommunityCreate = () => {
   const router = useRouter()
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user?.uid as string
+  console.log(uid)
   const { addCommunityMutation } = useCoummunityItem()
   const { chooseMusic } = useMusicSearchedStore()
   const musicId = chooseMusic?.musicId as string
@@ -87,9 +88,9 @@ const CommunityCreate = () => {
         return
       }
       currentList.push(musicId)
-      updateMutation.mutate({ userId, currentList })
+      updateMutation.mutate({ userId: uid, currentList })
     } else {
-      insertMutation.mutate({ userId, musicId })
+      insertMutation.mutate({ userId: uid, musicId })
     }
     alert('현재 재생목록에 추가 되었습니다.')
   }
