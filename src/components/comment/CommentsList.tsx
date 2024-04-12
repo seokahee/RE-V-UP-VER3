@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import { getToday } from '@/util/util'
 import { useQuery } from '@tanstack/react-query'
-import { onDateTimeHandler } from '@/util/util'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   getComments,
@@ -11,6 +10,7 @@ import {
   addLikeComment,
 } from '@/shared/comment/commentApi'
 import { useSession } from 'next-auth/react'
+import { onDateTimeHandler } from '@/util/util'
 
 const CommentsList = ({ boardId }: { boardId: string }) => {
   const { data: userSessionInfo } = useSession()

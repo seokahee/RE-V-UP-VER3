@@ -2,7 +2,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getComments } from '@/shared/comments/commentsApi'
 import Image from 'next/image'
-import { onCommentHandler } from '@/util/util'
+import { onDateTimeHandler } from '@/util/util'
 
 const CommentsList = () => {
   const { data: commentsData } = useQuery({
@@ -14,7 +14,7 @@ const CommentsList = () => {
     <div>
       {commentsData?.map((item) => (
         <div>
-          <span className='w-5 h-5 flex overflow-hidden rounded-full bg-slate-200'>
+          <span className='flex h-5 w-5 overflow-hidden rounded-full bg-slate-200'>
             {item.userInfo?.userImage && (
               <Image
                 src={item.userInfo.userImage}
@@ -27,7 +27,7 @@ const CommentsList = () => {
           닉네임 :{item.userInfo?.nickname}
           <br />
           {item.commentContent} <br />
-          {onCommentHandler(item.commentDate)} <br />
+          {onDateTimeHandler(item.commentDate)} <br />
         </div>
       ))}
     </div>

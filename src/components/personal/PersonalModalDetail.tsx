@@ -3,7 +3,12 @@
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 
-const PersonalModalDetail = ({ isOpen, onClose }) => {
+type Modal = {
+  isOpen: boolean
+  onClose: () => void
+}
+
+const PersonalModalDetail = ({ isOpen, onClose }: Modal) => {
   const router = useRouter()
 
   const { data: userSessionInfo } = useSession()

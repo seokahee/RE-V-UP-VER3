@@ -4,7 +4,7 @@ import PersonalModalDetail from '@/components/personal/PersonalModalDetail'
 import { useState, useEffect } from 'react'
 
 const PersonalModal = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const HOME_VISITED =
     typeof window !== 'undefined' ? localStorage.getItem('homeVisited') : null
 

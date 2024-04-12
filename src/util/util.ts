@@ -12,6 +12,7 @@ export const onDateHandler = (itemDate: string) => {
 export const getToday = () => {
   const today = new Date()
   const date = today.toISOString()
+
   return date
 }
 

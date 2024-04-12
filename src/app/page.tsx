@@ -4,16 +4,19 @@ import MainBanner from '@/components/main/MainBanner'
 import TopLikedBoard from '@/components/main/TopLikedBoard'
 import MusicPlayer from '@/components/player/MusicPlayer'
 import PersonalModal from '@/components/personal/PersonalModal'
+import UserReSessionProvider from './UserReSessionProvider'
 
 const Home = () => {
   return (
     <>
-      <PersonalModal />
-      <GenreMusicList />
-      <MainBanner />
-      <TopLikedBoard />
-      <MusicPlayer />
-      <Footer />
+      <UserReSessionProvider>
+        <PersonalModal />
+        <GenreMusicList />
+        <MainBanner />
+        <TopLikedBoard />
+        <MusicPlayer />
+        <Footer />
+      </UserReSessionProvider>
     </>
   )
 }

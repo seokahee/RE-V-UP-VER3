@@ -103,7 +103,27 @@ export const insertUserChar = async ({
 }
 
 //퍼스널 뮤직 테이블에 추가하는 값
-export const insertPersonalMusic = async (personalMusic) => {
+
+type PersonalMusic = {
+  recommend: {
+    artist: string
+    genre: number
+    lyrics: string
+    musicId: string
+    musicSource: string
+    musicTitle: string
+    release: string
+    runTime: string
+    thumbnail: string
+  }[]
+  userChar: {
+    gender: string
+    mbti: string
+    uid: string
+  }
+}
+
+export const insertPersonalMusic = async (personalMusic: PersonalMusic) => {
   const { userChar, recommend } = personalMusic
   const mbtiSentence = SentenceMatch(userChar.mbti)
   const musicIds = recommend.map((item) => item.musicId)
