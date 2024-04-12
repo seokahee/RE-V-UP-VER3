@@ -4,7 +4,13 @@ import { useModalMusicResultStore } from '@/shared/store/searchStore'
 import { MusicInfoType } from '@/types/musicPlayer/types'
 import Pagination from '@/util/Pagination '
 import { modalPaging } from '@/util/util'
-import React, { FormEvent, useRef, useState } from 'react'
+import React, {
+  FormEvent,
+  KeyboardEvent,
+  KeyboardEventHandler,
+  useRef,
+  useState,
+} from 'react'
 import ModalMusicData from './ModalMusicData'
 
 const MusicSearchModal = ({
@@ -52,8 +58,21 @@ const MusicSearchModal = ({
     setCurrentPage,
   )
 
-  const onAddViewMusicHandler = () => {}
+  const onAddViewMusicHandler = () => {
+    alert('음악이 등록되었습니다.')
+    setIsModal(false)
+  }
 
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      const submitEvent = new Event('submit', {
+        bubbles: true,
+        cancelable: true,
+      })
+      e.currentTarget.form?.dispatchEvent(submitEvent)
+    }
+  }
   return (
     <div className='fixed w-full h-screen inset-0 flex flex-col justify-center items-center z-50 bg-black bg-opacity-50'>
       <div className='bg-white h-4/5 w-3/5 flex flex-col items-center rounded-md pb-10'>
@@ -64,6 +83,9 @@ const MusicSearchModal = ({
             value={keyword}
             ref={keywordRef}
             onChange={onChange}
+            onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) =>
+              handleKeyUp(e)
+            }
             className='border  border-black'
           />
           <button type='submit' className='m-3'>
