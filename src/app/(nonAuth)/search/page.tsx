@@ -11,7 +11,7 @@ import {
   useSearchedResultStore,
 } from '@/shared/store/searchStore'
 import { CommunityType } from '@/types/community/type'
-import { CurrentPlaylistType } from '@/types/musicPlayer/types'
+import { CurrentPlayListType } from '@/types/musicPlayer/types'
 import Pagination from '@/util/Pagination '
 import { paging } from '@/util/util'
 import { useQuery } from '@tanstack/react-query'
@@ -60,7 +60,7 @@ const Search = () => {
 
   const filteredMusic = musicResult?.filter((item) => {
     return item
-  }) as CurrentPlaylistType[]
+  }) as CurrentPlayListType[]
 
   const searchedResult =
     selectedTabs === 'musicInfo' ? filteredMusic : filteredCommunity

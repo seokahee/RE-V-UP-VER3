@@ -14,7 +14,7 @@ import { useState } from 'react'
 import 'react-h5-audio-player/lib/styles.css'
 import CurrentMusicList from './CurrentMusicList'
 import Player from './Player'
-import { CurrentPlaylistType } from '@/types/musicPlayer/types'
+import { CurrentPlayListType } from '@/types/musicPlayer/types'
 
 const MusicPlayer = () => {
   const [musicIndex, setMusicIndex] = useState<number>(0)
@@ -153,7 +153,7 @@ const MusicPlayer = () => {
         }
       } else {
         insertMutation.mutate({ userId: uid, musicId: checkedList })
-        alert('현재 재생목록에 추가 되었습니다.')
+        alert('마이플레이리스트에 추가 되었습니다..')
         setCheckedList([])
       }
     }
@@ -163,7 +163,7 @@ const MusicPlayer = () => {
       <div>
         <div>
           <Player
-            currentPlayList={currentPlayList as CurrentPlaylistType[]}
+            currentPlayList={currentPlayList as CurrentPlayListType[]}
             musicIndex={musicIndex}
             onPreviousHandler={onPreviousHandler}
             onNextTrackHandler={onNextTrackHandler}
@@ -171,7 +171,7 @@ const MusicPlayer = () => {
         </div>
         <div>
           <CurrentMusicList
-            currentPlayList={currentPlayList as CurrentPlaylistType[]}
+            currentPlayList={currentPlayList as CurrentPlayListType[]}
             checkedList={checkedList}
             onChangeCheckMusicHandler={onChangeCheckMusicHandler}
             onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
