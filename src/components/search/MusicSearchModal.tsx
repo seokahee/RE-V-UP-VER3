@@ -66,7 +66,7 @@ const MusicSearchModal = ({
       e.currentTarget.form?.dispatchEvent(submitEvent)
     }
   }
-
+  console.log(1)
   return (
     <div className='fixed w-full h-screen inset-0 flex flex-col justify-center items-center z-50 bg-black bg-opacity-50'>
       <div className='bg-white h-4/5 w-3/5 flex flex-col items-center rounded-md pb-10'>
