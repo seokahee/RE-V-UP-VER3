@@ -1,9 +1,8 @@
 'use client'
 
-import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
-import { MusicInfoType } from '@/types/musicPlayer/types'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
+import type { MusicInfoType } from '@/types/musicPlayer/types'
 
 const ModalMusicData = ({
   item,
@@ -13,7 +12,6 @@ const ModalMusicData = ({
   index: number
 }) => {
   const {
-    chooseMusic,
     setChooseMusic,
     isChooseMusic,
     setIsChooseMusic,
@@ -43,7 +41,8 @@ const ModalMusicData = ({
       } `}
       onClick={() => onAddMusicBoardHandler(index)}
     >
-      <div className='flex'>
+      {/* 이미지 */}
+      <div className='flex gap-[16px]'>
         <div>
           <Image
             src={item.thumbnail}
@@ -60,7 +59,6 @@ const ModalMusicData = ({
           <div className='text-gray-600'>{item.release}</div>
         </div>
       </div>
-      {/* 이미지 */}
     </div>
   )
 }
