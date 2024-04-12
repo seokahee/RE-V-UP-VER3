@@ -1,26 +1,26 @@
 'use client'
 
 import React, { FormEvent, MouseEvent } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import MusicSearch from '../search/MusicSearch'
 import {
   useCoummunityCreateItem,
   useCoummunityItem,
 } from '@/query/communityDetail/communityMutation'
-import useInput from '@/hooks/useInput'
-import Image from 'next/image'
-import { useQuery } from '@tanstack/react-query'
 import { getCurrentMusicData } from '@/shared/main/api'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
+import Image from 'next/image'
+import useInput from '@/hooks/useInput'
+import MusicSearch from '../search/MusicSearch'
 import defaultImg from '@/../public/images/vvv.png'
 
 const CommunityCreate = () => {
   const router = useRouter()
   const { data: userSessionInfo } = useSession()
-  const uid = userSessionInfo?.user?.uid as string
   const { addCommunityMutation } = useCoummunityItem()
   const { chooseMusic } = useMusicSearchedStore()
+  const uid = userSessionInfo?.user?.uid as string
   const musicId = chooseMusic?.musicId as string
   const musicTitle = chooseMusic?.musicTitle
   const artist = chooseMusic?.artist
