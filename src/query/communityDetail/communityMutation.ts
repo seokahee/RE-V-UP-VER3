@@ -6,7 +6,6 @@ import {
   deleteCommunityBoard,
   updateCommnityBoard,
 } from '@/shared/communitydetail/detailApi'
-import { addCommnity } from '@/types/communityDetail/detailTypes'
 import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
 
 export const useCoummunityItem = () => {
