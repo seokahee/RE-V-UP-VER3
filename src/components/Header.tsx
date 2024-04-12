@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import commu from '@/../public/images/commuIcon.svg'
 import people from '@/../public/images/mypageIcon.svg'
+import back from '@/../public/images/backButton.svg'
 
 const Header = () => {
   const { data: user } = useSession()
@@ -15,7 +16,7 @@ const Header = () => {
 
   if (path === '/mypage') {
     return (
-      <header className=' bg-black p-2 flex items-center justify-between border-solid border-b-2'>
+      <header className=' bg-primary-black p-2 flex items-center justify-between border-solid border-b-2'>
         <nav>
           <Link href='/'>
             <p className='text-white'>V-UP</p>
@@ -23,17 +24,17 @@ const Header = () => {
         </nav>
         <nav className='flex justify-between'>
           <Link href='/community'>
-            <Image src={commu} alt='' />
+            <Image src={commu} alt='커뮤니티 아이콘' />
           </Link>
           {!user ? (
             <Link href='/join'>
-              <Image src={commu} alt='' />
+              <Image src={commu} alt='커뮤니티 아이콘' />
             </Link>
           ) : (
             <>
               {' '}
               <Link href='/mypage'>
-                <Image src={people} alt='' />
+                <Image src={people} alt='마이페이지 아이콘' />
               </Link>
               <LogOutButton />
             </>
@@ -47,10 +48,13 @@ const Header = () => {
     path === '/personal-music'
   ) {
     return (
-      <header className='p-2 flex justify-center border-solid border-b-2'>
-        <nav>
+      <header className='bg-primary-black p-2  border-solid border-b-2'>
+        <nav className='flex flex-row'>
+          <Link href='/' className='basis-1/2'>
+            <Image src={back} alt='뒤로가기 아이콘' />
+          </Link>
           <Link href='/'>
-            <p>V-UP</p>
+            <p className='text-primary-white'>V-UP</p>
           </Link>
         </nav>
       </header>
@@ -60,7 +64,7 @@ const Header = () => {
       <header className='  bg-black p-2 flex items-center justify-between border-solid border-b-2'>
         <nav>
           <Link href='/'>
-            <p className='text-white'>V-UP</p>
+            <p className='text-primary-white'>V-UP</p>
           </Link>
         </nav>
         <nav>
