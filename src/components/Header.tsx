@@ -11,12 +11,15 @@ import people from '@/../public/images/mypageIcon.svg'
 import back from '@/../public/images/backButton.svg'
 
 const Header = () => {
-  const { data: user } = useSession()
+  const { data: user, status } = useSession()
   const path = usePathname()
+  const check = status === 'authenticated' && !['/login', 'join'].includes(path)
 
   if (path === '/mypage') {
     return (
-      <header className=' bg-primary-black p-2 flex items-center justify-between border-solid border-b-2'>
+      <header
+        className={`flex items-center justify-between border-b-2 border-solid py-4 ${check ? 'pl-[5rem]' : 'pl-[2.5rem]'}`}
+      >
         <nav>
           <Link href='/'>
             <p className='text-white'>V-UP</p>
@@ -48,7 +51,7 @@ const Header = () => {
     path === '/personal-music'
   ) {
     return (
-      <header className='bg-primary-black p-2  border-solid border-b-2'>
+      <header className='border-b-2  border-solid px-[2.5rem] py-4'>
         <nav className='flex flex-row'>
           <Link href='/' className='basis-1/2'>
             <Image src={back} alt='뒤로가기 아이콘' />
@@ -61,7 +64,9 @@ const Header = () => {
     )
   } else {
     return (
-      <header className='  bg-black p-2 flex items-center justify-between border-solid border-b-2'>
+      <header
+        className={`flex items-center justify-between border-b-2 border-solid py-4 ${check ? 'pl-[5rem]' : 'pl-[2.5rem]'} pr-[2.5rem]`}
+      >
         <nav>
           <Link href='/'>
             <p className='text-primary-white'>V-UP</p>
