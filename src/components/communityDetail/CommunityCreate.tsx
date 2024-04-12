@@ -1,6 +1,6 @@
 'use client'
 
-import React, { FormEvent, MouseEvent } from 'react'
+import React, { FormEvent } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import MusicSearch from '../search/MusicSearch'
