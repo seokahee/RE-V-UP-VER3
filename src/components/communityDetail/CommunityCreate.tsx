@@ -138,12 +138,21 @@ const CommunityCreate = () => {
       </article>
       <article>
         <div>
-          <Image
-            src={thumbnail || defaultImg}
-            alt='노래앨범이미지'
-            width={80}
-            height={80}
-          />
+          {thumbnail ? (
+            <Image
+              src={`${thumbnail}`}
+              alt='노래앨범이미지'
+              width={80}
+              height={80}
+            />
+          ) : (
+            <Image
+              src={`${defaultImg}`}
+              alt='노래앨범이미지'
+              width={80}
+              height={80}
+            />
+          )}
         </div>
         <section className='flex gap-[16px] [&_div]:flex [&_div]:gap-[16px]'>
           <div>
