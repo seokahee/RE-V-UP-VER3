@@ -75,12 +75,16 @@ const Login = () => {
   }
 
   if (status === 'loading') {
-    return <div>로딩주우우웅</div>
+    return (
+      <div className='h-[full] min-h-screen w-[full] bg-black text-white '>
+        로딩주우우웅
+      </div>
+    )
   }
 
   return (
-    // <div className='flex min-h-screen flex-col items-center justify-center bg-black text-white'>
     <div className='flex min-h-screen flex-col items-center justify-center bg-black text-white'>
+      {/* // <div className='absolute left-1/2 top-[40%] flex min-h-[full] flex-col items-center bg-black text-white'> */}
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
         <div className='z-1500 text-black'>
           <div>비밀번호 찾기</div>
@@ -94,7 +98,7 @@ const Login = () => {
           </button>
         </div>
       </Modal>
-      <section className='w-516 translate-y-auto border-gray-100 absolute left-1/2 -translate-x-1/2 transform rounded-2xl border border-opacity-10 bg-white bg-opacity-10 shadow-lg'>
+      <section className='w-516 translate-y-auto border-gray-100 absolute left-1/2 mt-0 -translate-x-1/2 transform rounded-2xl border border-opacity-10 bg-white bg-opacity-10 shadow-lg'>
         <div>
           <p>V-UP에 오신 걸 환영합니다</p>
         </div>
@@ -111,7 +115,7 @@ const Login = () => {
                     value={email}
                     onChange={onChangeHandler}
                     placeholder='이메일을 입력하세요'
-                    className='w-320 flex items-center gap-2 rounded-lg border-2 border-white border-opacity-10 bg-white bg-opacity-10 shadow-md'
+                    className='w-320 flex items-center gap-2 rounded-lg border-2 border-white border-opacity-10 bg-white bg-opacity-10 caret-primary shadow-md'
                   />
                 </label>
               </div>
