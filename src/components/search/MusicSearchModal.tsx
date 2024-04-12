@@ -13,6 +13,7 @@ const MusicSearchModal = ({
   isModal: boolean
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
+  //  const [giveS]
   const [musicList, setMusicList] = useState<MusicInfoType[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const { form: keywordInput, onChange } = useInput({
@@ -45,13 +46,13 @@ const MusicSearchModal = ({
     getMusicData(keyword)
   }
 
-
-
   const { currentItems, nextPage, prevPage, totalPages } = modalPaging(
     musicList,
     currentPage,
     setCurrentPage,
   )
+
+  const onAddViewMusicHandler = () => {}
 
   return (
     <div className='fixed w-full h-screen inset-0 flex flex-col justify-center items-center z-50 bg-black bg-opacity-50'>
@@ -70,21 +71,28 @@ const MusicSearchModal = ({
           </button>
           <button onClick={() => setIsModal(false)}>닫기</button>
         </form>
-        <div className='overflow-y-scroll scrollbar-hide'>
-          {currentItems.map((item: any) => {
-            return <ModalMusicData key={item.musicId} item={item} />
-          })}
-        </div>
+        <div className='flex flex-col gap-[77px]border-[1px] border-solid border-[#685BFF]'>
+          <div className='flex flex-col gap-[12px] overflow-y-scroll scrollbar-hide p-[40px]'>
+            {currentItems.map((item: any, index: number) => {
+              return (
+                <ModalMusicData key={item.musicId} item={item} index={index} />
+              )
+            })}
+          </div>
 
-        {currentItems && currentItems.length > 0 ? (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            prevPage={prevPage}
-            nextPage={nextPage}
-            setCurrentPage={setCurrentPage}
-          />
-        ) : null}
+          {currentItems && currentItems.length > 0 ? (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              prevPage={prevPage}
+              nextPage={nextPage}
+              setCurrentPage={setCurrentPage}
+            />
+          ) : null}
+        </div>
+        <div>
+          <button onClick={onAddViewMusicHandler}>등록</button>
+        </div>
       </div>
     </div>
   )

@@ -10,14 +10,21 @@ type MusicSearchedKeywordStore = {
     editBoardTitle: string
     editContent: string
   }
-  item: Partial<MusicInfoType>
+  chooseMusic: Partial<MusicInfoType> | null
+  isChooseMusic: boolean
+  selectedCardIndex: number | null
   setMusicSearchKeyword: (keyword: string) => void
   setBoardContents: (boardTitle: string, content: string) => void
-  setChooseMusics: (item: Partial<MusicInfoType>) => void
+  setChooseMusic: (item: Partial<MusicInfoType> | null) => void
+  setIsChooseMusic: (click: boolean) => void
+  setSelectedCardIndex: (index: number | null) => void
 }
 // 크리에이트 함수의 반환값도 타입을 지정해줘야한다 지정하지 않을 경우, initialState의 타입으로 추론해버림 그래서 외부에서searched함수를 사용할 수 없음
 
 const initialState = {
+  chooseMusic: null,
+  isChooseMusic: false,
+  selectedCardIndex: null,
   musicSearchKeyword: {
     keyword: '',
   },
@@ -25,7 +32,6 @@ const initialState = {
     editBoardTitle: '',
     editContent: '',
   },
-  item: {},
 }
 
 export const useMusicSearchedStore = create(
@@ -36,8 +42,12 @@ export const useMusicSearchedStore = create(
         set({ musicSearchKeyword: { keyword } }),
       setBoardContents: (editBoardTitle: string, editContent: string) =>
         set({ editValue: { editBoardTitle, editContent } }),
-      setChooseMusics: (item: Partial<MusicInfoType>) =>
-        set({ item: { ...item } }),
+      setChooseMusic: (chooseMusic: Partial<MusicInfoType> | null) =>
+        set((initialState) => ({ ...initialState, chooseMusic })),
+      setIsChooseMusic: (click: boolean) =>
+        set((initialState) => ({ ...initialState, isChooseMusic: click })),
+      setSelectedCardIndex: (index: number | null) =>
+        set((initialState) => ({ ...initialState, selectedCardIndex: index })),
     }),
     {
       name: 'CreateMusicStore',
