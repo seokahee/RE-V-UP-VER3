@@ -83,9 +83,7 @@ const MusicSearchModal = ({
             value={keyword}
             ref={keywordRef}
             onChange={onChange}
-            onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) =>
-              handleKeyUp(e)
-            }
+            onKeyUp={(e) => handleKeyUp(e)}
             className='border  border-black'
           />
           <button type='submit' className='m-3'>
