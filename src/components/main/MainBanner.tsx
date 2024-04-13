@@ -1,21 +1,10 @@
 'use client'
 
-import { getBannerData } from '@/shared/main/api'
-import { useQuery } from '@tanstack/react-query'
-import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import React, { useState } from 'react'
 
 const MainBanner = () => {
-  const { data: userSessionInfo } = useSession()
-  const uid = userSessionInfo?.user?.uid as string
   const [slide, setSlide] = useState(0)
-
-  const { data, isLoading, isError } = useQuery({
-    queryFn: () => getBannerData(uid),
-    queryKey: ['mainBanner', uid],
-    enabled: !!uid,
-  })
 
   const onClickPrevHandler = () => {
     setSlide((prev) => prev - 1)
@@ -25,66 +14,44 @@ const MainBanner = () => {
     setSlide((prev) => prev + 1)
   }
 
-  if (isError) {
-    return '에러 발생!!'
-  }
-
-  if (isLoading) {
-    return '로딩중'
-  }
+  const bannerArray = [
+    {
+      id: 1,
+      src: 'https://hxavgjouatzlrjtjgrth.supabase.co/storage/v1/object/public/adBanner/ban1.png?t=2024-04-13T17%3A12%3A29.024Z',
+    },
+    {
+      id: 2,
+      src: 'https://hxavgjouatzlrjtjgrth.supabase.co/storage/v1/object/public/adBanner/ban2.png',
+    },
+  ]
 
   return (
-    <div>
-      {data && data?.[0]?.imageUrl.length > 0 ? (
-        <div className='relative m-4'>
-          <ul className={`flex overflow-hidden transition-all`}>
-            {data?.[0].imageUrl.map((item, idx) => {
-              const splitUrl = item.split('/')
-
-              return (
-                <li
-                  key={splitUrl[splitUrl.length - 1]}
-                  className={`w-full [&_img]:w-full [&_img]:h-auto transition-opacity ${slide === idx ? 'block' : 'hidden'}`}
-                >
-                  <Image
-                    src={item}
-                    width={1600}
-                    height={300}
-                    alt={`배너 이미지 ${idx}`}
-                  />
-                </li>
-              )
-            })}
-          </ul>
-          <div>
-            <button
-              type='button'
-              className={`absolute left-0 top-1/2 -translate-y-1/2 ${slide === 0 ? 'hidden' : 'block'}`}
-              onClick={onClickPrevHandler}
+    <div className='relative m-4'>
+      <ul className='flex overflow-hidden rounded-[2rem] transition-all'>
+        {bannerArray.map((item, idx) => {
+          return (
+            <li
+              key={item.id}
+              className={`w-full transition-opacity [&_img]:h-auto [&_img]:w-full ${slide === idx ? 'block' : 'hidden'}`}
             >
-              PREV
-            </button>
-            <button
-              type='button'
-              className={`absolute right-0 top-1/2 -translate-y-1/2 ${slide < data?.[0].imageUrl.length - 1 ? 'block' : 'hidden'}`}
-              onClick={onClickNextHandler}
-            >
-              NEXT
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div className='[&_img]:w-full [&_img]:h-auto'>
-          <Image
-            src={
-              'https://hxavgjouatzlrjtjgrth.supabase.co/storage/v1/object/public/adBanner/Group_286.png'
-            }
-            alt='배너 이미지'
-            width={1670}
-            height={254}
-          />
-        </div>
-      )}
+              <Image
+                src={item.src}
+                width={1600}
+                height={300}
+                alt={`배너 이미지 ${idx}`}
+              />
+            </li>
+          )
+        })}
+      </ul>
+      <div className='absolute bottom-6 right-6'>
+        <button type='button' className='' onClick={onClickPrevHandler}>
+          &lt;
+        </button>
+        <button type='button' className='' onClick={onClickNextHandler}>
+          &gt;
+        </button>
+      </div>
     </div>
   )
 }
