@@ -17,7 +17,6 @@ export const getCurrentMusicList = async (userId: string) => {
         .select('*')
         .in('musicId', musicIds)
         .order('musicTitle', { ascending: false })
-
       return musicInfo ?? []
     }
   }

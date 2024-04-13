@@ -31,13 +31,13 @@ const SearchedMusicData = () => {
   const insertCurrentMutation = useMutation({
     mutationFn: insertCurrentMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
+      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
     },
   })
   const updateCurrentMutation = useMutation({
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
+      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
     },
   })
 

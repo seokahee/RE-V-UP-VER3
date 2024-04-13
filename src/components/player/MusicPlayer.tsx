@@ -7,6 +7,7 @@ import {
   updateCurrentMusic,
   updateMyPlayMusic,
 } from '@/shared/musicPlayer/api'
+import { CurrentPlayListType } from '@/types/musicPlayer/types'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -14,7 +15,6 @@ import { useState } from 'react'
 import 'react-h5-audio-player/lib/styles.css'
 import CurrentMusicList from './CurrentMusicList'
 import Player from './Player'
-import { CurrentPlayListType } from '@/types/musicPlayer/types'
 
 const MusicPlayer = () => {
   const [musicIndex, setMusicIndex] = useState<number>(0)
@@ -42,6 +42,7 @@ const MusicPlayer = () => {
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
+      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
     },
   })
 
@@ -74,7 +75,6 @@ const MusicPlayer = () => {
       return !prev
     })
   }
-
   const onPreviousHandler = () => {
     if (!isRandom) {
       if (musicIndex === 0) {
@@ -109,16 +109,21 @@ const MusicPlayer = () => {
   }
 
   const onDeleteCurrentMusicHandler = async () => {
-    if (window.confirm('현재 재생 목록에서 선택 항목을 삭제하시겠습니까?')) {
+    if (checkedList.length === 0) {
+      alert('삭제할 노래를 선택해주세요')
+      return
+    }
+    if (window.confirm('선택 항목을 삭제하시겠습니까?')) {
       const currentMusicData = currentPlayList
         .filter((music) => !checkedList.includes(music.musicId))
         .map((music) => music.musicId)
       deleteMutation.mutate({ uid, currentMusicData })
+      setCheckedList([])
     }
   }
   const onInsertMyPlayListHandler = async () => {
     if (checkedList.length === 0) {
-      alert('노래를 선택해주세요')
+      alert('저장할 노래를 선택해주세요')
       return
     }
     if (uid === '' || !uid) {
@@ -153,18 +158,19 @@ const MusicPlayer = () => {
         }
       } else {
         insertMutation.mutate({ userId: uid, musicId: checkedList })
-        alert('마이플레이리스트에 추가 되었습니다..')
+        alert('마이플레이리스트에 추가 되었습니다.')
         setCheckedList([])
       }
     }
   }
+
   return (
     <div className='w-388'>
       <div>
         <div>
           <Player
-            currentPlayList={currentPlayList as CurrentPlayListType[]}
             musicIndex={musicIndex}
+            currentPlayList={currentPlayList as CurrentPlayListType[]}
             onPreviousHandler={onPreviousHandler}
             onNextTrackHandler={onNextTrackHandler}
           />
@@ -185,5 +191,4 @@ const MusicPlayer = () => {
     </div>
   )
 }
-
 export default MusicPlayer

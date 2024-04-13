@@ -49,6 +49,13 @@ export type SearchResultType = {
   }
 }
 
+export type PlayerProps = {
+  currentPlayList: CurrentPlayListType[]
+  musicIndex: number
+  onPreviousHandler: () => void
+  onNextTrackHandler: () => void
+}
+
 export type MusicListProps = {
   currentPlayList: CurrentPlayListType[]
   checkedList: string[]
@@ -58,11 +65,4 @@ export type MusicListProps = {
   onInsertMyPlayListHandler: () => void
   onRandomMusicHandler: () => void
   setMusicIndex: (index: number) => void
-}
-
-export type PlayerProps = {
-  currentPlayList: CurrentPlayListType[]
-  musicIndex: number
-  onPreviousHandler: () => void
-  onNextTrackHandler: () => void
 }

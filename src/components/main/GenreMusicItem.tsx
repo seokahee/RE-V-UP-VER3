@@ -28,17 +28,31 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
     enabled: !!uid,
   })
 
+  // const insertMutation = useMutation({
+  //   mutationFn: insertCurrentMusic,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
+  //   },
+  // })
+
+  // const updateMutation = useMutation({
+  //   mutationFn: updateCurrentMusic,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
+  //   },
+  // })
+
   const insertMutation = useMutation({
     mutationFn: insertCurrentMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
+      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
     },
   })
 
   const updateMutation = useMutation({
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
+      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
     },
   })
 
