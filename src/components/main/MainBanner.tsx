@@ -1,21 +1,10 @@
 'use client'
 
-import { getBannerData } from '@/shared/main/api'
-import { useQuery } from '@tanstack/react-query'
-import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import React, { useState } from 'react'
 
 const MainBanner = () => {
-  const { data: userSessionInfo } = useSession()
-  const uid = userSessionInfo?.user?.uid as string
   const [slide, setSlide] = useState(0)
-
-  const { data, isLoading, isError } = useQuery({
-    queryFn: () => getBannerData(uid),
-    queryKey: ['mainBanner', uid],
-    enabled: !!uid,
-  })
 
   const onClickPrevHandler = () => {
     setSlide((prev) => prev - 1)
@@ -25,66 +14,64 @@ const MainBanner = () => {
     setSlide((prev) => prev + 1)
   }
 
-  if (isError) {
-    return '에러 발생!!'
-  }
+  const bannerArray = [
+    {
+      id: 1,
+      src: 'https://hxavgjouatzlrjtjgrth.supabase.co/storage/v1/object/public/adBanner/1.png',
+    },
+    {
+      id: 2,
+      src: 'https://hxavgjouatzlrjtjgrth.supabase.co/storage/v1/object/public/adBanner/2.png',
+    },
+  ]
 
-  if (isLoading) {
-    return '로딩중'
-  }
+  const itemShadow =
+    'shadow-[0px_4px_1px_-1px_#00000033,0px_0px_0px_1px_#ffffff26,inset_0px_2px_0px_#ffffff1a,inset_0px_-1px_2px_#00000033,inset_0px_-4px_1px_#00000033,_4px_4px_3px_0px_#0000004c] drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)]'
 
   return (
-    <div>
-      {data && data?.[0]?.imageUrl.length > 0 ? (
-        <div className='relative m-4'>
-          <ul className={`flex overflow-hidden transition-all`}>
-            {data?.[0].imageUrl.map((item, idx) => {
-              const splitUrl = item.split('/')
-
-              return (
-                <li
-                  key={splitUrl[splitUrl.length - 1]}
-                  className={`w-full [&_img]:w-full [&_img]:h-auto transition-opacity ${slide === idx ? 'block' : 'hidden'}`}
-                >
-                  <Image
-                    src={item}
-                    width={1600}
-                    height={300}
-                    alt={`배너 이미지 ${idx}`}
-                  />
-                </li>
-              )
-            })}
-          </ul>
-          <div>
-            <button
-              type='button'
-              className={`absolute left-0 top-1/2 -translate-y-1/2 ${slide === 0 ? 'hidden' : 'block'}`}
-              onClick={onClickPrevHandler}
+    <div className='relative m-4'>
+      <ul
+        className={`flex overflow-hidden rounded-[2rem] border-4 border-black transition-all ${itemShadow}`}
+      >
+        {bannerArray.map((item, idx) => {
+          return (
+            <li
+              key={item.id}
+              className={`w-full transition-opacity [&_img]:h-auto [&_img]:w-full ${slide === idx ? 'block' : 'hidden'} `}
             >
-              PREV
-            </button>
-            <button
-              type='button'
-              className={`absolute right-0 top-1/2 -translate-y-1/2 ${slide < data?.[0].imageUrl.length - 1 ? 'block' : 'hidden'}`}
-              onClick={onClickNextHandler}
-            >
-              NEXT
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div className='[&_img]:w-full [&_img]:h-auto'>
-          <Image
-            src={
-              'https://hxavgjouatzlrjtjgrth.supabase.co/storage/v1/object/public/adBanner/Group_286.png'
-            }
-            alt='배너 이미지'
-            width={1670}
-            height={254}
-          />
-        </div>
-      )}
+              <Image
+                src={item.src}
+                width={732}
+                height={180}
+                alt={`배너 이미지 ${idx}`}
+              />
+            </li>
+          )
+        })}
+      </ul>
+      <div className='absolute bottom-6 right-6 min-w-[69px]  rounded-full bg-[#ffffffb2] px-[6px] py-[2px] text-center text-[12px] backdrop-blur-sm'>
+        <button
+          type='button'
+          className={`${slide === 0 ? '' : 'text-white'} px-[2px]`}
+          onClick={onClickPrevHandler}
+          disabled={slide === 0 ? true : false}
+        >
+          &lt;
+        </button>
+        <span className='px-[2px] font-bold text-white'>{slide + 1}</span>
+        <span className='px-[2px] text-white'>/</span>
+        <span className='px-[2px] font-bold text-[#ffffff7f]'>
+          {bannerArray.length}
+        </span>
+        <button
+          type='button'
+          className={`${slide < bannerArray.length - 1 ? '' : 'text-white'}  px-[2px]`}
+          onClick={onClickNextHandler}
+          disabled={slide < bannerArray.length - 1 ? false : true}
+        >
+          &gt;
+        </button>
+      </div>
     </div>
   )
 }
