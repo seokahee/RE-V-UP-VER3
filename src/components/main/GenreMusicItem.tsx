@@ -61,12 +61,12 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
   }
 
   const itemShadow =
-    'shadow-[0px_4px_1px_-1px_rgba(0,0,0,0.20),0px_4px_8px_0px_rgba(0,0,0,0.10),0px_2px_0px_0px_rgba(255,255,255,0.10)_inset,0px_0px_0px_1px_rgba(255,255,255,0.15),0px_-1px_2px_0px_rgba(0,0,0,0.20)_inset,0px_-4px_1px_0px_rgba(0,0,0,0.20)_inset]'
+    'shadow-[0px_4px_1px_-1px_#00000033,0px_4px_8px_#00000019,0px_0px_0px_1px_#ffffff19,inset_0px_2px_0px_#ffffff26,inset_0px_2px_0px_#00000019,inset_0px_-1px_2px_#00000033,inset_0px_-4px_1px_#00000033]'
 
   return (
     <li
       key={item.musicId}
-      className={`mr-6 w-[136px] list-none bg-modal-black p-2 ${itemShadow} rounded-[2rem] overflow-hidden`}
+      className={`mr-6 w-[136px] list-none bg-[#ffffff1a] ${itemShadow} overflow-hidden rounded-[2rem] border-4 border-[#0000001a] p-2 text-center`}
     >
       <div className='relative h-[120px] w-[120px] overflow-hidden rounded-full '>
         <figure>
@@ -86,7 +86,7 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
         </button>
       </div>
       <strong className='text-white'>{item.musicTitle}</strong>
-      <span>{item.artist}</span>
+      <p className='text-sm font-semibold text-[#ffffff4c]'>{item.artist}</p>
     </li>
   )
 }
