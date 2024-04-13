@@ -19,6 +19,8 @@ import Player from './Player'
 const MusicPlayer = () => {
   const [musicIndex, setMusicIndex] = useState<number>(0)
   const [checkedList, setCheckedList] = useState<string[]>([])
+  const [isLyrics, setIsLyrics] = useState(false)
+
   const [isRandom, setIsRandom] = useState(false)
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user.uid as string
@@ -66,6 +68,10 @@ const MusicPlayer = () => {
   if (isError) {
     console.error('현재 플레이리스트를 가져오지 못했습니다')
     return
+  }
+
+  const onLyricsToggle = () => {
+    setIsLyrics((prev) => !prev)
   }
 
   const randomIndex = Math.floor(Math.random() * currentPlayList.length)
@@ -169,19 +175,22 @@ const MusicPlayer = () => {
       <div>
         <div>
           <Player
+            isLyrics={isLyrics}
             musicIndex={musicIndex}
             currentPlayList={currentPlayList as CurrentPlayListType[]}
             onPreviousHandler={onPreviousHandler}
             onNextTrackHandler={onNextTrackHandler}
+            onLyricsToggle={onLyricsToggle}
+            onInsertMyPlayListHandler={onInsertMyPlayListHandler}
           />
         </div>
         <div>
           <CurrentMusicList
+            isLyrics={isLyrics}
             currentPlayList={currentPlayList as CurrentPlayListType[]}
             checkedList={checkedList}
             onChangeCheckMusicHandler={onChangeCheckMusicHandler}
             onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
-            onInsertMyPlayListHandler={onInsertMyPlayListHandler}
             onRandomMusicHandler={onRandomMusicHandler}
             isRandom={isRandom}
             setMusicIndex={setMusicIndex}
