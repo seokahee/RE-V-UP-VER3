@@ -29,9 +29,15 @@ const Container = ({
       )}
       <div className={`innerBox min-h-[100vh] w-[852px]`}>
         <Header />
-        <div className={`${check ? 'pl-[5rem]' : 'pl-[2.5rem]'}  pr-[2.5rem]`}>
-          {children}
-        </div>
+        {path !== '/' ? (
+          <div
+            className={`${check ? 'pl-[5rem]' : 'pl-[2.5rem]'}  pr-[2.5rem]`}
+          >
+            {children}
+          </div>
+        ) : (
+          <div>{children}</div>
+        )}
       </div>
     </div>
   )
