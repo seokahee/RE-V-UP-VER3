@@ -69,26 +69,3 @@ export type MusicListProps = {
   onRandomMusicHandler: () => void
   setMusicIndex: (index: number) => void
 }
-
-/* Frame 593 */
-
-// box-sizing: border-box;
-
-// /* Auto layout */
-// display: flex;
-// flex-direction: row;
-// justify-content: center;
-// align-items: center;
-// padding: 8px;
-// gap: 8px;
-
-// position: absolute;
-// width: 48px;
-// height: 48px;
-// left: 24px;
-// top: 454px;
-
-// background: #292929;
-// border: 2px solid rgba(0, 0, 0, 0.7);
-// box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.2), 0px 2px 4px rgba(255, 255, 255, 0.1), inset 0px -4px 4px rgba(255, 255, 255, 0.1), inset 0px 3px 1px rgba(255, 255, 255, 0.1), inset 0px 4px 4px rgba(255, 255, 255, 0.2);
-// border-radius: 100px;

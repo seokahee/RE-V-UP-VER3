@@ -2,11 +2,16 @@ import musicLyricsButton from '@/../public/images/musicLyricsButton.svg'
 import musicThumbnail from '@/../public/images/musicThumbnail.svg'
 import musicList from '@/../public/images/musicList.svg'
 import myPlayListButton from '@/../public/images/myPlayListButton.svg'
+import playerPreviousButton from '@/../public/images/playerPreviousButton.svg'
+import playerNextButton from '@/../public/images/playerNextButton.svg'
+import playerPlayButton from '@/../public/images/playerPlayButton.svg'
+import playerPauseButton from '@/../public/images/playerPauseButton.svg'
 import { PlayerProps } from '@/types/musicPlayer/types'
 import Image from 'next/image'
 import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
-
+import './AudioCss.css'
+import { useRef, useState } from 'react'
 const Player = ({
   isLyrics,
   currentPlayList,
@@ -16,8 +21,16 @@ const Player = ({
   onLyricsToggle,
   onInsertMyPlayListHandler,
 }: PlayerProps) => {
+  const [isPlaying, setIsPlaying] = useState(false)
   const isPlay = currentPlayList?.length > 0
+  const audioRef = useRef(null)
 
+  const onPlayHandler = () => {
+    // if (isPlaying && isPlay && audioRef.current) {
+    //   audioRef.current.onPlay()
+    //   setIsPlaying(!isPlaying)
+    // }
+  }
   return (
     <div>
       {isPlay && (
@@ -38,7 +51,6 @@ const Player = ({
                 alt='Album Circle'
                 width={300}
                 height={300}
-                className=''
               />
             </div>
             <div className='absolute left-[41px] top-[41px] h-[200px] w-[200px] '>
@@ -55,7 +67,16 @@ const Player = ({
             <div className='flex w-[316px] justify-between'>
               <button onClick={onLyricsToggle}>
                 {isLyrics ? (
-                  <Image src={musicList} alt='Lyrics' width={48} height={48} />
+                  <div>
+                    <Image
+                      src={musicList}
+                      alt='Lyrics'
+                      width={48}
+                      height={48}
+                    />
+
+                    <div>{currentPlayList[musicIndex].lyrics}</div>
+                  </div>
                 ) : (
                   <Image
                     src={musicLyricsButton}
@@ -65,7 +86,6 @@ const Player = ({
                   />
                 )}
               </button>
-              {isLyrics && <div>{currentPlayList[musicIndex].lyrics}</div>}
               <button type='button' onClick={onInsertMyPlayListHandler}>
                 <Image
                   src={myPlayListButton}
@@ -78,18 +98,36 @@ const Player = ({
           </div>
         </div>
       )}
-
       <AudioPlayer
+        ref={audioRef}
         autoPlay={false}
         loop={false}
-        // 볼륨 나중에 0.5로 변경할것!, 테스트중으로 자동 재생설정함
         volume={0.1}
-        showSkipControls={true}
-        onClickPrevious={onPreviousHandler}
-        onClickNext={onNextTrackHandler}
         src={isPlay ? currentPlayList[musicIndex].musicSource : ''}
         onEnded={onNextTrackHandler}
       />
+      이전곡 버튼
+      <button onClick={onPreviousHandler}>
+        <Image
+          src={playerPreviousButton}
+          alt='Previous'
+          width={48}
+          height={48}
+        />
+      </button>
+      {/* 재생버튼 */}
+      <button onClick={onPlayHandler}>
+        <Image
+          src={isPlaying ? playerPauseButton : playerPlayButton}
+          alt={isPlaying ? 'Pause' : 'Play'}
+          width={48}
+          height={48}
+        />
+      </button>
+      {/* 다음곡 버튼 */}
+      <button onClick={onNextTrackHandler}>
+        <Image src={playerNextButton} alt='Next' width={48} height={48} />
+      </button>
     </div>
   )
 }
