@@ -1,14 +1,13 @@
 'use client'
 import { queryClient } from '@/app/provider'
+import { getMusicList } from '@/query/musicPlayer/musicPlayerQueryKey'
 import {
-  getCurrentMusicList,
-  getMyMusicList,
   insertMyPlayMusic,
   updateCurrentMusic,
   updateMyPlayMusic,
 } from '@/shared/musicPlayer/api'
 import { CurrentPlayListType } from '@/types/musicPlayer/types'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -20,25 +19,12 @@ const MusicPlayer = () => {
   const [musicIndex, setMusicIndex] = useState<number>(0)
   const [checkedList, setCheckedList] = useState<string[]>([])
   const [isLyrics, setIsLyrics] = useState(false)
-
   const [isRandom, setIsRandom] = useState(false)
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user.uid as string
   const router = useRouter()
 
-  const { data: currentPlayList, isError } = useQuery({
-    queryFn: ({ queryKey }) => {
-      return getCurrentMusicList(queryKey[1])
-    },
-    queryKey: ['getCurrentMusicList', uid],
-  })
-
-  const { data: myPlayList } = useQuery({
-    queryFn: ({ queryKey }) => {
-      return getMyMusicList(queryKey[1])
-    },
-    queryKey: ['getMyMusicList', uid],
-  })
+  const { currentPlayList, myPlayList, isError } = getMusicList(uid)
 
   const deleteMutation = useMutation({
     mutationFn: updateCurrentMusic,
@@ -51,14 +37,14 @@ const MusicPlayer = () => {
   const insertMutation = useMutation({
     mutationFn: insertMyPlayMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getMyMusicList'] })
+      queryClient.invalidateQueries({ queryKey: ['myMusicIds'] })
     },
   })
 
   const updateMutation = useMutation({
     mutationFn: updateMyPlayMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getMyMusicList'] })
+      queryClient.invalidateQueries({ queryKey: ['myMusicIds'] })
     },
   })
 
