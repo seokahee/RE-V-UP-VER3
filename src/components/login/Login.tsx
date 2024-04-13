@@ -88,7 +88,7 @@ const Login = () => {
     // <div className='border-gray-300 absolute left-1/2 top-1/2 flex flex-col items-center justify-center rounded-lg border  p-6 text-white shadow-lg'>
     // <div className='border-gray-300 absolute left-1/2 top-1/2 flex flex-col items-center justify-center rounded-lg border  p-6 text-white shadow-lg'>
     <div
-      className={`border-gray-300 absolute left-1/2 top-1/2 flex w-[516px] flex-col items-center justify-center rounded-2xl border border-opacity-10 bg-white bg-opacity-10 ${shadow}`}
+      className={`border-gray-300 absolute left-1/2 top-1/2 flex w-[516px] flex-col items-center justify-center rounded-2xl border border-none border-opacity-10 bg-white bg-opacity-10 ${shadow}`}
     >
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
         <div className='z-1500 text-black'>
@@ -104,7 +104,7 @@ const Login = () => {
         </div>
       </Modal>
       <section>
-        <div>
+        <div className='text-[24px] font-bold'>
           <p>V-UP에 오신 걸 환영합니다</p>
         </div>
         <div>
