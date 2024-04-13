@@ -81,9 +81,15 @@ const Login = () => {
       </div>
     )
   }
-
+  const shadow =
+    'shadow-[0px_1px_2px_0px_rgba(255,255,255,0.20)_inset,_0px_4px_4px_0px_rgba(0,0,0,0.20),_0px_0px_0px_1px_rgba(0,0,0,0.10),_0px_0px_0px_4px_rgba(0,0,0,0.10),0px_0px_0px_3px_rgba(255,255,255,0.20),_0px_4px_1px_0px_rgba(255,255,255,0.20)_inset,_0px_-4px_1px_0px_rgba(0,0,0,0.10)_inset]'
   return (
-    <div className='absolute left-1/2 top-1/2 flex flex-col items-center justify-center bg-black text-white'>
+    // <div className='border-gray-300 absolute left-1/2 top-1/2 flex flex-col items-center justify-center rounded-lg border  p-6 text-white '>
+    // <div className='border-gray-300 absolute left-1/2 top-1/2 flex flex-col items-center justify-center rounded-lg border  p-6 text-white shadow-lg'>
+    // <div className='border-gray-300 absolute left-1/2 top-1/2 flex flex-col items-center justify-center rounded-lg border  p-6 text-white shadow-lg'>
+    <div
+      className={`border-gray-300 absolute left-1/2 top-1/2 flex w-[516px] flex-col items-center justify-center rounded-2xl border border-opacity-10 bg-white bg-opacity-10 ${shadow}`}
+    >
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
         <div className='z-1500 text-black'>
           <div>비밀번호 찾기</div>
@@ -97,12 +103,15 @@ const Login = () => {
           </button>
         </div>
       </Modal>
-      <section className='w-516 translate-y-auto border-gray-100 absolute left-1/2 mt-0 -translate-x-1/2 transform rounded-2xl border border-opacity-10 bg-white bg-opacity-10 shadow-lg'>
+      <section>
         <div>
           <p>V-UP에 오신 걸 환영합니다</p>
         </div>
         <div>
-          <form onSubmit={onLoginHandler} className='flex flex-col gap-[32px]'>
+          <form
+            onSubmit={onLoginHandler}
+            className='flex w-[320px] flex-col gap-[32px]'
+          >
             <div className='flex flex-col gap-[16px]'>
               <div>
                 <label htmlFor='email' className='flex flex-col '>
@@ -114,7 +123,7 @@ const Login = () => {
                     value={email}
                     onChange={onChangeHandler}
                     placeholder='이메일을 입력하세요'
-                    className='w-320 flex items-center gap-2 rounded-lg border-2 border-white border-opacity-10 bg-white bg-opacity-10 p-[] caret-primary shadow-md'
+                    className='flex items-center gap-2 rounded-lg border-2 border-white border-opacity-10 bg-white bg-opacity-10 p-[] px-[12px] py-[13px] caret-primary shadow-md'
                   />
                 </label>
               </div>
@@ -128,7 +137,7 @@ const Login = () => {
                     value={password}
                     onChange={onChangeHandler}
                     placeholder='비밀번호를 입력하세요'
-                    className='w-320 flex items-center gap-2 rounded-lg border-2 border-white border-opacity-10 bg-white bg-opacity-10 shadow-md'
+                    className='flex items-center gap-2 rounded-lg border-2 border-white border-opacity-10 bg-white bg-opacity-10 shadow-md'
                   />
                 </label>
               </div>

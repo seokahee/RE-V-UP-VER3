@@ -49,7 +49,7 @@ const CommunityContents = () => {
     musicInfo,
   } = readDetailData || ({} as readCommuDetail)
   const { nickname, userImage, userId } = userInfo || {}
-  const { musicTitle, artist, thumbnail } = musicInfo || {}
+  const { musicTitle, artist, thumbnail, runTime } = musicInfo || {}
 
   const {
     form: editForm,
@@ -212,6 +212,7 @@ const CommunityContents = () => {
           <div>
             <div>{musicTitle}</div>
             <div>{artist}</div>
+            <div>{runTime}</div>
             <div>
               <button onClick={(e) => onAddPlayerHandler(e, uid, musicId)}>
                 플레이어에 음악추가
