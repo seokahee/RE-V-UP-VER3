@@ -62,12 +62,12 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
   }
 
   const itemShadow =
-    'shadow-[0px_4px_1px_-1px_#00000033,0px_4px_8px_#00000019,0px_0px_0px_1px_#ffffff19,inset_0px_2px_0px_#ffffff26,inset_0px_2px_0px_#00000019,inset_0px_-1px_2px_#00000033,inset_0px_-4px_1px_#00000033]'
+    'shadow-[0px_4px_1px_-1px_#00000033,0px_4px_8px_#00000019,0px_0px_0px_1px_#ffffff19,inset_0px_-1px_2px_#00000033]'
 
   return (
     <li
       key={item.musicId}
-      className={`mr-6 w-[144px] list-none bg-[#ffffff1a] ${itemShadow} overflow-hidden rounded-[2rem] border-4 border-[#0000001a] p-2 text-center`}
+      className={`mr-6 w-[144px] list-none bg-[#ffffff19] ${itemShadow} overflow-hidden rounded-[2rem] border-4 border-[#00000070] p-2 text-center`}
     >
       <div>
         <div className='group relative h-[120px] w-[120px] overflow-hidden rounded-full border-2 border-[#ffffff19] [&_img]:h-auto [&_img]:w-full'>
