@@ -6,6 +6,7 @@ import React, { useState } from 'react'
 import GenreMusicItem from './GenreMusicItem'
 import SlideButton from './SlideButton'
 import SectionTitle from './SectionTitle'
+import { useSession } from 'next-auth/react'
 
 const RecommendationMusicList = ({
   musicPreferenceData,
@@ -13,6 +14,9 @@ const RecommendationMusicList = ({
   musicPreferenceData: number[]
 }) => {
   const [position, setPosition] = useState(0)
+  const session = useSession()
+
+  const check = session.status === 'authenticated'
 
   const MOVE_POINT = 136 + 24 //임시값 - 슬라이드로 이동할 값
 
@@ -34,7 +38,7 @@ const RecommendationMusicList = ({
   }
 
   return (
-    <section className='my-8'>
+    <section className={` ${!check ? 'pl-10' : 'pl-20'} my-8`}>
       <SectionTitle>이런 음악은 어떠신가요?🎶</SectionTitle>
       <div className='relative flex overflow-hidden'>
         <ul

@@ -10,9 +10,13 @@ import next from '@/../public/images/next.svg'
 import prev from '@/../public/images/prev.svg'
 import heart from '@/../public/images/heart-rounded-gray.svg'
 import message from '@/../public/images/message-text-square-02-gray.svg'
+import { useSession } from 'next-auth/react'
 
 const TopLikedBoard = () => {
   const [position, setPosition] = useState(0)
+  const session = useSession()
+
+  const check = session.status === 'authenticated'
 
   const MOVE_POINT = 354 + 16 //임시값 - 슬라이드로 이동할 값
 
@@ -46,7 +50,7 @@ const TopLikedBoard = () => {
   }
 
   return (
-    <section className='mb-[7.8rem] mt-12'>
+    <section className={`${!check ? 'pl-10' : 'pl-20'} mb-[7.8rem] mt-12`}>
       <SectionTitle>지금 핫한 게시글 🔥</SectionTitle>
       <div className='relative flex overflow-hidden'>
         <ul

@@ -1,10 +1,14 @@
 'use client'
 
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import React, { useState } from 'react'
 
 const MainBanner = () => {
   const [slide, setSlide] = useState(0)
+  const session = useSession()
+
+  const check = session.status === 'authenticated'
 
   const onClickPrevHandler = () => {
     setSlide((prev) => prev - 1)
@@ -29,7 +33,7 @@ const MainBanner = () => {
     'shadow-[0px_4px_1px_-1px_#00000033,0px_0px_0px_1px_#ffffff26,inset_0px_2px_0px_#ffffff1a,inset_0px_-1px_2px_#00000033,inset_0px_-4px_1px_#00000033,_4px_4px_3px_0px_#0000004c] drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)]'
 
   return (
-    <div className='relative m-4'>
+    <section className={`${!check ? 'pl-10' : 'pl-20'} relative  mr-10`}>
       <ul
         className={`flex overflow-hidden rounded-[2rem] border-4 border-black transition-all ${itemShadow}`}
       >
@@ -72,7 +76,7 @@ const MainBanner = () => {
           &gt;
         </button>
       </div>
-    </div>
+    </section>
   )
 }
 
