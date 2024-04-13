@@ -31,7 +31,6 @@ const Player = ({
     //   setIsPlaying(!isPlaying)
     // }
   }
-  // 생각해보자 내가 이걸 오ㅑ 만들고있냐
   return (
     <div>
       {isPlay && (
@@ -99,22 +98,15 @@ const Player = ({
           </div>
         </div>
       )}
-
-      {/* <AudioPlayer
+      <AudioPlayer
         ref={audioRef}
         autoPlay={false}
         loop={false}
         volume={0.1}
         src={isPlay ? currentPlayList[musicIndex].musicSource : ''}
         onEnded={onNextTrackHandler}
-      /> */}
-      <AudioPlayer
-        ref={audioRef}
-        src={isPlay ? currentPlayList[musicIndex].musicSource : ''}
-        autoPlay={false}
-        onPlay={onPlayHandler}
       />
-      {/* 이전곡 버튼 */}
+      이전곡 버튼
       <button onClick={onPreviousHandler}>
         <Image
           src={playerPreviousButton}
@@ -123,7 +115,6 @@ const Player = ({
           height={48}
         />
       </button>
-
       {/* 재생버튼 */}
       <button onClick={onPlayHandler}>
         <Image
@@ -133,7 +124,6 @@ const Player = ({
           height={48}
         />
       </button>
-
       {/* 다음곡 버튼 */}
       <button onClick={onNextTrackHandler}>
         <Image src={playerNextButton} alt='Next' width={48} height={48} />
