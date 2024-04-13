@@ -66,7 +66,7 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
   return (
     <li
       key={item.musicId}
-      className={`mr-6 w-[136px] list-none bg-modal-black p-2 ${itemShadow} rounded-[2rem] overflow-hidden`}
+      className={`mr-6 w-[136px] list-none bg-modal-black p-2 ${itemShadow} overflow-hidden rounded-[2rem]`}
     >
       <div className='relative h-[120px] w-[120px] overflow-hidden rounded-full '>
         <figure>

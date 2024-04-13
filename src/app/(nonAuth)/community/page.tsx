@@ -47,7 +47,7 @@ const Community = () => {
   return (
     <div>
       <Link href='/communitycreate'>글 등록하기</Link>
-      <div className='flex gap-2 m-10'>
+      <div className='m-10 flex gap-2'>
         <CommunityListSort isSort={isSort} setIsSort={setIsSort} />
       </div>
       {currentItems.map((item: any) => {

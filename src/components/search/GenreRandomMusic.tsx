@@ -2,9 +2,11 @@ import { getRandomMusicData } from '@/shared/main/api'
 import { useQuery } from '@tanstack/react-query'
 import React from 'react'
 import GenreMusicItem from '../main/GenreMusicItem'
+import { useSearchedKeywordStore } from '@/shared/store/searchStore'
 
 const GenreRandomMusic = () => {
-  //없을 때
+  const { searchedKeyword } = useSearchedKeywordStore()
+  const { keyword } = searchedKeyword
   const { data, isError, isLoading } = useQuery({
     queryFn: () => getRandomMusicData(),
     queryKey: ['mainGenreMusic'],
@@ -14,6 +16,7 @@ const GenreRandomMusic = () => {
   }
   return (
     <section className='p-4'>
+      {`'${keyword}'에 대한 검색결과가 없습니다.`}
       <h2>이런 음악은 어떠신가요? 🎶</h2>
       <div className='relative flex overflow-hidden'>
         {data?.map((item) => {

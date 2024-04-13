@@ -1,22 +1,22 @@
 'use client'
 
-import { MouseEvent, useState } from 'react'
-import { useSession } from 'next-auth/react'
-import { useParams, useRouter } from 'next/navigation'
-import { useQuery } from '@tanstack/react-query'
-import { readCommunityDetail } from '@/shared/communitydetail/detailApi'
-import { COMMUNITY_QUERY_KEY } from '@/query/communityDetail/communityQueryKey'
-import {
-  useCoummunityItem,
-  useCoummunityCreateItem,
-} from '@/query/communityDetail/communityMutation'
-import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
-import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
-import { getCurrentMusicData } from '@/shared/main/api'
-import { onDateTimeHandler } from '@/util/util'
 import useInput from '@/hooks/useInput'
-import LikeButton from './LikeButton'
+import {
+  useCoummunityCreateItem,
+  useCoummunityItem,
+} from '@/query/communityDetail/communityMutation'
+import { COMMUNITY_QUERY_KEY } from '@/query/communityDetail/communityQueryKey'
+import { readCommunityDetail } from '@/shared/communitydetail/detailApi'
+import { getCurrentMusicData } from '@/shared/main/api'
+import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
+import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
+import { onDateTimeHandler } from '@/util/util'
+import { useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
+import { useParams, useRouter } from 'next/navigation'
+import { MouseEvent, useState } from 'react'
+import LikeButton from './LikeButton'
 
 const CommunityContents = () => {
   const router = useRouter()
@@ -37,7 +37,7 @@ const CommunityContents = () => {
     queryFn: () => readCommunityDetail(id.toString()),
     queryKey: [COMMUNITY_QUERY_KEY.COMMUNITY_DETAIL],
   })
-
+  console.log('musicId', musicId)
   const {
     boardId,
     boardTitle,
