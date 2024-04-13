@@ -79,132 +79,129 @@ const PersonalSubTest = () => {
   }
   return (
     <div>
-      PersonalMusic
-      <div>
-        {!isResult ? (
-          <>
-            <div>
-              <label>
-                <input
-                  type='radio'
-                  name='gender'
-                  value='male'
-                  checked={gender === 'male'}
-                  onChange={onChangeHandler}
-                />
-                남자
-              </label>
-              <label>
-                <input
-                  type='radio'
-                  name='gender'
-                  value='female'
-                  checked={gender === 'female'}
-                  onChange={onChangeHandler}
-                />
-                여자
-              </label>
-            </div>
-            <div>
-              <label>
-                <input
-                  type='radio'
-                  name='EI'
-                  value='E'
-                  checked={EI === 'E'}
-                  onChange={onChangeHandler}
-                />
-                E
-              </label>
-              <label>
-                <input
-                  type='radio'
-                  name='EI'
-                  value='I'
-                  checked={EI === 'I'}
-                  onChange={onChangeHandler}
-                />
-                I
-              </label>
-            </div>
-            <div>
-              <label>
-                <input
-                  type='radio'
-                  name='SN'
-                  value='S'
-                  checked={SN === 'S'}
-                  onChange={onChangeHandler}
-                />
-                S
-              </label>
-              <label>
-                <input
-                  type='radio'
-                  name='SN'
-                  value='N'
-                  checked={SN === 'N'}
-                  onChange={onChangeHandler}
-                />
-                N
-              </label>
-            </div>
-            <div>
-              <label>
-                <input
-                  type='radio'
-                  name='TF'
-                  value='T'
-                  checked={TF === 'T'}
-                  onChange={onChangeHandler}
-                />
-                T
-              </label>
-              <label>
-                <input
-                  type='radio'
-                  name='TF'
-                  value='F'
-                  checked={TF === 'F'}
-                  onChange={onChangeHandler}
-                />
-                F
-              </label>
-            </div>
-            <div>
-              <label>
-                <input
-                  type='radio'
-                  name='PJ'
-                  value='P'
-                  checked={PJ === 'P'}
-                  onChange={onChangeHandler}
-                />
-                P
-              </label>
-              <label>
-                <input
-                  type='radio'
-                  name='PJ'
-                  value='J'
-                  checked={PJ === 'J'}
-                  onChange={onChangeHandler}
-                />
-                J
-              </label>
-            </div>
-            <p>{EI}</p>
-            <p>{SN}</p>
-            <p>{TF}</p>
-            <p>{PJ}</p>
-            <button onClick={onBackHandler}>이전</button>
-            <br />
-            <button onClick={onsubmitResultHandler}>결과보러가기</button>
-          </>
-        ) : (
-          <PersonalTestResult />
-        )}
-      </div>
+      {!isResult ? (
+        <>
+          <div>
+            <label>
+              <input
+                type='radio'
+                name='gender'
+                value='male'
+                checked={gender === 'male'}
+                onChange={onChangeHandler}
+              />
+              남자
+            </label>
+            <label>
+              <input
+                type='radio'
+                name='gender'
+                value='female'
+                checked={gender === 'female'}
+                onChange={onChangeHandler}
+              />
+              여자
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type='radio'
+                name='EI'
+                value='E'
+                checked={EI === 'E'}
+                onChange={onChangeHandler}
+              />
+              E
+            </label>
+            <label>
+              <input
+                type='radio'
+                name='EI'
+                value='I'
+                checked={EI === 'I'}
+                onChange={onChangeHandler}
+              />
+              I
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type='radio'
+                name='SN'
+                value='S'
+                checked={SN === 'S'}
+                onChange={onChangeHandler}
+              />
+              S
+            </label>
+            <label>
+              <input
+                type='radio'
+                name='SN'
+                value='N'
+                checked={SN === 'N'}
+                onChange={onChangeHandler}
+              />
+              N
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type='radio'
+                name='TF'
+                value='T'
+                checked={TF === 'T'}
+                onChange={onChangeHandler}
+              />
+              T
+            </label>
+            <label>
+              <input
+                type='radio'
+                name='TF'
+                value='F'
+                checked={TF === 'F'}
+                onChange={onChangeHandler}
+              />
+              F
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                type='radio'
+                name='PJ'
+                value='P'
+                checked={PJ === 'P'}
+                onChange={onChangeHandler}
+              />
+              P
+            </label>
+            <label>
+              <input
+                type='radio'
+                name='PJ'
+                value='J'
+                checked={PJ === 'J'}
+                onChange={onChangeHandler}
+              />
+              J
+            </label>
+          </div>
+          <p>{EI}</p>
+          <p>{SN}</p>
+          <p>{TF}</p>
+          <p>{PJ}</p>
+          <button onClick={onBackHandler}>이전</button>
+          <br />
+          <button onClick={onsubmitResultHandler}>결과보러가기</button>
+        </>
+      ) : (
+        <PersonalTestResult />
+      )}
     </div>
   )
 }
