@@ -76,14 +76,14 @@ const Login = () => {
 
   if (status === 'loading') {
     return (
-      <div className='h-[full] min-h-screen w-[full] bg-black text-white '>
+      <div className='h-[full]  w-[full] bg-black text-white '>
         로딩주우우웅
       </div>
     )
   }
 
   return (
-    <div className='flex min-h-screen flex-col items-center justify-center bg-black text-white'>
+    <div className='absolute left-1/2 top-1/2 flex flex-col items-center justify-center bg-black text-white'>
       {/* // <div className='absolute left-1/2 top-[40%] flex min-h-[full] flex-col items-center bg-black text-white'> */}
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
         <div className='z-1500 text-black'>
@@ -115,7 +115,7 @@ const Login = () => {
                     value={email}
                     onChange={onChangeHandler}
                     placeholder='이메일을 입력하세요'
-                    className='w-320 flex items-center gap-2 rounded-lg border-2 border-white border-opacity-10 bg-white bg-opacity-10 caret-primary shadow-md'
+                    className='w-320 flex items-center gap-2 rounded-lg border-2 border-white border-opacity-10 bg-white bg-opacity-10 p-[] caret-primary shadow-md'
                   />
                 </label>
               </div>

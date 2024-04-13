@@ -19,7 +19,8 @@ const CommunityCreate = () => {
   const musicTitle = chooseMusic?.musicTitle
   const artist = chooseMusic?.artist
   const thumbnail = chooseMusic?.thumbnail
-
+  console.log(musicId)
+  console.log(chooseMusic)
   const {
     form: communityForm,
     onChange: onChangeHandler,

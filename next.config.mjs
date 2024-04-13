@@ -3,9 +3,9 @@ const nextConfig = {
   reactStrickMode: true,
   webpack5: true,
   webpack: (config, options) => {
-    config.cache = false;
-    return config;
-   },
+    config.cache = false
+    return config
+  },
   images: {
     remotePatterns: [
       {

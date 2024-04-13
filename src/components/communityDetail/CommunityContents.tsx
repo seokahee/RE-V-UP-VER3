@@ -102,7 +102,7 @@ const CommunityContents = () => {
     setIsEdit(false)
     router.back()
   }
-
+  console.log(musicId)
   const onAddPlayerHandler = (
     e: MouseEvent,
     userId: string,
@@ -126,6 +126,7 @@ const CommunityContents = () => {
       currentList.push(musicId)
       updateMutation.mutate({ userId: uid, currentList })
     } else {
+      console.log(musicId)
       insertMutation.mutate({ userId: uid, musicId })
     }
     alert('현재 재생목록에 추가 되었습니다.')

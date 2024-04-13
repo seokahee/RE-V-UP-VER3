@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background: linear-gradient(311deg, #313131 12.68%, #7d7d7d 90.05%);
+  color: white;
+}
+.innerBox {
+  border-radius: 32px;
+  border: 8px solid #000;
+  background: linear-gradient(146deg, #333 1.38%, #131313 97.43%);
+  box-shadow: 8px 0px 16px 0px rgba(0, 0, 0, 0.7);
+}
