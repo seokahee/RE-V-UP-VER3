@@ -5,9 +5,10 @@ import {
 } from '@/shared/main/api'
 import type { GenreMusicInfo } from '@/types/main/types'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import React from 'react'
+import { useSession } from 'next-auth/react'
 
 const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
   const queryClient = useQueryClient()
@@ -25,14 +26,14 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
   const insertMutation = useMutation({
     mutationFn: insertCurrentMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
+      queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
     },
   })
 
   const updateMutation = useMutation({
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
+      queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
     },
   })
 
@@ -59,11 +60,15 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
     alert('현재 재생목록에 추가 되었습니다.') //이후에 삭제 예정
   }
 
+  const itemShadow =
+    'shadow-[0px_4px_1px_-1px_rgba(0,0,0,0.20),0px_4px_8px_0px_rgba(0,0,0,0.10),0px_2px_0px_0px_rgba(255,255,255,0.10)_inset,0px_0px_0px_1px_rgba(255,255,255,0.15),0px_-1px_2px_0px_rgba(0,0,0,0.20)_inset,0px_-4px_1px_0px_rgba(0,0,0,0.20)_inset]'
+
   return (
-    <li key={item.musicId} className='mr-6 w-[136px] list-none p-2'>
-      <div className='relative h-[120px] w-[120px]'>
-        const itemShadow =
-        'shadow-[0px_4px_1px_-1px_rgba(0,0,0,0.20),0px_4px_8px_0px_rgba(0,0,0,0.10),0px_2px_0px_0px_rgba(255,255,255,0.10)_inset,0px_0px_0px_1px_rgba(255,255,255,0.15),0px_-1px_2px_0px_rgba(0,0,0,0.20)_inset,0px_-4px_1px_0px_rgba(0,0,0,0.20)_inset]'
+    <li
+      key={item.musicId}
+      className={`mr-6 w-[136px] list-none bg-modal-black p-2 ${itemShadow} overflow-hidden rounded-[2rem]`}
+    >
+      <div className='relative h-[120px] w-[120px] overflow-hidden rounded-full '>
         <figure>
           <Image
             src={item.thumbnail}
