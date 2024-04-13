@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { insertUserChar } from '@/shared/personal/personalApi'
 import PersonalTestResult from './PersonalTestResult'
+import { useRouter } from 'next/navigation'
 
 import type { PersonalInfo } from '@/types/personal/type'
 
@@ -13,6 +14,7 @@ const PersonalSubTest = () => {
   const { data: userSessionInfo } = useSession()
   const userId = userSessionInfo?.user?.uid as string
   const queryClient = useQueryClient()
+  const router = useRouter()
 
   //state
   const [gender, setGender] = useState<string>('')
@@ -51,7 +53,12 @@ const PersonalSubTest = () => {
 
   const mbti = calculateMBTI()
 
-  const submitResult = () => {
+  const onsubmitResultHandler = () => {
+    if (!gender || !EI || !SN || !TF || !PJ) {
+      alert('모든 항목을 선택해주세요.')
+      return
+    }
+
     addUserChar({ gender, mbti, uid: userId })
     const personalUser: PersonalInfo = {
       mbti: mbti,
@@ -67,7 +74,9 @@ const PersonalSubTest = () => {
     setPJ('')
     setIsResult(true)
   }
-
+  const onBackHandler = () => {
+    router.back()
+  }
   return (
     <div>
       PersonalMusic
@@ -184,7 +193,13 @@ const PersonalSubTest = () => {
                 J
               </label>
             </div>
-            <button onClick={submitResult}>결과보러가기</button>
+            <p>{EI}</p>
+            <p>{SN}</p>
+            <p>{TF}</p>
+            <p>{PJ}</p>
+            <button onClick={onBackHandler}>이전</button>
+            <br />
+            <button onClick={onsubmitResultHandler}>결과보러가기</button>
           </>
         ) : (
           <PersonalTestResult />

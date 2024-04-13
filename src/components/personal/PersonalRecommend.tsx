@@ -105,7 +105,6 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     const musicList = [...currentList, ...checkedList] as string[]
     updateCurrentMusicMutation.mutate({ userId: userChar.uid, musicList })
     onSubmitPersonalResult()
-    router.push('/')
   }
   //퍼스널 DB에 결과추가
   const onSubmitPersonalResult = () => {
@@ -121,6 +120,9 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
       alert('곡 추가가 완료됐습니다.')
       addPersonalResultMutation.mutate(personalMusicData)
     }
+  }
+  const onGoToHomeHandler = () => {
+    router.push('/')
   }
 
   return (
@@ -149,7 +151,8 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
           <br />
         </div>
       ))}
-      <button onClick={onSubmitCurrentMusic}>현재 재생 목록에 추가</button>
+      <button onClick={onSubmitCurrentMusic}>재생목록에 담기</button>
+      <button onClick={onGoToHomeHandler}>메인으로 가기</button>
       <br />
     </div>
   )
