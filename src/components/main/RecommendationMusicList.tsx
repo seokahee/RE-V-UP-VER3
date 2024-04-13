@@ -50,7 +50,7 @@ const RecommendationMusicList = ({
           {position !== ((data?.length as number) - 1) * -MOVE_POINT && (
             <button
               type='button'
-              className='absolute right-0 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black text-white'
+              className='absolute right-0 top-1/2 h-9 w-9 -translate-y-1/2 rounded-full bg-black text-white'
               onClick={onClickNextHandler}
             >
               NEXT
@@ -59,7 +59,7 @@ const RecommendationMusicList = ({
           {position !== 0 && (
             <button
               type='button'
-              className='absolute left-0 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black text-white'
+              className='absolute left-0 top-1/2 h-9 w-9 -translate-y-1/2 rounded-full bg-black text-white'
               onClick={onClickPrevHandler}
             >
               PREV

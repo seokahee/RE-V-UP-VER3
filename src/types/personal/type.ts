@@ -35,3 +35,21 @@ export type recommend = {
   runTime: string
   thumbnail: string
 }
+
+export type PersonalMusic = {
+  checkedList: string[]
+  userChar: {
+    gender: string
+    mbti: string
+    uid: string
+  }
+}
+
+export type PersonlResult = {
+  userId: string
+  userChar: {
+    gender: string
+    mbti: string
+  }
+  musicList: string[]
+}

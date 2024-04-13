@@ -1,5 +1,5 @@
 import type { MusicPreference } from '@/types/main/types'
-import type { PersonalInfo } from '@/types/personal/type'
+import type { PersonalInfo, PersonalMusic } from '@/types/personal/type'
 import { supabase } from '../supabase/supabase'
 import { genreMatch } from '@/util/main/util'
 import { mbtiMatch, SentenceMatch } from '@/util/personal/util'
@@ -57,7 +57,7 @@ export const recommendMusic = async (mbtiStatus: string) => {
     const genreCodes = topArr.map((item) => genreMatch(item[0]))
     return genreCodes as number[]
   } catch (error) {
-    return []
+    throw error
   }
 }
 
@@ -103,40 +103,50 @@ export const insertUserChar = async ({
 }
 
 //퍼스널 뮤직 테이블에 추가하는 값
-
-type PersonalMusic = {
-  recommend: {
-    artist: string
-    genre: number
-    lyrics: string
-    musicId: string
-    musicSource: string
-    musicTitle: string
-    release: string
-    runTime: string
-    thumbnail: string
-  }[]
-  userChar: {
-    gender: string
-    mbti: string
-    uid: string
-  }
-}
-
 export const insertPersonalMusic = async (personalMusic: PersonalMusic) => {
-  const { userChar, recommend } = personalMusic
+  const { userChar, checkedList } = personalMusic
   const mbtiSentence = SentenceMatch(userChar.mbti)
-  const musicIds = recommend.map((item) => item.musicId)
 
   const { data, error } = await supabase
     .from('personalMusic')
     .insert([
-      { resultSentence: mbtiSentence, userId: userChar.uid, result: musicIds },
+      {
+        resultSentence: mbtiSentence,
+        userId: userChar.uid,
+        result: checkedList,
+      },
     ])
     .select()
   if (error) {
     throw new Error(error?.message || 'An unknown error occurred')
   }
+}
+//진단 여부 확인
+export const getPersonaledUser = async () => {
+  let { data: personalMusic, error } = await supabase
+    .from('personalMusic')
+    .select('userId')
+  return personalMusic
+}
+
+//이미 진단을 받은 경우
+export const updatePersonalMusic = async (personalMusic: PersonalMusic) => {
+  const { userChar, checkedList } = personalMusic
+  const mbtiSentence = SentenceMatch(userChar.mbti)
+
+  const { data, error } = await supabase
+    .from('personalMusic')
+    .update({
+      resultSentence: mbtiSentence,
+      result: checkedList,
+    })
+    .eq('userId', userChar.uid)
+    .select()
+  if (error) {
+    throw new Error(error?.message || 'An unknown error occurred')
+  }
+
+  return data
 }
 
 //현재 재생 목록 조회
