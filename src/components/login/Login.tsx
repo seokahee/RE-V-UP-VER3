@@ -84,7 +84,6 @@ const Login = () => {
 
   return (
     <div className='absolute left-1/2 top-1/2 flex flex-col items-center justify-center bg-black text-white'>
-      {/* // <div className='absolute left-1/2 top-[40%] flex min-h-[full] flex-col items-center bg-black text-white'> */}
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
         <div className='z-1500 text-black'>
           <div>비밀번호 찾기</div>

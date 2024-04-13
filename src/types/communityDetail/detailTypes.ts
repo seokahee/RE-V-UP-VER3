@@ -1,24 +1,24 @@
 export type readCommuDetail = {
-  boardId?: string
-  boardTitle?: string
-  content?: string
-  date?: string
-  musicId?: string
+  boardId: string
+  boardTitle: string
+  content: string
+  date: string
+  musicId: string
   likeList: string[] | null
-  userId?: string
+  userId: string
   userInfo?: {
     nickname: string
     userImage: string | null
     userId: string
   }
-  comment?: {
-    commentId?: string
+  comment: {
+    commentId: string
   }[]
-  musicInfo?: {
-    musicId?: string
-    musicTitle?: string
-    artist?: string
-    thumbnail?: string
+  musicInfo: {
+    musicId: string
+    musicTitle: string
+    artist: string
+    thumbnail: string
   }
 }
 

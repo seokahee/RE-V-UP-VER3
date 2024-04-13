@@ -1,47 +1,47 @@
 'use client'
 
-import useInput from '@/hooks/useInput'
+import { MouseEvent, useState } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import {
   useCoummunityCreateItem,
   useCoummunityItem,
-} from '@/query/communityDetail/communityMutation'
-import { COMMUNITY_QUERY_KEY } from '@/query/communityDetail/communityQueryKey'
-import { readCommunityDetail } from '@/shared/communitydetail/detailApi'
-import { getCurrentMusicData } from '@/shared/main/api'
-import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
+} from '@/query/communityDetail/mutation'
+import { musicDataInCommuDetail } from '@/query/communityDetail/queryKey'
 import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
 import { onDateTimeHandler } from '@/util/util'
-import { useQuery } from '@tanstack/react-query'
-import { useSession } from 'next-auth/react'
-import Image from 'next/image'
-import { useParams, useRouter } from 'next/navigation'
-import { MouseEvent, useState } from 'react'
+import useInput from '@/hooks/useInput'
 import LikeButton from './LikeButton'
 
 const CommunityContents = () => {
   const router = useRouter()
   const [isEdit, setIsEdit] = useState<boolean>(false)
-  const { id }: { id: string } = useParams()
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user?.uid as string
-  const { chooseMusic } = useMusicSearchedStore()
-  const musicId = chooseMusic?.musicId as string
-  const { updateCommunityMutation, deleteCommunityMutation } =
-    useCoummunityItem()
+  const { id: currentBoardId }: { id: string } = useParams()
+  const { updateMutation, insertMutation } = useCoummunityCreateItem()
   const {
-    data: readDetailData,
+    playListCurrent,
+    myPlayList,
+    readDetailData,
     isPending,
     isLoading,
     error,
-  } = useQuery({
-    queryFn: () => readCommunityDetail(id.toString()),
-    queryKey: [COMMUNITY_QUERY_KEY.COMMUNITY_DETAIL],
-  })
-  console.log('musicId', musicId)
+  } = musicDataInCommuDetail(uid, currentBoardId)
+
+  const {
+    updateCommunityMutation,
+    deleteCommunityMutation,
+    insertMyMutation,
+    updateMyMutation,
+  } = useCoummunityItem()
+
   const {
     boardId,
     boardTitle,
     date,
+    musicId,
     content,
     likeList,
     userInfo,
@@ -50,13 +50,6 @@ const CommunityContents = () => {
   } = readDetailData || ({} as readCommuDetail)
   const { nickname, userImage, userId } = userInfo || {}
   const { musicTitle, artist, thumbnail } = musicInfo || {}
-  const { updateMutation, insertMutation } = useCoummunityCreateItem()
-
-  const { data: playListCurrent } = useQuery({
-    queryFn: () => getCurrentMusicData(uid),
-    queryKey: ['playListCurrent'],
-    enabled: !!uid,
-  })
 
   const {
     form: editForm,
@@ -89,7 +82,7 @@ const CommunityContents = () => {
   const onDeleteBoardHandler = async (e: MouseEvent) => {
     e.preventDefault()
 
-    deleteCommunityMutation.mutate(id)
+    deleteCommunityMutation.mutate(currentBoardId)
     alert('삭제되었습니다.')
     router.back()
   }
@@ -102,14 +95,10 @@ const CommunityContents = () => {
     setIsEdit(false)
     router.back()
   }
-  console.log(musicId)
-  const onAddPlayerHandler = (
-    e: MouseEvent,
-    userId: string,
-    musicId: string,
-  ) => {
+
+  const onAddPlayerHandler = (e: MouseEvent, uid: string, musicId: string) => {
     e.preventDefault()
-    if (!userId) {
+    if (!uid) {
       alert(
         '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
       )
@@ -123,13 +112,39 @@ const CommunityContents = () => {
         alert('이미 추가된 노래입니다.')
         return
       }
+
       currentList.push(musicId)
       updateMutation.mutate({ userId: uid, currentList })
     } else {
-      console.log(musicId)
       insertMutation.mutate({ userId: uid, musicId })
     }
     alert('현재 재생목록에 추가 되었습니다.')
+  }
+
+  const onClickAddMyPlayListHandler = async (musicId: string) => {
+    if (uid === '' || !uid) {
+      alert(
+        '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
+      )
+      router.replace('/login')
+      return
+    }
+    if (window.confirm('마이플레이 리스트에 추가하시겠습니까?')) {
+      if (myPlayList && myPlayList.length > 0) {
+        const myList = myPlayList[0].myMusicIds
+
+        if (myList.find((el) => el === musicId)) {
+          alert('이미 추가된 노래입니다.')
+          return
+        }
+        myList.push(musicId)
+        updateMyMutation.mutate({ userId: uid, myMusicList: myList })
+      } else {
+        const myMusicId = [musicId]
+        insertMyMutation.mutate({ userId: uid, musicId: myMusicId })
+      }
+      alert('마이플레이리스트에 추가 되었습니다.')
+    }
   }
 
   if (!boardTitle || !content || !comment || !date) return null
@@ -201,6 +216,13 @@ const CommunityContents = () => {
               <button onClick={(e) => onAddPlayerHandler(e, uid, musicId)}>
                 플레이어에 음악추가
               </button>
+              <button
+                type='button'
+                className='absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2'
+                onClick={() => onClickAddMyPlayListHandler(musicId)}
+              >
+                마플리
+              </button>
             </div>
           </div>
           {isEdit ? (
@@ -217,7 +239,7 @@ const CommunityContents = () => {
           )}
 
           <div>
-            <LikeButton boardId={id} />
+            <LikeButton boardId={currentBoardId} />
             <div>{comment.length ? comment.length : 0}</div>
           </div>
         </div>
