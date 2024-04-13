@@ -1,10 +1,10 @@
 'use client'
 
-import React, { FormEvent, MouseEvent } from 'react'
+import React, { FormEvent } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import MusicSearch from '../search/MusicSearch'
-import { useCoummunityItem } from '@/query/communityDetail/communityMutation'
+import { useCoummunityItem } from '@/query/communityDetail/mutation'
 import useInput from '@/hooks/useInput'
 import Image from 'next/image'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
@@ -12,14 +12,15 @@ import defaultImg from '@/../public/images/plz-music.png'
 
 const CommunityCreate = () => {
   const router = useRouter()
-  const { data: userSessionInfo } = useSession()
+  const { data: userSessionInfo, status } = useSession()
   const { addCommunityMutation } = useCoummunityItem()
   const { chooseMusic } = useMusicSearchedStore()
   const musicId = chooseMusic?.musicId as string
   const musicTitle = chooseMusic?.musicTitle
   const artist = chooseMusic?.artist
   const thumbnail = chooseMusic?.thumbnail
-
+  console.log(musicId)
+  console.log(chooseMusic)
   const {
     form: communityForm,
     onChange: onChangeHandler,
@@ -51,7 +52,10 @@ const CommunityCreate = () => {
       return
     }
   }
-
+  if (status === 'unauthenticated') {
+    alert('로그인한 유저만 이용 가능합니다.')
+    return
+  }
   return (
     <div>
       <form onSubmit={onSumitHandler}>
@@ -104,12 +108,9 @@ const CommunityCreate = () => {
               height={80}
             />
           ) : (
-            <Image
-              src={defaultImg}
-              alt='노래앨범이미지'
-              width={80}
-              height={80}
-            />
+            <div className='h-[80px] w-[80px] rounded-[16px] border-[1px] border-solid border-black'>
+              <i></i>
+            </div>
           )}
         </div>
         <section className='flex gap-[16px] [&_div]:flex [&_div]:gap-[16px]'>

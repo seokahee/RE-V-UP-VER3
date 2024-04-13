@@ -195,7 +195,7 @@ const MyInfo = () => {
       <div>
         <div className='flex justify-between'>
           <div>
-            <figure className='w-[80px] h-[80px] flex overflow-hidden rounded-full bg-slate-200'>
+            <figure className='flex h-[80px] w-[80px] overflow-hidden rounded-full bg-slate-200'>
               {userImage && (
                 <Image
                   src={userImage}
@@ -213,7 +213,7 @@ const MyInfo = () => {
           {data?.nickname} &gt;
         </span>
         <p onClick={onClickViewFollowModalHandler} className='cursor-pointer'>
-          팔로잉 {data?.following.length} 팔로워 {data?.follower.length}
+          팔로잉 {data?.following?.length} 팔로워 {data?.follower?.length}
         </p>
         <p>
           {data?.userChar?.mbti}
@@ -224,7 +224,7 @@ const MyInfo = () => {
       {isModal && (
         <Modal onClick={onClickCloseModalHandler}>
           <label className='[&>input]:hidden'>
-            <figure className='w-[80px] h-[80px] flex overflow-hidden rounded-full bg-slate-200'>
+            <figure className='flex h-[80px] w-[80px] overflow-hidden rounded-full bg-slate-200'>
               {userImage && (
                 <Image
                   src={userImage}

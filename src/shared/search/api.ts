@@ -24,7 +24,7 @@ export const modalMusicSearchData = async (keyword: string) => {
   const { data } = await supabase
     .from('musicInfo')
     .select(
-      'musicId, musicTitle, artist, thumbnail, release, musicSource,runTime',
+      'musicId, musicTitle, artist, thumbnail, release, musicSource, runTime',
     )
     .or(`musicTitle.like.%${keyword}%,artist.like.%${keyword}%`)
     .order('musicTitle', { ascending: false })
