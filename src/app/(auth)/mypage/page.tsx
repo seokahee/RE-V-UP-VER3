@@ -4,7 +4,6 @@ import LikeBoardList from '@/components/mypage/LikeBoardList'
 import MyInfo from '@/components/mypage/MyInfo'
 import TabMenu from '@/components/mypage/TabMenu'
 import WriteList from '@/components/mypage/WriteList'
-import React from 'react'
 
 const MyPage = () => {
   const tabArr = [
