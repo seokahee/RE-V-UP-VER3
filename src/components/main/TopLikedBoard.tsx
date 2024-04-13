@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useRef, useState } from 'react'
+import SectionTitle from './SectionTitle'
 
 const TopLikedBoard = () => {
   const slideRef = useRef<HTMLDivElement>(null)
@@ -37,7 +38,7 @@ const TopLikedBoard = () => {
 
   return (
     <section className='p-4'>
-      <h2 className='my-4'>지금 핫한 게시글 🔥</h2>
+      <SectionTitle>지금 핫한 게시글 🔥</SectionTitle>
       <div className='relative flex overflow-hidden' ref={slideRef}>
         <ul
           className='flex flex-nowrap'
@@ -59,10 +60,10 @@ const TopLikedBoard = () => {
               return (
                 <li
                   key={item.boardId}
-                  className='w-[356px] p-4 mr-4 border border-solid border-slate-300 list-none rounded-[2rem]'
+                  className='mr-4 w-[356px] list-none rounded-[2rem] border border-solid border-slate-300 p-4'
                 >
                   <div className='flex items-center'>
-                    <span className='w-5 h-5 flex overflow-hidden rounded-full bg-slate-200'>
+                    <span className='flex h-5 w-5 overflow-hidden rounded-full bg-slate-200'>
                       {item.userInfo.userImage && (
                         <Image
                           src={item.userInfo.userImage}
@@ -76,7 +77,7 @@ const TopLikedBoard = () => {
                   </div>
                   <Link
                     href={`/community/${item.boardId}`}
-                    className='block text-ellipsis whitespace-nowrap overflow-hidden'
+                    className='block overflow-hidden text-ellipsis whitespace-nowrap'
                   >
                     {item.boardTitle}
                   </Link>
@@ -92,7 +93,7 @@ const TopLikedBoard = () => {
           {position !== ((data?.length as number) - 1) * -MOVE_POINT && (
             <button
               type='button'
-              className='absolute right-0 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black text-white'
+              className='absolute right-0 top-1/2 h-9 w-9 -translate-y-1/2 rounded-full bg-black text-white'
               onClick={onClickNextHandler}
             >
               NEXT
@@ -101,7 +102,7 @@ const TopLikedBoard = () => {
           {position !== 0 && (
             <button
               type='button'
-              className='absolute left-0 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black text-white'
+              className='absolute left-0 top-1/2 h-9 w-9 -translate-y-1/2 rounded-full bg-black text-white'
               onClick={onClickPrevHandler}
             >
               PREV

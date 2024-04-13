@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import GenreMusicItem from './GenreMusicItem'
 import SlideButton from './SlideButton'
+import SectionTitle from './SectionTitle'
 
 const RecommendationMusicList = ({
   musicPreferenceData,
@@ -34,7 +35,7 @@ const RecommendationMusicList = ({
 
   return (
     <section className='my-8'>
-      <h2 className='mb-5 text-xl font-bold'>이런 음악은 어떠신가요? 🎶</h2>
+      <SectionTitle>이런 음악은 어떠신가요?🎶</SectionTitle>
       <div className='relative flex overflow-hidden'>
         <ul
           className='flex flex-nowrap'
