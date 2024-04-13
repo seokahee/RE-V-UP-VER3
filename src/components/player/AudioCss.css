@@ -1,0 +1,8 @@
+.rhap_container {
+  background-color: #fff0;
+}
+
+.rhap_rewind-button,
+.rhap_forward-button {
+  display: none !important;
+}

@@ -1,9 +1,6 @@
 import { supabase } from '../supabase/supabase'
 
-export const getSearchedMusicData = async (
-  keyword: string,
-  selectedTabs: string,
-) => {
+export const getSearchedMusicData = async (keyword: string) => {
   const { data } = await supabase
     .from('musicInfo')
     .select('musicId, musicTitle, artist, thumbnail, release, musicSource')
@@ -12,10 +9,7 @@ export const getSearchedMusicData = async (
   return data
 }
 
-export const getSearchedCommunityData = async (
-  keyword: string,
-  selectedTabs: string,
-) => {
+export const getSearchedCommunityData = async (keyword: string) => {
   const { data } = await supabase
     .from('community')
     .select(
@@ -29,7 +23,9 @@ export const getSearchedCommunityData = async (
 export const modalMusicSearchData = async (keyword: string) => {
   const { data } = await supabase
     .from('musicInfo')
-    .select('musicId, musicTitle, artist, thumbnail, release, musicSource')
+    .select(
+      'musicId, musicTitle, artist, thumbnail, release, musicSource, runTime',
+    )
     .or(`musicTitle.like.%${keyword}%,artist.like.%${keyword}%`)
     .order('musicTitle', { ascending: false })
   return data

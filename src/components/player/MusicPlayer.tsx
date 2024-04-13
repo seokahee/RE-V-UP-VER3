@@ -1,14 +1,13 @@
 'use client'
 import { queryClient } from '@/app/provider'
+import { getMusicList } from '@/query/musicPlayer/musicPlayerQueryKey'
 import {
-  getCurrentMusicList,
-  getMyMusicList,
   insertMyPlayMusic,
   updateCurrentMusic,
   updateMyPlayMusic,
 } from '@/shared/musicPlayer/api'
-import { CurrentPlaylistType } from '@/types/musicPlayer/types'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { CurrentPlayListType } from '@/types/musicPlayer/types'
+import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -19,61 +18,46 @@ import Player from './Player'
 const MusicPlayer = () => {
   const [musicIndex, setMusicIndex] = useState<number>(0)
   const [checkedList, setCheckedList] = useState<string[]>([])
+  const [isLyrics, setIsLyrics] = useState(false)
   const [isRandom, setIsRandom] = useState(false)
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user.uid as string
   const router = useRouter()
 
-  console.log('uid', uid)
-
-  const {
-    data: currentPlayList,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryFn: ({ queryKey }) => {
-      return getCurrentMusicList(queryKey[1])
-    },
-    queryKey: ['playListCurrent', uid],
-  })
-
-  const { data: myPlayList } = useQuery({
-    queryFn: ({ queryKey }) => {
-      return getMyMusicList(queryKey[1])
-    },
-    queryKey: ['getMyMusicList', uid],
-  })
+  const { currentPlayList, myPlayList, isError } = getMusicList(uid)
 
   const deleteMutation = useMutation({
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
+      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
     },
   })
 
   const insertMutation = useMutation({
     mutationFn: insertMyPlayMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getMyMusicList'] })
+      queryClient.invalidateQueries({ queryKey: ['myMusicIds'] })
     },
   })
 
   const updateMutation = useMutation({
     mutationFn: updateMyPlayMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getMyMusicList'] })
+      queryClient.invalidateQueries({ queryKey: ['myMusicIds'] })
     },
   })
 
-  if (isLoading) {
-    return <div>정보를 가져오고 있습니다</div>
-  }
   if (!currentPlayList) {
     return
   }
   if (isError) {
     console.error('현재 플레이리스트를 가져오지 못했습니다')
     return
+  }
+
+  const onLyricsToggle = () => {
+    setIsLyrics((prev) => !prev)
   }
 
   const randomIndex = Math.floor(Math.random() * currentPlayList.length)
@@ -83,7 +67,6 @@ const MusicPlayer = () => {
       return !prev
     })
   }
-
   const onPreviousHandler = () => {
     if (!isRandom) {
       if (musicIndex === 0) {
@@ -118,19 +101,24 @@ const MusicPlayer = () => {
   }
 
   const onDeleteCurrentMusicHandler = async () => {
-    if (window.confirm('현재 재생 목록에서 선택 항목을 삭제하시겠습니까?')) {
+    if (checkedList.length === 0) {
+      alert('삭제할 노래를 선택해주세요')
+      return
+    }
+    if (window.confirm('선택 항목을 삭제하시겠습니까?')) {
       const currentMusicData = currentPlayList
         .filter((music) => !checkedList.includes(music.musicId))
         .map((music) => music.musicId)
       deleteMutation.mutate({ uid, currentMusicData })
+      setCheckedList([])
     }
   }
   const onInsertMyPlayListHandler = async () => {
     if (checkedList.length === 0) {
-      alert('노래를 선택해주세요')
+      alert('저장할 노래를 선택해주세요')
       return
     }
-    if (uid === '') {
+    if (uid === '' || !uid) {
       alert(
         '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
       )
@@ -162,38 +150,40 @@ const MusicPlayer = () => {
         }
       } else {
         insertMutation.mutate({ userId: uid, musicId: checkedList })
-        alert('현재 재생목록에 추가 되었습니다.')
+        alert('마이플레이리스트에 추가 되었습니다.')
         setCheckedList([])
       }
     }
   }
 
   return (
-    <div>
-      {currentPlayList?.length === 0 ? (
-        <div>현재 재생 목록이 없습니다</div>
-      ) : (
+    <div className='w-388'>
+      <div>
         <div>
           <Player
-            currentPlayList={currentPlayList as CurrentPlaylistType[]}
+            isLyrics={isLyrics}
             musicIndex={musicIndex}
+            currentPlayList={currentPlayList as CurrentPlayListType[]}
             onPreviousHandler={onPreviousHandler}
             onNextTrackHandler={onNextTrackHandler}
+            onLyricsToggle={onLyricsToggle}
+            onInsertMyPlayListHandler={onInsertMyPlayListHandler}
           />
+        </div>
+        <div>
           <CurrentMusicList
-            currentPlayList={currentPlayList as CurrentPlaylistType[]}
+            isLyrics={isLyrics}
+            currentPlayList={currentPlayList as CurrentPlayListType[]}
             checkedList={checkedList}
             onChangeCheckMusicHandler={onChangeCheckMusicHandler}
             onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
-            onInsertMyPlayListHandler={onInsertMyPlayListHandler}
             onRandomMusicHandler={onRandomMusicHandler}
             isRandom={isRandom}
             setMusicIndex={setMusicIndex}
           />
         </div>
-      )}
+      </div>
     </div>
   )
 }
-
 export default MusicPlayer

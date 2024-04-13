@@ -213,7 +213,7 @@ const MyInfo = () => {
           {data?.nickname} &gt;
         </span>
         <p onClick={onClickViewFollowModalHandler} className='cursor-pointer'>
-          팔로잉 {data?.following.length} 팔로워 {data?.follower.length}
+          팔로잉 {data?.following?.length} 팔로워 {data?.follower?.length}
         </p>
         <p>
           {data?.userChar?.mbti}
