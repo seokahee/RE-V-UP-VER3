@@ -14,6 +14,7 @@ const GenreMusicList = () => {
   const { data: userData } = useQuery({
     queryFn: () => getUserChar(uid),
     queryKey: ['userChar'],
+    enabled: !!uid,
   })
 
   const { data: musicPreferenceData } = useQuery({
