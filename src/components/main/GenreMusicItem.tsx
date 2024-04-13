@@ -28,20 +28,6 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
     enabled: !!uid,
   })
 
-  // const insertMutation = useMutation({
-  //   mutationFn: insertCurrentMusic,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
-  //   },
-  // })
-
-  // const updateMutation = useMutation({
-  //   mutationFn: updateCurrentMusic,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
-  //   },
-  // })
-
   const insertMutation = useMutation({
     mutationFn: insertCurrentMusic,
     onSuccess: () => {
@@ -129,6 +115,8 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
   return (
     <li key={item.musicId} className='mr-6 w-[136px] list-none p-2'>
       <div className='relative h-[120px] w-[120px]'>
+        const itemShadow =
+        'shadow-[0px_4px_1px_-1px_rgba(0,0,0,0.20),0px_4px_8px_0px_rgba(0,0,0,0.10),0px_2px_0px_0px_rgba(255,255,255,0.10)_inset,0px_0px_0px_1px_rgba(255,255,255,0.15),0px_-1px_2px_0px_rgba(0,0,0,0.20)_inset,0px_-4px_1px_0px_rgba(0,0,0,0.20)_inset]'
         <figure>
           <Image
             src={item.thumbnail}
@@ -152,9 +140,8 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
           마플리
         </button>
       </div>
-      <strong>{item.musicTitle}</strong>
+      <strong className='text-white'>{item.musicTitle}</strong>
       <span>{item.artist}</span>
-      장르 : {item.genre}
     </li>
   )
 }

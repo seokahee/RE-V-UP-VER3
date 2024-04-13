@@ -1,10 +1,8 @@
-import Header from '@/components/Header'
 import type { Metadata } from 'next'
 import { NextAuthProvider } from './NextAuthProvider'
 import './globals.css'
 import QueryProvider from './provider'
 import { FontClassNames } from '@/util/font'
-import UserProvider from './UserReSessionProvider'
 
 export const metadata: Metadata = {
   title: 'Volume Up',
@@ -18,12 +16,9 @@ export default function RootLayout({
 }>) {
   return (
     <QueryProvider>
-      <html lang='en'>
+      <html lang='ko'>
         <body className={FontClassNames}>
-          <NextAuthProvider>
-            <Header />
-            {children}
-          </NextAuthProvider>
+          <NextAuthProvider>{children}</NextAuthProvider>
         </body>
       </html>
     </QueryProvider>
