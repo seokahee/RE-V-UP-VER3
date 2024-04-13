@@ -34,7 +34,7 @@ const ModalMusicData = ({
   return (
     <div
       key={item.musicId}
-      className={`flex gap-[12px] items-center space-x-3 justify-center h-[104px] px-5 py-4 rounded-[16px] cursor-pointer ${
+      className={`flex h-[104px] cursor-pointer items-center justify-center gap-[12px] space-x-3 rounded-[16px] px-5 py-4 ${
         selectedCardIndex === index && isChooseMusic
           ? 'bg-[#685BFF]'
           : 'bg-#D9D9D9-800'
@@ -57,6 +57,7 @@ const ModalMusicData = ({
           <div className='font-bold'>Title {item.musicTitle}</div>
           <div className='text-gray-600'>Artist {item.artist}</div>
           <div className='text-gray-600'>{item.release}</div>
+          <div className='text-gray-600'>{item.runTime}</div>
         </div>
       </div>
     </div>

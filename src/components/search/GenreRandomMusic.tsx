@@ -7,7 +7,7 @@ import { useSearchedKeywordStore } from '@/shared/store/searchStore'
 const GenreRandomMusic = () => {
   const { searchedKeyword } = useSearchedKeywordStore()
   const { keyword } = searchedKeyword
-  const { data, isError, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryFn: () => getRandomMusicData(),
     queryKey: ['mainGenreMusic'],
   })

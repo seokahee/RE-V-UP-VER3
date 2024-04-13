@@ -1,16 +1,9 @@
 'use client'
-import {
-  getCurrentMusicData,
-  insertCurrentMusic,
-  updateCurrentMusic,
-} from '@/shared/main/api'
-import {
-  getMyMusicList,
-  insertMyPlayMusic,
-  updateMyPlayMusic,
-} from '@/shared/musicPlayer/api'
+import { getMusicList } from '@/query/musicPlayer/musicPlayerQueryKey'
+import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
+import { insertMyPlayMusic, updateMyPlayMusic } from '@/shared/musicPlayer/api'
 import { useSearchedResultStore } from '@/shared/store/searchStore'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -23,11 +16,8 @@ const SearchedMusicData = () => {
   const queryClient = useQueryClient()
   const router = useRouter()
 
-  const { data: playListCurrent } = useQuery({
-    queryFn: () => getCurrentMusicData(uid),
-    queryKey: ['playListCurrent'],
-    enabled: !!uid,
-  })
+  const { playListCurrent, myPlayList } = getMusicList(uid)
+
   const insertCurrentMutation = useMutation({
     mutationFn: insertCurrentMusic,
     onSuccess: () => {
@@ -39,13 +29,6 @@ const SearchedMusicData = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
     },
-  })
-
-  const { data: myPlayList } = useQuery({
-    queryFn: ({ queryKey }) => {
-      return getMyMusicList(queryKey[1])
-    },
-    queryKey: ['getMyMusicList', uid],
   })
 
   const insertMyMutation = useMutation({
