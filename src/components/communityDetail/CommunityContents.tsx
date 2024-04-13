@@ -1,28 +1,22 @@
 'use client'
 
-import { MouseEvent, useState } from 'react'
-import { useSession } from 'next-auth/react'
-import { useParams, useRouter } from 'next/navigation'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { readCommunityDetail } from '@/shared/communitydetail/detailApi'
-import { COMMUNITY_QUERY_KEY } from '@/query/communityDetail/communityQueryKey'
-import {
-  useCoummunityItem,
-  useCoummunityCreateItem,
-} from '@/query/communityDetail/communityMutation'
-import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
-import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
-import { getCurrentMusicData } from '@/shared/main/api'
-import { onDateTimeHandler } from '@/util/util'
 import useInput from '@/hooks/useInput'
-import LikeButton from './LikeButton'
-import Image from 'next/image'
 import {
-  getMyMusicList,
-  insertMyPlayMusic,
-  updateMyPlayMusic,
-} from '@/shared/musicPlayer/api'
-import { queryClient } from '@/app/provider'
+  useCoummunityCreateItem,
+  useCoummunityItem,
+} from '@/query/communityDetail/communityMutation'
+import { COMMUNITY_QUERY_KEY } from '@/query/communityDetail/communityQueryKey'
+import { readCommunityDetail } from '@/shared/communitydetail/detailApi'
+import { getCurrentMusicData } from '@/shared/main/api'
+import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
+import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
+import { onDateTimeHandler } from '@/util/util'
+import { useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import { useParams, useRouter } from 'next/navigation'
+import { MouseEvent, useState } from 'react'
+import LikeButton from './LikeButton'
 
 const CommunityContents = () => {
   const router = useRouter()
@@ -62,27 +56,6 @@ const CommunityContents = () => {
     queryFn: () => getCurrentMusicData(uid),
     queryKey: ['playListCurrent'],
     enabled: !!uid,
-  })
-
-  const { data: myPlayList } = useQuery({
-    queryFn: ({ queryKey }) => {
-      return getMyMusicList(queryKey[1])
-    },
-    queryKey: ['getMyMusicList', uid],
-  })
-
-  const insertMyMutation = useMutation({
-    mutationFn: insertMyPlayMusic,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getMyMusicList'] })
-    },
-  })
-
-  const updateMyMutation = useMutation({
-    mutationFn: updateMyPlayMusic,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getMyMusicList'] })
-    },
   })
 
   const {
@@ -158,32 +131,6 @@ const CommunityContents = () => {
     alert('현재 재생목록에 추가 되었습니다.')
   }
 
-  const onClickAddMyPlayListHandler = async (musicId: string) => {
-    if (uid === '' || !uid) {
-      alert(
-        '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
-      )
-      router.replace('/login')
-      return
-    }
-    if (window.confirm('마이플레이 리스트에 추가하시겠습니까?')) {
-      if (myPlayList && myPlayList.length > 0) {
-        const myList = myPlayList[0].myMusicIds
-
-        if (myList.find((el) => el === musicId)) {
-          alert('이미 추가된 노래입니다.')
-          return
-        }
-        myList.push(musicId)
-        updateMyMutation.mutate({ userId: uid, myMusicList: myList })
-      } else {
-        const myMusicId = [musicId]
-        insertMyMutation.mutate({ userId: uid, musicId: myMusicId })
-      }
-      alert('마이플레이리스트에 추가 되었습니다.')
-    }
-  }
-
   if (!boardTitle || !content || !comment || !date) return null
   if (!likeList) return null
 
@@ -252,14 +199,6 @@ const CommunityContents = () => {
             <div>
               <button onClick={(e) => onAddPlayerHandler(e, uid, musicId)}>
                 플레이어에 음악추가
-              </button>
-
-              <button
-                type='button'
-                className='absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2'
-                onClick={() => onClickAddMyPlayListHandler(musicId)}
-              >
-                마플리
               </button>
             </div>
           </div>
