@@ -11,6 +11,7 @@ import useInput from '@/hooks/useInput'
 import findPwImg from '@/../public/images/findPassword.svg'
 import SocialLogin from '@/components/socialLogin/page'
 import LogOutButton from '@/components/logout/LogOutButton'
+import { shadow } from './loginCss'
 
 const Login = () => {
   const router = useRouter()
@@ -81,14 +82,10 @@ const Login = () => {
       </div>
     )
   }
-  const shadow =
-    'shadow-[0px_1px_2px_0px_rgba(255,255,255,0.20)_inset,_0px_4px_4px_0px_rgba(0,0,0,0.20),_0px_0px_0px_1px_rgba(0,0,0,0.10),_0px_0px_0px_4px_rgba(0,0,0,0.10),0px_0px_0px_3px_rgba(255,255,255,0.20),_0px_4px_1px_0px_rgba(255,255,255,0.20)_inset,_0px_-4px_1px_0px_rgba(0,0,0,0.10)_inset]'
+
   return (
-    // <div className='border-gray-300 absolute left-1/2 top-1/2 flex flex-col items-center justify-center rounded-lg border  p-6 text-white '>
-    // <div className='border-gray-300 absolute left-1/2 top-1/2 flex flex-col items-center justify-center rounded-lg border  p-6 text-white shadow-lg'>
-    // <div className='border-gray-300 absolute left-1/2 top-1/2 flex flex-col items-center justify-center rounded-lg border  p-6 text-white shadow-lg'>
     <div
-      className={`border-gray-300 absolute left-1/2 top-1/2 flex w-[516px] flex-col items-center justify-center rounded-2xl border border-none border-opacity-10 bg-white bg-opacity-10 ${shadow}`}
+      className={`border-gray-300 absolute left-1/2  flex w-[516px] flex-col items-center justify-center rounded-2xl border-none border-opacity-10 bg-white bg-opacity-10 pt-[106px] ${shadow}`}
     >
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
         <div className='z-1500 text-black'>
@@ -123,13 +120,13 @@ const Login = () => {
                     value={email}
                     onChange={onChangeHandler}
                     placeholder='이메일을 입력하세요'
-                    className='flex items-center gap-2 rounded-lg border-2 border-white border-opacity-10 bg-white bg-opacity-10 p-[] px-[12px] py-[13px] caret-primary shadow-md'
+                    className='placeholder:text-shadow flex items-center gap-2 rounded-lg border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px]  py-[13px] text-[16px] font-bold caret-primary shadow-md placeholder:text-red-500 placeholder:box-shadow'
                   />
                 </label>
               </div>
               <div>
                 <label htmlFor='password' className='flex flex-col '>
-                  <p className='text-white-30'>비밀번호</p>
+                  <p className='text-white-30 text-shadow'>비밀번호</p>
                   <input
                     type='password'
                     id='password'
@@ -137,7 +134,7 @@ const Login = () => {
                     value={password}
                     onChange={onChangeHandler}
                     placeholder='비밀번호를 입력하세요'
-                    className='flex items-center gap-2 rounded-lg border-2 border-white border-opacity-10 bg-white bg-opacity-10 shadow-md'
+                    className=' flex items-center gap-2 rounded-lg border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] caret-primary shadow-md'
                   />
                 </label>
               </div>
