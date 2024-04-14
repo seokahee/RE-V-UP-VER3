@@ -195,7 +195,7 @@ const MyInfo = () => {
   }
 
   return (
-    <section className='p-[40px]'>
+    <section>
       <div>
         <div className='mb-4 flex items-center justify-between'>
           <div>
@@ -240,7 +240,7 @@ const MyInfo = () => {
             {!data?.following ? 0 : data?.following?.length}
           </span>
         </p>
-        <p className='mt-2 flex gap-4 text-[1rem] font-bold tracking-[-0.03em] text-[#ffffff80]'>
+        <p className='mt-2 flex flex-wrap gap-4 text-[1rem] font-bold tracking-[-0.03em] text-[#ffffff80]'>
           <span>{data?.userChar?.mbti}</span> |{' '}
           <span>{data?.userChar?.resultSentence}</span>
         </p>
