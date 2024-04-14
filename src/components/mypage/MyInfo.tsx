@@ -182,6 +182,9 @@ const MyInfo = () => {
     }
   }, [data])
 
+  const shadow =
+    'shadow-[0px_4px_4px_#00000033,0px_0px_0px_1px_#0000001a,0px_0px_0px_4px_#685bff1a,0px_0px_0px_3px_#ffffff33,inset_0px_1px_2px_#ffffff33,inset_0px_4px_1px_#ffffff33,inset_0px_-4px_1px_#0000001a]'
+
   if (isError) {
     return <>에러발생</>
   }
@@ -193,7 +196,7 @@ const MyInfo = () => {
   return (
     <section className='p-[40px]'>
       <div>
-        <div className='flex justify-between'>
+        <div className='flex items-center justify-between'>
           <div>
             <figure className='flex h-[84px] w-[84px] overflow-hidden rounded-full border-2 border-[#ffffff1a] bg-[#2b2b2b]'>
               {userImage && (
@@ -207,7 +210,12 @@ const MyInfo = () => {
               )}
             </figure>
           </div>
-          <Link href='/personal-music'>퍼스널 뮤직 진단 다시받기</Link>
+          <Link
+            href='/personal-music'
+            className={`bg-primary p-3 ${shadow} rounded-xl text-[1rem] font-bold tracking-[-0.03em]`}
+          >
+            퍼스널 뮤직 진단 다시받기
+          </Link>
         </div>
         <span className='cursor-pointer' onClick={onClickViewModalHandler}>
           {data?.nickname} &gt;
