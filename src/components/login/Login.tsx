@@ -10,8 +10,14 @@ import Modal from '@/util/Modal'
 import useInput from '@/hooks/useInput'
 import findPwImg from '@/../public/images/findPassword.svg'
 import SocialLogin from '@/components/socialLogin/page'
-import LogOutButton from '@/components/logout/LogOutButton'
-import { shadow } from './loginCss'
+import {
+  DROP_SHADOW,
+  SHADOW,
+  INPUT_SHADOW,
+  INPUT_FOCUS,
+  ACTIVE_BUTTON,
+} from './loginCss'
+import { BUTTON_SHADOW } from './buttonCss'
 
 const Login = () => {
   const router = useRouter()
@@ -84,92 +90,108 @@ const Login = () => {
   }
 
   return (
-    <div
-      className={`border-gray-300 absolute left-1/2  flex w-[516px] flex-col items-center justify-center rounded-2xl border-none border-opacity-10 bg-white bg-opacity-10 pt-[106px] ${shadow}`}
-    >
-      <Modal isOpen={isModalOpen} closeModal={closeModal}>
-        <div className='z-1500 text-black'>
-          <div>비밀번호 찾기</div>
-          <input
-            type='email'
-            value={spendEmail}
-            onChange={(e) => setSpendEmail(e.target.value)}
-          />
-          <button onClick={findPassword} className='cursor-pointer'>
-            {submitEmail ? '전송완료!' : '전송'}
-          </button>
-        </div>
-      </Modal>
-      <section>
-        <div className='text-[24px] font-bold'>
-          <p>V-UP에 오신 걸 환영합니다</p>
-        </div>
-        <div>
-          <form
-            onSubmit={onLoginHandler}
-            className='flex w-[320px] flex-col gap-[32px]'
-          >
-            <div className='flex flex-col gap-[16px]'>
-              <div>
-                <label htmlFor='email' className='flex flex-col '>
-                  <p>이메일</p>
-                  <input
-                    type='email'
-                    id='email'
-                    name='email'
-                    value={email}
-                    onChange={onChangeHandler}
-                    placeholder='이메일을 입력하세요'
-                    className='placeholder:text-shadow flex items-center gap-2 rounded-lg border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px]  py-[13px] text-[16px] font-bold caret-primary shadow-md placeholder:text-red-500 placeholder:box-shadow'
-                  />
-                </label>
-              </div>
-              <div>
-                <label htmlFor='password' className='flex flex-col '>
-                  <p className='text-white-30 text-shadow'>비밀번호</p>
-                  <input
-                    type='password'
-                    id='password'
-                    name='password'
-                    value={password}
-                    onChange={onChangeHandler}
-                    placeholder='비밀번호를 입력하세요'
-                    className=' flex items-center gap-2 rounded-lg border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] caret-primary shadow-md'
-                  />
-                </label>
-              </div>
-            </div>
-            <div>
-              <button type='submit'>로그인</button>
-            </div>
-          </form>
-        </div>
-
-        <div>
-          <div className='w-101 mx-auto flex items-center justify-center gap-[2px]'>
-            <button onClick={openModal} className='text-white-50 text-[14px]'>
-              비밀번호 찾기
+    <div>
+      <div
+        className={`border-gray-300 absolute left-1/2 top-1/2 flex w-[516px] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center rounded-2xl border-none border-opacity-10 bg-white bg-opacity-10 pb-[16px] pt-[106px] ${SHADOW}`}
+      >
+        <Modal isOpen={isModalOpen} closeModal={closeModal}>
+          <div className='z-1500 text-black'>
+            <div>비밀번호 찾기</div>
+            <input
+              type='email'
+              value={spendEmail}
+              onChange={(e) => setSpendEmail(e.target.value)}
+            />
+            <button onClick={findPassword} className='cursor-pointer'>
+              {submitEmail ? '전송완료!' : '전송'}
             </button>
-            <Image
-              src={findPwImg}
-              width={20}
-              height={20}
-              alt='오른쪽방향화살표'
-            ></Image>
           </div>
-        </div>
-        <div>
-          <p>SNS로&nbsp;간편하게&nbsp;시작하기</p>
-          <SocialLogin />
-        </div>
-        <div>
-          <p>아직&nbsp;회원이&nbsp;아니신가요?</p>
-          <Link href={'/join'}>
-            <p>회원가입&nbsp;하기</p>
-          </Link>
-        </div>
-        <LogOutButton />
-      </section>
+        </Modal>
+        <section className='tracking-[-0.03em]'>
+          <div className='text-center text-[24px] font-bold'>
+            <p>V-UP에 오신 걸 환영합니다</p>
+          </div>
+          <div className='pt-[88px] '>
+            <form
+              onSubmit={onLoginHandler}
+              className='flex w-[320px] flex-col gap-[32px]'
+            >
+              <div className='flex flex-col gap-[16px] text-[rgba(255,255,255,0.3)] [&_label]:gap-[4px]'>
+                <div>
+                  <label htmlFor='email' className='flex flex-col '>
+                    <p>이메일</p>
+                    <input
+                      type='email'
+                      id='email'
+                      name='email'
+                      value={email}
+                      onChange={onChangeHandler}
+                      placeholder='이메일을 입력하세요'
+                      className={`flex items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] font-bold caret-primary shadow-md ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} [&_placeholder]:text-[rgba(255,255,255,0.3)]`}
+                    />
+                  </label>
+                </div>
+                <div>
+                  <label htmlFor='password' className='flex flex-col '>
+                    <p>비밀번호</p>
+                    <input
+                      type='password'
+                      id='password'
+                      name='password'
+                      value={password}
+                      onChange={onChangeHandler}
+                      placeholder='비밀번호를 입력하세요'
+                      className={`flex items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] font-bold caret-primary shadow-md  ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} [&_placeholder]:text-[rgba(255,255,255,0.3)]`}
+                    />
+                  </label>
+                </div>
+              </div>
+              <div className='tracking-[-0.03em]'>
+                <button
+                  type='submit'
+                  className={`flex h-[48px] w-[320px] items-center justify-center  rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${ACTIVE_BUTTON} ${BUTTON_SHADOW} `}
+                >
+                  로그인
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <article className='flex flex-col gap-[60px] tracking-[-0.03em] text-[rgba(255,255,255,0.3)]'>
+            <div className='flex justify-end pt-[16px]'>
+              <button
+                onClick={openModal}
+                className='w-101 flex items-center justify-center gap-[2px] text-[14px] text-[rgba(255,255,255,0.5)]'
+              >
+                비밀번호 찾기
+              </button>
+              <Image
+                src={findPwImg}
+                width={20}
+                height={20}
+                alt='오른쪽방향화살표'
+              ></Image>
+            </div>
+            <section className='flex flex-col items-center gap-[68px] text-[14px]'>
+              <div className='flex flex-col gap-[16px] font-bold tracking-[-0.03em] text-[rgba(255,255,255,0.5)]'>
+                <p>SNS로&nbsp;간편하게&nbsp;시작하기</p>
+                <div>
+                  <SocialLogin />
+                </div>
+              </div>
+              <div className='flex gap-[8px]'>
+                <p>아직&nbsp;회원이&nbsp;아니신가요?</p>
+                <Link
+                  href={'/join'}
+                  className='leading-[1.4rem] text-primary underline '
+                >
+                  <p>회원가입&nbsp;하기</p>
+                </Link>
+              </div>
+            </section>
+          </article>
+        </section>
+      </div>
     </div>
   )
 }
