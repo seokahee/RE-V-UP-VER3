@@ -5,6 +5,8 @@ import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import UserPlaylist from './UserPlaylist'
 import { useSession } from 'next-auth/react'
+import ButtonPrimary from '../mypage/ButtonPrimary'
+import ButtonSecondary from '../mypage/ButtonSecondary'
 
 const UserInfo = () => {
   const { id } = useParams<{ id: string }>()
@@ -92,15 +94,13 @@ const UserInfo = () => {
               )}
             </figure>
           </div>
-          <div>
+          <div className='[&_button]:min-w-[118px]'>
             {isFollow ? (
-              <button type='button' onClick={onClickUnFollow}>
-                취소
-              </button>
+              <ButtonSecondary onClick={onClickUnFollow}>
+                팔로잉
+              </ButtonSecondary>
             ) : (
-              <button type='button' onClick={onClickFollow}>
-                팔로우
-              </button>
+              <ButtonPrimary onClick={onClickFollow}>팔로우</ButtonPrimary>
             )}
           </div>
         </div>
