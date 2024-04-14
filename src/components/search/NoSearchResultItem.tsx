@@ -1,23 +1,19 @@
-'use client'
 import musicList from '@/../public/images/musicList.svg'
 import myPlayListButton from '@/../public/images/myPlayListButton.svg'
 import { getMusicList } from '@/query/musicPlayer/musicPlayerQueryKey'
 import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
 import { insertMyPlayMusic, updateMyPlayMusic } from '@/shared/musicPlayer/api'
-import { useSearchedResultStore } from '@/shared/store/searchStore'
+import type { GenreMusicInfo } from '@/types/main/types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-const SearchedMusicData = () => {
-  const { searchedData } = useSearchedResultStore()
-  const { musicData } = searchedData
-  const { data: userSessionInfo } = useSession()
-  const uid = userSessionInfo?.user.uid as string
+const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
   const queryClient = useQueryClient()
   const router = useRouter()
-
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user?.uid as string
   const { playListCurrent, myPlayList } = getMusicList(uid)
 
   const insertCurrentMutation = useMutation({
@@ -98,61 +94,50 @@ const SearchedMusicData = () => {
   }
 
   return (
-    <div>
-      {musicData.map((item) => {
-        return (
-          <li
-            key={item.musicId}
-            className='flex h-[88px] w-[732px] list-none items-start gap-[19px] p-[16px]'
-          >
-            <div className='flex h-[56px] w-[588px] gap-[16px]'>
-              <div className='h-[56px] w-[56px]'>
-                <Image
-                  src={item.thumbnail}
-                  width={56}
-                  height={56}
-                  alt={`${item.musicTitle} 앨범 썸네일`}
-                  className='rounded-full'
-                />
-              </div>
-              <div className='flex h-[48px] w-[516px] items-center justify-between pr-[32px]'>
-                <div className='flex flex-col gap-[3px]'>
-                  <span className='text-[18px] font-bold'>
-                    {item.musicTitle}
-                  </span>
-                  <span className='text-[14px] font-bold opacity-[50%]'>
-                    {item.artist}
-                  </span>
-                </div>
-                <span className='text-[14px]  opacity-[50%]'>
-                  {item.runTime}
-                </span>
-              </div>
-            </div>
-            <div className='h-48px flex w-[122px] gap-[16px]'>
-              <button
-                onClick={() => onClickAddCurrentMusicHandler(item.musicId)}
-              >
-                <Image
-                  src={musicList}
-                  width={48}
-                  height={48}
-                  alt='현재 플레이리스트 등록 버튼'
-                />
-              </button>
-              <button onClick={() => onClickAddMyPlayListHandler(item.musicId)}>
-                <Image
-                  src={myPlayListButton}
-                  width={48}
-                  height={48}
-                  alt='마이플레이리스트 등록 버튼'
-                />
-              </button>
-            </div>
-          </li>
-        )
-      })}
-    </div>
+    <li
+      key={item.musicId}
+      className='flex h-[88px] w-[732px] list-none items-start gap-[19px] p-[16px]'
+    >
+      <div className='flex h-[56px] w-[588px] gap-[16px]'>
+        <div className='h-[56px] w-[56px]'>
+          <Image
+            src={item.thumbnail}
+            width={56}
+            height={56}
+            alt={`${item.musicTitle} 앨범 썸네일`}
+            className='rounded-full'
+          />
+        </div>
+        <div className='flex h-[48px] w-[516px] items-center justify-between pr-[32px]'>
+          <div className='flex flex-col gap-[3px]'>
+            <span className='text-[18px] font-bold'>{item.musicTitle}</span>
+            <span className='text-[14px] font-bold opacity-[50%]'>
+              {item.artist}
+            </span>
+          </div>
+          <span className='text-[14px]  opacity-[50%]'>{item.runTime}</span>
+        </div>
+      </div>
+      <div className='h-48px flex w-[122px] gap-[16px]'>
+        <button onClick={() => onClickAddCurrentMusicHandler(item.musicId)}>
+          <Image
+            src={musicList}
+            width={48}
+            height={48}
+            alt='현재 플레이리스트 등록 버튼'
+          />
+        </button>
+        <button onClick={() => onClickAddMyPlayListHandler(item.musicId)}>
+          <Image
+            src={myPlayListButton}
+            width={48}
+            height={48}
+            alt='마이플레이리스트 등록 버튼'
+          />
+        </button>
+      </div>
+    </li>
   )
 }
-export default SearchedMusicData
+
+export default NoSearchResultItem

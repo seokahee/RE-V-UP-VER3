@@ -20,13 +20,13 @@ const NoSearchResult = () => {
   })
 
   return (
-    <>
+    <div className='flex h-[440px] w-[732px] flex-col'>
       {musicPreferenceData ? (
         <GenreMusicRecommendations musicPreferenceData={musicPreferenceData} />
       ) : (
         <GenreRandomMusic />
       )}
-    </>
+    </div>
   )
 }
 

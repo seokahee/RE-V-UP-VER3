@@ -10,4 +10,7 @@ export type CommunityType = {
   musicInfo: {
     thumbnail: string
   }
+  comment: {
+    commentId: string
+  }
 }

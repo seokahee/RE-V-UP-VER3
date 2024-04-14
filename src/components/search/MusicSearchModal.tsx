@@ -40,6 +40,7 @@ const MusicSearchModal = ({
         setMusicList(data)
       } else {
         alert('검색 결과가 없습니다')
+        return
       }
     }
     getMusicData(keyword)
@@ -68,8 +69,8 @@ const MusicSearchModal = ({
   }
 
   return (
-    <div className='fixed w-full h-screen inset-0 flex flex-col justify-center items-center z-50 bg-black bg-opacity-50'>
-      <div className='bg-white h-4/5 w-3/5 flex flex-col items-center rounded-md pb-10'>
+    <div className='fixed inset-0 z-50 flex h-screen w-full flex-col items-center justify-center bg-black bg-opacity-50'>
+      <div className='flex h-4/5 w-3/5 flex-col items-center rounded-md bg-white pb-10'>
         <form onSubmit={onSubmitHandler}>
           <input
             type='text'
@@ -87,7 +88,7 @@ const MusicSearchModal = ({
         </form>
         <div className='flex flex-col border-[1px] border-solid border-primary'>
           <div className='p-[36px]'>
-            <div className='flex flex-col items-start gap-[12px] overflow-y-scroll scrollbar-hide '>
+            <div className='scrollbar-hide flex flex-col items-start gap-[12px] overflow-y-scroll '>
               {currentItems.map((item: any, index: number) => {
                 return (
                   <ModalMusicData
@@ -98,7 +99,7 @@ const MusicSearchModal = ({
                 )
               })}
             </div>
-            <div className='[&_div]:m-0 pt-[16px]'>
+            <div className='pt-[16px] [&_div]:m-0'>
               {currentItems && currentItems.length > 0 ? (
                 <Pagination
                   currentPage={currentPage}
@@ -111,12 +112,12 @@ const MusicSearchModal = ({
             </div>
           </div>
         </div>
-        <div className='flex flex-row justify-center items-center relative shadow-primary'>
+        <div className='relative flex flex-row items-center justify-center shadow-primary'>
           <button
             onClick={onAddViewMusicHandler}
-            className='text-white rounded-lg px-[10px]'
+            className='rounded-lg px-[10px] text-white'
           >
-            <span className='text-white rounded-lg bg-primary p-3 text-lg '>
+            <span className='rounded-lg bg-primary p-3 text-lg text-white '>
               등록
             </span>
           </button>

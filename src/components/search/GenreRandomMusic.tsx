@@ -1,12 +1,13 @@
 import { getRandomMusicData } from '@/shared/main/api'
+import Pagination from '@/util/Pagination '
+import { modalPaging } from '@/util/util'
 import { useQuery } from '@tanstack/react-query'
-import React from 'react'
-import GenreMusicItem from '../main/GenreMusicItem'
-import { useSearchedKeywordStore } from '@/shared/store/searchStore'
+import { useState } from 'react'
+import NoSearchResultItem from './NoSearchResultItem'
 
 const GenreRandomMusic = () => {
-  const { searchedKeyword } = useSearchedKeywordStore()
-  const { keyword } = searchedKeyword
+  const [currentPage, setCurrentPage] = useState(1)
+
   const { data, isLoading } = useQuery({
     queryFn: () => getRandomMusicData(),
     queryKey: ['mainGenreMusic'],
@@ -14,16 +15,32 @@ const GenreRandomMusic = () => {
   if (isLoading) {
     return <div>정보를 가져오고 있습니다</div>
   }
+
+  const { currentItems, nextPage, prevPage, totalPages } = modalPaging(
+    data,
+    currentPage,
+    setCurrentPage,
+  )
   return (
-    <section className='p-4'>
-      {`'${keyword}'에 대한 검색결과가 없습니다.`}
-      <h2>이런 음악은 어떠신가요? 🎶</h2>
-      <div className='relative flex overflow-hidden'>
-        {data?.map((item) => {
-          return <GenreMusicItem key={item.musicId} item={item} />
+    <div>
+      <div className='focus-bold h-[28px] text-[20px] leading-[140%]'>
+        이런 음악은 어떠신가요? 🎶
+      </div>
+      <div>
+        {currentItems?.map((item: any) => {
+          return <NoSearchResultItem key={item.musicId} item={item} />
         })}
       </div>
-    </section>
+      <div className='mb-[82px]'>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          prevPage={prevPage}
+          nextPage={nextPage}
+          setCurrentPage={setCurrentPage}
+        />
+      </div>
+    </div>
   )
 }
 
