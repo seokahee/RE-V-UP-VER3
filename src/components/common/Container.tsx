@@ -20,7 +20,7 @@ const Container = ({
     <div className='relative flex justify-center'>
       {check ? (
         <div
-          className={`innerBox min-h-[100vh] w-[388px] ${check ? 'mr-[-2.5rem]' : ''} z-[1]`}
+          className={`musicPlayer min-h-[100vh] w-[388px] ${check ? 'mr-[-3.5rem]' : ''} z-[1]`}
         >
           <MusicPlayer />
         </div>
@@ -29,9 +29,15 @@ const Container = ({
       )}
       <div className={`innerBox min-h-[100vh] w-[852px]`}>
         <Header />
-        <div className={`${check ? 'pl-[5rem]' : 'pl-[2.5rem]'}  pr-[2.5rem]`}>
-          {children}
-        </div>
+        {path !== '/' ? (
+          <div
+            className={`${check ? 'pl-[5rem]' : 'pl-[2.5rem]'}  pr-[2.5rem]`}
+          >
+            {children}
+          </div>
+        ) : (
+          <div>{children}</div>
+        )}
       </div>
     </div>
   )

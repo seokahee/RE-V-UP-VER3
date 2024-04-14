@@ -186,7 +186,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
                   <div>
                     <CheckboxItem
                       checked={checkedList.includes(item.musicId)}
-                      id={item.musicId}
+                      id={`my-${item.musicId}`}
                       onChangeCheckMusicHandler={(e) =>
                         onChangeCheckMusicHandler(
                           e.target.checked,
@@ -202,7 +202,10 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
                         alt={`${item.musicTitle} 앨범 이미지`}
                       />
                     </figure>
-                    <label htmlFor={item.musicId} className='flex flex-col'>
+                    <label
+                      htmlFor={`my-${item.musicId}`}
+                      className='flex flex-col'
+                    >
                       {item.musicTitle}
                       <span>{item.artist}</span>
                     </label>
