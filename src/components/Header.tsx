@@ -22,9 +22,9 @@ const Header = () => {
       >
         <nav>
           <Link href='/'>
-            <p className='text-2xl font-bold italic text-primary-white '>
+            <h1 className='text-2xl font-bold italic text-primary-white '>
               V-UP
-            </p>
+            </h1>
           </Link>
         </nav>
         <nav className='flex justify-between  gap-2'>
@@ -72,9 +72,9 @@ const Header = () => {
             />
           </Link>
           <Link href='/'>
-            <p className='text-2xl font-bold italic text-primary-white '>
+            <h1 className='text-2xl font-bold italic text-primary-white '>
               V-UP
-            </p>
+            </h1>
           </Link>
         </nav>
       </header>

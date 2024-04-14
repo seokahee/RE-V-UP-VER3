@@ -11,9 +11,9 @@ const Footer = () => {
     <footer className={`${!check ? 'pl-10' : 'pl-20'} border-t border-black`}>
       <nav className='footer py-8'>
         <section>
-          <p className='py-2 text-2xl font-bold italic text-primary-white'>
+          <h1 className='py-2 text-2xl font-bold italic text-primary-white'>
             V-UP
-          </p>
+          </h1>
         </section>
         <section className='flex flex-row py-2'>
           <section className=''>
