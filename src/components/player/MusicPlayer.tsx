@@ -164,6 +164,8 @@ const MusicPlayer = () => {
             isLyrics={isLyrics}
             musicIndex={musicIndex}
             currentPlayList={currentPlayList as CurrentPlayListType[]}
+            onRandomMusicHandler={onRandomMusicHandler}
+            isRandom={isRandom}
             onPreviousHandler={onPreviousHandler}
             onNextTrackHandler={onNextTrackHandler}
             onLyricsToggle={onLyricsToggle}
@@ -177,8 +179,6 @@ const MusicPlayer = () => {
             checkedList={checkedList}
             onChangeCheckMusicHandler={onChangeCheckMusicHandler}
             onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
-            onRandomMusicHandler={onRandomMusicHandler}
-            isRandom={isRandom}
             setMusicIndex={setMusicIndex}
           />
         </div>

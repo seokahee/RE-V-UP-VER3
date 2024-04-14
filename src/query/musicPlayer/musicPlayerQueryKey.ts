@@ -13,12 +13,12 @@ export const getMusicList = (uid: string) => {
     queryFn: ({ queryKey }) => {
       return getCurrentMusicList(queryKey[1])
     },
-    queryKey: ['getCurrentMusicList', uid],
+    queryKey: [GET_MUSICLIST_QUERY_KEY.GET_CURRENT_MUSICLIST, uid],
   })
 
   const { data: playListCurrent } = useQuery({
     queryFn: () => getCurrentMusicData(uid),
-    queryKey: ['playListCurrent'],
+    queryKey: [GET_MUSICLIST_QUERY_KEY.GET_MY_CURRENT_MUSICLIST],
     enabled: !!uid,
   })
 
@@ -26,7 +26,7 @@ export const getMusicList = (uid: string) => {
     queryFn: ({ queryKey }) => {
       return getMyMusicList(queryKey[1])
     },
-    queryKey: ['getMyMusicList', uid],
+    queryKey: [GET_MUSICLIST_QUERY_KEY.GET_MY_MUSICLIST, uid],
   })
 
   return { currentPlayList, playListCurrent, myPlayList, isError }
