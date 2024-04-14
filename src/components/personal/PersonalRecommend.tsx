@@ -40,7 +40,6 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
   })
 
   const resultMusic = recommend?.map((music) => music.musicId) as string[]
-  console.log(resultMusic, '???')
 
   const onChangeCheckMusicHandler = (checked: boolean, id: string) => {
     if (checked) {

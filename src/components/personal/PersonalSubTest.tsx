@@ -22,8 +22,6 @@ const PersonalSubTest = ({
   const userId = userSessionInfo?.user?.uid as string
   const queryClient = useQueryClient()
   const router = useRouter()
-  console.log(userGender, 'userGender')
-  //state
 
   const [EI, setEI] = useState<string>('')
   const [SN, setSN] = useState<string>('')
