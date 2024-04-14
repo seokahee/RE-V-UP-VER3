@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import { getToday } from '@/util/util'
 import { useQuery } from '@tanstack/react-query'
-import { onDateTimeHandler } from '@/util/util'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   getComments,
@@ -11,6 +10,11 @@ import {
   addLikeComment,
 } from '@/shared/comment/commentApi'
 import { useSession } from 'next-auth/react'
+import { onDateTimeHandler } from '@/util/util'
+import edit from '@/../public/images/pencil-01.svg'
+import deleteIcon from '@/../public/images/Frame 532.svg'
+import emptyHeart from '@/../public/images/Property 1=heart-rounded.svg'
+import heart from '@/../public/images/heart-rounded.svg'
 
 const CommentsList = ({ boardId }: { boardId: string }) => {
   const { data: userSessionInfo } = useSession()
@@ -72,94 +76,116 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
       return
     }
 
-    alert('좋아요!')
     likeCommentMutation.mutate({ commentId, userId })
   }
 
   return (
-    <div>
+    <div className='border-t-2 border-black'>
       {commentsData?.map((item) => (
-        <div key={item.commentId} className=' border border-gray-100'>
-          <div className='flex flex-row  '>
-            <div className='flex flex-row basis-1/2'>
-              <p>
-                {item.userInfo?.userImage && (
-                  <Image
-                    src={item.userInfo.userImage}
-                    alt=''
-                    width={20}
-                    height={20}
-                  />
-                )}
-              </p>
-              <p className='basis-1/2'>{item.userInfo?.nickname}</p>
-            </div>
-            <div>{onDateTimeHandler(item.commentDate)}</div>
-          </div>
-          {editedCommentId === item.commentId ? (
-            <div>
-              <input
-                type='text'
-                value={editedText}
-                onChange={(e) => setEditedText(e.target.value)}
-              />
-              <button onClick={() => onUpdateCommentHandler(item.commentId)}>
-                수정 완료
-              </button>
-            </div>
-          ) : (
-            <div>
-              <p>{item.commentContent}</p>
-              <div>
-                {item.userInfo?.userId === userId ? (
-                  <>
-                    <button
-                      onClick={() => onDeleteCommentHandler(item.commentId)}
-                    >
-                      삭제
-                    </button>
-                    <button
-                      onClick={() => {
-                        setEditedCommentId(item.commentId)
-                        setEditedText(item.commentContent)
-                      }}
-                    >
-                      수정하기
-                    </button>
-                    <button onClick={() => onLikeHandler(item.commentId)}>
-                      {item.commentLikeList.includes(userId) ? (
-                        <>
-                          <p>좋아요 취소</p>
-                          <p>{item.commentLikeList.length}</p>
-                        </>
-                      ) : (
-                        <>
-                          <p>좋아요</p>
-                          <p>{item.commentLikeList.length}</p>
-                        </>
-                      )}
-                    </button>
-                  </>
-                ) : (
-                  <button onClick={() => onLikeHandler(item.commentId)}>
-                    {item.commentLikeList.includes(userId) ? (
-                      <>
-                        <p>좋아요 취소</p>
-                        <p>{item.commentLikeList.length}</p>
-                      </>
-                    ) : (
-                      <>
-                        <p>좋아요</p>
-                        <p>{item.commentLikeList.length}</p>
-                      </>
-                    )}
-                  </button>
-                )}
+        <div key={item.commentId}>
+          <div className='inline-flex w-full flex-col items-start justify-start gap-4 border-b border-white border-opacity-10 py-4'>
+            <div className='w-full flex-row'>
+              <div className='flex basis-1/2 flex-row gap-2'>
+                <p className='h-6 w-6 overflow-hidden rounded-full border-2 border-white'>
+                  {item.userInfo?.userImage && (
+                    <Image
+                      src={item.userInfo.userImage}
+                      alt=''
+                      width={20}
+                      height={20}
+                      className='rounded-full object-cover'
+                    />
+                  )}
+                </p>
+                <p>{item.userInfo?.nickname}</p>
+              </div>
+              <div className='flex basis-1/2 justify-end'>
+                {onDateTimeHandler(item.commentDate)}
               </div>
             </div>
-          )}
+            <div className='flex w-full flex-row'>
+              {/**유저 이미지, 닉네임, 날짜 */}
+              {editedCommentId === item.commentId ? (
+                <div className='flex w-full'>
+                  <div className='flex basis-1/2'>
+                    {' '}
+                    <input
+                      type='text'
+                      value={editedText}
+                      onChange={(e) => setEditedText(e.target.value)}
+                      className='w-[620px] appearance-none bg-transparent focus:outline-none'
+                    />
+                  </div>
+                  <div className='flex basis-1/2 justify-end'>
+                    {' '}
+                    <button
+                      onClick={() => onUpdateCommentHandler(item.commentId)}
+                    >
+                      수정 완료
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className='flex w-full flex-row'>
+                  <div className='flex basis-1/2'>
+                    <p>{item.commentContent}</p>
+                  </div>
+                  <div className='flex basis-1/2 justify-end'>
+                    {item.userInfo?.userId === userId && (
+                      <>
+                        <button
+                          onClick={() => {
+                            setEditedCommentId(item.commentId)
+                            setEditedText(item.commentContent)
+                          }}
+                        >
+                          <Image
+                            src={edit}
+                            alt='수정 아이콘'
+                            width={18}
+                            height={18}
+                          />
+                        </button>{' '}
+                        <button
+                          onClick={() => onDeleteCommentHandler(item.commentId)}
+                        >
+                          <Image
+                            src={deleteIcon}
+                            alt='삭제 아이콘'
+                            width={24}
+                            height={24}
+                          />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className='flex items-center'>
+              <button onClick={() => onLikeHandler(item.commentId)}>
+                {item.commentLikeList.includes(userId) ? (
+                  <>
+                    <Image src={heart} alt='찬 하트' width={24} height={24} />
+                    <p>{item.commentLikeList.length}</p>
+                  </>
+                ) : (
+                  <>
+                    <Image
+                      src={emptyHeart}
+                      alt='빈 하트'
+                      width={24}
+                      height={24}
+                    />
+                    <p>{item.commentLikeList.length}</p>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
         </div>
       ))}
+      <br />
     </div>
   )
 }

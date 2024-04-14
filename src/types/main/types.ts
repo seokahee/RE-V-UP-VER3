@@ -36,6 +36,7 @@ export type UserChar = {
     gender?: boolean
     age?: number
     mbti?: number
+    resultSentence?: string
   }
 }
 

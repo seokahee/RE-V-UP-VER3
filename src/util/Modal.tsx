@@ -10,22 +10,22 @@ const Modal = ({ isOpen, children, closeModal }: ModalProps) => {
   return (
     //모달
     <section
-      className={`${isOpen ? 'relative top-0 left-0 flex justify-center items-center max-w-[400px] z-50 ' : 'hidden'}`}
+      className={`${isOpen ? 'relative left-0 top-0 z-50 flex max-w-[400px] items-center justify-center ' : 'hidden'}`}
     >
       {isOpen && (
         <>
           <div
             onClick={closeModal}
-            className='fixed top-0 left-0 w-full h-full opacity-50 z-40'
+            className='fixed left-0 top-0 z-40 h-full w-full opacity-50'
           ></div>
-          <div className='bg-white rounded-lg p-8 max-w-[400px] relative z-50'>
+          <div className='relative z-50 max-w-[400px] rounded-lg bg-white p-8'>
             <button
               onClick={closeModal}
-              className='absolute top-0 right-0 p-5 w-full h-[60px] text-black flex justify-center'
+              className='absolute right-0 top-0 flex h-[60px] w-full justify-center p-5 text-black'
             >
-              <p className='flex w-full h-[10px] font-bold'>X</p>
+              <p className='flex h-[10px] w-full font-bold'>X</p>
             </button>
-            <div className='mt-4 rounded-[30px] bg-white w-3/5 h-4/5 max-w-7xl p-5 border-solid border-2 border-white'>
+            <div className='mt-4 h-4/5 w-3/5 max-w-7xl rounded-[30px] border-2 border-solid border-white bg-white p-5'>
               {children}
             </div>
           </div>
