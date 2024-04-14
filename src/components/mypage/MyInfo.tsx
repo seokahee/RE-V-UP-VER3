@@ -15,6 +15,8 @@ import FollowList from './FollowList'
 import MyPlaylist from './MyPlaylist'
 import { useSession } from 'next-auth/react'
 import right from '@/../public/images/chevron-right.svg'
+import pencil from '@/../public/images/pencil-line.svg'
+import ButtonPrimary from './ButtonPrimary'
 
 const MyInfo = () => {
   const { data: userSessionInfo } = useSession()
@@ -118,6 +120,9 @@ const MyInfo = () => {
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const nickname = e.target.value
     setNickname(nickname)
+    if (nickname.trim() && checkText) {
+      setCheckText('')
+    }
   }
 
   const selectFileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -186,6 +191,11 @@ const MyInfo = () => {
   const shadow =
     'shadow-[0px_4px_4px_#00000033,0px_0px_0px_1px_#0000001a,0px_0px_0px_4px_#685bff1a,0px_0px_0px_3px_#ffffff33,inset_0px_1px_2px_#ffffff33,inset_0px_4px_1px_#ffffff33,inset_0px_-4px_1px_#0000001a]'
 
+  const inputShadow =
+    'shadow-[0px_4px_1px_#0000001a,0px_-4px_4px_#ffffff1a,0px_0px_0px_3px_#ffffff33,inset_0px_1px_2px_#0000001a,inset_0px_-4px_1px_#ffffff0d,inset_0px_4px_1px_#0000004d] drop-shadow-[0px_4px_4px_#0000003f]'
+
+  const inputFocus = 'focus:border-primary drop-shadow-none'
+
   if (isError) {
     return <>에러발생</>
   }
@@ -248,99 +258,118 @@ const MyInfo = () => {
       <MyPlaylist data={data!} />
       {isModal && (
         <Modal onClick={onClickCloseModalHandler}>
-          <label className='[&>input]:hidden'>
-            <figure className='flex h-[80px] w-[80px] overflow-hidden rounded-full bg-slate-200'>
-              {userImage && (
-                <Image
-                  src={userImage}
-                  width={80}
-                  height={80}
-                  alt={`${data?.nickname} 프로필 이미지`}
-                  priority={true}
-                />
-              )}
-            </figure>
-            <input type='file' onChange={selectFileHandler} accept='image/*' />
-          </label>
-          <label>
+          <div className='px-[3.25rem] tracking-[-0.03em]'>
+            <label className='relative mx-auto mb-8 mt-4 block h-[84px] w-[84px] cursor-pointer overflow-hidden rounded-full border-2 border-[#ffffff1a] bg-[#00000080] text-center [&>input]:hidden'>
+              <figure className=''>
+                {userImage && (
+                  <Image
+                    src={userImage}
+                    width={80}
+                    height={80}
+                    alt={`${data?.nickname} 프로필 이미지`}
+                    priority={true}
+                    className='blur-sm'
+                  />
+                )}
+              </figure>
+              <Image
+                src={pencil}
+                width={24}
+                height={24}
+                className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+                alt='수정 아이콘'
+              />
+              <input
+                type='file'
+                onChange={selectFileHandler}
+                accept='image/*'
+              />
+            </label>
+            <label
+              htmlFor='nickname'
+              className='inline-block pb-[2px] text-[0.875rem] text-[#ffffff4c]'
+            >
+              닉네임
+            </label>
             <input
+              id='nickname'
               type='text'
               value={nickname}
-              className='w-full'
+              className={`mb-1 block w-full rounded-xl border-2 border-[#ffffff1a] bg-[#ffffff1a] p-3 ${inputShadow} text-[1rem] font-bold outline-none ${inputFocus} [&_placeholder]:text-[#ffffff4d]`}
               ref={nicknameRef}
               onChange={onChangeInput}
               placeholder='변경할 닉네임을 입력해주세요'
             />
-          </label>
-          <p className='h-5 text-sm text-red-500'>{checkText}</p>
-          <h3>
-            내 활동 공개여부{' '}
-            <span>*체크 비활성화 시 다른 유저에게 보이지 않습니다.</span>
-          </h3>
-          <ul className='list-none text-white'>
-            <li>
-              <label>
-                <input
-                  type='checkbox'
-                  name='personalMusicOpen'
-                  checked={isVisibility.personalMusicOpen}
-                  onChange={onChangeCheck}
-                />{' '}
-                퍼스널 뮤직
-              </label>
-            </li>
-            <li>
-              <label>
-                <input
-                  type='checkbox'
-                  name='mbtiOpen'
-                  checked={isVisibility.mbtiOpen}
-                  onChange={onChangeCheck}
-                />{' '}
-                MBTI
-              </label>
-            </li>
-            <li>
-              <label>
-                <input
-                  type='checkbox'
-                  name='postsOpen'
-                  checked={isVisibility.postsOpen}
-                  onChange={onChangeCheck}
-                />{' '}
-                작성한 게시물
-              </label>
-            </li>
-            <li>
-              <label>
-                <input
-                  type='checkbox'
-                  name='likedPostsOpen'
-                  checked={isVisibility.likedPostsOpen}
-                  onChange={onChangeCheck}
-                />{' '}
-                좋아요 한 글
-              </label>
-            </li>
-            <li>
-              <label>
-                <input
-                  type='checkbox'
-                  name='playlistOpen'
-                  checked={isVisibility.playlistOpen}
-                  onChange={onChangeCheck}
-                />{' '}
-                플레이리스트
-              </label>
-            </li>
-          </ul>
-          <div className='mt-4 flex justify-between'>
-            <button type='button' onClick={onClickCloseModalHandler}>
-              취소
-            </button>
-            <button type='button' onClick={onClickUpdateHandler}>
-              수정하기
-            </button>
+
+            <p className='h-5 text-sm text-red-500'>{checkText}</p>
+            <h3 className='mb-8 mt-3 flex items-baseline text-[0.875rem] font-bold text-[#ffffff4c]'>
+              내 활동 공개여부{' '}
+              <span className='pl-2 text-[0.75rem]'>
+                * 체크 비활성화 시 다른 유저에게 보이지 않습니다.
+              </span>
+            </h3>
+            <ul className='flex flex-col gap-8 font-bold'>
+              <li>
+                <label>
+                  <input
+                    type='checkbox'
+                    name='personalMusicOpen'
+                    checked={isVisibility.personalMusicOpen}
+                    onChange={onChangeCheck}
+                  />{' '}
+                  <span className='pl-2 text-[0.875rem]'>퍼스널 뮤직</span>
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input
+                    type='checkbox'
+                    name='mbtiOpen'
+                    checked={isVisibility.mbtiOpen}
+                    onChange={onChangeCheck}
+                  />{' '}
+                  <span className='pl-2 text-[0.875rem]'>MBTI</span>
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input
+                    type='checkbox'
+                    name='postsOpen'
+                    checked={isVisibility.postsOpen}
+                    onChange={onChangeCheck}
+                  />{' '}
+                  <span className='pl-2 text-[0.875rem]'>작성한 게시물</span>
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input
+                    type='checkbox'
+                    name='likedPostsOpen'
+                    checked={isVisibility.likedPostsOpen}
+                    onChange={onChangeCheck}
+                  />{' '}
+                  <span className='pl-2 text-[0.875rem]'>좋아요 한 글</span>
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input
+                    type='checkbox'
+                    name='playlistOpen'
+                    checked={isVisibility.playlistOpen}
+                    onChange={onChangeCheck}
+                  />{' '}
+                  <span className='pl-2 text-[0.875rem]'>플레이리스트</span>
+                </label>
+              </li>
+            </ul>
+            <div className='mt-4 text-center'>
+              <ButtonPrimary onClick={onClickUpdateHandler}>
+                수정하기
+              </ButtonPrimary>
+            </div>
           </div>
         </Modal>
       )}
