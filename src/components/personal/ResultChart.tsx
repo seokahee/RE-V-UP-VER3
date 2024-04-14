@@ -61,7 +61,7 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
               plugins: {
                 title: {
                   display: true,
-                  text: '퍼스널 뮤직 진단 결과',
+                  text: '당신의 퍼스널 뮤직 진단 결과',
                 },
               },
             },
@@ -74,8 +74,8 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
   }, [preference, dislike, chartRef.current])
 
   return (
-    <div>
-      <canvas ref={chartRef} style={{ width: '500px', height: '500px' }} />
+    <div className=' flex justify-center '>
+      <canvas ref={chartRef} />
     </div>
   )
 }

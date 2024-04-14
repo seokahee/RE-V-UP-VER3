@@ -5,20 +5,26 @@ import { persist } from 'zustand/middleware'
 type configType = {
   numberOfQuestion: number
   status: string
+  userGender: string
+  userMBTI: string
   userChar: { gender: string; mbti: string; uid: string }
   addNumberOfQuestion: (count: number) => void
   addStatus: (status: string) => void
-  addUserChar: (userChar: { gender: string; mbti: string; uid: string }) => void // 수정: addUserChar의 타입 정의 수정
+  addGender: (gender: string) => void
+  addUserChar: (userChar: { gender: string; mbti: string; uid: string }) => void
 }
 
 // 기본 설정
 const defaultConfig: configType = {
   numberOfQuestion: 5,
   status: '',
+  userGender: '',
+  userMBTI: '',
   userChar: { gender: '', mbti: '', uid: '' },
-  addNumberOfQuestion: (count: number) => {}, // 추가
-  addStatus: (status: string) => {}, // 추가
-  addUserChar: (userChar: { gender: string; mbti: string; uid: string }) => {}, // 추가
+  addNumberOfQuestion: (count: number) => {},
+  addStatus: (status: string) => {},
+  addGender: (gender: string) => {},
+  addUserChar: (userChar: { gender: string; mbti: string; uid: string }) => {},
 }
 
 // Zustand 훅 생성 및 영속성 추가
@@ -38,6 +44,7 @@ export const useSurvey = create(
           ...state,
           status: status,
         })),
+      addGender: (gender: string) => set({ userGender: gender }),
       // 사용자 특성 추가 함수
       addUserChar: (userChar: { gender: string; mbti: string; uid: string }) =>
         set((state) => ({

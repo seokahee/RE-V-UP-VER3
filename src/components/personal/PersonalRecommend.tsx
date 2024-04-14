@@ -14,6 +14,7 @@ import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'
 import CheckboxItem from '../mypage/CheckboxItem'
 import type { PersonalRecommendProps } from '@/types/personal/type'
 import { useRouter } from 'next/navigation'
+import { SentenceMatch } from '@/util/personal/util'
 
 const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
   const [checkedList, setCheckedList] = useState<string[]>([])
@@ -127,33 +128,62 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
 
   return (
     <div>
-      <p>추천음악</p>
-      {recommend?.map((item) => (
-        <div key={item.musicId}>
-          <CheckboxItem
-            checked={checkedList.includes(item.musicId)}
-            id={item.musicId}
-            onChangeCheckMusicHandler={(e) =>
-              onChangeCheckMusicHandler(e.target.checked, item.musicId)
-            }
-          />
-          <div>
-            <Image
-              src={item.thumbnail}
-              width={120}
-              height={120}
-              alt={`${item.musicTitle} 앨범 썸네일`}
-            />
-          </div>
-          <div>제목 : {item.musicTitle}</div>
-          <div>가수 : {item.artist}</div>
-          {currentList.includes(item.musicId) ? '현재 재생중' : ''}
-          <br />
-        </div>
-      ))}
-      <button onClick={onSubmitCurrentMusic}>재생목록에 담기</button>
-      <button onClick={onGoToHomeHandler}>메인으로 가기</button>
+      <p className='text-center text-neutral-400'>
+        {SentenceMatch(userChar.mbti)}
+      </p>
       <br />
+      <p className='text-center'>
+        당신의 취향에 맞는 음악을 추천 해드릴게요 &#x1F642;
+      </p>
+      <div className='  flex flex flex-row justify-center'>
+        {recommend?.map((item) => (
+          <div key={item.musicId}>
+            <CheckboxItem
+              checked={checkedList.includes(item.musicId)}
+              id={item.musicId}
+              onChangeCheckMusicHandler={(e) =>
+                onChangeCheckMusicHandler(e.target.checked, item.musicId)
+              }
+            />
+            <label htmlFor={item.musicId}>
+              <div className='m-2 text-center'>
+                <div>
+                  <Image
+                    src={item.thumbnail}
+                    width={120}
+                    height={120}
+                    alt={`${item.musicTitle} 앨범 썸네일`}
+                    className='rounded-full'
+                  />
+                </div>
+                <div>
+                  <p> {item.musicTitle}</p>
+                </div>
+                <div>{item.artist}</div>
+                <div>
+                  {' '}
+                  {currentList.includes(item.musicId) ? '현재 재생중' : ''}
+                </div>
+              </div>
+            </label>
+            <br />
+          </div>
+        ))}
+      </div>
+      <div className='flex justify-center gap-4'>
+        <button
+          onClick={onSubmitCurrentMusic}
+          className='h-12 w-40 rounded-xl border border-dim-black bg-primary'
+        >
+          재생목록에 담기
+        </button>
+        <button
+          onClick={onGoToHomeHandler}
+          className='h-12 w-40 rounded-xl border border-dim-black bg-primary'
+        >
+          메인으로 가기
+        </button>
+      </div>
     </div>
   )
 }

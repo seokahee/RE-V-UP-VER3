@@ -27,7 +27,7 @@ const Header = () => {
         </nav>
         <nav className='flex justify-between'>
           <Link href='/community'>
-            <Image src={commu} alt='커뮤니티 아이콘' />
+            <Image src={commu} alt='커뮤니티 아이콘' quality={100} alt='logo' />
           </Link>
           {!user ? (
             <Link href='/join'>

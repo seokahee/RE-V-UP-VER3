@@ -8,6 +8,7 @@ const PersonalTestResult = () => {
 
   return (
     <div>
+      <p className='text-center text-3xl'>당신의 음악 취향은....!</p>
       <ResultChart userChar={userChar} />
       <PersonalRecommend userChar={userChar} />
     </div>

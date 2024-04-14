@@ -5,7 +5,11 @@ export type personalMusicTest = {
 }
 
 export type PersonalInfo = {
+  gender: string
   mbti: string
+}
+
+export type PersonalGender = {
   gender: string
 }
 

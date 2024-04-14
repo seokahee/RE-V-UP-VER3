@@ -4,25 +4,28 @@ import { useSurvey } from '@/shared/store/personalStore'
 import { useSession } from 'next-auth/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { insertUserChar } from '@/shared/personal/personalApi'
-import PersonalTestResult from './PersonalTestResult'
+
 import { useRouter } from 'next/navigation'
 
 import type { PersonalInfo } from '@/types/personal/type'
 
-const PersonalSubTest = () => {
-  const { addUserChar } = useSurvey()
+const PersonalSubTest = ({
+  setPageCount,
+}: {
+  setPageCount: React.Dispatch<React.SetStateAction<string>>
+}) => {
+  const { addUserChar, userGender } = useSurvey()
   const { data: userSessionInfo } = useSession()
   const userId = userSessionInfo?.user?.uid as string
   const queryClient = useQueryClient()
   const router = useRouter()
 
   //state
-  const [gender, setGender] = useState<string>('')
+
   const [EI, setEI] = useState<string>('')
   const [SN, setSN] = useState<string>('')
   const [TF, setTF] = useState<string>('')
   const [PJ, setPJ] = useState<string>('')
-  const [isResult, setIsResult] = useState<boolean>(false)
 
   //입력한 userChar
   const insertUserCharMutation = useMutation({
@@ -34,9 +37,7 @@ const PersonalSubTest = () => {
 
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    if (name === 'gender') {
-      setGender(value)
-    } else if (name === 'EI') {
+    if (name === 'EI') {
       setEI(value)
     } else if (name === 'SN') {
       setSN(value)
@@ -54,154 +55,151 @@ const PersonalSubTest = () => {
   const mbti = calculateMBTI()
 
   const onsubmitResultHandler = () => {
-    if (!gender || !EI || !SN || !TF || !PJ) {
+    if (!EI || !SN || !TF || !PJ) {
       alert('모든 항목을 선택해주세요.')
       return
     }
 
-    addUserChar({ gender, mbti, uid: userId })
+    addUserChar({ gender: userGender, mbti, uid: userId })
     const personalUser: PersonalInfo = {
       mbti: mbti,
-      gender: gender,
+      gender: userGender,
     }
 
     insertUserCharMutation.mutate({ userId: userId, personalUser })
 
-    setGender('')
     setEI('')
     setSN('')
     setTF('')
     setPJ('')
-    setIsResult(true)
+
+    handleNextClick('pageThree')
+  }
+  const handleNextClick = (param: string) => {
+    return setPageCount(param)
   }
   const onBackHandler = () => {
     router.back()
   }
   return (
-    <div>
-      {!isResult ? (
-        <>
-          <div>
-            <label>
-              <input
-                type='radio'
-                name='gender'
-                value='male'
-                checked={gender === 'male'}
-                onChange={onChangeHandler}
-              />
-              남자
-            </label>
-            <label>
-              <input
-                type='radio'
-                name='gender'
-                value='female'
-                checked={gender === 'female'}
-                onChange={onChangeHandler}
-              />
-              여자
-            </label>
-          </div>
-          <div>
-            <label>
-              <input
-                type='radio'
-                name='EI'
-                value='E'
-                checked={EI === 'E'}
-                onChange={onChangeHandler}
-              />
-              E
-            </label>
-            <label>
-              <input
-                type='radio'
-                name='EI'
-                value='I'
-                checked={EI === 'I'}
-                onChange={onChangeHandler}
-              />
-              I
-            </label>
-          </div>
-          <div>
-            <label>
-              <input
-                type='radio'
-                name='SN'
-                value='S'
-                checked={SN === 'S'}
-                onChange={onChangeHandler}
-              />
-              S
-            </label>
-            <label>
-              <input
-                type='radio'
-                name='SN'
-                value='N'
-                checked={SN === 'N'}
-                onChange={onChangeHandler}
-              />
-              N
-            </label>
-          </div>
-          <div>
-            <label>
-              <input
-                type='radio'
-                name='TF'
-                value='T'
-                checked={TF === 'T'}
-                onChange={onChangeHandler}
-              />
-              T
-            </label>
-            <label>
-              <input
-                type='radio'
-                name='TF'
-                value='F'
-                checked={TF === 'F'}
-                onChange={onChangeHandler}
-              />
-              F
-            </label>
-          </div>
-          <div>
-            <label>
-              <input
-                type='radio'
-                name='PJ'
-                value='P'
-                checked={PJ === 'P'}
-                onChange={onChangeHandler}
-              />
-              P
-            </label>
-            <label>
-              <input
-                type='radio'
-                name='PJ'
-                value='J'
-                checked={PJ === 'J'}
-                onChange={onChangeHandler}
-              />
-              J
-            </label>
-          </div>
-          <p>{EI}</p>
-          <p>{SN}</p>
-          <p>{TF}</p>
-          <p>{PJ}</p>
-          <button onClick={onBackHandler}>이전</button>
-          <br />
-          <button onClick={onsubmitResultHandler}>결과보러가기</button>
-        </>
-      ) : (
-        <PersonalTestResult />
-      )}
+    <div className=' rounded-[32px] bg-white bg-opacity-10'>
+      <div className='flex justify-center'>
+        <label>
+          <input
+            type='radio'
+            name='EI'
+            value='E'
+            checked={EI === 'E'}
+            onChange={onChangeHandler}
+          />
+          E
+        </label>
+        <label>
+          <input
+            type='radio'
+            name='EI'
+            value='I'
+            checked={EI === 'I'}
+            onChange={onChangeHandler}
+          />
+          I
+        </label>
+      </div>
+      <div className='flex justify-center'>
+        <label>
+          <input
+            type='radio'
+            name='SN'
+            value='S'
+            checked={SN === 'S'}
+            onChange={onChangeHandler}
+          />
+          S
+        </label>
+        <label>
+          <input
+            type='radio'
+            name='SN'
+            value='N'
+            checked={SN === 'N'}
+            onChange={onChangeHandler}
+          />
+          N
+        </label>
+      </div>
+      <div className='flex justify-center'>
+        <label>
+          <input
+            type='radio'
+            name='TF'
+            value='T'
+            checked={TF === 'T'}
+            onChange={onChangeHandler}
+          />
+          T
+        </label>
+        <label>
+          <input
+            type='radio'
+            name='TF'
+            value='F'
+            checked={TF === 'F'}
+            onChange={onChangeHandler}
+          />
+          F
+        </label>
+      </div>
+      <div className='flex justify-center'>
+        <label>
+          <input
+            type='radio'
+            name='PJ'
+            value='P'
+            checked={PJ === 'P'}
+            onChange={onChangeHandler}
+          />
+          P
+        </label>
+        <label>
+          <input
+            type='radio'
+            name='PJ'
+            value='J'
+            checked={PJ === 'J'}
+            onChange={onChangeHandler}
+          />
+          J
+        </label>
+      </div>
+      <div className='flex justify-center gap-2'>
+        <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl shadow shadow-inner'>
+          {EI}
+        </p>
+        <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center  text-7xl  shadow shadow-inner'>
+          {SN}
+        </p>
+        <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  shadow shadow-inner'>
+          {TF}
+        </p>
+        <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl shadow shadow-inner'>
+          {PJ}
+        </p>
+      </div>
+
+      <div className='flex justify-center gap-4'>
+        <button
+          onClick={onBackHandler}
+          className='h-12 w-40 rounded-xl border border  border-dim-black '
+        >
+          이전
+        </button>
+        <button
+          onClick={onsubmitResultHandler}
+          className='h-12 w-40 rounded-xl border border-dim-black bg-primary'
+        >
+          결과보러가기
+        </button>
+      </div>
     </div>
   )
 }
