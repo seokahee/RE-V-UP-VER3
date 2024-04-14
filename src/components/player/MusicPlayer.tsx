@@ -134,7 +134,6 @@ const MusicPlayer = () => {
         // some - || / every - &&
         const uniqueValues = checkedList.filter((value) => {
           return myIndex.every((item) => {
-            console.log('item', item)
             return item !== value
           })
         })

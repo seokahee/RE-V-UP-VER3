@@ -62,7 +62,6 @@
   align-items: center;
   padding: 0;
   width: 100%;
-  margin: audio;
   position: relative;
 }
 
@@ -86,7 +85,7 @@
   position: absolute;
   z-index: 2;
   width: 5px;
-  height: 20px;
+  height: 24px;
   margin-left: -4px;
   top: 0px;
   background: #d5605c;
@@ -100,12 +99,15 @@
   background-position: center; /* 이미지 위치 설정 */
   background:;
   z-index: 3;
+  height: 32px;
+  width: 255px;
 }
 
 .rhap_progress-filled {
   opacity: 0; /* 투명하게 만들기 */
   visibility: hidden; /* 숨기기 */
   z-index: 3;
+  width: 255px;
 }
 
 .rhap_progress-bar-show-download {
@@ -115,6 +117,7 @@
   background-position: center; /* 이미지 위치 설정 */
   background:;
   z-index: 3;
+  width: 255px;
 }
 
 .rhap_progress-container {
@@ -124,6 +127,7 @@
   background-position: center; /* 이미지 위치 설정 */
   background:;
   z-index: 3;
+  width: 255px;
 }
 
 .rhap_progress-bar-show-download {
@@ -132,8 +136,9 @@
   background-position: center;
   background:;
   z-index: 3;
-  width: 100%;
+  width: 255px;
   padding: 10px;
+  background: transparent;
 }
 .rhap_download-progress {
   height: 0;
@@ -141,4 +146,5 @@
   z-index: 0;
   background-color:;
   border-radius: 0;
+  width: 255px;
 }

@@ -53,7 +53,6 @@ const Player = ({
       return
     }
 
-    console.log('currentPlayList', currentPlayList)
     return (
       <div className='rhap_controls-section'>
         <AudioPlayer
@@ -78,12 +77,12 @@ const Player = ({
         />
       </div>
     )
-  }, [currentPlayList, musicIndex])
+  }, [currentPlayList, musicIndex, isRandom])
 
   return (
     <div>
       {isPlayList && (
-        <div>
+        <div className='flex flex-col items-center'>
           <div className='mt-[40px] flex flex-col items-center gap-[8px] p-[0px]'>
             <div className=' text-center text-[20px] font-bold leading-[150%]  tracking-tighter text-white opacity-80'>
               {currentPlayList[musicIndex].musicTitle}
@@ -94,38 +93,30 @@ const Player = ({
             </div>
           </div>
           <div className='relative ml-[44px] mr-[44px] mt-[41px]'>
-            <div className='relative'>
+            <div className='relative h-[300px] w-[300px]'>
               <Image
                 src={musicThumbnail}
                 alt='Album Circle'
                 width={300}
                 height={300}
+                className='h-[300px] w-[300px]'
               />
             </div>
-            <div className='absolute left-[41px] top-[41px] h-[200px] w-[200px] '>
+            <div className='absolute left-[50px] top-[50px] h-[200px] w-[200px] '>
               <Image
                 src={currentPlayList[musicIndex].thumbnail}
                 alt='Album Thumbnail'
                 width={200}
                 height={200}
-                className='rounded-full'
+                className='h-[200px] w-[200px] rounded-full'
               />
             </div>
           </div>
           <div className='mx-auto flex items-center px-[24px]'>
             <div className='flex w-[316px] justify-between'>
-              <button onClick={onLyricsToggle}>
+              <button onClick={onLyricsToggle} className='h-[48px] w-[48px]'>
                 {isLyrics ? (
-                  <div>
-                    <Image
-                      src={musicList}
-                      alt='Lyrics'
-                      width={48}
-                      height={48}
-                    />
-
-                    <div>{currentPlayList[musicIndex].lyrics}</div>
-                  </div>
+                  <Image src={musicList} alt='Lyrics' width={48} height={48} />
                 ) : (
                   <Image
                     src={musicLyricsButton}
@@ -135,7 +126,11 @@ const Player = ({
                   />
                 )}
               </button>
-              <button type='button' onClick={onInsertMyPlayListHandler}>
+              <button
+                type='button'
+                onClick={onInsertMyPlayListHandler}
+                className='h-[48px] w-[48px]'
+              >
                 <Image
                   src={myPlayListButton}
                   alt='Album Circle'

@@ -1,5 +1,8 @@
 'use client'
+import Image from 'next/image'
 import React from 'react'
+import prevPageButton from '@/../public/images/prevPageButton.svg'
+import nextPageButton from '@/../public/images/nextPageButton.svg'
 
 type PaginationProps = {
   currentPage: number
@@ -17,8 +20,17 @@ const Pagination = ({
   setCurrentPage,
 }: PaginationProps) => {
   return (
-    <div className='my-8 text-center'>
-      {currentPage !== 1 && <button onClick={prevPage}>prev</button>}
+    <div className='text-center'>
+      {currentPage !== 1 && (
+        <button onClick={prevPage}>
+          <Image
+            src={prevPageButton}
+            alt='이전페이지 버튼'
+            width={13}
+            height={15}
+          />
+        </button>
+      )}
       {totalPages &&
         Array(totalPages)
           .fill(0)
@@ -26,7 +38,7 @@ const Pagination = ({
             return (
               <button
                 key={idx + 1}
-                className={`px-1 mx-1 ${idx + 1 === currentPage && 'text-red-600'}`}
+                className={`mx-1 px-1 text-[18px] ${idx + 1 !== currentPage && 'opacity-[30%]'}`}
                 onClick={() => setCurrentPage(idx + 1)}
               >
                 {idx + 1}
@@ -34,7 +46,16 @@ const Pagination = ({
             )
           })}
 
-      {currentPage !== totalPages && <button onClick={nextPage}>next</button>}
+      {currentPage !== totalPages && (
+        <button onClick={nextPage}>
+          <Image
+            src={nextPageButton}
+            alt='다음페이지 버튼'
+            width={13}
+            height={15}
+          />
+        </button>
+      )}
     </div>
   )
 }
