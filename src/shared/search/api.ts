@@ -15,7 +15,7 @@ export const getSearchedCommunityData = async (keyword: string) => {
   const { data } = await supabase
     .from('community')
     .select(
-      'boardId, boardTitle, likeList, date, userId, userInfo(nickname, userImage), musicInfo(thumbnail)',
+      'boardId, boardTitle, likeList, date, userId, userInfo(nickname, userImage), musicInfo(thumbnail), comment(commentId)',
     )
     .like('boardTitle', `%${keyword}%`)
     .order('date', { ascending: false })

@@ -53,7 +53,7 @@ export const getGenreMusicData = async (
     const { data } = await supabase
       .from('musicInfo')
       .select(
-        'musicTitle, genre, artist, thumbnail, lyrics, release, musicId, musicSource',
+        'musicTitle, genre, artist, thumbnail, lyrics, release, musicId, musicSource,runTime',
       )
       .in('genre', genreCodes)
       .limit(10)
@@ -72,7 +72,7 @@ export const getRandomMusicData = async (): Promise<GenreMusicInfo[]> => {
     const { data } = await supabase
       .from('musicInfo')
       .select(
-        'musicTitle, genre, artist, thumbnail, lyrics, release, musicId, musicSource',
+        'musicTitle, genre, artist, thumbnail, lyrics, release, musicId, musicSource,runTime',
       )
       .like('musicSource', `%${alphabets[random]}%`)
       .limit(10)

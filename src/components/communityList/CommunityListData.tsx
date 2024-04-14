@@ -4,6 +4,8 @@ import Link from 'next/link'
 import React from 'react'
 
 const CommunityListData = ({ item }: { item: CommunityType }) => {
+  const keys = Object.keys(item.comment)
+  const numKeys = keys.length
   return (
     <Link
       href={`/community/${item.boardId}`}
@@ -18,6 +20,7 @@ const CommunityListData = ({ item }: { item: CommunityType }) => {
             <div>{item.userInfo.nickname}</div>
             <div>{onDateHandler(item!.date)}</div>
             <div>좋아요 {item?.likeList.length}</div>
+            <div>댓글 {numKeys}</div>
           </div>
         </div>
       </div>
