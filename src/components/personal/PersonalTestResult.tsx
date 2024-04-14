@@ -8,8 +8,9 @@ const PersonalTestResult = () => {
 
   return (
     <div className=' w-[600px] place-items-center rounded-[32px] bg-white bg-opacity-10 '>
-      <p className='text-center text-3xl'>당신의 음악 취향은....!</p>
-      <ResultChart userChar={userChar} />
+      <br />
+      <p className='text-center text-3xl'>당신의 음악 취향은....!</p> <br />
+      <ResultChart userChar={userChar} /> <br />
       <PersonalRecommend userChar={userChar} />
     </div>
   )

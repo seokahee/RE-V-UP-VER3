@@ -146,7 +146,8 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
       <br />
       <p className='text-center'>
         당신의 취향에 맞는 음악을 추천 해드릴게요 &#x1F642;
-      </p>
+      </p>{' '}
+      <br />
       <div className='  flex flex flex-row justify-center'>
         {recommend?.map((item) => (
           <div key={item.musicId}>
@@ -183,11 +184,13 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
         ))}
       </div>
       <div className='flex justify-center gap-4'>
+        <br />
         <ButtonPrimary onClick={onSubmitCurrentMusic}>
           재생목록에 담기
         </ButtonPrimary>
-        <ButtonPrimary onClick={onGoToHomeHandler}>메인으로 가기</ButtonPrimary>
-      </div>
+        <ButtonPrimary onClick={onGoToHomeHandler}>메인으로 가기</ButtonPrimary>{' '}
+      </div>{' '}
+      <br />
     </div>
   )
 }
