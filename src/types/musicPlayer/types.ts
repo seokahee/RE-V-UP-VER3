@@ -53,19 +53,20 @@ export type PlayerProps = {
   isLyrics: boolean
   currentPlayList: CurrentPlayListType[]
   musicIndex: number
+  isRandom: boolean
   onPreviousHandler: () => void
   onNextTrackHandler: () => void
   onLyricsToggle: () => void
   onInsertMyPlayListHandler: () => void
+  onRandomMusicHandler: () => void
 }
 
 export type MusicListProps = {
   isLyrics: boolean
   currentPlayList: CurrentPlayListType[]
   checkedList: string[]
-  isRandom: boolean
+
   onChangeCheckMusicHandler: (checked: boolean, id: string) => void
   onDeleteCurrentMusicHandler: () => void
-  onRandomMusicHandler: () => void
   setMusicIndex: (index: number) => void
 }

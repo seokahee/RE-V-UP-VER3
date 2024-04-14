@@ -41,7 +41,7 @@ export type recommend = {
 }
 
 export type PersonalMusic = {
-  checkedList: string[]
+  resultMusic: string[]
   userChar: {
     gender: string
     mbti: string

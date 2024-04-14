@@ -146,7 +146,6 @@ export const insertCurrentMusic = async ({
   userId: string
   musicId: string
 }) => {
-  console.log('musicId++>', musicId)
   try {
     await supabase
       .from('playlistCurrent')

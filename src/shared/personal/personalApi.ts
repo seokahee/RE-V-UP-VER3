@@ -104,7 +104,7 @@ export const insertUserChar = async ({
 
 //퍼스널 뮤직 테이블에 추가하는 값
 export const insertPersonalMusic = async (personalMusic: PersonalMusic) => {
-  const { userChar, checkedList } = personalMusic
+  const { userChar, resultMusic } = personalMusic
   const mbtiSentence = SentenceMatch(userChar.mbti)
 
   const { data, error } = await supabase
@@ -113,7 +113,7 @@ export const insertPersonalMusic = async (personalMusic: PersonalMusic) => {
       {
         resultSentence: mbtiSentence,
         userId: userChar.uid,
-        result: checkedList,
+        result: resultMusic,
       },
     ])
     .select()
@@ -131,14 +131,14 @@ export const getPersonaledUser = async () => {
 
 //이미 진단을 받은 경우
 export const updatePersonalMusic = async (personalMusic: PersonalMusic) => {
-  const { userChar, checkedList } = personalMusic
+  const { userChar, resultMusic } = personalMusic
   const mbtiSentence = SentenceMatch(userChar.mbti)
 
   const { data, error } = await supabase
     .from('personalMusic')
     .update({
       resultSentence: mbtiSentence,
-      result: checkedList,
+      result: resultMusic,
     })
     .eq('userId', userChar.uid)
     .select()

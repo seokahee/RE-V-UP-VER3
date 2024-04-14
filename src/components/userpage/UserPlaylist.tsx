@@ -34,7 +34,7 @@ const UserPlaylist = ({
   const { data: totalCount } = useQuery({
     queryFn: () =>
       getMyMusicCount(data?.playlistMy?.[0].myMusicIds as string[]),
-    queryKey: ['myMusicAllCount'],
+    queryKey: ['userMyMusicAllCount'],
     enabled: !!data?.playlistMy?.length,
   })
 
@@ -58,6 +58,7 @@ const UserPlaylist = ({
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
+      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
     },
   })
 
@@ -106,32 +107,33 @@ const UserPlaylist = ({
   }
 
   const onClickAllAddHandler = () => {
-    const userPlaylistCurrent = !data.playlistCurrent?.[0].currentMusicIds
+    const userPlaylistMy = !data.playlistMy?.[0].myMusicIds
       ? []
-      : data.playlistCurrent?.[0].currentMusicIds
+      : data.playlistMy?.[0].myMusicIds
     const myPlayListCurrent = !myPlaylistCurrentData?.[0].currentMusicIds
       ? []
       : myPlaylistCurrentData?.[0].currentMusicIds
     let newData = []
 
-    if (userPlaylistCurrent?.length === 0) {
+    if (userPlaylistMy?.length === 0) {
       alert('추가할 곡이 없습니다.')
       return
     }
 
     if ((myPlayListCurrent?.length as number) > 0) {
-      const addData = userPlaylistCurrent.filter(
+      const addData = userPlaylistMy?.filter(
         (el) => !myPlayListCurrent!.includes(el),
       )
 
-      if (addData.length === 0) {
-        alert(`${userPlaylistCurrent.length}개 모두 이미 추가되어 있습니다.`)
+      if (addData?.length === 0) {
+        alert(`${userPlaylistMy?.length}개 모두 이미 추가되어 있습니다.`)
         return
       }
 
-      newData = [...myPlayListCurrent, ...addData]
+      newData = [...myPlayListCurrent, ...addData!]
     } else {
-      newData = [...userPlaylistCurrent!]
+      console.log('userPlaylistCurrent', userPlaylistMy)
+      newData = [...userPlaylistMy!]
     }
 
     updateMutation.mutate({

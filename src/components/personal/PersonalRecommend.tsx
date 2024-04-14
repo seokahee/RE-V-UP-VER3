@@ -34,6 +34,9 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     queryKey: ['recommendMusic'],
   })
 
+  const resultMusic = recommend?.map((music) => music.musicId) as string[]
+  console.log(resultMusic, '???')
+
   const onChangeCheckMusicHandler = (checked: boolean, id: string) => {
     if (checked) {
       setCheckedList((prev) => [...prev, id])
@@ -111,7 +114,7 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
   const onSubmitPersonalResult = () => {
     const personalMusicData = {
       userChar,
-      checkedList,
+      resultMusic: resultMusic,
     }
 
     if (personalUser?.find((user) => user.userId === userChar.uid)) {
@@ -123,6 +126,11 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     }
   }
   const onGoToHomeHandler = () => {
+    const personalMusicData = {
+      userChar,
+      resultMusic: resultMusic,
+    }
+    updatePersonalResultMutation.mutate(personalMusicData)
     router.push('/')
   }
 

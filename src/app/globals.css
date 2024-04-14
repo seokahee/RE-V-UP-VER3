@@ -12,3 +12,12 @@ body {
   background: linear-gradient(146deg, #333 1.38%, #131313 97.43%);
   box-shadow: 8px 0px 16px 0px rgba(0, 0, 0, 0.7);
 }
+
+.musicPlayer {
+  background: linear-gradient(171.83deg, #343434 0%, #1e1e1e 100%);
+  border: 8px solid rgba(0, 0, 0, 0.7);
+  box-shadow:
+    8px 8px 16px rgba(0, 0, 0, 0.7),
+    -8px -8px 16px rgba(255, 255, 255, 0.3);
+  border-radius: 32px;
+}
