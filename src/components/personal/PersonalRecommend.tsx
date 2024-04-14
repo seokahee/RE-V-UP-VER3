@@ -15,6 +15,7 @@ import CheckboxItem from '../mypage/CheckboxItem'
 import type { PersonalRecommendProps } from '@/types/personal/type'
 import { useRouter } from 'next/navigation'
 import { SentenceMatch } from '@/util/personal/util'
+import ButtonPrimary from '../mypage/ButtonPrimary'
 
 const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
   const [checkedList, setCheckedList] = useState<string[]>([])
@@ -183,18 +184,10 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
         ))}
       </div>
       <div className='flex justify-center gap-4'>
-        <button
-          onClick={onSubmitCurrentMusic}
-          className='h-12 w-40 rounded-xl border border-dim-black bg-primary'
-        >
+        <ButtonPrimary onClick={onSubmitCurrentMusic}>
           재생목록에 담기
-        </button>
-        <button
-          onClick={onGoToHomeHandler}
-          className='h-12 w-40 rounded-xl border border-dim-black bg-primary'
-        >
-          메인으로 가기
-        </button>
+        </ButtonPrimary>
+        <ButtonPrimary onClick={onGoToHomeHandler}>메인으로 가기</ButtonPrimary>
       </div>
     </div>
   )

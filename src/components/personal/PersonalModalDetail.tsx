@@ -4,11 +4,10 @@ import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Businessman from '@/../public/images/Businessman.svg'
+import ButtonPrimary from '../mypage/ButtonPrimary'
+import PreviousButton from '../mypage/PreviousButton'
 
-type PersonalModal = {
-  isOpen: boolean
-  onClose: () => void
-}
+import type { PersonalModal } from '@/types/personal/type'
 
 const PersonalModalDetail = ({ isOpen, onClose }: PersonalModal) => {
   const router = useRouter()
@@ -50,20 +49,14 @@ const PersonalModalDetail = ({ isOpen, onClose }: PersonalModal) => {
         </div>
         <div className='flex justify-between'>
           <div>
-            <button
-              onClick={onCloseModalHandler}
-              className='h-12 w-40 rounded-xl border border border-dim-black  font-bold '
-            >
+            <PreviousButton onClick={onCloseModalHandler}>
               오늘은 그만보기
-            </button>
+            </PreviousButton>
           </div>
           <div>
-            <button
-              onClick={onPersonalTestHandler}
-              className='h-12 w-40 rounded-xl border border-dim-black bg-primary font-bold '
-            >
+            <ButtonPrimary onClick={onPersonalTestHandler}>
               진단받기
-            </button>
+            </ButtonPrimary>
           </div>
         </div>
       </div>

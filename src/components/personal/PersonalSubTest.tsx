@@ -4,6 +4,8 @@ import { useSurvey } from '@/shared/store/personalStore'
 import { useSession } from 'next-auth/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { insertUserChar } from '@/shared/personal/personalApi'
+import ButtonPrimary from '../mypage/ButtonPrimary'
+import PreviousButton from '../mypage/PreviousButton'
 
 import { useRouter } from 'next/navigation'
 
@@ -186,18 +188,12 @@ const PersonalSubTest = ({
         </div>
 
         <div className='flex justify-center gap-4'>
-          <button
-            onClick={() => handleNextClick('pageOne')}
-            className='h-12 w-40 rounded-xl border border  border-dim-black '
-          >
+          <PreviousButton onClick={() => handleNextClick('pageOne')}>
             이전
-          </button>
-          <button
-            onClick={onsubmitResultHandler}
-            className='h-12 w-40 rounded-xl border border-dim-black bg-primary'
-          >
+          </PreviousButton>
+          <ButtonPrimary onClick={onsubmitResultHandler}>
             결과보러가기
-          </button>
+          </ButtonPrimary>
         </div>
       </div>
     </div>

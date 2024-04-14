@@ -2,6 +2,8 @@
 import { useState } from 'react'
 import { useSurvey } from '@/shared/store/personalStore'
 import { useRouter } from 'next/navigation'
+import ButtonPrimary from '../mypage/ButtonPrimary'
+import PreviousButton from '../mypage/PreviousButton'
 
 const GenderPage = ({
   setPageCount,
@@ -60,18 +62,10 @@ const GenderPage = ({
           </label>
         </div>
         <div className='flex justify-center gap-3'>
-          <button
-            onClick={() => router.back()}
-            className='h-12 w-40 rounded-xl border border  border-dim-black '
-          >
-            이전
-          </button>
-          <button
-            onClick={() => handleNextClick('pageTwo')}
-            className='h-12 w-40 rounded-xl border border-dim-black bg-primary'
-          >
+          <PreviousButton onClick={() => router.back()}>이전</PreviousButton>
+          <ButtonPrimary onClick={() => handleNextClick('pageTwo')}>
             다음
-          </button>
+          </ButtonPrimary>
         </div>
       </div>
     </div>
