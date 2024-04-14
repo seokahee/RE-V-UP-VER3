@@ -4,8 +4,12 @@ import { useSurvey } from '@/shared/store/personalStore'
 import { useSession } from 'next-auth/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { insertUserChar } from '@/shared/personal/personalApi'
+import ButtonPrimary from '../mypage/ButtonPrimary'
+import PreviousButton from '../mypage/PreviousButton'
+import { useEffect } from 'react'
 
 import { useRouter } from 'next/navigation'
+import { DROP_SHADOW, INPUT_SHADOW, INPUT_FOCUS } from '../login/loginCss'
 
 import type { PersonalInfo } from '@/types/personal/type'
 
@@ -20,13 +24,17 @@ const PersonalSubTest = ({
   const queryClient = useQueryClient()
   const router = useRouter()
 
-  //state
-
   const [EI, setEI] = useState<string>('')
   const [SN, setSN] = useState<string>('')
   const [TF, setTF] = useState<string>('')
   const [PJ, setPJ] = useState<string>('')
-
+  useEffect(() => {
+    // 페이지가 처음 렌더링 될 때만 EI를 'E'로 설정
+    setEI('E')
+    setSN('S')
+    setTF('T')
+    setPJ('P')
+  }, [])
   //입력한 userChar
   const insertUserCharMutation = useMutation({
     mutationFn: insertUserChar,
@@ -80,126 +88,133 @@ const PersonalSubTest = ({
   }
 
   return (
-    <div className='grid h-screen place-items-center'>
-      <div className='grid h-[600px] h-screen w-[500px] place-items-center rounded-[32px] bg-white bg-opacity-10'>
+    <div className='grid place-items-center'>
+      {' '}
+      <br />
+      <div className='grid h-[450px] h-screen w-[600px] place-items-center space-y-4 rounded-[32px] bg-white bg-opacity-10'>
         <div className='flex justify-center'>
-          <label>
-            <input
-              type='radio'
-              name='EI'
-              value='E'
-              checked={EI === 'E'}
-              onChange={onChangeHandler}
-            />
-            E
-          </label>
-          <label>
-            <input
-              type='radio'
-              name='EI'
-              value='I'
-              checked={EI === 'I'}
-              onChange={onChangeHandler}
-            />
-            I
-          </label>
+          <div className='flex items-center'>
+            <label
+              htmlFor='checkEI'
+              className='border-gray-400 relative h-10 w-20 rounded-full border-2 bg-white'
+            >
+              <input
+                type='checkbox'
+                id='checkEI'
+                className='peer sr-only'
+                onChange={(e) => setEI(e.target.checked ? 'E' : 'I')}
+              />
+              <span
+                className={`absolute left-1 top-1 h-4/5 w-2/5 rounded-full bg-blue-700 transition-all duration-500 ${
+                  EI === 'E' ? 'left-11 bg-rose-600' : 'bg-gray-700 left-auto'
+                }`}
+              ></span>
+            </label>
+            <span className='ml-2 text-lg font-bold'>{EI}</span>
+          </div>
         </div>
+        {/* */}
         <div className='flex justify-center'>
-          <label>
-            <input
-              type='radio'
-              name='SN'
-              value='S'
-              checked={SN === 'S'}
-              onChange={onChangeHandler}
-            />
-            S
-          </label>
-          <label>
-            <input
-              type='radio'
-              name='SN'
-              value='N'
-              checked={SN === 'N'}
-              onChange={onChangeHandler}
-            />
-            N
-          </label>
+          <div className='flex items-center'>
+            <label
+              htmlFor='checkSN'
+              className='border-gray-400 relative h-10 w-20 rounded-full border-2 bg-white'
+            >
+              <input
+                type='checkbox'
+                id='checkSN'
+                className='peer sr-only'
+                onChange={(e) => setSN(e.target.checked ? 'S' : 'N')}
+              />
+              <span
+                className={`absolute left-1 top-1 h-4/5 w-2/5 rounded-full bg-blue-700 transition-all duration-500 ${
+                  SN === 'S' ? 'left-11 bg-rose-600' : 'bg-gray-700 left-auto'
+                }`}
+              ></span>
+            </label>
+            <span className='ml-2 text-lg font-bold'>{SN}</span>
+          </div>
         </div>
+        {/* */}
         <div className='flex justify-center'>
-          <label>
-            <input
-              type='radio'
-              name='TF'
-              value='T'
-              checked={TF === 'T'}
-              onChange={onChangeHandler}
-            />
-            T
-          </label>
-          <label>
-            <input
-              type='radio'
-              name='TF'
-              value='F'
-              checked={TF === 'F'}
-              onChange={onChangeHandler}
-            />
-            F
-          </label>
+          <div className='flex items-center'>
+            <label
+              htmlFor='checkTF'
+              className='border-gray-400 relative h-10 w-20 rounded-full border-2 bg-white'
+            >
+              <input
+                type='checkbox'
+                id='checkTF'
+                className='peer sr-only'
+                onChange={(e) => setTF(e.target.checked ? 'T' : 'F')}
+              />
+              <span
+                className={`absolute left-1 top-1 h-4/5 w-2/5 rounded-full bg-blue-700 transition-all duration-500 ${
+                  TF === 'T' ? 'left-11 bg-rose-600' : 'bg-gray-700 left-auto'
+                }`}
+              ></span>
+            </label>
+            <span className='ml-2 text-lg font-bold'>{TF}</span>
+          </div>
         </div>
+        {/* */}
         <div className='flex justify-center'>
-          <label>
-            <input
-              type='radio'
-              name='PJ'
-              value='P'
-              checked={PJ === 'P'}
-              onChange={onChangeHandler}
-            />
-            P
-          </label>
-          <label>
-            <input
-              type='radio'
-              name='PJ'
-              value='J'
-              checked={PJ === 'J'}
-              onChange={onChangeHandler}
-            />
-            J
-          </label>
-        </div>
-        <div className='flex justify-center gap-2'>
-          <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl shadow shadow-inner'>
-            {EI}
-          </p>
-          <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center  text-7xl  shadow shadow-inner'>
-            {SN}
-          </p>
-          <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  shadow shadow-inner'>
-            {TF}
-          </p>
-          <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl shadow shadow-inner'>
-            {PJ}
-          </p>
-        </div>
-
-        <div className='flex justify-center gap-4'>
-          <button
-            onClick={() => handleNextClick('pageOne')}
-            className='h-12 w-40 rounded-xl border border  border-dim-black '
-          >
-            이전
-          </button>
-          <button
-            onClick={onsubmitResultHandler}
-            className='h-12 w-40 rounded-xl border border-dim-black bg-primary'
-          >
-            결과보러가기
-          </button>
+          <div className='flex items-center'>
+            <label
+              htmlFor='checkPJ'
+              className='border-gray-400 relative h-10 w-20 rounded-full border-2 bg-white'
+            >
+              <input
+                type='checkbox'
+                id='checkPJ'
+                className='peer sr-only'
+                onChange={(e) => setPJ(e.target.checked ? 'P' : 'J')}
+              />
+              <span
+                className={`absolute left-1 top-1 h-4/5 w-2/5 rounded-full bg-blue-700 transition-all duration-500 ${
+                  PJ === 'P' ? 'left-11 bg-rose-600' : 'bg-gray-700 left-auto'
+                }`}
+              ></span>
+            </label>
+            <span className='ml-2 text-lg font-bold'>{PJ}</span>
+          </div>
         </div>
       </div>
+      <br />
+      {/** */}
+      <div className='flex justify-center gap-2'>
+        <p
+          className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  font-bold `}
+        >
+          {EI}
+        </p>
+        <p
+          className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  font-bold `}
+        >
+          {SN}
+        </p>
+        <p
+          className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  font-bold `}
+        >
+          {TF}
+        </p>
+        <p
+          className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl  bg-white bg-opacity-10 text-center text-7xl  font-bold `}
+        >
+          {PJ}
+        </p>
+      </div>{' '}
+      <br />
+      <br />
+      <div className='flex justify-center gap-4'>
+        <PreviousButton onClick={() => handleNextClick('pageOne')}>
+          이전
+        </PreviousButton>
+        <ButtonPrimary onClick={onsubmitResultHandler}>
+          결과보러가기
+        </ButtonPrimary>
+      </div>{' '}
+      <br />
     </div>
   )
 }

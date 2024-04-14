@@ -65,6 +65,9 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
                 },
               },
             },
+            scales: {
+              grid: 'white',
+            },
           } as ChartConfiguration)
 
           chartInstance.current = newChart
@@ -75,12 +78,7 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
 
   return (
     <div className=' flex justify-center '>
-      <canvas
-        ref={chartRef}
-        width={400}
-        height={400}
-        style={{ backgroundColor: 'black' }}
-      />
+      <canvas ref={chartRef} width={400} height={400} />
     </div>
   )
 }
