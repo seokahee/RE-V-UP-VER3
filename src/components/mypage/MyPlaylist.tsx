@@ -11,6 +11,7 @@ import Image from 'next/image'
 import { updateCurrentMusic } from '@/shared/main/api'
 import Pagination from './Pagination'
 import { useSession } from 'next-auth/react'
+import ButtonPrimary from './ButtonPrimary'
 
 const MyPlaylist = ({ data }: { data: UserInfo }) => {
   const { data: userSessionInfo } = useSession()
@@ -27,7 +28,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     enabled: !!data?.playlistMy?.length,
   })
 
-  const PER_PAGE = 5
+  const PER_PAGE = 10
   const totalPages = Math.ceil(totalCount! / PER_PAGE)
   const start = (currentPage - 1) * PER_PAGE
   const end = currentPage * PER_PAGE - 1
@@ -164,26 +165,45 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     setCurrentPage((prev) => prev - 1)
   }
 
+  const shadow =
+    'shadow-[-4px_-4px_8px_rgba(255,255,255,0.05),4px_4px_8px_rgba(0,0,0,0.7)]'
+
   return (
     <div className='mt-[5rem]'>
-      <h2>{data?.nickname}님의 플레이리스트</h2>
-      <button type='button' onClick={onClickAllAddHandler}>
-        전체 재생 하기
-      </button>
-      <div>
-        <button type='button' onClick={onClickDeleteHandler}>
+      <div className='flex items-center justify-between'>
+        <h2 className='text-[1.25rem] font-bold'>
+          {data?.nickname}님의 플레이리스트
+        </h2>
+        <ButtonPrimary onClick={onClickAllAddHandler}>전체 담기</ButtonPrimary>
+      </div>
+      <div
+        className={`fixed bottom-10 flex min-w-[232px] items-center rounded-2xl border-2 border-[rgba(0,0,0,0.05)] ${shadow} overflow-hidden bg-[#ffffff19] backdrop-blur-sm`}
+        style={{ left: 'calc(50% + (388px / 2) - 56px)' }}
+      >
+        <button
+          type='button'
+          onClick={onClickDeleteHandler}
+          className='w-1/2 p-4'
+        >
           삭제
         </button>
-        <button type='button' onClick={onClickAddHandler}>
-          {checkedList.length}곡 재생
+        <button
+          type='button'
+          onClick={onClickAddHandler}
+          className='w-1/2 border-l border-l-[rgba(255,255,255,0.5)] p-4'
+        >
+          {checkedList.length}곡 담기
         </button>
       </div>
-      <ul className='list-none'>
+      <ul className='tracking-[-0.03em]'>
         {playlistMyData && playlistMyData?.length > 0
           ? playlistMyData?.map((item) => {
               return (
-                <li key={item.musicId}>
-                  <div>
+                <li
+                  key={item.musicId}
+                  className='flex items-center justify-between p-4'
+                >
+                  <div className='flex items-center'>
                     <CheckboxItem
                       checked={checkedList.includes(item.musicId)}
                       id={`my-${item.musicId}`}
@@ -194,7 +214,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
                         )
                       }
                     />
-                    <figure>
+                    <figure className='ml-7 mr-4 overflow-hidden rounded-full'>
                       <Image
                         src={item.thumbnail}
                         width={56}
@@ -206,11 +226,15 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
                       htmlFor={`my-${item.musicId}`}
                       className='flex flex-col'
                     >
-                      {item.musicTitle}
-                      <span>{item.artist}</span>
+                      <span className='text-[1.125rem]'>{item.musicTitle}</span>
+                      <span className='text-[0.875rem] text-[#ffffff7f]'>
+                        {item.artist}
+                      </span>
                     </label>
                   </div>
-                  <span>{item.runTime}</span>
+                  <span className='text-[0.875rem] font-medium text-[#ffffff7f]'>
+                    {item.runTime}
+                  </span>
                 </li>
               )
             })
