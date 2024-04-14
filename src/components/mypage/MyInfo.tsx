@@ -207,7 +207,7 @@ const MyInfo = () => {
   return (
     <section>
       <div>
-        <div className='mb-4 flex items-center justify-between'>
+        <div className='mb-4 flex items-center justify-between pt-1'>
           <div>
             <figure className='flex h-[84px] w-[84px] overflow-hidden rounded-full border-2 border-[#ffffff1a] bg-[#2b2b2b]'>
               {userImage && (
