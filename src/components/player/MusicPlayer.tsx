@@ -155,7 +155,6 @@ const MusicPlayer = () => {
       }
     }
   }
-
   return (
     <div className='w-388'>
       <div>

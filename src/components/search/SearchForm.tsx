@@ -1,5 +1,6 @@
 'use client'
 import useInput from '@/hooks/useInput'
+import { useCurrentMusicStore } from '@/shared/store/playerStore'
 import { useSearchedKeywordStore } from '@/shared/store/searchStore'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useRef } from 'react'
@@ -18,12 +19,18 @@ const SearchForm = () => {
   const router = useRouter()
   const keywordRef = useRef<HTMLInputElement>(null)
 
+  // const { currentMusicData } = useCurrentMusicStore()
+  // const { currentPlayList, musicIndex } = currentMusicData
+
+  // console.log('currentPlayList', currentPlayList)
+
   const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!keyword) {
       alert('검색 키워드를 입력해 주세요')
       return keywordRef.current?.focus()
     }
+
     searched(keyword, selectedTabs)
     router.push('/search')
     reset()

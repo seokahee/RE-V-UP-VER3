@@ -3,22 +3,20 @@ import musicLyricsButton from '@/../public/images/musicLyricsButton.svg'
 import musicShuffle from '@/../public/images/musicShuffle.svg'
 import musicShuffleOff from '@/../public/images/musicShuffleOff.svg'
 import musicThumbnail from '@/../public/images/musicThumbnail.svg'
-import dd from '@/../public/images/dd.svg'
 import myPlayListButton from '@/../public/images/myPlayListButton.svg'
 import { PlayerProps } from '@/types/musicPlayer/types'
 import Image from 'next/image'
-import AudioPlayer, { RHAP_UI } from 'react-h5-audio-player'
+import { useCallback, useMemo } from 'react'
+import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
 import './AudioCss.css'
+import FaForward from './playerIcons/FaForward'
 import MyLoopIcon from './playerIcons/MyLoopIcon'
 import MyLoopOffIcon from './playerIcons/MyLoopOffIcon'
 import MyNextIcon from './playerIcons/MyNextIcon'
 import MyPauseIcon from './playerIcons/MyPauseIcon'
 import MyPlayIcon from './playerIcons/MyPlayIcon'
 import MyPreviousIcon from './playerIcons/MyPreviousIcon'
-import ProgressContainer from './playerIcons/ProgressContainer'
-import FaForward from './playerIcons/FaForward'
-// import AudioPlayer, { RHAP_UI ,} from 'react-h5-audio-player'
 
 const Player = ({
   isLyrics,
@@ -33,17 +31,29 @@ const Player = ({
 }: PlayerProps) => {
   const isPlayList = currentPlayList?.length > 0
 
-  const customIcons = {
-    play: <MyPlayIcon />, // 내가 원하는 재생 아이콘
-    pause: <MyPauseIcon />, // 내가 원하는 일시정지 아이콘
-    previous: <MyPreviousIcon onPreviousHandler={onPreviousHandler} />, // 내가 원하는 이전 트랙
-    next: <MyNextIcon onNextTrackHandler={onNextTrackHandler} />, // 내가 원하는 다음 트랙
-    loop: <MyLoopIcon />, // 내가 원하는 반복 아이콘
-    loopOff: <MyLoopOffIcon />, // 내가 원하는 반복 해제 아이콘
-    progressJump: <FaForward />,
-  }
+  const CustomAudioPlayer = useCallback(() => {
+    const customIcons = useMemo(
+      () => ({
+        play: <MyPlayIcon />,
+        pause: <MyPauseIcon />,
+        previous: <MyPreviousIcon onPreviousHandler={onPreviousHandler} />,
+        next: <MyNextIcon onNextTrackHandler={onNextTrackHandler} />,
+        loop: <MyLoopIcon />,
+        loopOff: <MyLoopOffIcon />,
+        progressJump: <FaForward />,
+      }),
+      [currentPlayList, musicIndex],
+    )
 
-  const CustomAudioPlayer = () => {
+    if (
+      !currentPlayList ||
+      currentPlayList.length === 0 ||
+      musicIndex === undefined
+    ) {
+      return
+    }
+
+    console.log('currentPlayList', currentPlayList)
     return (
       <div className='rhap_controls-section'>
         <AudioPlayer
@@ -68,7 +78,7 @@ const Player = ({
         />
       </div>
     )
-  }
+  }, [currentPlayList, musicIndex])
 
   return (
     <div>
@@ -136,6 +146,7 @@ const Player = ({
             </div>
           </div>
         </div>
+        // <Pl />
       )}
       <CustomAudioPlayer />
     </div>
