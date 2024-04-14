@@ -44,7 +44,7 @@ const SearchForm = () => {
             value={keyword}
             ref={keywordRef}
             onChange={onChange}
-            className='appearance-none bg-transparent'
+            className='appearance-none bg-transparent focus:outline-none'
           />
           <select
             name='selectedTabs'
