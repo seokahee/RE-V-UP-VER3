@@ -78,9 +78,9 @@ const UserInfo = () => {
   return (
     <section>
       <div>
-        <div className='flex justify-between'>
+        <div className='mb-4 flex items-center justify-between'>
           <div>
-            <figure className='w-[80px] h-[80px] flex overflow-hidden rounded-full bg-slate-200'>
+            <figure className='flex h-[84px] w-[84px] overflow-hidden rounded-full border-2 border-[#ffffff1a] bg-[#2b2b2b]'>
               {data?.userImage && (
                 <Image
                   src={data?.userImage}
@@ -104,13 +104,27 @@ const UserInfo = () => {
             )}
           </div>
         </div>
-        <p>{data?.nickname}</p>
-        <p>
-          팔로잉 {data?.following.length} 팔로워 {data?.follower.length}
+        <p className='my-2 text-[1.125rem] font-bold tracking-[-0.03em]'>
+          {data?.nickname}
         </p>
-        <p>
-          {data?.mbtiOpen ? data?.userChar?.mbti : ''}
-          {data?.personalMusicOpen ? data?.personalMusic?.resultSentence : ' '}
+        <p className='text-[1.125rem]'>
+          <span className='inline-block text-[#ffffff80]'>팔로워</span>
+          <span className='ml-2 inline-block font-bold text-white'>
+            {!data?.follower ? 0 : data?.follower.length}
+          </span>
+          <span className='ml-4 inline-block text-[#ffffff80]'>팔로잉</span>
+          <span className='ml-2 inline-block font-bold text-white'>
+            {!data?.following ? 0 : data?.following?.length}
+          </span>
+        </p>
+        <p className='mt-2 flex flex-wrap gap-4 text-[1rem] font-bold tracking-[-0.03em] text-[#ffffff80]'>
+          {data?.mbtiOpen ? <span>{data?.userChar?.mbti}</span> : ''}
+          {data?.mbtiOpen && data?.personalMusicOpen ? '|' : ''}
+          {data?.personalMusicOpen ? (
+            <span>{data?.userChar?.resultSentence}</span>
+          ) : (
+            ' '
+          )}
         </p>
       </div>
       <UserPlaylist data={data!} isVisibility={data?.playlistOpen!} />
