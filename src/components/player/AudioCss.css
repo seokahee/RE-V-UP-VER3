@@ -1,8 +1,144 @@
-.rhap_container {
-  background-color: #fff0;
+.rhap_play-status--paused {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  height: 90px;
+  margin: 0px;
+}
+
+.rhap_play-status--playing {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  height: 90px;
+  margin: 0px;
 }
 
 .rhap_rewind-button,
 .rhap_forward-button {
   display: none !important;
+}
+
+.rhap_play-status--playing .rhap_volume-container {
+  display: none !important;
+}
+.rhap_play-status--playing .progressbar {
+  display: none !important;
+}
+
+.rhap_play-status--paused .rhap_volume-container {
+  display: none !important;
+}
+.rhap_play-status--paused .progressbar {
+  display: none !important;
+}
+
+.rhap_additional-controls {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+}
+
+.rhap_skip-button {
+  width: 88px;
+  height: 88px;
+  margin: 0px;
+}
+
+.rhap_play-pause-button {
+  width: 88px;
+  height: 88px;
+  margin: 0px;
+}
+.rhap_repeat-button {
+  width: 40px;
+  height: 60px;
+  margin: 0px;
+}
+
+/* 컨트롤러 버튼 컨테이너 */
+.rhap_controls-section {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  width: 100%;
+  margin: audio;
+  position: relative;
+}
+
+/* 재생 시간 */
+.rhap_time {
+  color: #fff;
+  font-size: 12px;
+  line-height: 150%;
+}
+
+/* 셔플 버튼 */
+.shuffleButton {
+  position: absolute;
+  left: 83%;
+  top: 49%;
+  cursor: pointer;
+}
+
+.rhap_progress-indicator {
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 2;
+  width: 5px;
+  height: 20px;
+  margin-left: -4px;
+  top: 0px;
+  background: #d5605c;
+  box-shadow: rgba(134, 134, 134, 0.5) 0 0 5px;
+}
+
+.rhap_progress-container {
+  background-image: url('/images/playerBar.svg');
+  background-repeat: no-repeat; /* 이미지 반복 설정 */
+  background-size: cover; /* 이미지 크기 조정 */
+  background-position: center; /* 이미지 위치 설정 */
+  background:;
+  z-index: 3;
+}
+
+.rhap_progress-filled {
+  opacity: 0; /* 투명하게 만들기 */
+  visibility: hidden; /* 숨기기 */
+  z-index: 3;
+}
+
+.rhap_progress-bar-show-download {
+  background-image: url('/images/playerBar.svg');
+  background-repeat: no-repeat; /* 이미지 반복 설정 */
+  background-size: cover; /* 이미지 크기 조정 */
+  background-position: center; /* 이미지 위치 설정 */
+  background:;
+  z-index: 3;
+}
+
+.rhap_progress-container {
+  background-image: url('/images/playerBar.svg');
+  background-repeat: no-repeat; /* 이미지 반복 설정 */
+  background-size: cover; /* 이미지 크기 조정 */
+  background-position: center; /* 이미지 위치 설정 */
+  background:;
+  z-index: 3;
+}
+
+.rhap_progress-bar-show-download {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background:;
+  z-index: 3;
+  width: 100%;
+  padding: 10px;
+}
+.rhap_download-progress {
+  height: 0;
+  position: none;
+  z-index: 0;
+  background-color:;
+  border-radius: 0;
 }
