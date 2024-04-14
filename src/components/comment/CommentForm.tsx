@@ -5,6 +5,8 @@ import { getToday } from '@/util/util'
 import { useSession } from 'next-auth/react'
 import { addComment } from '@/shared/comment/commentApi'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import submitIcon from '@/../public/images/Icon.svg'
+import Image from 'next/image'
 
 const CommentForm = ({ boardId }: { boardId: string }) => {
   const [comment, setComment] = useState<string>('')
@@ -47,21 +49,19 @@ const CommentForm = ({ boardId }: { boardId: string }) => {
   }
   return (
     <>
-      <p>댓글 달기</p>
-      <div>
-        <form onSubmit={onCommentSubmitHandler}>
-          <label className='relative '>
-            <input
-              type='text'
-              placeholder='댓글을 작성해주세요'
-              className='w-96 border-2 border-rose-600'
-              onChange={(e) => setComment(e.target.value)}
-              value={comment}
-            />
-            <div className='absolute bottom-0 right-0'>
-              <button>등록하기▷</button>
-            </div>
-          </label>
+      <div className='inline-flex  w-[732px] items-center justify-start gap-8 rounded-xl border-2 border-white border-opacity-10 bg-white bg-opacity-10 p-3 shadow shadow-inner'>
+        <form onSubmit={onCommentSubmitHandler} className='flex items-center'>
+          <input
+            type='text'
+            placeholder='댓글을 작성해주세요'
+            className='w-[620px] appearance-none bg-transparent focus:outline-none'
+            onChange={(e) => setComment(e.target.value)}
+            value={comment}
+          />
+          <button className='flex flex-row items-center' type='submit'>
+            <p className='mr-2'>등록하기</p>
+            <Image src={submitIcon} alt='등록 아이콘' width={8} height={14} />
+          </button>
         </form>
       </div>
     </>

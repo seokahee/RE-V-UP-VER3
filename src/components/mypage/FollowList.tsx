@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import ButtonSecondary from './ButtonSecondary'
 
 type FollowProps = {
   data: string[]
@@ -79,7 +80,7 @@ const FollowList = ({ data, dataKey, myFollowing }: FollowProps) => {
       {followData?.map((item) => {
         return (
           <li key={item.userId} className='flex justify-between'>
-            <div>
+            <div className='flex items-center'>
               <figure>
                 {item.userImage && (
                   <Image
@@ -90,44 +91,43 @@ const FollowList = ({ data, dataKey, myFollowing }: FollowProps) => {
                   />
                 )}
               </figure>
-              <Link href={`/userpage/${item.userId}`}>{item.nickname}</Link>
+              <Link
+                href={`/userpage/${item.userId}`}
+                className='ml-4 text-[1.125rem]'
+              >
+                {item.nickname}
+              </Link>
             </div>
             {dataKey === 'following' ? (
               <>
                 {data.find((el) => el === item.userId) ? (
-                  <button
-                    type='button'
+                  <ButtonSecondary
                     onClick={() => onClickUnFollow(uid, item.userId)}
-                    className='text-red-600'
                   >
-                    팔로잉 취소
-                  </button>
+                    취소
+                  </ButtonSecondary>
                 ) : (
-                  <button
-                    type='button'
+                  <ButtonSecondary
                     onClick={() => onClickFollow(uid, item.userId)}
                   >
                     팔로우
-                  </button>
+                  </ButtonSecondary>
                 )}
               </>
             ) : (
               <>
                 {myFollowing && myFollowing.find((el) => el === item.userId) ? (
-                  <button
-                    type='button'
+                  <ButtonSecondary
                     onClick={() => onClickUnFollow(uid, item.userId)}
-                    className='text-red-600'
                   >
-                    팔로잉 취소
-                  </button>
+                    취소
+                  </ButtonSecondary>
                 ) : (
-                  <button
-                    type='button'
+                  <ButtonSecondary
                     onClick={() => onClickFollow(uid, item.userId)}
                   >
                     팔로우
-                  </button>
+                  </ButtonSecondary>
                 )}
               </>
             )}
