@@ -60,7 +60,7 @@ const CommentForm = ({ boardId }: { boardId: string }) => {
           />
           <button className='flex flex-row items-center' type='submit'>
             <p className='mr-2'>등록하기</p>
-            <Image src={submitIcon} alt='등록 아이콘' />
+            <Image src={submitIcon} alt='등록 아이콘' width={8} height={14} />
           </button>
         </form>
       </div>

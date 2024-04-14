@@ -139,12 +139,22 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
                             setEditedText(item.commentContent)
                           }}
                         >
-                          <Image src={edit} alt='수정 아이콘' />
+                          <Image
+                            src={edit}
+                            alt='수정 아이콘'
+                            width={18}
+                            height={18}
+                          />
                         </button>{' '}
                         <button
                           onClick={() => onDeleteCommentHandler(item.commentId)}
                         >
-                          <Image src={deleteIcon} alt='삭제 아이콘' />
+                          <Image
+                            src={deleteIcon}
+                            alt='삭제 아이콘'
+                            width={24}
+                            height={24}
+                          />
                         </button>
                       </>
                     )}
@@ -156,12 +166,17 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
               <button onClick={() => onLikeHandler(item.commentId)}>
                 {item.commentLikeList.includes(userId) ? (
                   <>
-                    <Image src={heart} alt='찬 하트' />
+                    <Image src={heart} alt='찬 하트' width={24} height={24} />
                     <p>{item.commentLikeList.length}</p>
                   </>
                 ) : (
                   <>
-                    <Image src={emptyHeart} alt='빈 하트' />
+                    <Image
+                      src={emptyHeart}
+                      alt='빈 하트'
+                      width={24}
+                      height={24}
+                    />
                     <p>{item.commentLikeList.length}</p>
                   </>
                 )}
