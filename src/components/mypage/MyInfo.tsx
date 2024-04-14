@@ -158,11 +158,6 @@ const MyInfo = () => {
   const tabArr = [
     {
       id: 0,
-      title: '팔로잉',
-      content: <FollowList data={data?.following!} dataKey={'following'} />,
-    },
-    {
-      id: 1,
       title: '팔로워',
       content: (
         <FollowList
@@ -171,6 +166,11 @@ const MyInfo = () => {
           myFollowing={data?.following!}
         />
       ),
+    },
+    {
+      id: 1,
+      title: '팔로잉',
+      content: <FollowList data={data?.following!} dataKey={'following'} />,
     },
   ]
 
