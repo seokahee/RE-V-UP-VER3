@@ -35,28 +35,29 @@ const GenderPage = ({
           <p className='text-center font-bold'>성별을 선택해주세요</p>
         </div>
         <div className='flex flex-col justify-center gap-3'>
-          <label>
+          <label className='relative inline-flex items-center justify-center gap-2 rounded-xl bg-white bg-opacity-20 shadow shadow-inner hover:bg-indigo-500 focus:bg-indigo-500 active:bg-indigo-700'>
             <input
               type='radio'
               name='gender'
               value='male'
               checked={gender === 'male'}
               onChange={onChangeHandler}
-              className='active:bg-indigo-500'
+              className='sr-only'
             />
-            <p className='inline-flex h-[100px] w-[336px] items-center justify-center gap-2 rounded-xl bg-white bg-opacity-20 shadow shadow-inner hover:bg-indigo-500 '>
+            <p className='inline-flex h-[100px] w-[336px] items-center justify-center gap-2'>
               남자
             </p>
           </label>
-          <label>
+          <label className='relative inline-flex items-center justify-center gap-2 rounded-xl bg-white bg-opacity-20 shadow shadow-inner hover:bg-indigo-500 focus:bg-indigo-500 active:bg-indigo-700'>
             <input
               type='radio'
               name='gender'
               value='female'
               checked={gender === 'female'}
               onChange={onChangeHandler}
+              className='sr-only'
             />
-            <p className='inline-flex h-[100px] w-[336px] items-center justify-center gap-2 rounded-xl bg-white bg-opacity-20 shadow shadow-inner hover:bg-indigo-500'>
+            <p className='inline-flex h-[100px] w-[336px] items-center justify-center gap-2'>
               여자
             </p>
           </label>

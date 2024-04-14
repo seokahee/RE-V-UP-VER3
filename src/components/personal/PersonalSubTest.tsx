@@ -8,6 +8,7 @@ import ButtonPrimary from '../mypage/ButtonPrimary'
 import PreviousButton from '../mypage/PreviousButton'
 
 import { useRouter } from 'next/navigation'
+import { DROP_SHADOW, INPUT_SHADOW, INPUT_FOCUS } from '../login/loginCss'
 
 import type { PersonalInfo } from '@/types/personal/type'
 
@@ -21,7 +22,7 @@ const PersonalSubTest = ({
   const userId = userSessionInfo?.user?.uid as string
   const queryClient = useQueryClient()
   const router = useRouter()
-
+  console.log(userGender, 'userGender')
   //state
 
   const [EI, setEI] = useState<string>('')
@@ -173,16 +174,24 @@ const PersonalSubTest = ({
           </label>
         </div>
         <div className='flex justify-center gap-2'>
-          <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl shadow shadow-inner'>
+          <p
+            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  font-bold `}
+          >
             {EI}
           </p>
-          <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center  text-7xl  shadow shadow-inner'>
+          <p
+            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  font-bold `}
+          >
             {SN}
           </p>
-          <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  shadow shadow-inner'>
+          <p
+            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  font-bold `}
+          >
             {TF}
           </p>
-          <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl shadow shadow-inner'>
+          <p
+            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl  bg-white bg-opacity-10 text-center text-7xl  font-bold `}
+          >
             {PJ}
           </p>
         </div>

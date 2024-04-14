@@ -47,15 +47,15 @@ const PersonalModalDetail = ({ isOpen, onClose }: PersonalModal) => {
             재미있는 타이틀과 함께 음악을 추천 받아보세요!
           </div>
         </div>
-        <div className='flex justify-between'>
-          <div>
+        <div className='flex flex-row justify-center gap-4'>
+          <div className=''>
             <PreviousButton onClick={onCloseModalHandler}>
               오늘은 그만보기
             </PreviousButton>
           </div>
           <div>
             <ButtonPrimary onClick={onPersonalTestHandler}>
-              진단받기
+              진단 받기
             </ButtonPrimary>
           </div>
         </div>
