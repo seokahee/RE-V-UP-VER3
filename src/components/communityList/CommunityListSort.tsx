@@ -8,23 +8,23 @@ const CommunityListSort = ({
   setIsSort: Dispatch<SetStateAction<boolean>>
 }) => {
   return (
-    <div className='flex gap-2 m-10'>
-      <p
+    <div className='flex  gap-2'>
+      <button
         onClick={() => {
           setIsSort(true)
         }}
         className={`${isSort ? 'text-zinc-400' : 'text-black'}`}
       >
         최신순
-      </p>
-      <p
+      </button>
+      <button
         onClick={() => {
           setIsSort(false)
         }}
         className={`${isSort ? 'text-black' : 'text-zinc-400'}`}
       >
         좋아요
-      </p>
+      </button>
     </div>
   )
 }
