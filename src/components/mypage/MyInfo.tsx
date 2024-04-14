@@ -17,6 +17,8 @@ import { useSession } from 'next-auth/react'
 import right from '@/../public/images/chevron-right.svg'
 import pencil from '@/../public/images/pencil-line.svg'
 import ButtonPrimary from './ButtonPrimary'
+import FollowingList from './FollowingList'
+import FollowerList from './FollowerList'
 
 const MyInfo = () => {
   const { data: userSessionInfo } = useSession()
@@ -160,17 +162,13 @@ const MyInfo = () => {
       id: 0,
       title: '팔로워',
       content: (
-        <FollowList
-          data={data?.follower!}
-          dataKey={'follower'}
-          myFollowing={data?.following!}
-        />
+        <FollowerList data={data?.follower!} myFollowing={data?.following!} />
       ),
     },
     {
       id: 1,
       title: '팔로잉',
-      content: <FollowList data={data?.following!} dataKey={'following'} />,
+      content: <FollowingList data={data?.following!} />,
     },
   ]
 
