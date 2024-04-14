@@ -13,7 +13,7 @@ export const getCommunityListInCommunity = (isSort: boolean) => {
     refetch,
   } = useQuery({
     queryFn: () => getCommunityList(isSort),
-    queryKey: ['getCommunityList'],
+    queryKey: [GET_COMMUNITYLIST_QUERY_KEY.GET_COMMUNITYLIST],
   })
 
   return { communityList, isLoading, isError, refetch }
