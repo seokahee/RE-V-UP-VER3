@@ -16,9 +16,11 @@ const TabMenu = ({ data, width }: TabProps) => {
     setIsActive(idx)
   }
 
+  const shadow = 'drop-shadow-[0px_1px_0px_#000000]'
+
   return (
     <div>
-      <div className='mb-8 mt-12 flex border-b border-[#ffffff4d]'>
+      <div className={`mb-8 mt-12 flex border-b border-[#ffffff4d] ${shadow}`}>
         {data &&
           data.map((item, idx) => {
             return (
