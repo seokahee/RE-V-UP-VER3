@@ -1,39 +1,78 @@
-import musicLyricsButton from '@/../public/images/musicLyricsButton.svg'
-import musicThumbnail from '@/../public/images/musicThumbnail.svg'
 import musicList from '@/../public/images/musicList.svg'
+import musicLyricsButton from '@/../public/images/musicLyricsButton.svg'
+import musicShuffle from '@/../public/images/musicShuffle.svg'
+import musicShuffleOff from '@/../public/images/musicShuffleOff.svg'
+import musicThumbnail from '@/../public/images/musicThumbnail.svg'
+import dd from '@/../public/images/dd.svg'
 import myPlayListButton from '@/../public/images/myPlayListButton.svg'
-import playerPreviousButton from '@/../public/images/playerPreviousButton.svg'
-import playerNextButton from '@/../public/images/playerNextButton.svg'
-import playerPlayButton from '@/../public/images/playerPlayButton.svg'
-import playerPauseButton from '@/../public/images/playerPauseButton.svg'
 import { PlayerProps } from '@/types/musicPlayer/types'
 import Image from 'next/image'
-import AudioPlayer from 'react-h5-audio-player'
+import AudioPlayer, { RHAP_UI } from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
 import './AudioCss.css'
-import { useRef, useState } from 'react'
+import MyLoopIcon from './playerIcons/MyLoopIcon'
+import MyLoopOffIcon from './playerIcons/MyLoopOffIcon'
+import MyNextIcon from './playerIcons/MyNextIcon'
+import MyPauseIcon from './playerIcons/MyPauseIcon'
+import MyPlayIcon from './playerIcons/MyPlayIcon'
+import MyPreviousIcon from './playerIcons/MyPreviousIcon'
+import ProgressContainer from './playerIcons/ProgressContainer'
+import FaForward from './playerIcons/FaForward'
+// import AudioPlayer, { RHAP_UI ,} from 'react-h5-audio-player'
+
 const Player = ({
   isLyrics,
   currentPlayList,
   musicIndex,
+  isRandom,
   onPreviousHandler,
   onNextTrackHandler,
   onLyricsToggle,
   onInsertMyPlayListHandler,
+  onRandomMusicHandler,
 }: PlayerProps) => {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const isPlay = currentPlayList?.length > 0
-  const audioRef = useRef(null)
+  const isPlayList = currentPlayList?.length > 0
 
-  const onPlayHandler = () => {
-    // if (isPlaying && isPlay && audioRef.current) {
-    //   audioRef.current.onPlay()
-    //   setIsPlaying(!isPlaying)
-    // }
+  const customIcons = {
+    play: <MyPlayIcon />, // 내가 원하는 재생 아이콘
+    pause: <MyPauseIcon />, // 내가 원하는 일시정지 아이콘
+    previous: <MyPreviousIcon onPreviousHandler={onPreviousHandler} />, // 내가 원하는 이전 트랙
+    next: <MyNextIcon onNextTrackHandler={onNextTrackHandler} />, // 내가 원하는 다음 트랙
+    loop: <MyLoopIcon />, // 내가 원하는 반복 아이콘
+    loopOff: <MyLoopOffIcon />, // 내가 원하는 반복 해제 아이콘
+    progressJump: <FaForward />,
   }
+
+  const CustomAudioPlayer = () => {
+    return (
+      <div className='rhap_controls-section'>
+        <AudioPlayer
+          src={isPlayList ? currentPlayList[musicIndex].musicSource : ''}
+          volume={0.1}
+          loop={false}
+          autoPlay={true}
+          autoPlayAfterSrcChange={true}
+          onEnded={onNextTrackHandler}
+          showSkipControls={true}
+          className='custom-audio-player'
+          customIcons={customIcons}
+        />
+
+        <Image
+          src={isRandom ? musicShuffleOff : musicShuffle}
+          alt='Lyrics'
+          width={55}
+          height={60}
+          onClick={onRandomMusicHandler}
+          className='shuffleButton'
+        />
+      </div>
+    )
+  }
+
   return (
     <div>
-      {isPlay && (
+      {isPlayList && (
         <div>
           <div className='mt-[40px] flex flex-col items-center gap-[8px] p-[0px]'>
             <div className=' text-center text-[20px] font-bold leading-[150%]  tracking-tighter text-white opacity-80'>
@@ -59,7 +98,7 @@ const Player = ({
                 alt='Album Thumbnail'
                 width={200}
                 height={200}
-                className=' rounded-full '
+                className='rounded-full'
               />
             </div>
           </div>
@@ -98,36 +137,7 @@ const Player = ({
           </div>
         </div>
       )}
-      <AudioPlayer
-        ref={audioRef}
-        autoPlay={false}
-        loop={false}
-        volume={0.1}
-        src={isPlay ? currentPlayList[musicIndex].musicSource : ''}
-        onEnded={onNextTrackHandler}
-      />
-      이전곡 버튼
-      <button onClick={onPreviousHandler}>
-        <Image
-          src={playerPreviousButton}
-          alt='Previous'
-          width={48}
-          height={48}
-        />
-      </button>
-      {/* 재생버튼 */}
-      <button onClick={onPlayHandler}>
-        <Image
-          src={isPlaying ? playerPauseButton : playerPlayButton}
-          alt={isPlaying ? 'Pause' : 'Play'}
-          width={48}
-          height={48}
-        />
-      </button>
-      {/* 다음곡 버튼 */}
-      <button onClick={onNextTrackHandler}>
-        <Image src={playerNextButton} alt='Next' width={48} height={48} />
-      </button>
+      <CustomAudioPlayer />
     </div>
   )
 }

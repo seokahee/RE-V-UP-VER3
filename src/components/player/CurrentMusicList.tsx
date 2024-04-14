@@ -7,12 +7,10 @@ const CurrentMusicList = ({
   currentPlayList,
   onChangeCheckMusicHandler,
   onDeleteCurrentMusicHandler,
-  onRandomMusicHandler,
-  isRandom,
   setMusicIndex,
 }: MusicListProps) => {
   return (
-    <div>
+    <div className='w-366 h-308 mt-[16px]  flex flex-col items-start p-0'>
       {currentPlayList.length === 0 && <div>현재 재생 목록이 없습니다</div>}
       {!isLyrics &&
         currentPlayList.map((item) => {
@@ -20,7 +18,10 @@ const CurrentMusicList = ({
             (arr) => arr.musicId === item.musicId,
           )
           return (
-            <div key={item.musicId} className='flex gap-5'>
+            <div
+              key={item.musicId}
+              className='mt-[16px] flex h-[63px] items-center gap-5'
+            >
               <CheckboxItem
                 checked={checkedList.includes(item.musicId)}
                 id={item.musicId}
@@ -41,14 +42,11 @@ const CurrentMusicList = ({
           )
         })}
 
-      <button onClick={onRandomMusicHandler}>
-        {isRandom ? '랜덤재생중' : '랜덤재생하기'}
-      </button>
-      {isLyrics && (
+      {!isLyrics && (
         <button
           type='button'
           onClick={onDeleteCurrentMusicHandler}
-          className='m-3'
+          className='border-gray-200 rounded-xl border-2 border-solid drop-shadow-xl filter backdrop-blur-lg'
         >
           {`${checkedList.length}곡 삭제`}
         </button>
