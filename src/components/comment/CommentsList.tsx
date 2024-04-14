@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import { getToday } from '@/util/util'
 import { useQuery } from '@tanstack/react-query'
-import { onDateTimeHandler } from '@/util/util'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   getComments,
@@ -11,6 +10,7 @@ import {
   addLikeComment,
 } from '@/shared/comment/commentApi'
 import { useSession } from 'next-auth/react'
+import { onDateTimeHandler } from '@/util/util'
 import edit from '@/../public/images/pencil-01.svg'
 import deleteIcon from '@/../public/images/Frame 532.svg'
 import emptyHeart from '@/../public/images/Property 1=heart-rounded.svg'
@@ -83,8 +83,8 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
     <div className='border-t-2 border-black'>
       {commentsData?.map((item) => (
         <div key={item.commentId}>
-          <div className='inline-flex  w-full flex-col items-start justify-start gap-4 border-b border-white border-opacity-10 py-4'>
-            <div className=' flex w-full flex-row '>
+          <div className='inline-flex w-full flex-col items-start justify-start gap-4 border-b border-white border-opacity-10 py-4'>
+            <div className='w-full flex-row'>
               <div className='flex basis-1/2 flex-row gap-2'>
                 <p className='h-6 w-6 overflow-hidden rounded-full border-2 border-white'>
                   {item.userInfo?.userImage && (
@@ -98,15 +98,15 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
                   )}
                 </p>
                 <p>{item.userInfo?.nickname}</p>
-              </div>{' '}
-              <div className='flex basis-1/2 justify-end '>
+              </div>
+              <div className='flex basis-1/2 justify-end'>
                 {onDateTimeHandler(item.commentDate)}
               </div>
             </div>
-            <div className=' flex w-full flex-row '>
+            <div className='flex w-full flex-row'>
               {/**유저 이미지, 닉네임, 날짜 */}
               {editedCommentId === item.commentId ? (
-                <div className=' flex w-full '>
+                <div className='flex w-full'>
                   <div className='flex basis-1/2'>
                     {' '}
                     <input
@@ -126,7 +126,7 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
                   </div>
                 </div>
               ) : (
-                <div className='flex flex w-full flex-row '>
+                <div className='flex w-full flex-row'>
                   <div className='flex basis-1/2'>
                     <p>{item.commentContent}</p>
                   </div>

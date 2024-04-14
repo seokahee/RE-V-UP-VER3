@@ -49,7 +49,7 @@ const CommentForm = ({ boardId }: { boardId: string }) => {
   }
   return (
     <>
-      <div className='inline-flex  w-[732px] items-center justify-start gap-8 rounded-xl border-2 border-white border-opacity-10 bg-white bg-opacity-10 p-3 shadow shadow-inner'>
+      <div className='inline-flex w-[732px] items-center justify-start gap-8 rounded-xl border-2 border-white border-opacity-10 bg-white bg-opacity-10 p-3'>
         <form onSubmit={onCommentSubmitHandler} className='flex items-center'>
           <input
             type='text'
