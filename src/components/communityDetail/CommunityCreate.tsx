@@ -3,13 +3,13 @@
 import React, { FormEvent } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import MusicSearch from '../search/MusicSearch'
-import { useCoummunityItem } from '@/query/communityDetail/mutation'
 import Image from 'next/image'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
+import { useCoummunityItem } from '@/query/communityDetail/mutation'
+import MusicSearch from '../search/MusicSearch'
 import goback from '@/../public/images/goback.svg'
-import { GOBACK_SHADOW } from './detailCss'
 import useInput from '@/hooks/useInput'
+import { GOBACK_SHADOW } from './detailCss'
 
 const CommunityCreate = () => {
   const router = useRouter()
@@ -82,7 +82,7 @@ const CommunityCreate = () => {
               name='boardTitle'
               value={boardTitle}
               onChange={onChangeHandler}
-              className='focus:outline-todayPink mb-4 w-full rounded-lg border p-2 text-black'
+              className='focus:outline-todayPink mb-4 w-full rounded-lg border p-2  text-black'
               placeholder='제목을 입력하세요'
             />
           </div>
