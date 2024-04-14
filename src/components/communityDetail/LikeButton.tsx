@@ -7,7 +7,8 @@ import {
   getClickLikedUser,
   removeLikedUser,
 } from '@/shared/communitydetail/detailApi'
-import touchFullLike from '@/../public/images/likeFullHeart.svg'
+import heart from '@/../public/images/likeFullHeart.svg'
+import emptyHeart from '@/../public/images/Property 1=heart-rounded.svg'
 import { Props } from '@/types/communityDetail/detailTypes'
 import { useSession } from 'next-auth/react'
 
@@ -61,24 +62,20 @@ const LikeButton = ({ boardId }: Props) => {
 
   return (
     <div>
-      <div>
-        {like ? (
-          <figure onClick={onLikeToggleHandler}>
+      <div className='flex gap-[7px]'>
+        <figure onClick={onLikeToggleHandler} className='cursor-pointer'>
+          {like ? (
+            <Image src={heart} alt='꽉찬좋아요 아이콘' width={24} height={24} />
+          ) : (
             <Image
-              src={touchFullLike}
-              alt='좋아요버튼'
+              src={emptyHeart}
+              alt='빈좋아요 아이콘'
               width={24}
               height={24}
             />
-          </figure>
-        ) : (
-          <div
-            onClick={onLikeToggleHandler}
-            className='w-[24px] heigth-[24px] text-[24px]'
-          >
-            <button>♡</button>
-          </div>
-        )}
+          )}
+        </figure>
+
         <p className='ml-[5px]'>{likeList !== null ? likeList?.length : 0}</p>
       </div>
     </div>

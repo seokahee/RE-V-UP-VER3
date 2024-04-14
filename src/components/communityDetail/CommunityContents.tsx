@@ -11,10 +11,13 @@ import {
 import { musicDataInCommuDetail } from '@/query/communityDetail/queryKey'
 import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
 import { onDateTimeHandler } from '@/util/util'
+import message from '@/../public/images/message-text-square-02-gray.svg'
+import goback from '@/../public/images/goback.svg'
 import useInput from '@/hooks/useInput'
 import LikeButton from './LikeButton'
 import Link from 'next/link'
-
+import { GOBACK_SHADOW } from './detailCss'
+// pr 테스트
 const CommunityContents = () => {
   const router = useRouter()
   const [isEdit, setIsEdit] = useState<boolean>(false)
@@ -160,10 +163,13 @@ const CommunityContents = () => {
   }
 
   return (
-    <div>
+    <div className='mb-[8px] flex flex-col'>
       <div>
-        <div>
-          <button onClick={onBackButtonHandler}>이전으로 가기</button>
+        <div className='flex w-[100%]'>
+          <button onClick={onBackButtonHandler} className={`${GOBACK_SHADOW}`}>
+            <Image src={goback} alt='이전으로 아이콘' width={24} height={24} />
+          </button>
+          <h3>음악 추천 게시판</h3>
           {isEdit ? (
             <div>
               <button onClick={onEditCancelHandler}>수정취소</button>
@@ -180,17 +186,6 @@ const CommunityContents = () => {
           </button>
         )}
         <div>
-          {isEdit ? (
-            <input
-              type='text'
-              name='boardTitle'
-              value={updatedTitle}
-              onChange={onChangeEditForm}
-            />
-          ) : (
-            <div>{`제목 : ${boardTitle}`}</div>
-          )}
-          <div>{nickname}</div>
           <Link href={`/userpage/${userId}`}>
             <figure>
               {userImage ? (
@@ -208,6 +203,20 @@ const CommunityContents = () => {
               )}
             </figure>
           </Link>
+        </div>
+        <div>
+          {isEdit ? (
+            <input
+              type='text'
+              name='boardTitle'
+              value={updatedTitle}
+              onChange={onChangeEditForm}
+            />
+          ) : (
+            <div>{`제목 : ${boardTitle}`}</div>
+          )}
+          <div>{nickname}</div>
+
           <div>{onDateTimeHandler(date)}</div>
           <figure>
             <Image
@@ -247,9 +256,14 @@ const CommunityContents = () => {
             <div>{`내용 : ${content}`}</div>
           )}
 
-          <div>
+          <div className='flex gap-[16px]'>
             <LikeButton boardId={currentBoardId} />
-            <div>{comment.length ? comment.length : 0}</div>
+            <div className='flex gap-[7px]'>
+              <figure>
+                <Image src={message} alt='댓글 아이콘' width={24} height={24} />
+              </figure>
+              <div>{comment.length ? comment.length : 0}</div>
+            </div>
           </div>
         </div>
       </div>
