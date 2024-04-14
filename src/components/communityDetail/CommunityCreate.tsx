@@ -82,7 +82,7 @@ const CommunityCreate = () => {
               name='boardTitle'
               value={boardTitle}
               onChange={onChangeHandler}
-              className='focus:outline-todayPink mb-4 w-full rounded-lg border p-2 text-black'
+              className='focus:outline-todayPink mb-4 w-full rounded-lg border p-2  text-black'
               placeholder='제목을 입력하세요'
             />
           </div>

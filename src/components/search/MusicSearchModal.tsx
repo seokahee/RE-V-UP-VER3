@@ -7,6 +7,8 @@ import { modalPaging } from '@/util/util'
 import React, { FormEvent, useRef, useState } from 'react'
 import ModalMusicData from './ModalMusicData'
 import { GOBACK_SHADOW } from '../communityDetail/detailCss'
+import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
+import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 
 const MusicSearchModal = ({
   setIsModal,
@@ -119,7 +121,9 @@ const MusicSearchModal = ({
             onClick={onAddViewMusicHandler}
             className='rounded-lg px-[10px] text-white'
           >
-            <span className='rounded-lg bg-primary p-3 text-lg text-white '>
+            <span
+              className={`flex h-[48px] w-[160px] items-center justify-center rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
+            >
               등록
             </span>
           </button>

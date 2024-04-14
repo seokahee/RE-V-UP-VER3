@@ -211,6 +211,7 @@ const CommunityContents = () => {
                   name='boardTitle'
                   value={updatedTitle}
                   onChange={onChangeEditForm}
+                  className='text-black'
                 />
               ) : (
                 <div>{`제목 : ${boardTitle}`}</div>
@@ -296,6 +297,7 @@ const CommunityContents = () => {
                 onChange={onChangeEditForm}
                 cols={30}
                 rows={10}
+                className='text-black'
               ></textarea>
             ) : (
               <div>{`내용 : ${content}`}</div>
