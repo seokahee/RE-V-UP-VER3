@@ -29,10 +29,10 @@ const SocialLogin = () => {
   return (
     <div className='flex justify-center gap-[40px]'>
       <button onClick={onGoogleLoginHandler}>
-        <Image src={googleImg} width={40} height={40} alt='구글로그인'></Image>
+        <Image src={googleImg} width={40} height={40} alt='구글로그인' />
       </button>
       <button onClick={onKakadoLoginHandler}>
-        <Image src={kakaoImg} width={40} height={40} alt='카카오로그인'></Image>
+        <Image src={kakaoImg} width={40} height={40} alt='카카오로그인' />
       </button>
     </div>
   )
