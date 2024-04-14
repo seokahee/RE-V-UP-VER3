@@ -22,7 +22,9 @@ const Header = () => {
       >
         <nav>
           <Link href='/'>
-            <p className='italic text-white '>V-UP</p>
+            <p className='text-2xl font-bold italic text-primary-white '>
+              V-UP
+            </p>
           </Link>
         </nav>
         <nav className='flex justify-between  gap-2'>
@@ -70,7 +72,9 @@ const Header = () => {
             />
           </Link>
           <Link href='/'>
-            <p className='italic text-primary-white '>V-UP</p>
+            <p className='text-2xl font-bold italic text-primary-white '>
+              V-UP
+            </p>
           </Link>
         </nav>
       </header>
@@ -82,7 +86,7 @@ const Header = () => {
       >
         <nav>
           <Link href='/'>
-            <p className='italic text-primary-white '>V-UP</p>
+            <p className='text-2xl font-bold italic text-primary-white'>V-UP</p>
           </Link>
         </nav>
         <nav>
