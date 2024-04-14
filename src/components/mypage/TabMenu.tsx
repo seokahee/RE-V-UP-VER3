@@ -20,7 +20,9 @@ const TabMenu = ({ data, width }: TabProps) => {
 
   return (
     <div>
-      <div className={`mb-8 mt-12 flex border-b border-[#ffffff4d] ${shadow}`}>
+      <div
+        className={`mb-8 mt-[2.75rem] flex border-b border-[#ffffff4d] ${shadow}`}
+      >
         {data &&
           data.map((item, idx) => {
             return (
