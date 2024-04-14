@@ -17,9 +17,11 @@ import { useSession } from 'next-auth/react'
 import right from '@/../public/images/chevron-right.svg'
 import pencil from '@/../public/images/pencil-line.svg'
 import ButtonPrimary from './ButtonPrimary'
+import { useSurvey } from '@/shared/store/personalStore'
 
 const MyInfo = () => {
   const { data: userSessionInfo } = useSession()
+  const { userGender } = useSurvey()
   const uid = userSessionInfo?.user?.uid as string
 
   const [userImage, setUserImage] = useState('')
