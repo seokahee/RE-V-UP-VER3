@@ -6,6 +6,7 @@ import Pagination from '@/util/Pagination '
 import { modalPaging } from '@/util/util'
 import React, { FormEvent, useRef, useState } from 'react'
 import ModalMusicData from './ModalMusicData'
+import { GOBACK_SHADOW } from '../communityDetail/detailCss'
 
 const MusicSearchModal = ({
   setIsModal,
@@ -70,7 +71,9 @@ const MusicSearchModal = ({
 
   return (
     <div className='fixed inset-0 z-50 flex h-screen w-full flex-col items-center justify-center bg-black bg-opacity-50'>
-      <div className='flex h-4/5 w-3/5 flex-col items-center rounded-md bg-white pb-10'>
+      <div
+        className={`${GOBACK_SHADOW} flex h-4/5 w-3/5 flex-col items-center overflow-y-scroll rounded-md bg-[#3D3D3D] pb-10 scrollbar-hide`}
+      >
         <form onSubmit={onSubmitHandler}>
           <input
             type='text'
@@ -88,7 +91,7 @@ const MusicSearchModal = ({
         </form>
         <div className='flex flex-col border-[1px] border-solid border-primary'>
           <div className='p-[36px]'>
-            <div className='scrollbar-hide flex flex-col items-start gap-[12px] overflow-y-scroll '>
+            <div className='flex flex-col items-start gap-[12px] overflow-y-scroll scrollbar-hide '>
               {currentItems.map((item: any, index: number) => {
                 return (
                   <ModalMusicData

@@ -11,10 +11,17 @@ import {
 import { musicDataInCommuDetail } from '@/query/communityDetail/queryKey'
 import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
 import { onDateTimeHandler } from '@/util/util'
+import message from '@/../public/images/message-text-square-02-gray.svg'
+import goback from '@/../public/images/goback.svg'
+import detailEdit from '@/../public/images/community-detail-Image/detail-edit.svg'
+import detailDelete from '@/../public/images/community-detail-Image/detail-delete.svg'
+import addMyPlayList from '@/../public/images/myPlayListButton.svg'
+import addCurrMusic from '@/../public/images/community-detail-Image/add-current-music.svg'
 import useInput from '@/hooks/useInput'
 import LikeButton from './LikeButton'
 import Link from 'next/link'
-
+import { GOBACK_SHADOW } from './detailCss'
+// pr 테스트
 const CommunityContents = () => {
   const router = useRouter()
   const [isEdit, setIsEdit] = useState<boolean>(false)
@@ -160,96 +167,149 @@ const CommunityContents = () => {
   }
 
   return (
-    <div>
-      <div>
-        <div>
-          <button onClick={onBackButtonHandler}>이전으로 가기</button>
+    <div className='mb-[8px] flex w-[732px] flex-col'>
+      <div className='flex flex-col gap-[40px]'>
+        <section className='flex h-[72px] w-[100%] items-center justify-center'>
+          <button onClick={onBackButtonHandler} className={`${GOBACK_SHADOW}`}>
+            <Image src={goback} alt='이전으로 아이콘' width={24} height={24} />
+          </button>
+          <h3 className='mx-[auto]'>음악 추천 게시판🦻</h3>
           {isEdit ? (
             <div>
               <button onClick={onEditCancelHandler}>수정취소</button>
               <button onClick={onBoardEditCompleteHandler}>수정완료</button>
             </div>
           ) : null}
-        </div>
-        {userId === uid && !isEdit && (
-          <button onClick={onBoardEditHandler}>수정</button>
-        )}
-        {userId === uid && (
-          <button type='button' onClick={onDeleteBoardHandler}>
-            삭제
-          </button>
-        )}
-        <div>
-          {isEdit ? (
-            <input
-              type='text'
-              name='boardTitle'
-              value={updatedTitle}
-              onChange={onChangeEditForm}
-            />
-          ) : (
-            <div>{`제목 : ${boardTitle}`}</div>
-          )}
-          <div>{nickname}</div>
-          <Link href={`/userpage/${userId}`}>
-            <figure>
-              {userImage ? (
-                <Image
-                  src={`${userImage}`}
-                  alt='유저 이미지'
-                  width={56}
-                  height={56}
-                  title={`${nickname}님의 페이지로 이동`}
+        </section>
+
+        <section className='flex gap-[16px]'>
+          <div>
+            <Link href={`/userpage/${userId}`}>
+              <figure>
+                {userImage ? (
+                  <Image
+                    src={`${userImage}`}
+                    alt='유저 이미지'
+                    width={56}
+                    height={56}
+                    title={`${nickname}님의 페이지로 이동`}
+                  />
+                ) : (
+                  <div className='h-[56px] w-[56px] bg-white'>
+                    <i></i>
+                  </div>
+                )}
+              </figure>
+            </Link>
+          </div>
+
+          <article className='flex flex-col'>
+            <div className='flex justify-between'>
+              {isEdit ? (
+                <input
+                  type='text'
+                  name='boardTitle'
+                  value={updatedTitle}
+                  onChange={onChangeEditForm}
                 />
               ) : (
-                <div className='h-[56px] w-[56px] bg-white'>
-                  <i></i>
-                </div>
+                <div>{`제목 : ${boardTitle}`}</div>
               )}
-            </figure>
-          </Link>
-          <div>{onDateTimeHandler(date)}</div>
-          <figure>
-            <Image
-              src={`${thumbnail}`}
-              alt='노래 앨범 이미지'
-              width={56}
-              height={56}
-            />
-          </figure>
-          <div>
-            <div>{musicTitle}</div>
-            <div>{artist}</div>
-            <div>{runTime}</div>
-            <div>
-              <button onClick={(e) => onAddPlayerHandler(e, uid, musicId)}>
-                플레이어에 음악추가
-              </button>
-              <button
-                type='button'
-                className='absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2'
-                onClick={() => onClickAddMyPlayListHandler(musicId)}
-              >
-                마플리
-              </button>
+              <div>
+                {userId === uid && !isEdit && (
+                  <button onClick={onBoardEditHandler}>
+                    <Image
+                      src={detailEdit}
+                      alt='상세페이지 수정 아이콘'
+                      width={20}
+                      height={20}
+                    />
+                  </button>
+                )}
+                {userId === uid && (
+                  <button type='button' onClick={onDeleteBoardHandler}>
+                    <Image
+                      src={detailDelete}
+                      alt='상세페이지 삭제 아이콘'
+                      width={20}
+                      height={20}
+                    />
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-          {isEdit ? (
-            <textarea
-              id='content'
-              name='content'
-              value={updatedContent}
-              onChange={onChangeEditForm}
-              cols={30}
-              rows={10}
-            ></textarea>
-          ) : (
-            <div>{`내용 : ${content}`}</div>
-          )}
+            <div className='flex justify-between'>
+              <div>{nickname}</div>
+              <div>{onDateTimeHandler(date)}</div>
+            </div>
+          </article>
+        </section>
 
-          <div>
+        <div className='flex flex-col gap-[40px]'>
+          <article className='flex gap-[32px]'>
+            <figure>
+              <Image
+                src={`${thumbnail}`}
+                alt='노래 앨범 이미지'
+                width={56}
+                height={56}
+              />
+            </figure>
+            <section className='flex'>
+              <div>
+                <div>{musicTitle}</div>
+                <div>{artist}</div>
+              </div>
+              <div>{runTime}</div>
+            </section>
+            <div className='flex'>
+              <div className='flex gap-[18px]'>
+                <button onClick={(e) => onAddPlayerHandler(e, uid, musicId)}>
+                  <Image
+                    src={addCurrMusic}
+                    alt='현재재생목록추가 아이콘'
+                    width={24}
+                    height={24}
+                  />
+                </button>
+                <button
+                  type='button'
+                  className='flex items-center justify-center rounded-full border border-black'
+                  onClick={() => onClickAddMyPlayListHandler(musicId)}
+                >
+                  <Image
+                    src={addMyPlayList}
+                    alt='마이플레이리스트에 저장 아이콘'
+                    width={48}
+                    height={48}
+                  />
+                </button>
+              </div>
+            </div>
+          </article>
+          <article>
+            {isEdit ? (
+              <textarea
+                id='content'
+                name='content'
+                value={updatedContent}
+                onChange={onChangeEditForm}
+                cols={30}
+                rows={10}
+              ></textarea>
+            ) : (
+              <div>{`내용 : ${content}`}</div>
+            )}
+          </article>
+
+          <div className='flex gap-[16px]'>
             <LikeButton boardId={currentBoardId} />
-            <div>{comment.length ? comment.length : 0}</div>
+            <div className='flex gap-[7px]'>
+              <figure>
+                <Image src={message} alt='댓글 아이콘' width={24} height={24} />
+              </figure>
+              <div>{comment.length ? comment.length : 0}</div>
+            </div>
           </div>
         </div>
       </div>

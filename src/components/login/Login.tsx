@@ -16,8 +16,10 @@ import {
   INPUT_SHADOW,
   INPUT_FOCUS,
   DOWN_ACTIVE_BUTTON,
+  OPEN_ANOTHER_SHADOW,
 } from './loginCss'
 import { ACTIVE_BUTTON_SHADOW } from './buttonCss'
+import close from '@/../public/images/close-button.svg'
 
 const Login = () => {
   const router = useRouter()
@@ -90,23 +92,49 @@ const Login = () => {
   }
 
   return (
-    <div>
+    <div className='flex h-full w-full flex-col items-center justify-center'>
+      {isModalOpen && (
+        <div className='z-1000 absolute inset-0 bg-black opacity-50'></div>
+      )}
       <div
-        className={`border-gray-300 absolute left-1/2 top-1/2 flex w-[516px] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center rounded-2xl border-none border-opacity-10 bg-white bg-opacity-10 pb-[16px] pt-[106px] ${SHADOW}`}
+        className={`border-gray-300 absolute  left-1/2 top-1/2  flex w-[516px] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center overflow-hidden rounded-2xl border-none border-opacity-10 bg-white bg-opacity-10 pb-[16px] pt-[106px] ${SHADOW}`}
       >
-        <Modal isOpen={isModalOpen} closeModal={closeModal}>
-          <div className='z-1500 text-black'>
-            <div>비밀번호 찾기</div>
-            <input
-              type='email'
-              value={spendEmail}
-              onChange={(e) => setSpendEmail(e.target.value)}
-            />
-            <button onClick={findPassword} className='cursor-pointer'>
-              {submitEmail ? '전송완료!' : '전송'}
+        {isModalOpen && (
+          <Modal closeModal={closeModal}>
+            <button onClick={closeModal} className='absolute right-0 top-0 m-3'>
+              <Image src={close} width={24} height={24} alt='닫기' />
             </button>
-          </div>
-        </Modal>
+            <div
+              className={`${OPEN_ANOTHER_SHADOW} flex h-[680px] w-[516px] flex-col items-center justify-center gap-[94px] rounded-[32px] border-[4px] border-solid border-[#474747] bg-[#3D3D3D] pb-[300px]`}
+            >
+              <h3 className='pt-[106px] text-[20px] font-bold '>
+                <p>비밀번호 찾기</p>
+              </h3>
+              <div className=' flex flex-col gap-[32px]'>
+                <article className='gap-[4px]'>
+                  <label>
+                    <p>이메일</p>
+                  </label>
+                  <input
+                    type='email'
+                    value={spendEmail}
+                    placeholder='가입 시 사용한 이메일을 입력하세요.'
+                    onChange={(e) => setSpendEmail(e.target.value)}
+                    className={`flex w-full items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] font-bold caret-primary shadow-md ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} [&_placeholder]:text-[rgba(255,255,255,0.3)]`}
+                  />
+                </article>
+                <div>
+                  <button
+                    onClick={findPassword}
+                    className={`flex h-[48px] w-[320px] items-center justify-center  rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
+                  >
+                    {submitEmail ? '전송완료!' : '전송'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Modal>
+        )}
         <section className='tracking-[-0.03em]'>
           <div className='text-center text-[24px] font-bold'>
             <p>V-UP에 오신 걸 환영합니다</p>
