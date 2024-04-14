@@ -41,7 +41,6 @@ const MusicSearchModal = ({
         setMusicList(data)
       } else {
         alert('검색 결과가 없습니다')
-        return
       }
     }
     getMusicData(keyword)
