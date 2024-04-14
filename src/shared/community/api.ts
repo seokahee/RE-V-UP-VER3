@@ -5,7 +5,7 @@ export const getCommunityList = async (isSort: boolean) => {
     const { data } = await supabase
       .from('community')
       .select(
-        'boardId, boardTitle, likeList, date, userId, userInfo(nickname, userImage), musicInfo(thumbnail)',
+        'boardId, boardTitle, likeList, date, userId, userInfo(nickname, userImage), musicInfo(thumbnail),comment(commentId)',
       )
       .order(isSort ? 'date' : 'likeList', { ascending: false })
     return data
