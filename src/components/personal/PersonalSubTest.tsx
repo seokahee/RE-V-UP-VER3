@@ -83,8 +83,8 @@ const PersonalSubTest = ({
   }
 
   return (
-    <div className='grid h-screen place-items-center'>
-      <div className='grid h-[600px] h-screen w-[500px] place-items-center rounded-[32px] bg-white bg-opacity-10'>
+    <div className='grid  place-items-center'>
+      <div className='grid h-[600px] h-screen w-[600px] place-items-center rounded-[32px] bg-white bg-opacity-10'>
         <div className='flex justify-center'>
           <label>
             <input

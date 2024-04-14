@@ -7,7 +7,7 @@ const PersonalTestResult = () => {
   const { userChar } = useSurvey()
 
   return (
-    <div>
+    <div className=' w-[600px] place-items-center rounded-[32px] bg-white bg-opacity-10 '>
       <p className='text-center text-3xl'>당신의 음악 취향은....!</p>
       <ResultChart userChar={userChar} />
       <PersonalRecommend userChar={userChar} />
