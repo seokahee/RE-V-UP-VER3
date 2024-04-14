@@ -40,8 +40,9 @@ const GenderPage = ({
               value='male'
               checked={gender === 'male'}
               onChange={onChangeHandler}
+              className='active:bg-indigo-500'
             />
-            <p className='inline-flex h-[100px] w-[336px] items-center justify-center gap-2 rounded-xl bg-white bg-opacity-20 shadow shadow-inner hover:bg-indigo-500 active:bg-indigo-500'>
+            <p className='inline-flex h-[100px] w-[336px] items-center justify-center gap-2 rounded-xl bg-white bg-opacity-20 shadow shadow-inner hover:bg-indigo-500 '>
               남자
             </p>
           </label>

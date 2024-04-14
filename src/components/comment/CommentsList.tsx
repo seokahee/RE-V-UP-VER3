@@ -84,7 +84,7 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
       {commentsData?.map((item) => (
         <div key={item.commentId}>
           <div className='inline-flex  w-full flex-col items-start justify-start gap-4 border-b border-white border-opacity-10 py-4'>
-            <div className=' flex w-full flex-row '>
+            <div className=' w-full flex-row '>
               <div className='flex basis-1/2 flex-row gap-2'>
                 <p className='h-6 w-6 overflow-hidden rounded-full border-2 border-white'>
                   {item.userInfo?.userImage && (

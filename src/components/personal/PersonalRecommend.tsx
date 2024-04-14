@@ -29,7 +29,11 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
   })
 
   //추천 음악
-  const { data: recommend } = useQuery({
+  const {
+    data: recommend,
+    isLoading,
+    isError,
+  } = useQuery({
     queryFn: () => getRecommendMusic(musicPreferenceData as number[]),
     queryKey: ['recommendMusic'],
   })

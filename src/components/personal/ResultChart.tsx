@@ -57,7 +57,7 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
               ],
             },
             options: {
-              responsive: true,
+              responsive: false,
               plugins: {
                 title: {
                   display: true,
@@ -75,7 +75,12 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
 
   return (
     <div className=' flex justify-center '>
-      <canvas ref={chartRef} />
+      <canvas
+        ref={chartRef}
+        width={400}
+        height={400}
+        style={{ backgroundColor: 'black' }}
+      />
     </div>
   )
 }

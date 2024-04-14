@@ -6,8 +6,7 @@ export type UserInfo = {
   following: string[]
   follower: string[]
   userChar?: {
-    gender?: boolean
-    age?: number
+    gender?: string
     mbti?: number
     resultSentence?: string
   }
