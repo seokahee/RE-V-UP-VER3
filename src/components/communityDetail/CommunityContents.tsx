@@ -199,6 +199,7 @@ const CommunityContents = () => {
                   alt='유저 이미지'
                   width={56}
                   height={56}
+                  title={`${nickname}님의 페이지로 이동`}
                 />
               ) : (
                 <div className='h-[56px] w-[56px] bg-white'>
