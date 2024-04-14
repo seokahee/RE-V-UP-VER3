@@ -195,7 +195,7 @@ const MyInfo = () => {
       <div>
         <div className='flex justify-between'>
           <div>
-            <figure className='flex h-[80px] w-[80px] overflow-hidden rounded-full bg-slate-200'>
+            <figure className='flex h-[84px] w-[84px] overflow-hidden rounded-full border-2 border-[#ffffff1a] bg-[#2b2b2b]'>
               {userImage && (
                 <Image
                   src={userImage}
