@@ -17,7 +17,7 @@ import useInput from '@/hooks/useInput'
 import LikeButton from './LikeButton'
 import Link from 'next/link'
 import { GOBACK_SHADOW } from './detailCss'
-
+// pr 테스트
 const CommunityContents = () => {
   const router = useRouter()
   const [isEdit, setIsEdit] = useState<boolean>(false)
