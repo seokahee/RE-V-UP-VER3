@@ -36,6 +36,6 @@ const config: Config = {
       borderRadius: { rounded: '0.25rem', xl: '0.75rem', '2xl': '1rem' },
     },
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar-hide')],
 }
 export default config
