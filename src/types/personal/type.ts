@@ -57,3 +57,8 @@ export type PersonlResult = {
   }
   musicList: string[]
 }
+
+export type PersonalModal = {
+  isOpen: boolean
+  onClose: () => void
+}

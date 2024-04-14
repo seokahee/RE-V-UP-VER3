@@ -30,14 +30,14 @@ const Header = () => {
         <nav className='flex justify-between  gap-2'>
           <Link
             href='/community'
-            className='shadow-inner" h-12 w-12 rounded-xl bg-white bg-opacity-10 p-3 shadow '
+            className=' relative inline-flex h-12 w-12 items-center justify-center rounded-xl border-4 border-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
           >
             <Image src={commu} alt='커뮤니티 아이콘' />
           </Link>
           {!user ? (
             <Link
               href='/join'
-              className='shadow-inner" h-12 w-12 rounded-xl bg-white bg-opacity-10 p-3 shadow'
+              className=' relative inline-flex h-12 w-12 items-center justify-center rounded-xl border-4 border-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
             >
               <Image src={commu} alt='커뮤니티 아이콘' />
             </Link>
@@ -46,7 +46,7 @@ const Header = () => {
               {' '}
               <Link
                 href='/mypage'
-                className='shadow-inner" h-12 w-12 rounded-xl bg-white bg-opacity-10 p-3 shadow'
+                className=' relative inline-flex h-12 w-12 items-center justify-center rounded-xl border-4 border-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
               >
                 <Image src={people} alt='마이페이지 아이콘' />
               </Link>
@@ -64,11 +64,11 @@ const Header = () => {
     return (
       <header className='border-b-2  border-solid px-[2.5rem] py-4'>
         <nav className='flex flex-row  gap-2'>
-          <Link href='/' className=' basis-1/2 '>
+          <Link href='/' className=' w-[340px] '>
             <Image
               src={back}
               alt='뒤로가기 아이콘'
-              className='ml-8 h-12 w-12 rounded-xl bg-white bg-opacity-10 p-3 shadow shadow-inner'
+              className=' relative inline-flex h-12 w-12 items-center justify-center rounded-xl border-4 border-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
             />
           </Link>
           <Link href='/'>
@@ -95,14 +95,14 @@ const Header = () => {
         <nav className='flex justify-between gap-2'>
           <Link
             href='/community'
-            className='shadow-inner" h-12 w-12 rounded-xl bg-white bg-opacity-10 p-3 shadow'
+            className=' relative inline-flex h-12 w-12 items-center justify-center rounded-xl border-4 border-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
           >
             <Image src={commu} alt='' />
           </Link>
           {!user ? (
             <Link
               href='/login'
-              className='shadow-inner" h-12 w-12 rounded-xl bg-white bg-opacity-10 p-3 shadow'
+              className=' relative inline-flex h-12 w-12 items-center justify-center rounded-xl border-4 border-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
             >
               <Image src={people} alt='' />
             </Link>
@@ -110,7 +110,7 @@ const Header = () => {
             <>
               <Link
                 href='/mypage'
-                className='shadow-inner" h-12 w-12 rounded-xl bg-white bg-opacity-10 p-3 shadow'
+                className=' relative inline-flex h-12 w-12 items-center justify-center rounded-xl border-4 border-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
               >
                 <Image src={people} alt='' />
               </Link>
