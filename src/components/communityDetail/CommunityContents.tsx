@@ -13,6 +13,7 @@ import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
 import { onDateTimeHandler } from '@/util/util'
 import useInput from '@/hooks/useInput'
 import LikeButton from './LikeButton'
+import Link from 'next/link'
 
 const CommunityContents = () => {
   const router = useRouter()
@@ -190,16 +191,22 @@ const CommunityContents = () => {
             <div>{`제목 : ${boardTitle}`}</div>
           )}
           <div>{nickname}</div>
-          <figure>
-            {userImage ? (
-              <Image
-                src={`${userImage}`}
-                alt='유저 이미지'
-                width={56}
-                height={56}
-              />
-            ) : null}
-          </figure>
+          <Link href={`/userpage/${userId}`}>
+            <figure>
+              {userImage ? (
+                <Image
+                  src={`${userImage}`}
+                  alt='유저 이미지'
+                  width={56}
+                  height={56}
+                />
+              ) : (
+                <div className='h-[56px] w-[56px] bg-white'>
+                  <i></i>
+                </div>
+              )}
+            </figure>
+          </Link>
           <div>{onDateTimeHandler(date)}</div>
           <figure>
             <Image

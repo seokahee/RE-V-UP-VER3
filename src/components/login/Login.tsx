@@ -15,9 +15,9 @@ import {
   SHADOW,
   INPUT_SHADOW,
   INPUT_FOCUS,
-  ACTIVE_BUTTON,
+  DOWN_ACTIVE_BUTTON,
 } from './loginCss'
-import { BUTTON_SHADOW } from './buttonCss'
+import { ACTIVE_BUTTON_SHADOW } from './buttonCss'
 
 const Login = () => {
   const router = useRouter()
@@ -149,7 +149,7 @@ const Login = () => {
               <div className='tracking-[-0.03em]'>
                 <button
                   type='submit'
-                  className={`flex h-[48px] w-[320px] items-center justify-center  rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${ACTIVE_BUTTON} ${BUTTON_SHADOW} `}
+                  className={`flex h-[48px] w-[320px] items-center justify-center  rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
                 >
                   로그인
                 </button>
