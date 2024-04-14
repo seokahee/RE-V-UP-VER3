@@ -56,7 +56,7 @@ const Join = () => {
       email: userEmail,
       password: userPw,
     })
-    console.log(signUpResult)
+    // console.log(signUpResult)
     const userId = signUpResult?.data?.user?.id
 
     if (signUpResult) {
