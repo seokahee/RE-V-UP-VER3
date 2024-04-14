@@ -17,6 +17,7 @@ const CheckboxItem = ({
       id={id}
       checked={checked}
       onChange={onChangeCheckMusicHandler}
+      className='border-gray-200 h-6 w-6 rounded-lg border border-solid shadow-md'
     />
   )
 }

@@ -1,4 +1,6 @@
 'use client'
+import musicList from '@/../public/images/musicList.svg'
+import myPlayListButton from '@/../public/images/myPlayListButton.svg'
 import { getMusicList } from '@/query/musicPlayer/musicPlayerQueryKey'
 import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
 import { insertMyPlayMusic, updateMyPlayMusic } from '@/shared/musicPlayer/api'
@@ -96,37 +98,57 @@ const SearchedMusicData = () => {
   }
 
   return (
-    <div>
+    <div className='flex h-[440px] w-[732px] flex-col'>
       {musicData.map((item) => {
         return (
-          <li key={item.musicId} className='mr-6 w-[136px] list-none p-2'>
-            <div className='relative h-[120px] w-[120px]'>
-              <figure>
+          <li
+            key={item.musicId}
+            className='flex h-[88px] w-[732px] list-none items-start gap-[19px] p-[16px]'
+          >
+            <div className='flex h-[56px] w-[588px] gap-[16px]'>
+              <div className='h-[56px] w-[56px]'>
                 <Image
                   src={item.thumbnail}
-                  width={120}
-                  height={120}
+                  width={56}
+                  height={56}
                   alt={`${item.musicTitle} 앨범 썸네일`}
+                  className='rounded-full'
                 />
-              </figure>
+              </div>
+              <div className='flex h-[48px] w-[516px] items-center justify-between pr-[32px]'>
+                <div className='flex flex-col gap-[3px]'>
+                  <span className='text-[18px] font-bold'>
+                    {item.musicTitle}
+                  </span>
+                  <span className='text-[14px] font-bold opacity-[50%]'>
+                    {item.artist}
+                  </span>
+                </div>
+                <span className='text-[14px]  opacity-[50%]'>
+                  {item.runTime}
+                </span>
+              </div>
+            </div>
+            <div className='h-48px flex w-[122px] gap-[16px]'>
               <button
-                type='button'
-                className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
                 onClick={() => onClickAddCurrentMusicHandler(item.musicId)}
               >
-                +
+                <Image
+                  src={musicList}
+                  width={48}
+                  height={48}
+                  alt='현재 플레이리스트 등록 버튼'
+                />
               </button>
-              <button
-                type='button'
-                className='absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2'
-                onClick={() => onClickAddMyPlayListHandler(item.musicId)}
-              >
-                마플리
+              <button onClick={() => onClickAddMyPlayListHandler(item.musicId)}>
+                <Image
+                  src={myPlayListButton}
+                  width={48}
+                  height={48}
+                  alt='마이플레이리스트 등록 버튼'
+                />
               </button>
             </div>
-            <strong>{item.musicTitle}</strong>
-            <span>{item.artist}</span>
-            <span>{item.runTime}</span>
           </li>
         )
       })}
