@@ -18,7 +18,7 @@ const TabMenu = ({ data, width }: TabProps) => {
 
   return (
     <div>
-      <div className='flex'>
+      <div className='mb-8 mt-12 flex border-b border-[#ffffff4d]'>
         {data &&
           data.map((item, idx) => {
             return (
@@ -26,7 +26,7 @@ const TabMenu = ({ data, width }: TabProps) => {
                 key={item.id}
                 type='button'
                 onClick={() => onClickTabHandler(idx)}
-                className={`${isActive === idx ? 'text-blue-600' : ''} ${width}`}
+                className={`${isActive === idx ? 'border-[#685BFF] text-[#685BFF]' : 'border-transparent text-[#ffffff80]'} mb-[-1px] p-[0.875rem] font-bold ${width}  border-b-2 text-[1.25rem] tracking-[-0.03em]`}
               >
                 {item.title}
               </button>
