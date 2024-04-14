@@ -53,6 +53,7 @@ const SearchForm = () => {
             onChange={onChange}
             className='appearance-none bg-transparent focus:outline-none'
           />
+
           <select
             name='selectedTabs'
             value={selectedTabs}

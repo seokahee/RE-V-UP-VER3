@@ -21,6 +21,7 @@ export type GenreMusicInfo = {
   musicTitle: string
   release: string
   thumbnail: string
+  runTime: string
 }
 
 export type MusicPreference = {

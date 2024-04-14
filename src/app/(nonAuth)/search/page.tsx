@@ -10,7 +10,6 @@ import {
   useSearchedKeywordStore,
   useSearchedResultStore,
 } from '@/shared/store/searchStore'
-import { CommunityType } from '@/types/community/type'
 import { CurrentPlayListType } from '@/types/musicPlayer/types'
 import Pagination from '@/util/Pagination '
 import { modalPaging } from '@/util/util'
@@ -54,8 +53,8 @@ const Search = () => {
   }
 
   const filteredCommunity = communityResult?.filter((item) => {
-    return item && item.userInfo && item.musicInfo
-  }) as CommunityType[]
+    return item && item.userInfo && item.musicInfo && item.comment
+  })
 
   const filteredMusic = musicResult?.filter((item) => {
     return item
@@ -79,16 +78,18 @@ const Search = () => {
   )
   return (
     <div>
-      <div className='my-[48px] h-[28px] text-[20px] font-bold leading-[140%]'>
-        {searchedResult && searchedResult.length > 0
-          ? `'${keyword}'에 대한 노래 검색 결과`
-          : `'${keyword}'에 대한 게시글 검색 결과`}
-      </div>
       {searchedResult && searchedResult.length > 0 ? (
-        <div>
+        <div className='flex h-[440px] w-[732px] flex-col'>
+          <div className='my-[48px] h-[28px] text-[20px] font-bold leading-[140%]'>
+            {selectedTabs === 'musicInfo'
+              ? `'${keyword}'에 대한 노래 검색 결과`
+              : `'${keyword}'에 대한 게시글 검색 결과`}
+          </div>
           <SearchedMusicData />
           <SearchedCommunityData />
-          <div className='mt-[210px]'>
+          <div
+            className={selectedTabs === 'musicInfo' ? 'mb-[82px]' : 'mb-[32px]'}
+          >
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
@@ -99,7 +100,12 @@ const Search = () => {
           </div>
         </div>
       ) : (
-        <NoSearchResult />
+        <div>
+          <div className='my-[48px] h-[28px] text-[20px] font-bold leading-[140%]'>
+            {`'${keyword}'에 대한 검색 결과가 없습니다`}
+          </div>
+          <NoSearchResult />
+        </div>
       )}
     </div>
   )

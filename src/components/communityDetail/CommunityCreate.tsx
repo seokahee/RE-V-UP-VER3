@@ -3,11 +3,13 @@
 import React, { FormEvent } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import MusicSearch from '../search/MusicSearch'
-import { useCoummunityItem } from '@/query/communityDetail/mutation'
-import useInput from '@/hooks/useInput'
 import Image from 'next/image'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
+import { useCoummunityItem } from '@/query/communityDetail/mutation'
+import MusicSearch from '../search/MusicSearch'
+import goback from '@/../public/images/goback.svg'
+import useInput from '@/hooks/useInput'
+import { GOBACK_SHADOW } from './detailCss'
 
 const CommunityCreate = () => {
   const router = useRouter()
@@ -57,20 +59,21 @@ const CommunityCreate = () => {
   return (
     <div>
       <form onSubmit={onSumitHandler}>
-        <div>
+        <div className='flex h-[72px] w-[100%] items-center justify-between'>
           <button
             onClick={(e) => {
               e.preventDefault()
               router.replace('/community')
             }}
+            className={`${GOBACK_SHADOW}`}
           >
-            <p>이전으로</p>
+            <Image src={goback} alt='이전으로 아이콘' width={24} height={24} />
           </button>
           <div>
-            <p>글쓰기 페이지</p>
+            <h3 className='mx-[auto]'>글쓰기</h3>
           </div>
+          <button>등록</button>
         </div>
-        <button>등록</button>
 
         <div>
           <div>
@@ -79,7 +82,7 @@ const CommunityCreate = () => {
               name='boardTitle'
               value={boardTitle}
               onChange={onChangeHandler}
-              className='focus:outline-todayPink mb-4 w-full rounded-lg border p-2'
+              className='focus:outline-todayPink mb-4 w-full rounded-lg border p-2  text-black'
               placeholder='제목을 입력하세요'
             />
           </div>
@@ -88,35 +91,41 @@ const CommunityCreate = () => {
             name='content'
             value={content}
             onChange={onChangeHandler}
-            className='focus:outline-todayPink mb-4 w-full rounded-lg border p-2'
-            placeholder='내용을 입력하세요'
+            className='focus:outline-todayPink mb-4 w-full rounded-lg border p-2 text-black'
+            placeholder='추천할 음악에 대해 얘기해 주세요'
           />
         </div>
       </form>
-      <article>
-        <MusicSearch />
-      </article>
-      <article>
-        <div>
-          {thumbnail ? (
-            <Image
-              src={thumbnail}
-              alt='노래앨범이미지'
-              width={80}
-              height={80}
-            />
-          ) : (
-            <div className='h-[80px] w-[80px] rounded-[16px] border-[1px] border-solid border-black'>
-              <i></i>
+
+      <article className='flex flex-col gap-[16px]'>
+        <div className='flex gap-[16px]'>
+          <MusicSearch />
+          <section className='flex gap-[16px]'>
+            <div>
+              {thumbnail ? (
+                <Image
+                  src={thumbnail}
+                  alt='노래앨범이미지'
+                  width={80}
+                  height={80}
+                />
+              ) : (
+                <div className='h-[80px] w-[80px] rounded-[16px] border-[1px] border-solid border-black'>
+                  <i></i>
+                </div>
+              )}
             </div>
-          )}
+            <article className='flex items-center justify-center [&_div]:flex [&_div]:gap-[16px]'>
+              <div className='flex items-center'>
+                <p className='text-[24px] font-bold'>{musicTitle}</p>
+                <p className='text-[16px] font-bold'>{artist}</p>
+              </div>
+            </article>
+          </section>
         </div>
-        <section className='flex gap-[16px] [&_div]:flex [&_div]:gap-[16px]'>
-          <div>
-            <p>{musicTitle}</p>
-            <p>{artist}</p>
-          </div>
-        </section>
+        <div>
+          <p>게시글을 등록하기 위해 음악을 추가 해야돼요!</p>
+        </div>
       </article>
     </div>
   )

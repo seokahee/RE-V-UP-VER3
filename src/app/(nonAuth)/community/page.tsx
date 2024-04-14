@@ -1,8 +1,8 @@
 'use client'
+import { GOBACK_SHADOW } from '@/components/communityDetail/detailCss'
 import CommunityListData from '@/components/communityList/CommunityListData'
 import CommunityListSort from '@/components/communityList/CommunityListSort'
 import { getCommunityListInCommunity } from '@/query/community/communityQueryKey'
-import { CommunityType } from '@/types/community/type'
 import Pagination from '@/util/Pagination '
 import { paging } from '@/util/util'
 import Link from 'next/link'
@@ -14,7 +14,6 @@ const Community = () => {
 
   const { communityList, isLoading, isError, refetch } =
     getCommunityListInCommunity(isSort)
-
   useEffect(() => {
     refetch()
   }, [isSort, refetch])
@@ -32,8 +31,8 @@ const Community = () => {
     return
   }
   const filteredData = communityList.filter((item) => {
-    return item && item.userInfo && item.musicInfo
-  }) as CommunityType[]
+    return item && item.userInfo && item.musicInfo && item.comment
+  })
 
   const { currentItems, nextPage, prevPage, totalPages } = paging(
     filteredData,
@@ -43,20 +42,28 @@ const Community = () => {
 
   return (
     <div>
-      <Link href='/communitycreate'>글 등록하기</Link>
-      <div className='m-10 flex gap-2'>
+      <div className='shadow-mb relative mt-[32px] flex h-[72px] w-[732px] items-center justify-center rounded-xl border-4 border-white border-opacity-10 bg-white bg-opacity-10'>
+        <h1 className='text-[20px] font-bold'>음악 추천 게시판🦻</h1>
+        <div className='absolute right-[20px] flex h-12 w-40 items-center justify-center rounded-xl border border-dim-black bg-primary font-bold'>
+          <Link href='/communitycreate'>글 등록하기</Link>
+        </div>
+      </div>
+
+      <div className='my-[30px]'>
         <CommunityListSort isSort={isSort} setIsSort={setIsSort} />
       </div>
       {currentItems.map((item: any) => {
         return <CommunityListData key={item.boardId} item={item} />
       })}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        prevPage={prevPage}
-        nextPage={nextPage}
-        setCurrentPage={setCurrentPage}
-      />
+      <div className='my-[32px]'>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          prevPage={prevPage}
+          nextPage={nextPage}
+          setCurrentPage={setCurrentPage}
+        />
+      </div>
     </div>
   )
 }

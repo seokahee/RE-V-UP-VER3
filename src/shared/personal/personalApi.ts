@@ -82,14 +82,14 @@ export const insertUserChar = async ({
   userId: string
   personalUser: PersonalInfo
 }) => {
-  const mbtiCode = mbtiMatch(personalUser.mbti) // MBTI를 숫자로 변환
+  // const mbtiCode = mbtiMatch(personalUser.mbti) // MBTI를 숫자로 변환
   const mbtiSentence = SentenceMatch(personalUser.mbti)
   const { data, error } = await supabase
     .from('userInfo')
     .update({
       userChar: {
         ...personalUser,
-        mbti: mbtiCode,
+        mbti: personalUser.mbti,
         resultSentence: mbtiSentence,
       },
     }) // 숫자로 변환된 MBTI 저장
