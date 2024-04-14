@@ -8,15 +8,17 @@ const PersonalMusicPage = () => {
   const [pageCount, setPageCount] = useState<string>('pageOne')
   return (
     <>
-      {pageCount === 'pageOne' ? (
-        <GenderPage setPageCount={setPageCount} />
-      ) : pageCount === 'pageTwo' ? (
-        <MBTIPage setPageCount={setPageCount} />
-      ) : pageCount === 'pageThree' ? (
-        <ResultPage setPageCount={setPageCount} />
-      ) : (
-        <div>Error</div>
-      )}
+      <div className='flex justify-center'>
+        {pageCount === 'pageOne' ? (
+          <GenderPage setPageCount={setPageCount} />
+        ) : pageCount === 'pageTwo' ? (
+          <MBTIPage setPageCount={setPageCount} />
+        ) : pageCount === 'pageThree' ? (
+          <ResultPage setPageCount={setPageCount} />
+        ) : (
+          <div>Error</div>
+        )}
+      </div>
     </>
   )
 }

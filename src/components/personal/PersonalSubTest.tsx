@@ -78,127 +78,127 @@ const PersonalSubTest = ({
   const handleNextClick = (param: string) => {
     return setPageCount(param)
   }
-  const onBackHandler = () => {
-    router.back()
-  }
-  return (
-    <div className=' rounded-[32px] bg-white bg-opacity-10'>
-      <div className='flex justify-center'>
-        <label>
-          <input
-            type='radio'
-            name='EI'
-            value='E'
-            checked={EI === 'E'}
-            onChange={onChangeHandler}
-          />
-          E
-        </label>
-        <label>
-          <input
-            type='radio'
-            name='EI'
-            value='I'
-            checked={EI === 'I'}
-            onChange={onChangeHandler}
-          />
-          I
-        </label>
-      </div>
-      <div className='flex justify-center'>
-        <label>
-          <input
-            type='radio'
-            name='SN'
-            value='S'
-            checked={SN === 'S'}
-            onChange={onChangeHandler}
-          />
-          S
-        </label>
-        <label>
-          <input
-            type='radio'
-            name='SN'
-            value='N'
-            checked={SN === 'N'}
-            onChange={onChangeHandler}
-          />
-          N
-        </label>
-      </div>
-      <div className='flex justify-center'>
-        <label>
-          <input
-            type='radio'
-            name='TF'
-            value='T'
-            checked={TF === 'T'}
-            onChange={onChangeHandler}
-          />
-          T
-        </label>
-        <label>
-          <input
-            type='radio'
-            name='TF'
-            value='F'
-            checked={TF === 'F'}
-            onChange={onChangeHandler}
-          />
-          F
-        </label>
-      </div>
-      <div className='flex justify-center'>
-        <label>
-          <input
-            type='radio'
-            name='PJ'
-            value='P'
-            checked={PJ === 'P'}
-            onChange={onChangeHandler}
-          />
-          P
-        </label>
-        <label>
-          <input
-            type='radio'
-            name='PJ'
-            value='J'
-            checked={PJ === 'J'}
-            onChange={onChangeHandler}
-          />
-          J
-        </label>
-      </div>
-      <div className='flex justify-center gap-2'>
-        <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl shadow shadow-inner'>
-          {EI}
-        </p>
-        <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center  text-7xl  shadow shadow-inner'>
-          {SN}
-        </p>
-        <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  shadow shadow-inner'>
-          {TF}
-        </p>
-        <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl shadow shadow-inner'>
-          {PJ}
-        </p>
-      </div>
 
-      <div className='flex justify-center gap-4'>
-        <button
-          onClick={onBackHandler}
-          className='h-12 w-40 rounded-xl border border  border-dim-black '
-        >
-          이전
-        </button>
-        <button
-          onClick={onsubmitResultHandler}
-          className='h-12 w-40 rounded-xl border border-dim-black bg-primary'
-        >
-          결과보러가기
-        </button>
+  return (
+    <div className='grid h-screen place-items-center'>
+      <div className='grid h-[600px] h-screen w-[500px] place-items-center rounded-[32px] bg-white bg-opacity-10'>
+        <div className='flex justify-center'>
+          <label>
+            <input
+              type='radio'
+              name='EI'
+              value='E'
+              checked={EI === 'E'}
+              onChange={onChangeHandler}
+            />
+            E
+          </label>
+          <label>
+            <input
+              type='radio'
+              name='EI'
+              value='I'
+              checked={EI === 'I'}
+              onChange={onChangeHandler}
+            />
+            I
+          </label>
+        </div>
+        <div className='flex justify-center'>
+          <label>
+            <input
+              type='radio'
+              name='SN'
+              value='S'
+              checked={SN === 'S'}
+              onChange={onChangeHandler}
+            />
+            S
+          </label>
+          <label>
+            <input
+              type='radio'
+              name='SN'
+              value='N'
+              checked={SN === 'N'}
+              onChange={onChangeHandler}
+            />
+            N
+          </label>
+        </div>
+        <div className='flex justify-center'>
+          <label>
+            <input
+              type='radio'
+              name='TF'
+              value='T'
+              checked={TF === 'T'}
+              onChange={onChangeHandler}
+            />
+            T
+          </label>
+          <label>
+            <input
+              type='radio'
+              name='TF'
+              value='F'
+              checked={TF === 'F'}
+              onChange={onChangeHandler}
+            />
+            F
+          </label>
+        </div>
+        <div className='flex justify-center'>
+          <label>
+            <input
+              type='radio'
+              name='PJ'
+              value='P'
+              checked={PJ === 'P'}
+              onChange={onChangeHandler}
+            />
+            P
+          </label>
+          <label>
+            <input
+              type='radio'
+              name='PJ'
+              value='J'
+              checked={PJ === 'J'}
+              onChange={onChangeHandler}
+            />
+            J
+          </label>
+        </div>
+        <div className='flex justify-center gap-2'>
+          <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl shadow shadow-inner'>
+            {EI}
+          </p>
+          <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center  text-7xl  shadow shadow-inner'>
+            {SN}
+          </p>
+          <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  shadow shadow-inner'>
+            {TF}
+          </p>
+          <p className='h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl shadow shadow-inner'>
+            {PJ}
+          </p>
+        </div>
+
+        <div className='flex justify-center gap-4'>
+          <button
+            onClick={() => handleNextClick('pageOne')}
+            className='h-12 w-40 rounded-xl border border  border-dim-black '
+          >
+            이전
+          </button>
+          <button
+            onClick={onsubmitResultHandler}
+            className='h-12 w-40 rounded-xl border border-dim-black bg-primary'
+          >
+            결과보러가기
+          </button>
+        </div>
       </div>
     </div>
   )
