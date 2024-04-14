@@ -1,16 +1,16 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import {
   addLikedUser,
   getClickLikedUser,
   removeLikedUser,
 } from '@/shared/communitydetail/detailApi'
-import heart from '@/../public/images/likeFullHeart.svg'
-import emptyHeart from '@/../public/images/Property 1=heart-rounded.svg'
 import { Props } from '@/types/communityDetail/detailTypes'
-import { useSession } from 'next-auth/react'
+import emptyHeart from '@/../public/images/Property 1=heart-rounded.svg'
+import heart from '@/../public/images/likeFullHeart.svg'
 
 const LikeButton = ({ boardId }: Props) => {
   const { data: userSessionInfo } = useSession()

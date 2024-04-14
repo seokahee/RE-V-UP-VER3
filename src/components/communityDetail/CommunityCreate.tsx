@@ -3,13 +3,13 @@
 import React, { FormEvent } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import MusicSearch from '../search/MusicSearch'
-import { useCoummunityItem } from '@/query/communityDetail/mutation'
 import Image from 'next/image'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
+import { useCoummunityItem } from '@/query/communityDetail/mutation'
+import MusicSearch from '../search/MusicSearch'
 import goback from '@/../public/images/goback.svg'
-import { GOBACK_SHADOW } from './detailCss'
 import useInput from '@/hooks/useInput'
+import { GOBACK_SHADOW } from './detailCss'
 
 const CommunityCreate = () => {
   const router = useRouter()
