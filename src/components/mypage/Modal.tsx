@@ -15,16 +15,14 @@ const Modal = ({ children, onClick }: Modal) => {
       <div
         className={`fixed left-1/2 top-1/2 h-[680px] max-h-[80vh] w-[516px] max-w-[80%] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-[2rem] border-4 border-[#474747] bg-[#3d3d3d] p-4 ${modalShadow} z-10`}
       >
-        {/* <div className='relative m-[4px] h-[680px] max-h-[80vh] overflow-y-auto rounded-[2rem] border-4 border-solid border-[#474747] bg-[#3D3D3D] p-4'> */}
         <button
           type='button'
           onClick={onClick}
-          className='absolute right-[1rem] top-[1rem]'
+          className='absolute right-[2rem] top-[2rem]'
         >
           x
         </button>
         {children}
-        {/* </div> */}
       </div>
     </div>
   )
