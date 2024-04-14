@@ -234,6 +234,59 @@ export const getFollowData = async (ids: string[]) => {
   }
 }
 
+export const getFollowDataFollowing = async (userId: string) => {
+  try {
+    const { data } = await supabase
+      .from('userInfo')
+      .select('following')
+      .eq('userId', userId)
+      .limit(1)
+      .single()
+
+    const followingIds = data?.following ? data?.following : []
+
+    const { data: followingData, error } = await supabase
+      .from('userInfo')
+      .select('userId, nickname, userImage,following, follower')
+      .in('userId', followingIds)
+    if (error) {
+      console.error(error)
+      return []
+    }
+
+    return followingData
+  } catch (error) {
+    console.log(error)
+    return []
+  }
+}
+
+export const getFollowDataFollower = async (userId: string) => {
+  try {
+    const { data, error } = await supabase
+      .from('userInfo')
+      .select('follower')
+      .eq('userId', userId)
+      .limit(1)
+      .single()
+
+    const followerIds = data?.follower ? data?.follower : []
+
+    const { data: followerData } = await supabase
+      .from('userInfo')
+      .select('userId, nickname, userImage,following, follower')
+      .in('userId', followerIds)
+    if (error) {
+      console.error(error)
+      return
+    }
+
+    return followerData
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const updateFollow = async ({
   userId,
   targetId,
