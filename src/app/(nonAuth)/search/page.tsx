@@ -13,7 +13,7 @@ import {
 import { CommunityType } from '@/types/community/type'
 import { CurrentPlayListType } from '@/types/musicPlayer/types'
 import Pagination from '@/util/Pagination '
-import { paging } from '@/util/util'
+import { modalPaging } from '@/util/util'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
@@ -24,7 +24,6 @@ const Search = () => {
   const searchResultData = useSearchedResultStore(
     (state) => state.searchResultData,
   )
-
   const {
     data: musicResult,
     isLoading: musicDataIsLoading,
@@ -65,9 +64,7 @@ const Search = () => {
   const searchedResult =
     selectedTabs === 'musicInfo' ? filteredMusic : filteredCommunity
 
-  const isSearchedResult = searchedResult && searchedResult.length > 0
-
-  const { currentItems, nextPage, prevPage, totalPages } = paging(
+  const { currentItems, nextPage, prevPage, totalPages } = modalPaging(
     searchedResult,
     currentPage,
     setCurrentPage,
@@ -80,20 +77,26 @@ const Search = () => {
     selectedTabs === 'musicInfo' ? currentItems : [],
     selectedTabs === 'community' ? currentItems : [],
   )
-
   return (
     <div>
-      {isSearchedResult ? (
+      <div className='my-[48px] h-[28px] text-[20px] font-bold leading-[140%]'>
+        {searchedResult && searchedResult.length > 0
+          ? `'${keyword}'에 대한 노래 검색 결과`
+          : `'${keyword}'에 대한 게시글 검색 결과`}
+      </div>
+      {searchedResult && searchedResult.length > 0 ? (
         <div>
           <SearchedMusicData />
           <SearchedCommunityData />
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            prevPage={prevPage}
-            nextPage={nextPage}
-            setCurrentPage={setCurrentPage}
-          />
+          <div className='mt-[210px]'>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              prevPage={prevPage}
+              nextPage={nextPage}
+              setCurrentPage={setCurrentPage}
+            />
+          </div>
         </div>
       ) : (
         <NoSearchResult />

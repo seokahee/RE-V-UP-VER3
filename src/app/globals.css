@@ -21,3 +21,13 @@ body {
     -8px -8px 16px rgba(255, 255, 255, 0.3);
   border-radius: 32px;
 }
+
+.currentPlayListRemoveButton {
+  box-shadow:
+    -4px -4px 8px rgb(255 255 255 / 0.05),
+    4px 4px 8px rgb(0 0 0 / 0.7);
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

@@ -1,4 +1,6 @@
-function MyPlayIcon() {
+import React from 'react'
+
+const MyPlayIcon = () => {
   return (
     <svg
       width='88'
