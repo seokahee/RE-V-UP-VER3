@@ -11,6 +11,10 @@ import {
   addLikeComment,
 } from '@/shared/comment/commentApi'
 import { useSession } from 'next-auth/react'
+import edit from '@/../public/images/pencil-01.svg'
+import deleteIcon from '@/../public/images/Frame 532.svg'
+import emptyHeart from '@/../public/images/Property 1=heart-rounded.svg'
+import heart from '@/../public/images/Property 1=heart-rounded.svg'
 
 const CommentsList = ({ boardId }: { boardId: string }) => {
   const { data: userSessionInfo } = useSession()
@@ -78,10 +82,14 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
 
   return (
     <div>
+      <hr />
       {commentsData?.map((item) => (
-        <div key={item.commentId} className=' border border-gray-100'>
+        <div
+          key={item.commentId}
+          className=' inline-flex h-[132px] w-[732px] flex-col items-start justify-start gap-4 border-b border-white border-opacity-10 py-4'
+        >
           <div className='flex flex-row  '>
-            <div className='flex flex-row basis-1/2'>
+            <div className='flex basis-1/2 flex-row'>
               <p>
                 {item.userInfo?.userImage && (
                   <Image
@@ -114,17 +122,17 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
                 {item.userInfo?.userId === userId ? (
                   <>
                     <button
-                      onClick={() => onDeleteCommentHandler(item.commentId)}
-                    >
-                      삭제
-                    </button>
-                    <button
                       onClick={() => {
                         setEditedCommentId(item.commentId)
                         setEditedText(item.commentContent)
                       }}
                     >
-                      수정하기
+                      <Image src={edit} alt='수정 아이콘' />
+                    </button>{' '}
+                    <button
+                      onClick={() => onDeleteCommentHandler(item.commentId)}
+                    >
+                      <Image src={deleteIcon} alt='삭제 아이콘' />
                     </button>
                     <button onClick={() => onLikeHandler(item.commentId)}>
                       {item.commentLikeList.includes(userId) ? (
