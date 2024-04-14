@@ -1,12 +1,31 @@
-// store
-import { create } from "zustand";
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 type Store = {
-  count: number;
-  inc: () => void;
-};
+  userInfo: {
+    uid: string
+  }
+  userType?: number
+  setUserInfo: (uid: string) => void
+  setUserType: (userType: number) => void
+}
 
-const useStore = create<Store>()((set) => ({
-  count: 1,
-  inc: () => set((state) => ({ count: state.count + 1 })),
-}));
+const initialState = {
+  userInfo: {
+    uid: '',
+  },
+  userType: 0,
+}
+
+export const useStore = create(
+  persist<Store>(
+    (set, get) => ({
+      ...initialState,
+      setUserInfo: (uid: string) => set({ userInfo: { uid } }),
+      setUserType: (userType: number) => set({ userType }),
+    }),
+    {
+      name: 'store',
+    },
+  ),
+)

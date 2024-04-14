@@ -1,3 +1,3 @@
 export const QUERY_KEY = {
-  TEST: "test",
-};
+  TEST: 'test',
+}
