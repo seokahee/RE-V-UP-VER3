@@ -126,7 +126,7 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
                   </div>
                 </div>
               ) : (
-                <div className='flex flex w-full flex-row '>
+                <div className='flex w-full flex-row '>
                   <div className='flex basis-1/2'>
                     <p>{item.commentContent}</p>
                   </div>
