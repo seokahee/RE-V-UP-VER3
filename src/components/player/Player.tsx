@@ -4,9 +4,9 @@ import musicShuffle from '@/../public/images/musicShuffle.svg'
 import musicShuffleOff from '@/../public/images/musicShuffleOff.svg'
 import musicThumbnail from '@/../public/images/musicThumbnail.svg'
 import myPlayListButton from '@/../public/images/myPlayListButton.svg'
-import { PlayerProps } from '@/types/musicPlayer/types'
+import { CurrentPlayListType, PlayerProps } from '@/types/musicPlayer/types'
 import Image from 'next/image'
-import { useCallback, useMemo } from 'react'
+import { useState } from 'react'
 import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
 import './AudioCss.css'
@@ -29,55 +29,19 @@ const Player = ({
   onInsertMyPlayListHandler,
   onRandomMusicHandler,
 }: PlayerProps) => {
+  const [playList, setPlayList] = useState<CurrentPlayListType[]>([])
+  const [currentPlaying, setCurrentPlaying] = useState()
   const isPlayList = currentPlayList?.length > 0
 
-  const CustomAudioPlayer = useCallback(() => {
-    const customIcons = useMemo(
-      () => ({
-        play: <MyPlayIcon />,
-        pause: <MyPauseIcon />,
-        previous: <MyPreviousIcon onPreviousHandler={onPreviousHandler} />,
-        next: <MyNextIcon onNextTrackHandler={onNextTrackHandler} />,
-        loop: <MyLoopIcon />,
-        loopOff: <MyLoopOffIcon />,
-        progressJump: <FaForward />,
-      }),
-      [currentPlayList, musicIndex],
-    )
-
-    if (
-      !currentPlayList ||
-      currentPlayList.length === 0 ||
-      musicIndex === undefined
-    ) {
-      return
-    }
-
-    return (
-      <div className='rhap_controls-section'>
-        <AudioPlayer
-          src={isPlayList ? currentPlayList[musicIndex].musicSource : ''}
-          volume={0.1}
-          loop={false}
-          autoPlay={true}
-          autoPlayAfterSrcChange={true}
-          onEnded={onNextTrackHandler}
-          showSkipControls={true}
-          className='custom-audio-player'
-          customIcons={customIcons}
-        />
-
-        <Image
-          src={isRandom ? musicShuffleOff : musicShuffle}
-          alt='Lyrics'
-          width={55}
-          height={60}
-          onClick={onRandomMusicHandler}
-          className='shuffleButton'
-        />
-      </div>
-    )
-  }, [currentPlayList, musicIndex, isRandom])
+  const customIcons = {
+    play: <MyPlayIcon />,
+    pause: <MyPauseIcon />,
+    previous: <MyPreviousIcon onPreviousHandler={onPreviousHandler} />,
+    next: <MyNextIcon onNextTrackHandler={onNextTrackHandler} />,
+    loop: <MyLoopIcon />,
+    loopOff: <MyLoopOffIcon />,
+    progressJump: <FaForward />,
+  }
 
   return (
     <div>
@@ -140,12 +104,33 @@ const Player = ({
               </button>
             </div>
           </div>
+          <div className='rhap_controls-section'>
+            <AudioPlayer
+              src={isPlayList ? currentPlayList[musicIndex].musicSource : ''}
+              volume={0.1}
+              loop={false}
+              autoPlay={true}
+              autoPlayAfterSrcChange={true}
+              onEnded={onNextTrackHandler}
+              showSkipControls={true}
+              customIcons={customIcons}
+            />
+
+            <Image
+              src={isRandom ? musicShuffleOff : musicShuffle}
+              alt='Lyrics'
+              width={55}
+              height={60}
+              onClick={onRandomMusicHandler}
+              className='shuffleButton'
+            />
+          </div>
         </div>
         // <Pl />
       )}
-      <CustomAudioPlayer />
     </div>
   )
 }
 
 export default Player
+// 함수가 정상적으로 작동하지 않을경우(상태유지 불가 등) 함수 호출부, 사용하는곳부터 뒤져보기!!!!!!!!!!!!!!!!
