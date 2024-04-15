@@ -105,9 +105,10 @@ const Login = () => {
               <Image src={close} width={24} height={24} alt='닫기' />
             </button>
             <div
-              className={`${OPEN_ANOTHER_SHADOW} flex h-[680px] w-[516px] flex-col items-center justify-center gap-[94px] rounded-[32px] border-[4px] border-solid border-[#474747] bg-[#3D3D3D] pb-[300px]`}
+              className={`flex h-[680px] w-[516px] flex-col items-center justify-center gap-[94px] rounded-[32px] border-[4px] border-solid border-[#474747] bg-[#3D3D3D] pb-[300px] ${OPEN_ANOTHER_SHADOW} `}
+              // className='absolute left-1/2 top-1/2 flex flex-col items-center justify-center bg-black text-white'
             >
-              <h3 className='pt-[106px] text-[20px] font-bold '>
+              <h3 className='pt-[106px] text-[20px] font-bold'>
                 <p>비밀번호 찾기</p>
               </h3>
               <div className=' flex flex-col gap-[32px]'>
@@ -120,7 +121,7 @@ const Login = () => {
                     value={spendEmail}
                     placeholder='가입 시 사용한 이메일을 입력하세요.'
                     onChange={(e) => setSpendEmail(e.target.value)}
-                    className={`flex w-full items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] font-bold caret-primary shadow-md ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} [&_placeholder]:text-[rgba(255,255,255,0.3)]`}
+                    className={`flex w-full items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] font-bold caret-primary  ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} [&_placeholder]:text-[rgba(255,255,255,0.3)]`}
                   />
                 </article>
                 <div>
@@ -135,7 +136,8 @@ const Login = () => {
             </div>
           </Modal>
         )}
-        <section className='tracking-[-0.03em]'>
+        {/* <section className='translate-y-auto  absolute left-1/2 mt-0 -translate-x-1/2 transform rounded-2xl  tracking-[-0.03em] '> */}
+        <section className='tracking-[-0.03em] '>
           <div className='text-center text-[24px] font-bold'>
             <p>V-UP에 오신 걸 환영합니다</p>
           </div>
@@ -156,6 +158,7 @@ const Login = () => {
                       onChange={onChangeHandler}
                       placeholder='이메일을 입력하세요'
                       className={`flex items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] font-bold caret-primary shadow-md ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} [&_placeholder]:text-[rgba(255,255,255,0.3)]`}
+                      // className={`flex items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] font-bold caret-primary shadow-md ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} [&_placeholder]:text-[rgba(255,255,255,0.3)]`}
                     />
                   </label>
                 </div>
