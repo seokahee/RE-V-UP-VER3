@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { useSurvey } from '@/shared/store/personalStore'
 import { useRouter } from 'next/navigation'
-import ButtonPrimary from '../mypage/ButtonPrimary'
+import ButtonPrimary from '../../util/ButtonPrimary'
 import PreviousButton from '../mypage/PreviousButton'
 import { DROP_SHADOW, INPUT_SHADOW, INPUT_FOCUS } from '../login/loginCss'
 const GenderPage = ({
