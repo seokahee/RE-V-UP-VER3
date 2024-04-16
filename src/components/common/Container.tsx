@@ -15,7 +15,7 @@ const Container = ({
   const session = useSession()
   const check =
     session.status === 'authenticated' &&
-    !['/login', 'join', '/personal-music', '/new-password'].includes(path)
+    !['/login', '/join', '/personal-music', '/new-password'].includes(path)
 
   return (
     <div className='relative flex justify-center'>
