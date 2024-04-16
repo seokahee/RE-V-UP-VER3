@@ -123,7 +123,6 @@ const MusicPlayer = () => {
         .map((music) => music.musicId)
       deleteMutation.mutate({ uid, currentMusicData })
       setCheckedList([])
-      setCurrentPlaying(null)
     }
   }
   const onInsertMyPlayListHandler = async () => {
