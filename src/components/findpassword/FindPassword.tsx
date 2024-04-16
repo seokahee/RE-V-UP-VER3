@@ -44,6 +44,7 @@ const FindPassword = () => {
             <div>비밀번호 찾기</div>
             <input
               type='password'
+              autoFocus
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
             />

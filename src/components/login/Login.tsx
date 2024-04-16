@@ -1,6 +1,6 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { findUserPassword } from '@/shared/login/loginApi'
@@ -155,6 +155,7 @@ const Login = () => {
                   <label className='flex flex-col '>
                     <p>이메일</p>
                     <input
+                      autoFocus
                       type='email'
                       name='email'
                       value={email}
