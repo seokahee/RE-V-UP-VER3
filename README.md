@@ -1,4 +1,4 @@
-# V-UP(Volume Up)
+# ![vvv-logo](https://github.com/RE-V-UP/vvv/assets/152264010/640533e6-34db-4735-9c54-3756adae835c)(Volume Up)
 
 ### < 목차 >
 
@@ -36,7 +36,7 @@
 
 <br />
 
-## 프로젝트 팀 "V-UP" 소개
+## 프로젝트 팀 "VVV(VakVakVerse)" 소개
 
 <br />
 
@@ -48,9 +48,9 @@
 | :----------------------------------------: | :------------------------------------: | :--------------------------------------------: | :----------------------------------------: | :----------------: |
 |                    ISTP                    |                  ISFP                  |                   ENFJ/ISTJ                    |                    ESTP                    |        ENFJ        |
 |                  <p></p>                   |                <p></p>                 |                    <p></p>                     |                  <p></p>                   |      <p></p>       |
-| [@G-NooN](https://blog.naver.com/bowl0112) | [@CodHan](https://jigico.tistory.com/) | [@DecidedCard](https://record4me.tistory.com/) | [@seokahee](https://kahee430.tistory.com/) |      @iinon00      |
+| [@bowl0112](https://github.com/bowl0112) | [@jigico](https://github.com/jigico) | [@r03181231](https://github.com/r03181231) | [@seokahee](https://github.com/kahee430) |      [@iinon00](https://github.com/iinon00)      |
 |                    팀장                    |                  팀원                  |                      팀원                      |                    팀원                    |        팀원        |
-|              nickname.papago               |          nickname.wonjangnim           |                  nickname.GPT                  |             nickname.tailwind              | nickname.bootstrap |
+|                          |                    |                                    |                         |  |
 
 
 
@@ -71,7 +71,7 @@
 
 \- 혼자 생각하지 않기
 
--궁금한 거 참지 말고 물어보기!!
+\-궁금한 거 참지 말고 물어보기!!
 
 
 
@@ -82,7 +82,7 @@
 
 
 
-## " V-UP(Volume Up)"
+## "![vvv-logo](https://github.com/RE-V-UP/vvv/assets/152264010/d526f6f2-4891-4ae0-acd1-4d18886bff27)(Volume Up)"
 
 **배포 도메인** : https://vvv-fawn.vercel.app/
 
