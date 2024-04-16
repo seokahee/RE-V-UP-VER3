@@ -72,7 +72,8 @@ const Player = ({
               alt='Album Circle'
               width={300}
               height={300}
-              className='h-[300px] w-[300px]  rounded-full shadow-2xl shadow-fuchsia-400/50 drop-shadow-lg'
+              className='h-[300px] w-[300px] rounded-full shadow-[0px_2px_10px_5px_rgba(255,255,255,0.534)]'
+              // shadow-[0px_2px_10px_5px_rgba(210,137,176,0.5)]
             />
           </div>
           <div className='absolute left-[50px] top-[50px] h-[200px] w-[200px] '>
