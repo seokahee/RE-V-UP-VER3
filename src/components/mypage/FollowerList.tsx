@@ -104,14 +104,18 @@ const FollowerList = ({ data, myFollowing }: FollowProps) => {
               </Link>
             </div>
             <>
-              {myFollowing && myFollowing.find((el) => el != item.userId) ? (
+              {myFollowing && !myFollowing.find((el) => el === item.userId) ? (
                 <ButtonSecondary
                   onClick={() => onClickFollow(uid, item.userId)}
                 >
                   팔로우
                 </ButtonSecondary>
               ) : (
-                ''
+                <ButtonSecondary
+                  onClick={() => onClickUnFollow(uid, item.userId)}
+                >
+                  취소
+                </ButtonSecondary>
               )}
             </>
           </li>
