@@ -1,8 +1,4 @@
-import {
-  getFollowDataFollower,
-  getFollowDataFollowing,
-  updateFollow,
-} from '@/shared/mypage/api'
+import { getFollowDataFollower, updateFollow } from '@/shared/mypage/api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import React from 'react'
@@ -57,8 +53,7 @@ const FollowerList = ({ data, myFollowing }: FollowProps) => {
   const onClickFollow = (userId: string, targetId: string) => {
     const data = myFollowing ? myFollowing : []
     const newData = [...data, targetId]
-    console.log(newData)
-    // debugger
+
     const newTargetData = followData?.find(
       (item) => item.userId === targetId,
     )?.follower!
