@@ -48,9 +48,9 @@
 | :----------------------------------------: | :------------------------------------: | :--------------------------------------------: | :----------------------------------------: | :----------------: |
 |                    ISTP                    |                  ISFP                  |                   ENFJ/ISTJ                    |                    ESTP                    |        ENFJ        |
 |                  <p></p>                   |                <p></p>                 |                    <p></p>                     |                  <p></p>                   |      <p></p>       |
-| [@G-NooN](https://blog.naver.com/bowl0112) | [@CodHan](https://jigico.tistory.com/) | [@DecidedCard](https://record4me.tistory.com/) | [@seokahee](https://kahee430.tistory.com/) |      @iinon00      |
+| [@bowl0112](https://blog.naver.com/bowl0112) | [@jigico](https://jigico.tistory.com/) | [@r03181231](https://record4me.tistory.com/) | [@seokahee](https://kahee430.tistory.com/) |      @iinon00      |
 |                    팀장                    |                  팀원                  |                      팀원                      |                    팀원                    |        팀원        |
-|              nickname.papago               |          nickname.wonjangnim           |                  nickname.GPT                  |             nickname.tailwind              | nickname.bootstrap |
+|                          |                    |                                    |                         |  |
 
 
 
