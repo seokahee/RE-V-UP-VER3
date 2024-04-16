@@ -96,8 +96,13 @@ const CommunityContents = () => {
   const onDeleteBoardHandler = async (e: MouseEvent) => {
     e.preventDefault()
 
-    deleteCommunityMutation.mutate(currentBoardId)
-    alert('삭제되었습니다.')
+    if (window.confirm('삭제하시겠습니까?') === true) {
+      deleteCommunityMutation.mutate(currentBoardId)
+      alert('삭제되었습니다.')
+    } else {
+      alert('삭제를 취소하셨습니다.')
+      return
+    }
     router.back()
   }
 
@@ -320,7 +325,7 @@ const CommunityContents = () => {
               </button>
             </div>
           </article>
-          <article>
+          <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
             {isEdit ? (
               <textarea
                 id='content'
@@ -328,11 +333,12 @@ const CommunityContents = () => {
                 value={updatedContent}
                 onChange={onChangeEditForm}
                 cols={30}
-                rows={10}
-                className='h-[248px] text-black'
+                rows={4}
+                maxLength={100}
+                className='w-full text-black'
               ></textarea>
             ) : (
-              <div className='h-[248px] w-full px-[15px]'>{`${content}`}</div>
+              <div className='h-[200px] w-full px-[15px]'>{`${content}`}</div>
             )}
           </article>
         </div>
