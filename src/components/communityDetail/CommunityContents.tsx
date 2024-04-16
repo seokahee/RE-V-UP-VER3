@@ -25,7 +25,7 @@ import { GOBACK_SHADOW } from './detailCss'
 const CommunityContents = () => {
   const router = useRouter()
   const [isEdit, setIsEdit] = useState<boolean>(false)
-  const { data: userSessionInfo } = useSession()
+  const { data: userSessionInfo, status } = useSession()
   const uid = userSessionInfo?.user?.uid as string
   const { id: currentBoardId }: { id: string } = useParams()
   const { updateMutation, insertMutation } = useCoummunityCreateItem()
@@ -164,6 +164,10 @@ const CommunityContents = () => {
 
   if (error) {
     return <div>정보를 가져오지 못하고 있습니다. 로딩바자뤼</div>
+  }
+  if (status === 'unauthenticated') {
+    alert('로그인한 유저만 이용 가능합니다.')
+    return
   }
 
   return (
