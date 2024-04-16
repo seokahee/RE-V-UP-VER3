@@ -138,9 +138,11 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     router.push('/')
   }
 
+  console.log(checkedList, 'checkedList')
+
   return (
     <div>
-      <p className='text-center text-neutral-400'>
+      <p className='text-center text-neutral-400 '>
         {SentenceMatch(userChar.mbti)}
       </p>
       <br />
@@ -148,7 +150,7 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
         당신의 취향에 맞는 음악을 추천 해드릴게요 &#x1F642;
       </p>{' '}
       <br />
-      <div className='  flex flex flex-row justify-center'>
+      <div className='  flex flex flex-row justify-center  text-white text-opacity-50'>
         {recommend?.map((item) => (
           <div key={item.musicId}>
             <CheckboxItem
@@ -170,11 +172,10 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
                   />
                 </div>
                 <div>
-                  <p> {item.musicTitle}</p>
+                  <p className=''> {item.musicTitle}</p>
                 </div>
                 <div>{item.artist}</div>
                 <div>
-                  {' '}
                   {currentList.includes(item.musicId) ? '현재 재생중' : ''}
                 </div>
               </div>
