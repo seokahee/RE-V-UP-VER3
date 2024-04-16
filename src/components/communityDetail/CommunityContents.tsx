@@ -143,6 +143,7 @@ const CommunityContents = () => {
       router.replace('/login')
       return
     }
+
     if (window.confirm('마이플레이 리스트에 추가하시겠습니까?')) {
       if (myPlayList && myPlayList.length > 0) {
         const myList = myPlayList[0].myMusicIds
