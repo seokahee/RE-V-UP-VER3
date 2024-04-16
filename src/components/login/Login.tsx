@@ -25,6 +25,7 @@ const Login = () => {
   const router = useRouter()
   const blankPattern = /[\s]/g
   const { status } = useSession()
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [spendEmail, setSpendEmail] = useState<string>('')
   const [submitEmail, setSubmitEmail] = useState<boolean>(false)
