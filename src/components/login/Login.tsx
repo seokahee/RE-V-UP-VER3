@@ -120,6 +120,7 @@ const Login = () => {
                 </label>
                 <input
                   type='email'
+                  autoFocus
                   value={spendEmail}
                   placeholder='가입 시 사용한 이메일을 입력하세요.'
                   onChange={(e) => setSpendEmail(e.target.value)}
