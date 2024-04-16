@@ -12,28 +12,30 @@ const BoardItem = ({
   onClick: () => void
 }) => {
   return (
-    <li className='flex justify-between p-4 border-b border-black border-solid'>
-      <figure>
-        {item.userInfo?.userImage && (
-          <Image
-            src={item.userInfo.userImage}
-            width={50}
-            height={50}
-            alt={`${item.userInfo.nickname} 프로필 이미지`}
-          />
-        )}
-      </figure>
-      <div>
-        <Link href={`/community/${item.boardId}`}>{item.boardTitle}</Link>
+    <li className='flex justify-between border-b border-solid border-black p-4'>
+      <div className='flex items-center'>
+        <figure className='h-[60px] w-[60px] overflow-hidden rounded-full border-2 border-[#ffffff1a] bg-[#2b2b2b]'>
+          {item.userInfo?.userImage && (
+            <Image
+              src={item.userInfo.userImage}
+              width={56}
+              height={56}
+              alt={`${item.userInfo.nickname} 프로필 이미지`}
+            />
+          )}
+        </figure>
+        <div>
+          <Link href={`/community/${item.boardId}`}>{item.boardTitle}</Link>
 
-        <div className='flex justify-between'>
-          <div>
-            {item.userInfo?.nickname}
-            {onDateHandler(item.date)}
-          </div>
-          <div>
-            좋아요 수 {item.likeList ? item.likeList.length : 0} / 댓글 수{' '}
-            {item.comment ? item.comment.length : 0}
+          <div className='flex justify-between'>
+            <div>
+              {item.userInfo?.nickname}
+              {onDateHandler(item.date)}
+            </div>
+            <div>
+              좋아요 수 {item.likeList ? item.likeList.length : 0} / 댓글 수{' '}
+              {item.comment ? item.comment.length : 0}
+            </div>
           </div>
         </div>
       </div>
