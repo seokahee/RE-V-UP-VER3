@@ -7,12 +7,17 @@ import { useRouter } from 'next/navigation'
 const FindPassword = () => {
   const [newPassword, setNewPassword] = useState<string>('')
   const [updateState, setUpdateState] = useState<boolean>(false)
+  const blankPattern = /[\s]/g
   const router = useRouter()
 
   const findPassword = async (e: FormEvent) => {
     e.preventDefault()
     if (!newPassword) {
       alert('비밀번호를 입력해주세요!')
+      return
+    }
+    if (blankPattern.test(newPassword) == true) {
+      alert('비밀번호에 공백은 사용할 수 없습니다.')
       return
     }
 
@@ -35,10 +40,11 @@ const FindPassword = () => {
     <div>
       <div>
         <form onSubmit={findPassword}>
-          <div className='text-black z-1500'>
+          <div className='z-1500 text-black'>
             <div>비밀번호 찾기</div>
             <input
               type='password'
+              autoFocus
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
             />

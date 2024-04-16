@@ -88,13 +88,12 @@ export const saveSignUpInProviderUserInfo = async ({
       error.details &&
       (error.details.includes('0 rows') || error.details.includes('already'))
     ) {
-      console.log(error.details)
       return
     }
     if (error.code === '22P02') {
       alert('정보를 받아오지 못하고 있습니다. 문의해주세요')
+      return
     }
-    console.log(error)
     return
   }
 
