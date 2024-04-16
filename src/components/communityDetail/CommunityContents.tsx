@@ -167,6 +167,7 @@ const CommunityContents = () => {
   }
   if (status === 'unauthenticated') {
     alert('로그인한 유저만 이용 가능합니다.')
+    router.replace('/')
     return
   }
 
