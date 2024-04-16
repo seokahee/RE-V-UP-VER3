@@ -1,8 +1,4 @@
-import {
-  getFollowDataFollower,
-  getFollowDataFollowing,
-  updateFollow,
-} from '@/shared/mypage/api'
+import { getFollowDataFollower, updateFollow } from '@/shared/mypage/api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import React from 'react'
@@ -57,8 +53,7 @@ const FollowerList = ({ data, myFollowing }: FollowProps) => {
   const onClickFollow = (userId: string, targetId: string) => {
     const data = myFollowing ? myFollowing : []
     const newData = [...data, targetId]
-    console.log(newData)
-    // debugger
+
     const newTargetData = followData?.find(
       (item) => item.userId === targetId,
     )?.follower!
@@ -104,14 +99,18 @@ const FollowerList = ({ data, myFollowing }: FollowProps) => {
               </Link>
             </div>
             <>
-              {myFollowing && myFollowing.find((el) => el != item.userId) ? (
+              {myFollowing && !myFollowing.find((el) => el === item.userId) ? (
                 <ButtonSecondary
                   onClick={() => onClickFollow(uid, item.userId)}
                 >
                   팔로우
                 </ButtonSecondary>
               ) : (
-                ''
+                <ButtonSecondary
+                  onClick={() => onClickUnFollow(uid, item.userId)}
+                >
+                  취소
+                </ButtonSecondary>
               )}
             </>
           </li>
