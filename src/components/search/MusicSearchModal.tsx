@@ -1,14 +1,15 @@
-import useInput from '@/hooks/useInput'
-import { modalMusicSearchData } from '@/shared/search/api'
-import { useModalMusicResultStore } from '@/shared/store/searchStore'
-import { MusicInfoType } from '@/types/musicPlayer/types'
-import Pagination from '@/util/Pagination '
-import { modalPaging } from '@/util/util'
-import React, { FormEvent, useRef, useState } from 'react'
+import React, { FormEvent, KeyboardEvent, useRef, useState } from 'react'
 import ModalMusicData from './ModalMusicData'
+import { useModalMusicResultStore } from '@/shared/store/searchStore'
+import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
+import { modalMusicSearchData } from '@/shared/search/api'
+import { MusicInfoType } from '@/types/musicPlayer/types'
+import { modalPaging } from '@/util/util'
+import Pagination from '@/util/Pagination '
+import useInput from '@/hooks/useInput'
 import { GOBACK_SHADOW } from '../communityDetail/detailCss'
-import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
+import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 
 const MusicSearchModal = ({
   setIsModal,
@@ -16,6 +17,7 @@ const MusicSearchModal = ({
   isModal: boolean
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
+  const { isChooseMusic } = useMusicSearchedStore()
   const [musicList, setMusicList] = useState<MusicInfoType[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const { form: keywordInput, onChange } = useInput({
@@ -55,11 +57,16 @@ const MusicSearchModal = ({
   )
 
   const onAddViewMusicHandler = () => {
+    if (!isChooseMusic) {
+      alert('음악을 선택해 주세요!')
+      return
+    }
+
     alert('음악이 등록되었습니다.')
     setIsModal(false)
   }
 
-  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault()
       const submitEvent = new Event('submit', {
