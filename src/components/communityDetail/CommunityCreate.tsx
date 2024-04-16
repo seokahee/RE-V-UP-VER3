@@ -44,6 +44,7 @@ const CommunityCreate = () => {
 
   const onSumitHandler = async (e: FormEvent) => {
     e.preventDefault()
+
     const { firstBlank: titleBlank, secondBlank: contentBlack } =
       validateFormBlank(boardTitle, content)
 
@@ -81,10 +82,12 @@ const CommunityCreate = () => {
       return
     }
   }
+
   if (status === 'unauthenticated') {
     alert('로그인한 유저만 이용 가능합니다.')
     return
   }
+
   return (
     <div>
       <form onSubmit={onSumitHandler}>

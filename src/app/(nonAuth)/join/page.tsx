@@ -105,8 +105,9 @@ const Join = () => {
           <input
             type='password'
             name='userPw'
-            placeholder='비밀번호'
             value={userPw}
+            maxLength={12}
+            placeholder='비밀번호'
             onChange={onChangeHandler}
           />
         </div>

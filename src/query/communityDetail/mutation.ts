@@ -13,6 +13,7 @@ export const validateFormBlank = (firstInput: string, secondInput: string) => {
   const blankPattern = /^\s+|\s+$/g
   const firstBlank = (firstInput || '').replace(blankPattern, '')
   const secondBlank = (secondInput || '').replace(blankPattern, '')
+
   return { firstBlank, secondBlank }
 }
 

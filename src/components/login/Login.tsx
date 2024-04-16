@@ -24,6 +24,7 @@ import close from '@/../public/images/close-button.svg'
 const Login = () => {
   const router = useRouter()
   const { status } = useSession()
+  const blank_pattern = /[\s]/g
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [spendEmail, setSpendEmail] = useState<string>('')
   const [submitEmail, setSubmitEmail] = useState<boolean>(false)
@@ -42,10 +43,15 @@ const Login = () => {
   const onLoginHandler = async (e: FormEvent) => {
     e.preventDefault()
 
+    if (blank_pattern.test(password) == true) {
+      alert('비밀번호에 공백은 사용할 수 없습니다.')
+      return false
+    }
+
     try {
       const signResult = await signIn('email-password-credential', {
-        email: email,
-        password: password,
+        email,
+        password,
         redirect: false,
       })
 
@@ -165,6 +171,7 @@ const Login = () => {
                       type='password'
                       name='password'
                       value={password}
+                      maxLength={12}
                       onChange={onChangeHandler}
                       placeholder='비밀번호를 입력하세요'
                       className={`flex w-full items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] font-bold caret-primary  ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} placeholder:text-[rgba(255,255,255,0.3)]`}
@@ -175,7 +182,7 @@ const Login = () => {
               <div className='tracking-[-0.03em]'>
                 <button
                   type='submit'
-                  className={`pointer-events-none flex h-[48px] w-[320px] items-center justify-center  rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
+                  className={` flex h-[48px] w-[320px] items-center justify-center  rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
                 >
                   로그인
                 </button>
