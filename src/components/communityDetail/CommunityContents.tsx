@@ -187,7 +187,7 @@ const CommunityContents = () => {
     <div className='mb-[8px] flex w-[732px] flex-col'>
       <div className='flex flex-col gap-[16px]'>
         <section
-          className={`flex h-[72px] w-[100%] items-center justify-center rounded-[16px] border-[4px] border-solid border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.1)] px-[16px] py-[12px] ${BOARD_TITLE_SHADOW}`}
+          className={`mt-[32px] flex h-[72px] w-[100%] items-center justify-center rounded-[16px] border-[4px] border-solid border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.1)] px-[16px] py-[12px] ${BOARD_TITLE_SHADOW}`}
         >
           <button
             onClick={onBackButtonHandler}
