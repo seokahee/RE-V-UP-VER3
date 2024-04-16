@@ -6,7 +6,7 @@ import musicThumbnail from '@/../public/images/musicThumbnail.svg'
 import myPlayListButton from '@/../public/images/myPlayListButton.svg'
 import { PlayerProps } from '@/types/musicPlayer/types'
 import Image from 'next/image'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
 import './AudioCss.css'
@@ -31,6 +31,8 @@ const Player = ({
   onInsertMyPlayListHandler,
   onRandomMusicHandler,
 }: PlayerProps) => {
+  // const [boxShadowColorIndex, setBoxShadowColorIndex] = useState(0)
+
   useEffect(() => {
     if (!currentPlaying && currentPlayList.length > 0 && musicIndex !== null) {
       setCurrentPlaying(currentPlayList[musicIndex])
@@ -39,6 +41,24 @@ const Player = ({
     }
   }, [musicIndex, currentPlayList, currentPlaying])
   console.log('플레이 리스트 인덱스', currentPlayList[musicIndex])
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setBoxShadowColorIndex(
+  //       (prevIndex) => (prevIndex + 1) % boxShadowColors.length,
+  //     )
+  //   }, 2000)
+
+  //   return () => clearInterval(interval)
+  // }, [])
+
+  // const boxShadowColors = [
+  //   '0px_2px_10px_5px_rgba(255,255,255,0.534)',
+  //   '0px_2px_10px_5px_rgba(134,127,223,0.75)',
+  //   '0px_2px_10px_5px_rgba(15,139,213,0.75)',
+  //   '0px_2px_10px_5px_rgba(213,193,99,0.43)',
+  //   '0px_2px_10px_5px_rgba(41,144,58,0.43)',
+  // ]
 
   const customIcons = {
     play: <MyPlayIcon />,
@@ -67,13 +87,20 @@ const Player = ({
         </div>
         <div className='relative ml-[44px] mr-[44px] mt-[41px]'>
           <div className='relative h-[300px] w-[300px]'>
+            {/* <Image
+              src={musicThumbnail}
+              alt='Album Circle'
+              width={300}
+              height={300}
+              className={`h-[300px] w-[300px] rounded-full shadow-${boxShadowColors[boxShadowColorIndex]}`}
+              // shadow-[0px_2px_10px_5px_rgba(210,137,176,0.5)]
+            /> */}
             <Image
               src={musicThumbnail}
               alt='Album Circle'
               width={300}
               height={300}
               className='h-[300px] w-[300px] rounded-full shadow-[0px_2px_10px_5px_rgba(255,255,255,0.534)]'
-              // shadow-[0px_2px_10px_5px_rgba(210,137,176,0.5)]
             />
           </div>
           <div className='absolute left-[50px] top-[50px] h-[200px] w-[200px] '>
