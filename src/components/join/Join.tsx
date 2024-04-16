@@ -123,7 +123,7 @@ const Join = () => {
         <form className='flex w-[320px] flex-col gap-[32px]'>
           <div className='z-1500 flex flex-col gap-[32px] text-white'>
             <div className='flex flex-col gap-[40px]'>
-              <h3 className='flex justify-center pt-[106px] text-[20px] font-bold'>
+              <h3 className='flex justify-center pt-[106px] text-[24px] font-bold'>
                 <p>회원가입</p>
               </h3>
               <div className='flex flex-col gap-[16px] [&_label]:gap-[4px] [&_label]:text-[rgba(255,255,255,0.3)]'>
