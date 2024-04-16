@@ -2,9 +2,10 @@ import { MusicListProps } from '@/types/musicPlayer/types'
 import CheckboxItem from '../mypage/CheckboxItem'
 
 const CurrentMusicList = ({
+  currentPlayList,
   isLyrics,
   checkedList,
-  currentPlayList,
+  setCurrentPlaying,
   onChangeCheckMusicHandler,
   onDeleteCurrentMusicHandler,
   setMusicIndex,
@@ -17,6 +18,7 @@ const CurrentMusicList = ({
           const musicIndex = currentPlayList.findIndex(
             (arr) => arr.musicId === item.musicId,
           )
+
           return !isLyrics ? (
             <div
               key={item.musicId}
@@ -34,6 +36,7 @@ const CurrentMusicList = ({
                   <p
                     onClick={() => {
                       setMusicIndex(musicIndex)
+                      setCurrentPlaying(currentPlayList[musicIndex])
                     }}
                     className='cursor-pointer text-[16px]'
                   >

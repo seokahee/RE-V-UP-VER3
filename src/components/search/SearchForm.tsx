@@ -21,11 +21,6 @@ const SearchForm = () => {
   const router = useRouter()
   const keywordRef = useRef<HTMLInputElement>(null)
 
-  // const { currentMusicData } = useCurrentMusicStore()
-  // const { currentPlayList, musicIndex } = currentMusicData
-
-  // console.log('currentPlayList', currentPlayList)
-
   const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!keyword) {
