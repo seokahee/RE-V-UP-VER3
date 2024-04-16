@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react'
+
 export type MusicInfoType = {
   artist: string
   musicId: string
@@ -50,6 +52,8 @@ export type SearchResultType = {
 }
 
 export type PlayerProps = {
+  currentPlaying: CurrentPlayListType | null
+  setCurrentPlaying: Dispatch<SetStateAction<CurrentPlayListType | null>>
   isLyrics: boolean
   currentPlayList: CurrentPlayListType[]
   musicIndex: number
@@ -63,9 +67,8 @@ export type PlayerProps = {
 
 export type MusicListProps = {
   isLyrics: boolean
-  currentPlayList: CurrentPlayListType[]
   checkedList: string[]
-
+  currentPlayList: CurrentPlayListType[]
   onChangeCheckMusicHandler: (checked: boolean, id: string) => void
   onDeleteCurrentMusicHandler: () => void
   setMusicIndex: (index: number) => void

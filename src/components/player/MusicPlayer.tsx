@@ -22,6 +22,8 @@ const MusicPlayer = () => {
   const [isRandom, setIsRandom] = useState(false)
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user.uid as string
+  const [currentPlaying, setCurrentPlaying] =
+    useState<CurrentPlayListType | null>(null)
   const router = useRouter()
 
   const { currentPlayList, myPlayList, isError } = getMusicList(uid)
@@ -67,6 +69,7 @@ const MusicPlayer = () => {
       return !prev
     })
   }
+
   const onPreviousHandler = () => {
     if (!isRandom) {
       if (musicIndex === 0) {
@@ -111,6 +114,7 @@ const MusicPlayer = () => {
         .map((music) => music.musicId)
       deleteMutation.mutate({ uid, currentMusicData })
       setCheckedList([])
+      setCurrentPlaying(null)
     }
   }
   const onInsertMyPlayListHandler = async () => {
@@ -159,11 +163,13 @@ const MusicPlayer = () => {
       <div>
         <div>
           <Player
-            isLyrics={isLyrics}
-            musicIndex={musicIndex}
+            currentPlaying={currentPlaying}
+            setCurrentPlaying={setCurrentPlaying}
             currentPlayList={currentPlayList as CurrentPlayListType[]}
-            onRandomMusicHandler={onRandomMusicHandler}
+            musicIndex={musicIndex}
+            isLyrics={isLyrics}
             isRandom={isRandom}
+            onRandomMusicHandler={onRandomMusicHandler}
             onPreviousHandler={onPreviousHandler}
             onNextTrackHandler={onNextTrackHandler}
             onLyricsToggle={onLyricsToggle}
@@ -172,8 +178,8 @@ const MusicPlayer = () => {
         </div>
         <div>
           <CurrentMusicList
-            isLyrics={isLyrics}
             currentPlayList={currentPlayList as CurrentPlayListType[]}
+            isLyrics={isLyrics}
             checkedList={checkedList}
             onChangeCheckMusicHandler={onChangeCheckMusicHandler}
             onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
