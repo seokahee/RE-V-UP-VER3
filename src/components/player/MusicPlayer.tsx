@@ -1,4 +1,3 @@
-'use client'
 import { queryClient } from '@/app/provider'
 import { getMusicList } from '@/query/musicPlayer/musicPlayerQueryKey'
 import {
@@ -74,11 +73,14 @@ const MusicPlayer = () => {
     if (!isRandom) {
       if (musicIndex === 0) {
         setMusicIndex(currentPlayList.length - 1) // 마지막 곡으로 이동
+        setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
       } else {
         setMusicIndex((prev) => prev - 1) // 이전 곡으로 이동
+        setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
       }
     } else {
       setMusicIndex(randomIndex)
+      setCurrentPlaying(currentPlayList[randomIndex] as CurrentPlayListType)
     }
   }
 
@@ -86,11 +88,18 @@ const MusicPlayer = () => {
     if (!isRandom) {
       if (musicIndex === currentPlayList.length - 1) {
         setMusicIndex(0) // 첫 번째 곡으로 돌아감
+        setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
       } else {
         setMusicIndex((prev) => prev + 1) // 다음 곡으로 이동
+        setCurrentPlaying(
+          currentPlayList[musicIndex]
+            ? (currentPlayList[musicIndex] as CurrentPlayListType)
+            : null,
+        )
       }
     } else {
       setMusicIndex(randomIndex)
+      setCurrentPlaying(currentPlayList[randomIndex] as CurrentPlayListType)
     }
   }
 
@@ -181,6 +190,7 @@ const MusicPlayer = () => {
             currentPlayList={currentPlayList as CurrentPlayListType[]}
             isLyrics={isLyrics}
             checkedList={checkedList}
+            setCurrentPlaying={setCurrentPlaying}
             onChangeCheckMusicHandler={onChangeCheckMusicHandler}
             onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
             setMusicIndex={setMusicIndex}

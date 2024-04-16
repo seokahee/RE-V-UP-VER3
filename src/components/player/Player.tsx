@@ -4,9 +4,9 @@ import musicShuffle from '@/../public/images/musicShuffle.svg'
 import musicShuffleOff from '@/../public/images/musicShuffleOff.svg'
 import musicThumbnail from '@/../public/images/musicThumbnail.svg'
 import myPlayListButton from '@/../public/images/myPlayListButton.svg'
-import { CurrentPlayListType, PlayerProps } from '@/types/musicPlayer/types'
+import { PlayerProps } from '@/types/musicPlayer/types'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
 import './AudioCss.css'
@@ -31,19 +31,14 @@ const Player = ({
   onInsertMyPlayListHandler,
   onRandomMusicHandler,
 }: PlayerProps) => {
-  const [play, setPlay] = useState<CurrentPlayListType[]>([])
   useEffect(() => {
-    setPlay(currentPlayList)
-
     if (!currentPlaying && currentPlayList.length > 0 && musicIndex !== null) {
-      setCurrentPlaying(play[musicIndex])
+      setCurrentPlaying(currentPlayList[musicIndex])
     } else if (currentPlaying && currentPlayList.length === 0) {
       setCurrentPlaying(null)
     }
-  }, [musicIndex, currentPlayList, currentPlaying, play])
-  console.log('현재 진행중', currentPlaying)
+  }, [musicIndex, currentPlayList, currentPlaying])
   console.log('플레이 리스트 인덱스', currentPlayList[musicIndex])
-  console.log('플레이 리스트', currentPlayList)
 
   const customIcons = {
     play: <MyPlayIcon />,
@@ -77,7 +72,7 @@ const Player = ({
               alt='Album Circle'
               width={300}
               height={300}
-              className='h-[300px] w-[300px] rounded-full shadow-lg shadow-fuchsia-200/50'
+              className='h-[300px] w-[300px]  rounded-full shadow-2xl shadow-fuchsia-400/50 drop-shadow-lg'
             />
           </div>
           <div className='absolute left-[50px] top-[50px] h-[200px] w-[200px] '>
@@ -123,13 +118,13 @@ const Player = ({
       <div className='rhap_controls-section'>
         <AudioPlayer
           src={currentPlaying ? currentPlaying.musicSource : ''}
-          volume={0.1}
+          volume={0.5}
           loop={false}
           onEnded={onNextTrackHandler}
           showSkipControls={true}
           customIcons={customIcons}
           onPlay={() => {
-            onplayHandler(currentPlayList[musicIndex])
+            onplayHandler(currentPlaying)
           }}
         />
         <Image

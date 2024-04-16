@@ -5,6 +5,7 @@ const CurrentMusicList = ({
   currentPlayList,
   isLyrics,
   checkedList,
+  setCurrentPlaying,
   onChangeCheckMusicHandler,
   onDeleteCurrentMusicHandler,
   setMusicIndex,
@@ -14,12 +15,10 @@ const CurrentMusicList = ({
       {currentPlayList.length === 0 && <div>현재 재생 목록이 없습니다</div>}
       <div className='mt-[16px] flex max-h-[500px] flex-col justify-between overflow-y-auto overflow-x-hidden'>
         {currentPlayList.map((item) => {
-          console.log('currentPlayList', currentPlayList)
           const musicIndex = currentPlayList.findIndex(
             (arr) => arr.musicId === item.musicId,
           )
 
-          console.log('musicIndex', musicIndex)
           return !isLyrics ? (
             <div
               key={item.musicId}
@@ -37,6 +36,7 @@ const CurrentMusicList = ({
                   <p
                     onClick={() => {
                       setMusicIndex(musicIndex)
+                      setCurrentPlaying(currentPlayList[musicIndex])
                     }}
                     className='cursor-pointer text-[16px]'
                   >

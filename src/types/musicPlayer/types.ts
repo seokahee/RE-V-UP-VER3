@@ -53,11 +53,12 @@ export type SearchResultType = {
 
 export type PlayerProps = {
   currentPlaying: CurrentPlayListType | null
-  setCurrentPlaying: Dispatch<SetStateAction<CurrentPlayListType | null>>
+
   isLyrics: boolean
   currentPlayList: CurrentPlayListType[]
   musicIndex: number
   isRandom: boolean
+  setCurrentPlaying: Dispatch<SetStateAction<CurrentPlayListType | null>>
   onPreviousHandler: () => void
   onNextTrackHandler: () => void
   onLyricsToggle: () => void
@@ -69,6 +70,7 @@ export type MusicListProps = {
   isLyrics: boolean
   checkedList: string[]
   currentPlayList: CurrentPlayListType[]
+  setCurrentPlaying: Dispatch<SetStateAction<CurrentPlayListType | null>>
   onChangeCheckMusicHandler: (checked: boolean, id: string) => void
   onDeleteCurrentMusicHandler: () => void
   setMusicIndex: (index: number) => void
