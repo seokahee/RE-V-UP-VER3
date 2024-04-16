@@ -9,6 +9,13 @@ import {
 import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
 import { insertMyPlayMusic, updateMyPlayMusic } from '@/shared/musicPlayer/api'
 
+export const validateFormBlank = (firstInput: string, secondInput: string) => {
+  const blankPattern = /^\s+|\s+$/g
+  const firstBlank = (firstInput || '').replace(blankPattern, '')
+  const secondBlank = (secondInput || '').replace(blankPattern, '')
+  return { firstBlank, secondBlank }
+}
+
 export const useCoummunityItem = () => {
   const updateCommunityMutation = useMutation({
     mutationFn: updateCommnityBoard,

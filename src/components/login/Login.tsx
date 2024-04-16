@@ -99,13 +99,13 @@ const Login = () => {
       {isModalOpen && (
         <Modal closeModal={closeModal}>
           <button onClick={closeModal} className='absolute right-0 top-0 m-3'>
-            <Image src={close} width={24} height={24} alt='닫기' />
+            <Image src={close} width={24} height={24} alt='닫기 아이콘' />
           </button>
           <div
             className={`flex h-[680px] w-[516px] flex-col items-center justify-center gap-[94px] rounded-[32px] border-[4px] border-solid border-[#474747] bg-[#3D3D3D] pb-[300px] ${OPEN_ANOTHER_SHADOW} `}
           >
             <h3 className='pt-[106px] text-[20px] font-bold'>
-              <p>비밀번호 찾기</p>
+              <p>비밀번호&nbsp;찾기</p>
             </h3>
             <div className=' flex flex-col gap-[32px]'>
               <article className='gap-[4px]'>
@@ -135,10 +135,9 @@ const Login = () => {
       <div
         className={`border-gray-300 absolute  left-1/2 top-1/2  flex w-[516px] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center overflow-hidden rounded-2xl border-none border-opacity-10 bg-white bg-opacity-10 pb-[16px] pt-[106px] ${SHADOW}`}
       >
-        {/* <section className='translate-y-auto  absolute left-1/2 mt-0 -translate-x-1/2 transform rounded-2xl  tracking-[-0.03em] '> */}
         <section className='tracking-[-0.03em] '>
           <div className='text-center text-[24px] font-bold'>
-            <p>V-UP에 오신 걸 환영합니다</p>
+            <p>V-UP에&nbsp;오신&nbsp;걸&nbsp;환영합니다</p>
           </div>
           <div className='pt-[88px] '>
             <form
@@ -147,30 +146,28 @@ const Login = () => {
             >
               <div className='flex flex-col gap-[16px] text-[rgba(255,255,255,0.3)] [&_label]:gap-[4px]'>
                 <div>
-                  <label htmlFor='email' className='flex flex-col '>
+                  <label className='flex flex-col '>
                     <p>이메일</p>
                     <input
                       type='email'
-                      id='email'
                       name='email'
                       value={email}
                       onChange={onChangeHandler}
                       placeholder='이메일을 입력하세요'
-                      className={`flex items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] font-bold caret-primary shadow-md ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} placeholder:text-[rgba(255,255,255,0.3)] focus:placeholder:text-white`}
+                      className={`flex w-full items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] font-bold caret-primary  ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} placeholder:text-[rgba(255,255,255,0.3)]`}
                     />
                   </label>
                 </div>
                 <div>
-                  <label htmlFor='password' className='flex flex-col '>
+                  <label className='flex flex-col '>
                     <p>비밀번호</p>
                     <input
                       type='password'
-                      id='password'
                       name='password'
                       value={password}
                       onChange={onChangeHandler}
                       placeholder='비밀번호를 입력하세요'
-                      className={`flex items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] font-bold caret-primary shadow-md  ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} placeholder:text-[rgba(255,255,255,0.3)] focus:placeholder:text-white`}
+                      className={`flex w-full items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] font-bold caret-primary  ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} placeholder:text-[rgba(255,255,255,0.3)]`}
                     />
                   </label>
                 </div>
@@ -178,7 +175,7 @@ const Login = () => {
               <div className='tracking-[-0.03em]'>
                 <button
                   type='submit'
-                  className={`flex h-[48px] w-[320px] items-center justify-center  rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
+                  className={`pointer-events-none flex h-[48px] w-[320px] items-center justify-center  rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
                 >
                   로그인
                 </button>
@@ -192,7 +189,7 @@ const Login = () => {
                 onClick={openModal}
                 className='w-101 flex items-center justify-center gap-[2px] text-[14px] text-[rgba(255,255,255,0.5)]'
               >
-                비밀번호 찾기
+                비밀번호&nbsp;찾기
               </button>
               <Image
                 src={findPwImg}
@@ -212,7 +209,7 @@ const Login = () => {
                 <p>아직&nbsp;회원이&nbsp;아니신가요?</p>
                 <Link
                   href={'/join'}
-                  className='leading-[1.4rem] text-primary underline '
+                  className='pointer-events-none leading-[1.4rem] text-primary underline '
                 >
                   <p>회원가입&nbsp;하기</p>
                 </Link>
