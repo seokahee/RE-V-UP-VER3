@@ -1,4 +1,3 @@
-'use client'
 import { queryClient } from '@/app/provider'
 import { getMusicList } from '@/query/musicPlayer/musicPlayerQueryKey'
 import {
@@ -22,6 +21,8 @@ const MusicPlayer = () => {
   const [isRandom, setIsRandom] = useState(false)
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user.uid as string
+  const [currentPlaying, setCurrentPlaying] =
+    useState<CurrentPlayListType | null>(null)
   const router = useRouter()
 
   const { currentPlayList, myPlayList, isError } = getMusicList(uid)
@@ -67,15 +68,19 @@ const MusicPlayer = () => {
       return !prev
     })
   }
+
   const onPreviousHandler = () => {
     if (!isRandom) {
       if (musicIndex === 0) {
         setMusicIndex(currentPlayList.length - 1) // 마지막 곡으로 이동
+        setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
       } else {
         setMusicIndex((prev) => prev - 1) // 이전 곡으로 이동
+        setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
       }
     } else {
       setMusicIndex(randomIndex)
+      setCurrentPlaying(currentPlayList[randomIndex] as CurrentPlayListType)
     }
   }
 
@@ -83,11 +88,18 @@ const MusicPlayer = () => {
     if (!isRandom) {
       if (musicIndex === currentPlayList.length - 1) {
         setMusicIndex(0) // 첫 번째 곡으로 돌아감
+        setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
       } else {
         setMusicIndex((prev) => prev + 1) // 다음 곡으로 이동
+        setCurrentPlaying(
+          currentPlayList[musicIndex]
+            ? (currentPlayList[musicIndex] as CurrentPlayListType)
+            : null,
+        )
       }
     } else {
       setMusicIndex(randomIndex)
+      setCurrentPlaying(currentPlayList[randomIndex] as CurrentPlayListType)
     }
   }
 
@@ -159,11 +171,13 @@ const MusicPlayer = () => {
       <div>
         <div>
           <Player
-            isLyrics={isLyrics}
-            musicIndex={musicIndex}
+            currentPlaying={currentPlaying}
+            setCurrentPlaying={setCurrentPlaying}
             currentPlayList={currentPlayList as CurrentPlayListType[]}
-            onRandomMusicHandler={onRandomMusicHandler}
+            musicIndex={musicIndex}
+            isLyrics={isLyrics}
             isRandom={isRandom}
+            onRandomMusicHandler={onRandomMusicHandler}
             onPreviousHandler={onPreviousHandler}
             onNextTrackHandler={onNextTrackHandler}
             onLyricsToggle={onLyricsToggle}
@@ -172,9 +186,10 @@ const MusicPlayer = () => {
         </div>
         <div>
           <CurrentMusicList
-            isLyrics={isLyrics}
             currentPlayList={currentPlayList as CurrentPlayListType[]}
+            isLyrics={isLyrics}
             checkedList={checkedList}
+            setCurrentPlaying={setCurrentPlaying}
             onChangeCheckMusicHandler={onChangeCheckMusicHandler}
             onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
             setMusicIndex={setMusicIndex}

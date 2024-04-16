@@ -36,3 +36,30 @@ export const useCurrentMusicStore = create(
     },
   ),
 )
+
+// type PlayMusicStore = {
+//   playMusicData: {
+//     currentPlaying: CurrentPlayListType | null
+//   }
+//   playMusic: (currentPlaying: CurrentPlayListType | null) => void
+// }
+
+// const playMusicState = {
+//   playMusicData: {
+//     currentPlaying: null,
+//   },
+// }
+
+// export const usePlayMusicStore = create(
+//   persist<PlayMusicStore>(
+//     (set, _) => ({
+//       ...playMusicState,
+//       playMusic: (currentPlaying: CurrentPlayListType | null) => {
+//         set({ playMusicData: { currentPlaying } })
+//       },
+//     }),
+//     {
+//       name: 'currentMusicStore',
+//     },
+//   ),
+// )

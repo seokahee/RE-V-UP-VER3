@@ -6,7 +6,7 @@ export const getSearchedMusicData = async (keyword: string) => {
     .select(
       'musicId, musicTitle, artist, thumbnail, release, musicSource,runTime',
     )
-    .or(`musicTitle.like.%${keyword}%,artist.like.%${keyword}%`)
+    .or(`musicTitle.ilike.%${keyword}%,artist.ilike.%${keyword}%`)
     .order('musicTitle', { ascending: false })
   return data
 }
@@ -17,7 +17,7 @@ export const getSearchedCommunityData = async (keyword: string) => {
     .select(
       'boardId, boardTitle, likeList, date, userId, userInfo(nickname, userImage), musicInfo(thumbnail), comment(commentId)',
     )
-    .like('boardTitle', `%${keyword}%`)
+    .ilike('boardTitle', `%${keyword}%`)
     .order('date', { ascending: false })
   return data
 }
@@ -28,7 +28,7 @@ export const modalMusicSearchData = async (keyword: string) => {
     .select(
       'musicId, musicTitle, artist, thumbnail, release, musicSource, runTime',
     )
-    .or(`musicTitle.like.%${keyword}%,artist.like.%${keyword}%`)
+    .or(`musicTitle.ilike.%${keyword}%,artist.ilike.%${keyword}%`)
     .order('musicTitle', { ascending: false })
   return data
 }

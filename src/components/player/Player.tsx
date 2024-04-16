@@ -6,7 +6,7 @@ import musicThumbnail from '@/../public/images/musicThumbnail.svg'
 import myPlayListButton from '@/../public/images/myPlayListButton.svg'
 import { PlayerProps } from '@/types/musicPlayer/types'
 import Image from 'next/image'
-import { useCallback, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
 import './AudioCss.css'
@@ -19,54 +19,142 @@ import MyPlayIcon from './playerIcons/MyPlayIcon'
 import MyPreviousIcon from './playerIcons/MyPreviousIcon'
 
 const Player = ({
+  currentPlaying,
+  setCurrentPlaying,
   isLyrics,
+  isRandom,
   currentPlayList,
   musicIndex,
-  isRandom,
   onPreviousHandler,
   onNextTrackHandler,
   onLyricsToggle,
   onInsertMyPlayListHandler,
   onRandomMusicHandler,
 }: PlayerProps) => {
-  const isPlayList = currentPlayList?.length > 0
+  // const [boxShadowColorIndex, setBoxShadowColorIndex] = useState(0)
 
-  const CustomAudioPlayer = useCallback(() => {
-    const customIcons = useMemo(
-      () => ({
-        play: <MyPlayIcon />,
-        pause: <MyPauseIcon />,
-        previous: <MyPreviousIcon onPreviousHandler={onPreviousHandler} />,
-        next: <MyNextIcon onNextTrackHandler={onNextTrackHandler} />,
-        loop: <MyLoopIcon />,
-        loopOff: <MyLoopOffIcon />,
-        progressJump: <FaForward />,
-      }),
-      [currentPlayList, musicIndex],
-    )
-
-    if (
-      !currentPlayList ||
-      currentPlayList.length === 0 ||
-      musicIndex === undefined
-    ) {
-      return
+  useEffect(() => {
+    if (!currentPlaying && currentPlayList.length > 0 && musicIndex !== null) {
+      setCurrentPlaying(currentPlayList[musicIndex])
+    } else if (currentPlaying && currentPlayList.length === 0) {
+      setCurrentPlaying(null)
     }
+  }, [musicIndex, currentPlayList, currentPlaying])
+  console.log('플레이 리스트 인덱스', currentPlayList[musicIndex])
 
-    return (
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setBoxShadowColorIndex(
+  //       (prevIndex) => (prevIndex + 1) % boxShadowColors.length,
+  //     )
+  //   }, 2000)
+
+  //   return () => clearInterval(interval)
+  // }, [])
+
+  // const boxShadowColors = [
+  //   '0px_2px_10px_5px_rgba(255,255,255,0.534)',
+  //   '0px_2px_10px_5px_rgba(134,127,223,0.75)',
+  //   '0px_2px_10px_5px_rgba(15,139,213,0.75)',
+  //   '0px_2px_10px_5px_rgba(213,193,99,0.43)',
+  //   '0px_2px_10px_5px_rgba(41,144,58,0.43)',
+  // ]
+
+  const customIcons = {
+    play: <MyPlayIcon />,
+    pause: <MyPauseIcon />,
+    previous: <MyPreviousIcon onPreviousHandler={onPreviousHandler} />,
+    next: <MyNextIcon onNextTrackHandler={onNextTrackHandler} />,
+    loop: <MyLoopIcon />,
+    loopOff: <MyLoopOffIcon />,
+    progressJump: <FaForward />,
+  }
+  const onplayHandler = (arg: any) => {
+    setCurrentPlaying(arg)
+  }
+
+  return (
+    <div>
+      <div className='flex flex-col items-center'>
+        <div className='mt-[40px] flex flex-col items-center gap-[8px] p-[0px]'>
+          <div className=' text-center text-[20px] font-bold leading-[150%]  tracking-tighter text-white opacity-80'>
+            {currentPlaying?.musicTitle}
+          </div>
+
+          <div className='text-center text-[18px] leading-[150%] tracking-tighter text-white opacity-50'>
+            {currentPlaying?.artist}
+          </div>
+        </div>
+        <div className='relative ml-[44px] mr-[44px] mt-[41px]'>
+          <div className='relative h-[300px] w-[300px]'>
+            {/* <Image
+              src={musicThumbnail}
+              alt='Album Circle'
+              width={300}
+              height={300}
+              className={`h-[300px] w-[300px] rounded-full shadow-${boxShadowColors[boxShadowColorIndex]}`}
+              // shadow-[0px_2px_10px_5px_rgba(210,137,176,0.5)]
+            /> */}
+            <Image
+              src={musicThumbnail}
+              alt='Album Circle'
+              width={300}
+              height={300}
+              className='h-[300px] w-[300px] rounded-full shadow-[0px_2px_10px_5px_rgba(255,255,255,0.534)]'
+            />
+          </div>
+          <div className='absolute left-[50px] top-[50px] h-[200px] w-[200px] '>
+            <Image
+              src={currentPlaying ? currentPlaying.thumbnail : musicThumbnail}
+              alt='Album Thumbnail'
+              width={200}
+              height={200}
+              className='h-[200px] w-[200px] rounded-full'
+            />
+          </div>
+        </div>
+        <div className='mx-auto flex items-center px-[24px]'>
+          <div className='flex w-[316px] justify-between'>
+            <button onClick={onLyricsToggle} className='h-[48px] w-[48px]'>
+              {isLyrics ? (
+                <Image src={musicList} alt='Lyrics' width={48} height={48} />
+              ) : (
+                <Image
+                  src={musicLyricsButton}
+                  alt='Lyrics'
+                  width={48}
+                  height={48}
+                />
+              )}
+            </button>
+            <button
+              type='button'
+              onClick={onInsertMyPlayListHandler}
+              className='h-[48px] w-[48px]'
+            >
+              <Image
+                src={myPlayListButton}
+                alt='Album Circle'
+                width={48}
+                height={48}
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div className='rhap_controls-section'>
         <AudioPlayer
-          src={isPlayList ? currentPlayList[musicIndex].musicSource : ''}
-          volume={0.1}
+          src={currentPlaying ? currentPlaying.musicSource : ''}
+          volume={0.5}
           loop={false}
-          // autoPlay={true}
-          autoPlayAfterSrcChange={true}
           onEnded={onNextTrackHandler}
           showSkipControls={true}
-          className='custom-audio-player'
           customIcons={customIcons}
+          onPlay={() => {
+            onplayHandler(currentPlaying)
+          }}
         />
-
         <Image
           src={isRandom ? musicShuffleOff : musicShuffle}
           alt='Lyrics'
@@ -76,76 +164,9 @@ const Player = ({
           className='shuffleButton'
         />
       </div>
-    )
-  }, [currentPlayList, musicIndex, isRandom])
-
-  return (
-    <div>
-      {isPlayList && (
-        <div className='flex flex-col items-center'>
-          <div className='mt-[40px] flex flex-col items-center gap-[8px] p-[0px]'>
-            <div className=' text-center text-[20px] font-bold leading-[150%]  tracking-tighter text-white opacity-80'>
-              {currentPlayList[musicIndex].musicTitle}
-            </div>
-
-            <div className='text-center text-[18px] leading-[150%] tracking-tighter text-white opacity-50'>
-              {currentPlayList[musicIndex].artist}
-            </div>
-          </div>
-          <div className='relative ml-[44px] mr-[44px] mt-[41px]'>
-            <div className='relative h-[300px] w-[300px]'>
-              <Image
-                src={musicThumbnail}
-                alt='Album Circle'
-                width={300}
-                height={300}
-                className='h-[300px] w-[300px]'
-              />
-            </div>
-            <div className='absolute left-[50px] top-[50px] h-[200px] w-[200px] '>
-              <Image
-                src={currentPlayList[musicIndex].thumbnail}
-                alt='Album Thumbnail'
-                width={200}
-                height={200}
-                className='h-[200px] w-[200px] rounded-full'
-              />
-            </div>
-          </div>
-          <div className='mx-auto flex items-center px-[24px]'>
-            <div className='flex w-[316px] justify-between'>
-              <button onClick={onLyricsToggle} className='h-[48px] w-[48px]'>
-                {isLyrics ? (
-                  <Image src={musicList} alt='Lyrics' width={48} height={48} />
-                ) : (
-                  <Image
-                    src={musicLyricsButton}
-                    alt='Lyrics'
-                    width={48}
-                    height={48}
-                  />
-                )}
-              </button>
-              <button
-                type='button'
-                onClick={onInsertMyPlayListHandler}
-                className='h-[48px] w-[48px]'
-              >
-                <Image
-                  src={myPlayListButton}
-                  alt='Album Circle'
-                  width={48}
-                  height={48}
-                />
-              </button>
-            </div>
-          </div>
-        </div>
-        // <Pl />
-      )}
-      <CustomAudioPlayer />
     </div>
   )
 }
 
 export default Player
+// 함수가 정상적으로 작동하지 않을경우(상태유지 불가 등) 함수 호출부, 사용하는곳부터 뒤져보기!!!!!!!!!!!!!!!!
