@@ -14,7 +14,7 @@ const BoardItem = ({
   return (
     <li className='flex justify-between border-b border-solid border-black p-4'>
       <div className='flex items-center'>
-        <figure className='h-[60px] w-[60px] overflow-hidden rounded-full border-2 border-[#ffffff1a] bg-[#2b2b2b]'>
+        <figure className='mr-4 h-[60px] w-[60px] overflow-hidden rounded-full border-2 border-[#ffffff1a] bg-[#2b2b2b]'>
           {item.userInfo?.userImage && (
             <Image
               src={item.userInfo.userImage}
