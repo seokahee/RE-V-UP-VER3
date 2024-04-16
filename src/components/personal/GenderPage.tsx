@@ -28,29 +28,49 @@ const GenderPage = ({
     return setPageCount(param)
   }
 
+  console.log(gender, 'gender')
+
   return (
     <div className='grid h-screen place-items-center'>
-      <div className='grid h-[550px] h-screen w-[600px] place-items-center rounded-[32px] bg-white bg-opacity-10'>
+      <div className='grid h-[550px] h-screen w-[600px] place-items-center rounded-[32px]  bg-white bg-opacity-10'>
         <div className='place-content-center'>
           <p className='text-center font-bold'>성별을 선택해주세요</p>
         </div>
         <div className='flex flex-col justify-center gap-3'>
-          <label className='relative inline-flex items-center justify-center gap-2  rounded-xl bg-white bg-opacity-20 shadow shadow-inner '>
-            <button
-              onClick={() => setGender('male')}
-              className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} inline-flex h-[100px] w-[336px] items-center justify-center gap-2 rounded-xl hover:bg-indigo-500 focus:bg-indigo-500 active:bg-indigo-700`}
+          <div>
+            <input
+              type='radio'
+              name='gender'
+              id='male'
+              value='male'
+              onClick={(e) => setGender(e.currentTarget.value)}
+              className='peer hidden '
+            />
+            <label
+              htmlFor='male'
+              className='inline-flex h-[100px] w-[336px] items-center justify-center gap-2 rounded-xl bg-white bg-opacity-20  
+              shadow shadow-inner peer-checked:rounded-xl peer-checked:bg-indigo-500'
             >
               남자
-            </button>
-          </label>
-          <label className='relative inline-flex items-center justify-center gap-2  rounded-xl bg-white bg-opacity-20 shadow shadow-inner '>
-            <button
-              onClick={() => setGender('female')}
-              className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} inline-flex h-[100px] w-[336px] items-center justify-center gap-2 rounded-xl hover:bg-indigo-500 focus:bg-indigo-500 active:bg-indigo-700`}
+            </label>
+          </div>
+          <div>
+            <input
+              type='radio'
+              name='gender'
+              id='female'
+              value='female'
+              onClick={(e) => setGender(e.currentTarget.value)}
+              className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}   active: peer inline-flex hidden h-[100px] w-[336px] items-center justify-center gap-2 rounded-xl hover:bg-indigo-500 focus:bg-indigo-500 `}
+            />
+            <label
+              htmlFor='female'
+              className='inline-flex h-[100px] w-[336px] items-center justify-center gap-2 rounded-xl bg-white bg-opacity-20  
+              shadow shadow-inner peer-checked:rounded-xl peer-checked:bg-indigo-500'
             >
               여자
-            </button>
-          </label>
+            </label>
+          </div>
         </div>
         <div className='flex justify-center gap-3'>
           <PreviousButton onClick={() => router.back()}>이전</PreviousButton>
@@ -58,6 +78,9 @@ const GenderPage = ({
             다음
           </ButtonPrimary>
         </div>
+      </div>
+      <div>
+        <input type='radio' />
       </div>
     </div>
   )

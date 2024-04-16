@@ -26,16 +26,9 @@ const PersonalSubTest = ({
 
   const [EI, setEI] = useState<string>('')
   const [SN, setSN] = useState<string>('')
-  const [TF, setTF] = useState<string>('')
-  const [PJ, setPJ] = useState<string>('')
-  useEffect(() => {
-    // 페이지가 처음 렌더링 될 때만 EI를 'E'로 설정
-    setEI('E')
-    setSN('S')
-    setTF('T')
-    setPJ('P')
-  }, [])
-  //입력한 userChar
+  const [TF, setTF] = useState<string>('T')
+  const [PJ, setPJ] = useState<string>('P')
+
   const insertUserCharMutation = useMutation({
     mutationFn: insertUserChar,
     onSuccess: () => {
@@ -63,10 +56,10 @@ const PersonalSubTest = ({
   const mbti = calculateMBTI()
 
   const onsubmitResultHandler = () => {
-    if (!EI || !SN || !TF || !PJ) {
-      alert('모든 항목을 선택해주세요.')
-      return
-    }
+    // if (!EI || !SN || !TF || !PJ) {
+    //   alert('모든 항목을 선택해주세요.')
+    //   return
+    // }
 
     addUserChar({ gender: userGender, mbti, uid: userId })
     const personalUser: PersonalInfo = {
@@ -83,6 +76,8 @@ const PersonalSubTest = ({
 
     handleNextClick('pageThree')
   }
+
+  console.log(EI, SN, TF, PJ, 'MBTI')
   const handleNextClick = (param: string) => {
     return setPageCount(param)
   }
@@ -110,7 +105,7 @@ const PersonalSubTest = ({
                 }`}
               ></span>
             </label>
-            <span className='ml-2 text-lg font-bold'>{EI}</span>
+            <span className='ml-2 text-lg font-bold'></span>
           </div>
         </div>
         {/* */}
@@ -124,7 +119,7 @@ const PersonalSubTest = ({
                 type='checkbox'
                 id='checkSN'
                 className='peer sr-only'
-                onChange={(e) => setSN(e.target.checked ? 'S' : 'N')}
+                onClick={(e) => setSN(e.target.checked ? 'S' : 'N')}
               />
               <span
                 className={`absolute left-1 top-1 h-4/5 w-2/5 rounded-full bg-blue-700 transition-all duration-500 ${
@@ -146,7 +141,7 @@ const PersonalSubTest = ({
                 type='checkbox'
                 id='checkTF'
                 className='peer sr-only'
-                onChange={(e) => setTF(e.target.checked ? 'T' : 'F')}
+                onClick={(e) => setTF(e.target.checked ? 'T' : 'F')}
               />
               <span
                 className={`absolute left-1 top-1 h-4/5 w-2/5 rounded-full bg-blue-700 transition-all duration-500 ${
@@ -168,7 +163,7 @@ const PersonalSubTest = ({
                 type='checkbox'
                 id='checkPJ'
                 className='peer sr-only'
-                onChange={(e) => setPJ(e.target.checked ? 'P' : 'J')}
+                onClick={(e) => setPJ(e.target.checked ? 'P' : 'J')}
               />
               <span
                 className={`absolute left-1 top-1 h-4/5 w-2/5 rounded-full bg-blue-700 transition-all duration-500 ${
