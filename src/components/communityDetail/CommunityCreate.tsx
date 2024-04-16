@@ -1,11 +1,14 @@
 'use client'
 
-import React, { FormEvent } from 'react'
+import React, { FormEvent, useEffect, useRef } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
-import { useCoummunityItem } from '@/query/communityDetail/mutation'
+import {
+  useCoummunityItem,
+  validateFormBlank,
+} from '@/query/communityDetail/mutation'
 import MusicSearch from '../search/MusicSearch'
 import goback from '@/../public/images/goback.svg'
 import useInput from '@/hooks/useInput'
@@ -13,9 +16,10 @@ import { GOBACK_SHADOW } from './detailCss'
 
 const CommunityCreate = () => {
   const router = useRouter()
-  const { data: userSessionInfo, status } = useSession()
+  const refTitle = useRef<HTMLInputElement>(null)
+  const { chooseMusic, isChooseMusic, setChooseMusic } = useMusicSearchedStore()
   const { addCommunityMutation } = useCoummunityItem()
-  const { chooseMusic } = useMusicSearchedStore()
+  const { data: userSessionInfo, status } = useSession()
   const musicId = chooseMusic?.musicId as string
   const musicTitle = chooseMusic?.musicTitle
   const artist = chooseMusic?.artist
@@ -32,8 +36,33 @@ const CommunityCreate = () => {
 
   const { boardTitle, content } = communityForm
 
+  useEffect(() => {
+    if (refTitle.current !== null) {
+      refTitle.current.focus()
+    }
+  }, [])
+
   const onSumitHandler = async (e: FormEvent) => {
     e.preventDefault()
+
+    const { firstBlank: titleBlank, secondBlank: contentBlack } =
+      validateFormBlank(boardTitle, content)
+
+    if (!boardTitle || titleBlank === '') {
+      alert('제목을 입력해 주세요!')
+      return
+    }
+
+    if (!content || contentBlack === '') {
+      alert('내용을 입력해 주세요!')
+      return
+    }
+
+    if (!isChooseMusic) {
+      alert('음악 선택은 필수입니다!')
+      return
+    }
+
     if (userSessionInfo && userSessionInfo.user.uid) {
       const { uid } = userSessionInfo.user
       const newData = {
@@ -45,17 +74,20 @@ const CommunityCreate = () => {
       addCommunityMutation.mutate(newData)
       alert('등록이 완료됐습니다.')
       reset()
+      setChooseMusic(null)
       router.push('/community')
     }
     if (!userSessionInfo) {
-      alert('오류로 인해 정보를 저장할 수 없습니당.')
+      alert('오류로 인해 정보를 저장할 수 없습니다.')
       return
     }
   }
+
   if (status === 'unauthenticated') {
     alert('로그인한 유저만 이용 가능합니다.')
     return
   }
+
   return (
     <div>
       <form onSubmit={onSumitHandler}>
@@ -81,19 +113,21 @@ const CommunityCreate = () => {
               type='text'
               name='boardTitle'
               value={boardTitle}
+              ref={refTitle}
+              maxLength={20}
               onChange={onChangeHandler}
-              className='focus:outline-todayPink mb-4 w-full rounded-lg border p-2  text-black'
-              placeholder='제목을 입력하세요'
+              className='focus:outline-todayPink mb-4 w-full rounded-lg border p-2 text-black'
+              placeholder='제목을 입력해 주세요.'
             />
           </div>
-          <input
-            type='text'
+          <textarea
             name='content'
             value={content}
+            maxLength={50}
             onChange={onChangeHandler}
             className='focus:outline-todayPink mb-4 w-full rounded-lg border p-2 text-black'
-            placeholder='추천할 음악에 대해 얘기해 주세요'
-          />
+            placeholder='추천할 음악에 대해 얘기해 주세요.'
+          ></textarea>
         </div>
       </form>
 

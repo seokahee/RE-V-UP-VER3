@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { saveSignUpInUserInfo, signUp } from '@/shared/join/joinApi'
 import useInput from '@/hooks/useInput'
 import { useRouter } from 'next/navigation'
+import { validateFormBlank } from '@/query/communityDetail/mutation'
 
 const Join = () => {
   const router = useRouter()
@@ -24,6 +25,7 @@ const Join = () => {
 
   const { userEmail, userPw, userPwCheck, userNickname, checkAgree } = join
 
+  const blankPattern = /[\s]/g
   const validateCheckAgree = checkAgree
   const validatePwLength = userPw.length < 6
   const validatePassword = !(userPw === userPwCheck)
@@ -35,18 +37,32 @@ const Join = () => {
 
   const onJoinHandler = async (e: FormEvent) => {
     e.preventDefault()
-    if (validateEmptyValue) {
+    const { firstBlank: userEmailBlank, secondBlank: userPwBlank } =
+      validateFormBlank(userEmail, userPw)
+
+    if (
+      blankPattern.test(userPw) == true ||
+      blankPattern.test(userPwCheck) == true
+    ) {
+      alert('비밀번호에 공백은 사용할 수 없습니다.')
+      return
+    }
+
+    if (validateEmptyValue || userEmailBlank === '') {
       alert('빈칸 없이 작성해 주세요.')
       return
     }
-    if (validatePassword) {
+
+    if (validatePassword || userPwBlank === '') {
       alert('비밀번호를 다시 입력해주세요.')
       return
     }
+
     if (validatePwLength) {
       alert('비밀번호는 최소 6글자 이상 작성해 주세요')
       return
     }
+
     if (validateCheckAgree === false) {
       alert('약관 동의는 필수입니다')
       return
@@ -56,7 +72,7 @@ const Join = () => {
       email: userEmail,
       password: userPw,
     })
-    // console.log(signUpResult)
+
     const userId = signUpResult?.data?.user?.id
 
     if (signUpResult) {
@@ -105,8 +121,9 @@ const Join = () => {
           <input
             type='password'
             name='userPw'
-            placeholder='비밀번호'
             value={userPw}
+            maxLength={12}
+            placeholder='비밀번호'
             onChange={onChangeHandler}
           />
         </div>
