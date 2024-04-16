@@ -1,6 +1,5 @@
 import { queryClient } from '@/app/provider'
 import { useMutation } from '@tanstack/react-query'
-import { COMMUNITY_DETAIL_QUERY_KEY } from './queryKey'
 import {
   addCommnityBoard,
   deleteCommunityBoard,
@@ -8,6 +7,7 @@ import {
 } from '@/shared/communitydetail/detailApi'
 import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
 import { insertMyPlayMusic, updateMyPlayMusic } from '@/shared/musicPlayer/api'
+import { COMMUNITY_DETAIL_QUERY_KEY } from './queryKey'
 
 export const validateFormBlank = (firstInput: string, secondInput: string) => {
   const blankPattern = /^\s+|\s+$/g

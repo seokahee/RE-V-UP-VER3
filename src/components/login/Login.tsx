@@ -23,8 +23,8 @@ import close from '@/../public/images/close-button.svg'
 
 const Login = () => {
   const router = useRouter()
+  const blankPattern = /[\s]/g
   const { status } = useSession()
-  const blank_pattern = /[\s]/g
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [spendEmail, setSpendEmail] = useState<string>('')
   const [submitEmail, setSubmitEmail] = useState<boolean>(false)
@@ -43,9 +43,9 @@ const Login = () => {
   const onLoginHandler = async (e: FormEvent) => {
     e.preventDefault()
 
-    if (blank_pattern.test(password) == true) {
+    if (blankPattern.test(password) == true) {
       alert('비밀번호에 공백은 사용할 수 없습니다.')
-      return false
+      return
     }
 
     try {
