@@ -37,5 +37,6 @@ const config: Config = {
     },
   },
   plugins: [require('tailwind-scrollbar-hide')],
+  mode: 'jit',
 }
 export default config
