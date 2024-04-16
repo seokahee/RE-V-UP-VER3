@@ -14,10 +14,6 @@ const GenderPage = ({
   const router = useRouter()
   const { addGender } = useSurvey()
 
-  const onChangeHandler = (gender: string) => {
-    setGender(gender)
-  }
-
   const handleNextClick = (param: string) => {
     if (!gender) {
       alert('성별을 선택해주세요.')
@@ -36,37 +32,41 @@ const GenderPage = ({
         </div>
         <div className='flex flex-col justify-center gap-3'>
           <div>
-            <input
-              type='radio'
-              name='gender'
-              id='male'
-              value='male'
-              onChange={(e) => setGender(e.currentTarget.value)}
-              className='peer hidden '
-            />
-            <label
-              htmlFor='male'
-              className='inline-flex h-[100px] w-[336px] items-center justify-center  rounded-xl bg-white bg-opacity-20  
+            <label>
+              <input
+                type='radio'
+                name='gender'
+                id='male'
+                value='male'
+                onClick={() => setGender('male')}
+                checked={gender === 'male'}
+                className='peer hidden '
+              />
+              <p
+                className='inline-flex h-[100px] w-[336px] items-center justify-center  rounded-xl bg-white bg-opacity-20  
              peer-checked:rounded-xl peer-checked:bg-primary'
-            >
-              남자
+              >
+                남자
+              </p>
             </label>
           </div>
           <div>
-            <input
-              type='radio'
-              name='gender'
-              id='female'
-              value='female'
-              onChange={(e) => setGender(e.currentTarget.value)}
-              className='peer hidden '
-            />
-            <label
-              htmlFor='female'
-              className='inline-flex h-[100px] w-[336px] items-center justify-center rounded-xl  bg-white bg-opacity-20  
+            <label>
+              <input
+                type='radio'
+                name='gender'
+                id='female'
+                value='female'
+                onClick={() => setGender('female')}
+                checked={gender === 'female'}
+                className='peer hidden '
+              />
+              <p
+                className='inline-flex h-[100px] w-[336px] items-center justify-center rounded-xl  bg-white bg-opacity-20  
             peer-checked:bg-primary '
-            >
-              여자
+              >
+                여자
+              </p>
             </label>
           </div>
         </div>
