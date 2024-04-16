@@ -130,12 +130,13 @@ const Join = () => {
                 <label htmlFor='password' className='flex flex-col '>
                   <p>이메일</p>
                   <input
+                    autoFocus
                     type='email'
                     name='userEmail'
-                    placeholder='이메일'
                     value={userEmail}
+                    placeholder='이메일'
                     onChange={onChangeHandler}
-                    className={`flex w-full items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] text-[16px] font-bold caret-primary  ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} placeholder:text-[rgba(255,255,255,0.3)]`}
+                    className={`flex w-full items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] font-bold caret-primary  ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} placeholder:text-[rgba(255,255,255,0.3)]`}
                   />
                 </label>
 
