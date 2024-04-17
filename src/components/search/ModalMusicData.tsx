@@ -1,8 +1,8 @@
 'use client'
 
-import Image from 'next/image'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
 import type { MusicInfoType } from '@/types/musicPlayer/types'
+import Image from 'next/image'
 
 const ModalMusicData = ({
   item,
@@ -34,30 +34,35 @@ const ModalMusicData = ({
   return (
     <div
       key={item.musicId}
-      className={`flex h-[104px] cursor-pointer items-center justify-center gap-[12px] space-x-3 rounded-[16px] px-5 py-4 ${
+      className={` flex w-[387px] cursor-pointer gap-[12px] space-x-3 rounded-[16px]  px-5 py-4 ${
         selectedCardIndex === index && isChooseMusic
           ? 'bg-[#685BFF]'
-          : 'bg-#D9D9D9-800'
+          : 'bg-[rgba(255,255,255,0.1)]'
       } `}
       onClick={() => onAddMusicBoardHandler(index)}
     >
-      {/* 이미지 */}
-      <div className='flex gap-[16px]'>
-        <div>
-          <Image
-            src={item.thumbnail}
-            alt='Album Thumbnail'
-            width={100}
-            height={100}
-            className='rounded-lg'
-          />
-        </div>
-        {/* 정보 */}
-        <div className='flex flex-col'>
-          <div className='font-bold'>Title {item.musicTitle}</div>
-          <div className='text-gray-600'>Artist {item.artist}</div>
-          <div className='text-gray-600'>{item.release}</div>
-          <div className='text-gray-600'>{item.runTime}</div>
+      <div className='flex w-full'>
+        <div className='flex gap-[16px]'>
+          <div className='flex items-center'>
+            <Image
+              src={item.thumbnail}
+              alt='Album Thumbnail'
+              width={48}
+              height={48}
+              className='rounded-full'
+            />
+          </div>
+          <article className='flex items-center justify-between gap-[10px]'>
+            <div className='flex w-full flex-col justify-between'>
+              <div className='w-full font-bold'>Title {item.musicTitle}</div>
+              <div className='text-[rgba(255,255,255,0.5)]'>
+                Artist {item.artist}
+              </div>
+            </div>
+            <div className=' flex text-[rgba(255,255,255,0.5)]'>
+              <p>{item.runTime}</p>
+            </div>
+          </article>
         </div>
       </div>
     </div>

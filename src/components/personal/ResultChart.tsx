@@ -32,7 +32,7 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
         if (chartInstance.current) {
           chartInstance.current.destroy()
         }
-        const context = chartRef.current.getContext('2d') // null 체크 없이 진행
+        const context = chartRef.current.getContext('2d')
 
         if (context) {
           const newChart = new Chart(context, {
@@ -43,20 +43,38 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
                 {
                   label: '장르별 음악 선호도',
                   data: preferenceData,
-                  backgroundColor: ['rgb(255,99,132,0.2)'],
-                  borderColor: 'blue',
-                  borderWidth: 1,
+                  borderColor: 'green',
+                  borderWidth: 3,
+                  pointBackgroundColor: 'rgb(56, 238, 65)',
+                  pointBorderColor: '#fff',
                 },
                 {
                   label: '장르별 음악 비선호도',
                   data: dislikeData,
-                  backgroundColor: ['rgb(255,159,64,0.2)'],
                   borderColor: 'red',
-                  borderWidth: 1,
+                  borderWidth: 3,
+                  pointBackgroundColor: 'rgb(255, 64, 64)',
+                  pointBorderColor: '#fff',
                 },
               ],
             },
             options: {
+              scales: {
+                r: {
+                  angleLines: {
+                    color: 'white',
+                  },
+                  grid: {
+                    color: 'white',
+                  },
+                  pointLabels: {
+                    color: 'blue',
+                  },
+                  ticks: {
+                    color: 'black',
+                  },
+                },
+              },
               responsive: false,
               plugins: {
                 title: {
@@ -64,9 +82,6 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
                   text: '당신의 퍼스널 뮤직 진단 결과',
                 },
               },
-            },
-            scales: {
-              grid: 'white',
             },
           } as ChartConfiguration)
 
@@ -77,8 +92,13 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
   }, [preference, dislike, chartRef.current])
 
   return (
-    <div className=' flex justify-center '>
-      <canvas ref={chartRef} width={400} height={400} />
+    <div className=' flex justify-center pt-[15px]'>
+      <canvas
+        ref={chartRef}
+        width={400}
+        height={300}
+        style={{ backgroundColor: 'black' }}
+      />
     </div>
   )
 }

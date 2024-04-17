@@ -20,6 +20,7 @@ export const paging = (
   data: any,
   currentPage: number,
   setCurrentPage: Dispatch<SetStateAction<number>>,
+  itemsPer: number = 10,
 ) => {
   if (!data)
     return {
@@ -29,7 +30,7 @@ export const paging = (
       totalPages: 0,
     }
 
-  const itemsPerPage = 10
+  const itemsPerPage = itemsPer
   const totalPages = Math.ceil(data.length / itemsPerPage)
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage

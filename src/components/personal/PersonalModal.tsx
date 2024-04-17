@@ -17,15 +17,13 @@ const PersonalModal = () => {
 
     const handleMainPop = () => {
       if (visitedDate && visitedDate > today) {
-        // 현재 date가 localStorage의 시간보다 크면 return
         return
       }
       if (!visitedDate || visitedDate < today) {
-        // 저장된 date가 없거나 today보다 작다면 popup 노출
         setIsModalOpen(true)
       }
     }
-    window.setTimeout(handleMainPop, 1000) // 1초 뒤 실행
+    window.setTimeout(handleMainPop, 1000)
   }, [HOME_VISITED])
 
   return <PersonalModalDetail isOpen={isModalOpen} onClose={closeModal} />
