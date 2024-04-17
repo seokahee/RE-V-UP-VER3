@@ -142,13 +142,13 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
 
   return (
     <div>
-      <div className='py-4 text-center text-sm font-medium text-white text-opacity-70'>
-        <p>{SentenceMatch(userChar.mbti)}</p>
+      <div className=' pt-[16px] text-center text-sm font-medium text-white text-opacity-70'>
+        <p className='px-[20px]'>{SentenceMatch(userChar.mbti)}</p>
       </div>
-      <div className='py-4 text-center text-sm text-white '>
+      <div className='pt-[24px] text-center text-sm text-white '>
         <p>당신의 취향에 맞는 음악을 추천 해드릴게요 &#x1F642;</p>
       </div>
-      <div className=' flex flex-row justify-center  gap-12 py-4 text-center text-white text-opacity-50'>
+      <div className=' flex flex-row justify-center gap-12  pt-[16px] text-center text-white text-opacity-50'>
         {recommend?.map((item) => (
           <div key={item.musicId}>
             <label htmlFor={item.musicId}>
@@ -163,8 +163,8 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
               />
               <Image
                 src={item.thumbnail}
-                width={100}
-                height={100}
+                width={80}
+                height={80}
                 alt={`${item.musicTitle} 앨범 썸네일`}
                 className='  rounded-full ring-4 ring-transparent peer-checked:ring-white'
               />
@@ -181,7 +181,7 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
           </div>
         ))}
       </div>
-      <div className='flex justify-center gap-4 py-8'>
+      <div className='flex justify-center gap-4 pt-[22px]'>
         <ButtonPrimary onClick={onSubmitCurrentMusic}>
           재생목록에 담기
         </ButtonPrimary>

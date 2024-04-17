@@ -23,15 +23,17 @@ const GenderPage = ({
     addGender(gender)
     return setPageCount(param)
   }
-  console.log(gender, 'g')
+
   return (
-    <div className='grid h-screen place-items-center'>
-      <div className='grid h-[550px] h-screen w-[600px] place-items-center rounded-[32px]  bg-white bg-opacity-10'>
-        <div className='place-content-center'>
-          <p className='text-center font-bold'>성별을 선택해주세요</p>
+    <div className=' w-[516px] pb-[90px] pt-[70px]'>
+      <div className=' h-[800px] rounded-[32px] bg-white  bg-opacity-10 '>
+        <div className=''>
+          <p className='pt-[106px] text-center text-xl font-bold'>
+            성별을 선택해주세요
+          </p>
         </div>
-        <div className='flex flex-col justify-center gap-3'>
-          <div>
+        <div className='flex flex-col gap-3 pt-[40px]'>
+          <div className='flex justify-center '>
             <label>
               <input
                 type='radio'
@@ -43,14 +45,14 @@ const GenderPage = ({
                 className='peer hidden '
               />
               <p
-                className='inline-flex h-[100px] w-[336px] items-center justify-center  rounded-xl bg-white bg-opacity-20  
+                className='inline-flex h-[100px] w-[336px] items-center justify-center  rounded-xl border-4 border-black  border-opacity-10 bg-white bg-white bg-opacity-10 bg-opacity-20 shadow shadow-inner
              peer-checked:rounded-xl peer-checked:bg-primary'
               >
                 남자
               </p>
             </label>
           </div>
-          <div>
+          <div className='flex justify-center '>
             <label>
               <input
                 type='radio'
@@ -62,7 +64,7 @@ const GenderPage = ({
                 className='peer hidden '
               />
               <p
-                className='inline-flex h-[100px] w-[336px] items-center justify-center rounded-xl  bg-white bg-opacity-20  
+                className='inline-flex h-[100px] w-[336px] items-center justify-center rounded-xl  border-4 border-black  border-opacity-10 bg-white bg-white bg-opacity-10 bg-opacity-20 shadow shadow-inner
             peer-checked:bg-primary '
               >
                 여자
@@ -70,7 +72,7 @@ const GenderPage = ({
             </label>
           </div>
         </div>
-        <div className='flex justify-center gap-3'>
+        <div className='flex justify-center gap-3 pt-[208px]'>
           <PreviousButton onClick={() => router.back()}>이전</PreviousButton>
           <ButtonPrimary onClick={() => handleNextClick('pageTwo')}>
             다음

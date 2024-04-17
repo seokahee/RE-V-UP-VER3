@@ -88,12 +88,13 @@ const PersonalSubTest = ({
   }
 
   return (
-    <div className='grid place-items-center'>
-      {' '}
-      <br />
-      <div className='grid h-[450px] h-screen w-[600px] place-items-center space-y-4 rounded-[32px] bg-white bg-opacity-10'>
-        <div className='flex justify-center'>
-          <div className='flex items-center'>
+    <div className=' w-[516px] pb-[90px] pt-[70px]'>
+      <div className='h-[800px] rounded-[32px] bg-white  bg-opacity-10 '>
+        <p className='pt-[106px] text-center text-xl font-bold text-white'>
+          MBTI를 입력해주세요
+        </p>
+        <div className='flex justify-center  pt-[48px]'>
+          <div className='flex items-center '>
             <label
               htmlFor='checkEI'
               className='border-gray-400 relative h-10 w-20 rounded-full border-2 bg-white'
@@ -101,7 +102,7 @@ const PersonalSubTest = ({
               <input
                 type='checkbox'
                 id='checkEI'
-                className='peer sr-only'
+                className='peer sr-only '
                 onChange={(e) => setEI(e.target.checked ? 'E' : 'I')}
               />
               <span
@@ -114,7 +115,7 @@ const PersonalSubTest = ({
           </div>
         </div>
         {/* */}
-        <div className='flex justify-center'>
+        <div className='flex justify-center pt-[28px]'>
           <div className='flex items-center'>
             <label
               htmlFor='checkSN'
@@ -136,7 +137,7 @@ const PersonalSubTest = ({
           </div>
         </div>
         {/* */}
-        <div className='flex justify-center'>
+        <div className='flex justify-center pt-[28px]'>
           <div className='flex items-center'>
             <label
               htmlFor='checkTF'
@@ -158,7 +159,7 @@ const PersonalSubTest = ({
           </div>
         </div>
         {/* */}
-        <div className='flex justify-center'>
+        <div className='flex justify-center pt-[28px]'>
           <div className='flex items-center'>
             <label
               htmlFor='checkPJ'
@@ -179,42 +180,38 @@ const PersonalSubTest = ({
             <span className='ml-2 text-lg font-bold'>{PJ}</span>
           </div>
         </div>
+        {/** */}
+        <div className='flex justify-center gap-2 pt-[58px]'>
+          <p
+            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  font-bold `}
+          >
+            {EI}
+          </p>
+          <p
+            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  font-bold `}
+          >
+            {SN}
+          </p>
+          <p
+            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  font-bold `}
+          >
+            {TF}
+          </p>
+          <p
+            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl  bg-white bg-opacity-10 text-center text-7xl  font-bold `}
+          >
+            {PJ}
+          </p>
+        </div>{' '}
+        <div className='flex justify-center gap-4 pt-[70px]'>
+          <PreviousButton onClick={() => handleNextClick('pageOne')}>
+            이전
+          </PreviousButton>
+          <ButtonPrimary onClick={onsubmitResultHandler}>
+            결과보러가기
+          </ButtonPrimary>
+        </div>{' '}
       </div>
-      <br />
-      {/** */}
-      <div className='flex justify-center gap-2'>
-        <p
-          className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  font-bold `}
-        >
-          {EI}
-        </p>
-        <p
-          className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  font-bold `}
-        >
-          {SN}
-        </p>
-        <p
-          className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  font-bold `}
-        >
-          {TF}
-        </p>
-        <p
-          className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl  bg-white bg-opacity-10 text-center text-7xl  font-bold `}
-        >
-          {PJ}
-        </p>
-      </div>{' '}
-      <br />
-      <br />
-      <div className='flex justify-center gap-4'>
-        <PreviousButton onClick={() => handleNextClick('pageOne')}>
-          이전
-        </PreviousButton>
-        <ButtonPrimary onClick={onsubmitResultHandler}>
-          결과보러가기
-        </ButtonPrimary>
-      </div>{' '}
-      <br />
     </div>
   )
 }

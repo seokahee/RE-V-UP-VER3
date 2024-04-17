@@ -99,11 +99,11 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
   }, [preference, dislike, chartRef.current])
 
   return (
-    <div className=' flex justify-center '>
+    <div className=' flex justify-center pt-[20px]'>
       <canvas
         ref={chartRef}
         width={400}
-        height={400}
+        height={300}
         style={{ backgroundColor: 'black' }}
       />
     </div>
