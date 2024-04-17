@@ -16,7 +16,7 @@ const BoardItem = ({
 }) => {
   return (
     <li className='flex justify-between gap-8 border-b border-solid border-black p-4'>
-      <div className='flex w-[calc(100%-94px)] items-center gap-4'>
+      <div className='flex w-[calc(100%-120px)] items-center gap-4'>
         <figure className='flex h-[60px] w-[60px] items-center justify-center overflow-hidden rounded-full border-2 border-[#ffffff1a] bg-[#2b2b2b]'>
           {item.userInfo?.userImage && (
             <Image
@@ -55,14 +55,14 @@ const BoardItem = ({
           </div>
         </div>
       </div>
-      <div className='relative h-[84px] w-[84px] overflow-hidden rounded-full border-2 border-[#ffffff19]'>
+      <div className='group relative h-[84px] w-[84px] overflow-hidden rounded-full border-2 border-[#ffffff19]'>
         <figure>
           {item.musicInfo?.thumbnail && (
             <Image
               src={item.musicInfo.thumbnail}
               width={80}
               height={80}
-              className='blur-sm'
+              className='group-hover:blur-sm'
               alt={`${item.musicInfo.musicTitle} 앨범 이미지`}
             />
           )}
@@ -70,7 +70,7 @@ const BoardItem = ({
         <button
           type='button'
           onClick={onClick}
-          className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+          className='absolute bottom-0 left-0 right-0 top-0 hidden items-center justify-center group-hover:flex'
         >
           <Image src={play} width={24} height={24} alt='담기 버튼' />
         </button>
