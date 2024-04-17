@@ -5,21 +5,20 @@ import {
   getUserPlaylistMyMusicInfoData,
   updateMyMusicIds,
 } from '@/shared/mypage/api'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import type { UserInfo } from '@/types/mypage/types'
 import Image from 'next/image'
 import { updateCurrentMusic } from '@/shared/main/api'
 import Pagination from './Pagination'
 import { useSession } from 'next-auth/react'
-import ButtonPrimary from './ButtonPrimary'
+import ButtonPrimary from '../../util/ButtonPrimary'
+import { queryClient } from '@/app/provider'
 
 const MyPlaylist = ({ data }: { data: UserInfo }) => {
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user?.uid as string
   const [currentPage, setCurrentPage] = useState(1)
   const [checkedList, setCheckedList] = useState<string[]>([])
-
-  const queryClient = useQueryClient()
 
   const { data: totalCount } = useQuery({
     queryFn: () =>

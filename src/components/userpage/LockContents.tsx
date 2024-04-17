@@ -4,8 +4,8 @@ import Image from 'next/image'
 
 const LockContents = () => {
   return (
-    <div>
-      <Image src={Lock} width={158} height={180} alt='비공개 컨텐츠 입니다' />
+    <div className='flex items-center justify-center'>
+      <Image src={Lock} width={340} height={380} alt='비공개 컨텐츠 입니다' />
     </div>
   )
 }
