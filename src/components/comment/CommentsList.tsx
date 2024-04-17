@@ -13,7 +13,7 @@ import { useSession } from 'next-auth/react'
 import { onDateTimeHandler } from '@/util/util'
 import edit from '@/../public/images/pencil-01.svg'
 import deleteIcon from '@/../public/images/Frame 532.svg'
-import emptyHeart from '@/../public/images/Property 1=heart-rounded.svg'
+import emptyHeart from '@/../public/images/heart-rounded-gray.svg'
 import heart from '@/../public/images/heart-rounded.svg'
 
 const CommentsList = ({ boardId }: { boardId: string }) => {
@@ -84,7 +84,7 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
       {commentsData?.map((item) => (
         <div key={item.commentId}>
           <div className='inline-flex w-full flex-col items-start justify-start gap-4 border-b border-white border-opacity-10 py-4'>
-            <div className='w-full flex-row'>
+            <div className=' flex w-full flex-row'>
               <div className='flex basis-1/2 flex-row gap-2'>
                 <p className='h-6 w-6 overflow-hidden rounded-full border-2 border-white'>
                   {item.userInfo?.userImage && (
@@ -165,20 +165,24 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
             <div className='flex items-center'>
               <button onClick={() => onLikeHandler(item.commentId)}>
                 {item.commentLikeList.includes(userId) ? (
-                  <>
+                  <div className='flex flex-row gap-1'>
                     <Image src={heart} alt='찬 하트' width={24} height={24} />
-                    <p>{item.commentLikeList.length}</p>
-                  </>
+                    <p className='ml-[5px] text-[rgba(255,255,255,0.5)]'>
+                      {item.commentLikeList.length} +
+                    </p>
+                  </div>
                 ) : (
-                  <>
+                  <div className='flex flex-row gap-1'>
                     <Image
                       src={emptyHeart}
                       alt='빈 하트'
                       width={24}
                       height={24}
                     />
-                    <p>{item.commentLikeList.length}</p>
-                  </>
+                    <p className='ml-[5px] text-[rgba(255,255,255,0.5)]'>
+                      {item.commentLikeList.length} +
+                    </p>
+                  </div>
                 )}
               </button>
             </div>
