@@ -26,7 +26,7 @@ const SlideButton = ({
       {position !== ((length as number) - 1) * -movePoint && (
         <button
           type='button'
-          className={`absolute right-0 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[#00000019] bg-[#0000004c] text-white backdrop-blur-md ${shadow}`}
+          className={`absolute right-[40px] top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[#00000019] bg-[#0000004c] text-white backdrop-blur-md ${shadow}`}
           onClick={onClickNextHandler}
         >
           <Image src={next} width={24} height={24} alt='다음으로 넘어가기' />
