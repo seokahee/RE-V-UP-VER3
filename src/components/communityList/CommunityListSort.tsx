@@ -8,7 +8,7 @@ const CommunityListSort = ({
   setIsSort: Dispatch<SetStateAction<boolean>>
 }) => {
   return (
-    <div className='flex  h-[22px] w-[58ox] gap-2 text-[16px] leading-[140%]'>
+    <div className='flex  h-[22px] w-[58px] gap-2 text-[16px] leading-[140%]'>
       <button
         onClick={() => {
           setIsSort(true)
