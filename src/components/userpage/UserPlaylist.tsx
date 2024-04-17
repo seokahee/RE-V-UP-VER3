@@ -41,15 +41,6 @@ const UserPlaylist = ({
     enabled: !!uid,
   })
 
-  // const { data: userPlaylistMyData } = useQuery({
-  //   queryFn: () =>
-  //     getUserPlaylistMyMusicInfoData(
-  //       data?.playlistMy?.[0].myMusicIds as string[],
-  //     ),
-  //   queryKey: ['userMyMusicIds', currentPage],
-  //   enabled: !!data?.playlistMy?.length,
-  // })
-
   const updateMutation = useMutation({
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
