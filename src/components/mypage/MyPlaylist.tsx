@@ -1,60 +1,47 @@
 import React, { useState } from 'react'
 import CheckboxItem from './CheckboxItem'
-import {
-  getMyMusicCount,
-  getUserPlaylistMyMusicInfoData,
-  updateMyMusicIds,
-} from '@/shared/mypage/api'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { getUserMyPlaylistData, updateMyMusicIds } from '@/shared/mypage/api'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import type { UserInfo } from '@/types/mypage/types'
 import Image from 'next/image'
-import { updateCurrentMusic } from '@/shared/main/api'
-import Pagination from './Pagination'
+import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
 import { useSession } from 'next-auth/react'
 import ButtonPrimary from './ButtonPrimary'
+import { queryClient } from '@/app/provider'
 
 const MyPlaylist = ({ data }: { data: UserInfo }) => {
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user?.uid as string
-  const [currentPage, setCurrentPage] = useState(1)
   const [checkedList, setCheckedList] = useState<string[]>([])
 
-  const queryClient = useQueryClient()
-
-  const { data: totalCount } = useQuery({
-    queryFn: () =>
-      getMyMusicCount(data?.playlistMy?.[0].myMusicIds as string[]),
-    queryKey: ['myMusicAllCount'],
-    enabled: !!data?.playlistMy?.length,
+  const { data: playlistMyData } = useQuery({
+    queryFn: () => getUserMyPlaylistData(uid),
+    queryKey: ['myMusicIds'], //data
+    enabled: !!uid,
   })
 
-  const PER_PAGE = 10
-  const totalPages = Math.ceil(totalCount! / PER_PAGE)
-  const start = (currentPage - 1) * PER_PAGE
-  const end = currentPage * PER_PAGE - 1
+  const playlistMyIds = playlistMyData?.playlistMyIds
+  const myPlaylistData = playlistMyData?.myPlaylistData
 
-  const { data: playlistMyData } = useQuery({
-    queryFn: () =>
-      getUserPlaylistMyMusicInfoData(
-        data?.playlistMy?.[0].myMusicIds as string[],
-        start,
-        end,
-      ),
-    queryKey: ['myMusicIds', currentPage],
-    enabled: !!data?.playlistMy?.length,
+  const { data: playlistCurrentData } = useQuery({
+    queryFn: () => getCurrentMusicData(uid),
+    queryKey: ['playListCurrent'],
+    enabled: !!uid,
   })
 
   const updateMyPlayListMutation = useMutation({
     mutationFn: updateMyMusicIds,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['mypage'] })
+      queryClient.invalidateQueries({ queryKey: ['myMusicIds'] })
+      queryClient.invalidateQueries({ queryKey: ['getMyMusicList'] })
     },
   })
 
   const updateCurrentPlayListMutation = useMutation({
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['mypage'] })
+      queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
+      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
     },
   })
 
@@ -67,20 +54,24 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     }
   }
 
-  const onClickDeleteHandler = () => {
+  const onClickDeleteHandler = async () => {
     if (checkedList.length === 0) {
       alert('삭제할 노래를 선택해주세요!')
       return
     }
-    const myMusicIds = data?.playlistMy?.[0].myMusicIds as string[]
+    const myMusicIds = playlistMyIds as string[]
     const newData = myMusicIds.filter((el) => !checkedList.includes(el))
 
-    updateMyPlayListMutation.mutate({
-      userId: uid,
-      myMusicIds: newData,
-    })
-    alert('삭제가 완료되었습니다.')
-    setCheckedList([])
+    try {
+      await updateMyPlayListMutation.mutateAsync({
+        userId: uid,
+        myMusicIds: newData,
+      })
+      alert('삭제가 완료되었습니다.')
+      setCheckedList([])
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const onClickAddHandler = () => {
@@ -89,9 +80,9 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       return
     }
 
-    const playListCurrentIds = !data.playlistCurrent?.[0].currentMusicIds
+    const playListCurrentIds = !playlistCurrentData?.[0].currentMusicIds
       ? []
-      : data.playlistCurrent?.[0]?.currentMusicIds
+      : playlistCurrentData?.[0]?.currentMusicIds
     let newData = []
 
     if ((playListCurrentIds?.length as number) > 0) {
@@ -111,22 +102,24 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       newData = [...checkedList]
     }
 
-    updateCurrentPlayListMutation.mutate({
-      userId: uid,
-      currentList: newData,
-    })
+    try {
+      updateCurrentPlayListMutation.mutateAsync({
+        userId: uid,
+        currentList: newData,
+      })
 
-    alert('추가가 완료되었습니다.')
-    setCheckedList([])
+      alert('추가가 완료되었습니다.')
+      setCheckedList([])
+    } catch (error) {
+      console.error('Error updating data:', error)
+    }
   }
 
   const onClickAllAddHandler = () => {
-    const playListCurrentIds = !data.playlistCurrent?.[0]?.currentMusicIds
+    const playListCurrentIds = !playlistCurrentData?.[0]?.currentMusicIds
       ? []
-      : data.playlistCurrent?.[0].currentMusicIds
-    const playListMyIds = !data.playlistMy?.[0].myMusicIds
-      ? []
-      : data.playlistMy?.[0].myMusicIds
+      : playlistCurrentData?.[0].currentMusicIds
+    const playListMyIds = !playlistMyIds ? [] : playlistMyIds
     let newData = []
 
     if (playListMyIds?.length === 0) {
@@ -149,20 +142,16 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       newData = [...playListMyIds]
     }
 
-    updateCurrentPlayListMutation.mutate({
-      userId: uid,
-      currentList: newData,
-    })
-    alert('추가가 완료되었습니다.')
-    setCheckedList([])
-  }
-
-  const nextPage = () => {
-    setCurrentPage((prev) => prev + 1)
-  }
-
-  const prevPage = () => {
-    setCurrentPage((prev) => prev - 1)
+    try {
+      updateCurrentPlayListMutation.mutateAsync({
+        userId: uid,
+        currentList: newData,
+      })
+      alert('추가가 완료되었습니다.')
+      setCheckedList([])
+    } catch (error) {
+      console.error('Error updating data:', error)
+    }
   }
 
   const shadow =
@@ -196,8 +185,8 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
         </button>
       </div>
       <ul className='tracking-[-0.03em]'>
-        {playlistMyData && playlistMyData?.length > 0
-          ? playlistMyData?.map((item) => {
+        {myPlaylistData && myPlaylistData?.length > 0
+          ? myPlaylistData?.map((item) => {
               return (
                 <li
                   key={item.musicId}
@@ -240,17 +229,6 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
             })
           : '데이터가 없습니다'}
       </ul>
-      {playlistMyData && playlistMyData?.length > 0 ? (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          nextPage={nextPage}
-          prevPage={prevPage}
-          setCurrentPage={setCurrentPage}
-        />
-      ) : (
-        ''
-      )}
     </div>
   )
 }
