@@ -1,15 +1,17 @@
 import React, { FormEvent, KeyboardEvent, useRef, useState } from 'react'
-import ModalMusicData from './ModalMusicData'
+import Image from 'next/image'
 import { useModalMusicResultStore } from '@/shared/store/searchStore'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
 import { modalMusicSearchData } from '@/shared/search/api'
-import { MusicInfoType } from '@/types/musicPlayer/types'
+import type { MusicInfoType } from '@/types/musicPlayer/types'
+import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
+import { GOBACK_SHADOW } from '../communityDetail/detailCss'
+import { DOWN_ACTIVE_BUTTON, OPEN_ANOTHER_SHADOW } from '../login/loginCss'
 import { modalPaging } from '@/util/util'
 import Pagination from '@/util/Pagination '
 import useInput from '@/hooks/useInput'
-import { GOBACK_SHADOW } from '../communityDetail/detailCss'
-import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
-import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
+import ModalMusicData from './ModalMusicData'
+import search from '@/../public/images/community-detail-Image/search-button.svg'
 
 const MusicSearchModal = ({
   setIsModal,
@@ -80,21 +82,23 @@ const MusicSearchModal = ({
   return (
     <div className='fixed inset-0 z-50 flex h-screen w-full flex-col items-center justify-center bg-black bg-opacity-50'>
       <div
-        className={`${GOBACK_SHADOW} flex h-4/5 w-3/5 flex-col items-center overflow-y-scroll rounded-md bg-[#3D3D3D] pb-10 scrollbar-hide`}
+        className={`${GOBACK_SHADOW} flex h-4/5 w-3/5 flex-col items-center justify-center gap-[94px] overflow-y-scroll rounded-[32px] border-[4px] border-solid border-[#474747] bg-[#3D3D3D] pb-[300px] scrollbar-hide ${OPEN_ANOTHER_SHADOW} `}
       >
-        <form onSubmit={onSubmitHandler}>
-          <input
-            type='text'
-            name='keyword'
-            value={keyword}
-            ref={keywordRef}
-            onChange={onChange}
-            onKeyUp={(e) => handleKeyUp(e)}
-            className='border  border-black'
-          />
-          <button type='submit' className='m-3'>
-            검색
-          </button>
+        <form onSubmit={onSubmitHandler} className='mt-[40px]'>
+          <div>
+            <input
+              type='text'
+              name='keyword'
+              value={keyword}
+              ref={keywordRef}
+              onChange={onChange}
+              onKeyUp={(e) => handleKeyUp(e)}
+              className='border  border-black'
+            />
+            <button type='submit' className='m-3'>
+              <Image src={search} alt='검색 아이콘' width={24} height={24} />
+            </button>
+          </div>
           <button onClick={() => setIsModal(false)}>닫기</button>
         </form>
         <div className='flex flex-col border-[1px] border-solid border-primary'>
