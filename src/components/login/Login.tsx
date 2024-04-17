@@ -1,15 +1,14 @@
 'use client'
 
-import { FormEvent, useEffect, useRef, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { findUserPassword } from '@/shared/login/loginApi'
 import Link from 'next/link'
 import Image from 'next/image'
 import Modal from '@/util/Modal'
 import useInput from '@/hooks/useInput'
-import findPwImg from '@/../public/images/findPassword.svg'
 import SocialLogin from '@/components/socialLogin/page'
+import { findUserPassword } from '@/shared/login/loginApi'
 import {
   DROP_SHADOW,
   SHADOW,
@@ -19,6 +18,7 @@ import {
   OPEN_ANOTHER_SHADOW,
 } from './loginCss'
 import { ACTIVE_BUTTON_SHADOW } from './buttonCss'
+import findPwImg from '@/../public/images/findPassword.svg'
 import close from '@/../public/images/close-button.svg'
 
 const Login = () => {

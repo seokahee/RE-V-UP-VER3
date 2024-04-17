@@ -6,11 +6,7 @@ import { modalMusicSearchData } from '@/shared/search/api'
 import type { MusicInfoType } from '@/types/musicPlayer/types'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 import { GOBACK_SHADOW } from '../communityDetail/detailCss'
-import {
-  DOWN_ACTIVE_BUTTON,
-  OPEN_ANOTHER_SHADOW,
-  SHADOW,
-} from '../login/loginCss'
+import { DOWN_ACTIVE_BUTTON, OPEN_ANOTHER_SHADOW } from '../login/loginCss'
 import { modalPaging } from '@/util/util'
 import Pagination from '@/util/Pagination '
 import useInput from '@/hooks/useInput'

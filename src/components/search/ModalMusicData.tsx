@@ -1,8 +1,8 @@
 'use client'
 
-import Image from 'next/image'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
 import type { MusicInfoType } from '@/types/musicPlayer/types'
+import Image from 'next/image'
 
 const ModalMusicData = ({
   item,

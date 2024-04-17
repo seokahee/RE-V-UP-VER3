@@ -10,9 +10,8 @@ import {
   validateFormBlank,
 } from '@/query/communityDetail/mutation'
 import MusicSearch from '../search/MusicSearch'
-import goback from '@/../public/images/goback.svg'
 import useInput from '@/hooks/useInput'
-import { GOBACK_SHADOW } from './detailCss'
+import goback from '@/../public/images/goback.svg'
 import {
   ADDED_CURRENT_MUSIC_SHADOW,
   ADD_BOARD_STICK,
