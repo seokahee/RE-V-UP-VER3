@@ -138,59 +138,55 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     router.push('/')
   }
 
+  console.log(checkedList, 'checkedList')
+
   return (
     <div>
-      <p className='text-center text-neutral-400'>
-        {SentenceMatch(userChar.mbti)}
-      </p>
-      <br />
-      <p className='text-center'>
-        당신의 취향에 맞는 음악을 추천 해드릴게요 &#x1F642;
-      </p>{' '}
-      <br />
-      <div className='  flex flex flex-row justify-center'>
+      <div className='py-4 text-center text-sm font-medium text-white text-opacity-70'>
+        <p>{SentenceMatch(userChar.mbti)}</p>
+      </div>
+      <div className='py-4 text-center text-sm text-white '>
+        <p>당신의 취향에 맞는 음악을 추천 해드릴게요 &#x1F642;</p>
+      </div>
+      <div className=' flex flex-row justify-center  gap-12 py-4 text-center text-white text-opacity-50'>
         {recommend?.map((item) => (
           <div key={item.musicId}>
-            <CheckboxItem
-              checked={checkedList.includes(item.musicId)}
-              id={item.musicId}
-              onChangeCheckMusicHandler={(e) =>
-                onChangeCheckMusicHandler(e.target.checked, item.musicId)
-              }
-            />
             <label htmlFor={item.musicId}>
-              <div className='m-2 text-center'>
-                <div>
-                  <Image
-                    src={item.thumbnail}
-                    width={120}
-                    height={120}
-                    alt={`${item.musicTitle} 앨범 썸네일`}
-                    className='rounded-full'
-                  />
-                </div>
-                <div>
-                  <p> {item.musicTitle}</p>
-                </div>
-                <div>{item.artist}</div>
-                <div>
-                  {' '}
-                  {currentList.includes(item.musicId) ? '현재 재생중' : ''}
-                </div>
+              <input
+                type='checkbox'
+                id={item.musicId}
+                checked={checkedList.includes(item.musicId)}
+                onChange={(e) =>
+                  onChangeCheckMusicHandler(e.target.checked, item.musicId)
+                }
+                className='peer hidden'
+              />
+              <Image
+                src={item.thumbnail}
+                width={100}
+                height={100}
+                alt={`${item.musicTitle} 앨범 썸네일`}
+                className='  rounded-full ring-4 ring-transparent peer-checked:ring-white'
+              />
+              <div className=' text-lg font-bold peer-checked:text-white'>
+                <p>{item.musicTitle}</p>
+              </div>
+              <div className='text-sm font-medium peer-checked:text-white'>
+                {item.artist}
+              </div>
+              <div>
+                {currentList.includes(item.musicId) ? '현재 재생중' : ''}
               </div>
             </label>
-            <br />
           </div>
         ))}
       </div>
-      <div className='flex justify-center gap-4'>
-        <br />
+      <div className='flex justify-center gap-4 py-8'>
         <ButtonPrimary onClick={onSubmitCurrentMusic}>
           재생목록에 담기
         </ButtonPrimary>
         <ButtonPrimary onClick={onGoToHomeHandler}>메인으로 가기</ButtonPrimary>{' '}
-      </div>{' '}
-      <br />
+      </div>
     </div>
   )
 }
