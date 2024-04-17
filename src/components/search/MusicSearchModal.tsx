@@ -121,9 +121,9 @@ const MusicSearchModal = ({
         >
           <Image src={close} alt='닫기 아이콘' width={24} height={24} />
         </button>
-        <div className='mt-[36px] flex flex-col border-[1px] border-solid border-primary'>
+        <div className='mt-[36px] flex flex-col'>
           <div>
-            <div className='flex h-[408px] flex-col items-start gap-[12px] overflow-y-scroll scrollbar-hide '>
+            <div className='flex h-[408px] w-full flex-col items-start gap-[12px] overflow-y-scroll scrollbar-hide '>
               {currentItems.map((item: any, index: number) => {
                 return (
                   <ModalMusicData
