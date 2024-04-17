@@ -1,7 +1,4 @@
-import {
-  getUserMyPlaylistData,
-  getUserPlaylistMyMusicInfoData,
-} from '@/shared/mypage/api'
+import { getUserMyPlaylistData } from '@/shared/mypage/api'
 import type { UserInfo } from '@/types/mypage/types'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import React, { useState } from 'react'
@@ -202,17 +199,6 @@ const UserPlaylist = ({
                 })
               : '데이터가 없습니다'}
           </ul>
-          {/* {userPlaylistMyData && userPlaylistMyData?.length > 0 ? (
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              nextPage={nextPage}
-              prevPage={prevPage}
-              setCurrentPage={setCurrentPage}
-            />
-          ) : (
-            ''
-          )} */}
         </>
       ) : (
         <>
