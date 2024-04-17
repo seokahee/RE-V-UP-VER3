@@ -120,7 +120,7 @@ const TopLikedBoard = () => {
           {position !== ((data?.length as number) - 1) * -MOVE_POINT && (
             <button
               type='button'
-              className={`absolute right-[1px] top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[#0000001a] bg-[#ffffff19] text-white backdrop-blur-md ${shadow}`}
+              className={`absolute right-[40px] top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[#0000001a] bg-[#ffffff19] text-white backdrop-blur-md ${shadow}`}
               onClick={onClickNextHandler}
             >
               <Image
