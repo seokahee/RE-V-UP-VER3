@@ -1,4 +1,8 @@
-import { getUserAndPlaylistData, updateFollow } from '@/shared/mypage/api'
+import {
+  getUserAndPlaylistData,
+  getUserMyPlaylistData,
+  updateFollow,
+} from '@/shared/mypage/api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
