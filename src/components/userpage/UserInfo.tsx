@@ -35,6 +35,7 @@ const UserInfo = () => {
   const unFollowMutation = useMutation({
     mutationFn: updateFollow,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['mypage'] })
       queryClient.invalidateQueries({ queryKey: ['userpage'] })
     },
   })
