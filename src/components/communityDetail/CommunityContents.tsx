@@ -22,10 +22,10 @@ import LikeButton from './LikeButton'
 import Link from 'next/link'
 
 import {
+  ADDED_CURRENT_MUSIC_SHADOW,
   ADD_CURRENT_MUSIC_SHADOW,
   ALLOW_SHADOW,
   BOARD_TITLE_SHADOW,
-  MUSIC_STICK,
 } from './communityCss'
 
 const CommunityContents = () => {
@@ -232,6 +232,7 @@ const CommunityContents = () => {
                   <input
                     type='text'
                     name='boardTitle'
+                    maxLength={40}
                     value={updatedTitle}
                     onChange={onChangeEditForm}
                     className='text-black'
@@ -271,7 +272,7 @@ const CommunityContents = () => {
             </section>
           </article>
           <article
-            className={`flex w-full justify-between gap-[24px] rounded-[32px] bg-[rgba(255,255,255,0.1)] py-[20px] pl-[40px] pr-[20px] ${MUSIC_STICK}`}
+            className={`flex w-full justify-between gap-[24px] rounded-[32px] bg-[rgba(255,255,255,0.1)] py-[20px] pl-[40px] pr-[20px]  ${ADDED_CURRENT_MUSIC_SHADOW}`}
           >
             <div className='flex w-full gap-[32px]'>
               <figure>
