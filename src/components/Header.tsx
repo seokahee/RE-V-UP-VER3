@@ -59,7 +59,8 @@ const Header = () => {
   } else if (
     path === '/join' ||
     path === '/login' ||
-    path === '/personal-music'
+    path === '/personal-music' ||
+    path === '/new-password'
   ) {
     return (
       <header className='border-b-2  border-solid px-[2.5rem] py-4'>
