@@ -65,7 +65,7 @@ const CommunityCreate = () => {
       return
     }
 
-    if (!isChooseMusic) {
+    if (!isChooseMusic || !chooseMusic) {
       alert('음악 선택은 필수입니다!')
       return
     }

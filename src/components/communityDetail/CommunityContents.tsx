@@ -208,7 +208,7 @@ const CommunityContents = () => {
           <article className='flex gap-[16px] border-b-[1px] border-solid border-[#000000] px-[16px] py-[30px]'>
             <div className='flex'>
               <Link href={`/userpage/${userId}`}>
-                <figure>
+                <figure className='rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)]'>
                   {userImage ? (
                     <Image
                       src={`${userImage}`}
@@ -216,9 +216,10 @@ const CommunityContents = () => {
                       width={56}
                       height={56}
                       title={`${nickname}님의 페이지로 이동`}
+                      className='h-[56px] w-[56px] rounded-full'
                     />
                   ) : (
-                    <div className='h-[56px] w-[56px] bg-white'>
+                    <div className='h-[56px] w-[56px] border-[2px] border-solid border-[rgba(255,255,255,0.1)] bg-white'>
                       <i></i>
                     </div>
                   )}
