@@ -1,15 +1,18 @@
 import React, { FormEvent, KeyboardEvent, useRef, useState } from 'react'
-import ModalMusicData from './ModalMusicData'
+import Image from 'next/image'
 import { useModalMusicResultStore } from '@/shared/store/searchStore'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
 import { modalMusicSearchData } from '@/shared/search/api'
-import { MusicInfoType } from '@/types/musicPlayer/types'
+import type { MusicInfoType } from '@/types/musicPlayer/types'
+import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
+import { GOBACK_SHADOW } from '../communityDetail/detailCss'
+import { DOWN_ACTIVE_BUTTON, OPEN_ANOTHER_SHADOW } from '../login/loginCss'
 import { modalPaging } from '@/util/util'
 import Pagination from '@/util/Pagination '
 import useInput from '@/hooks/useInput'
-import { GOBACK_SHADOW } from '../communityDetail/detailCss'
-import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
-import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
+import ModalMusicData from './ModalMusicData'
+import search from '@/../public/images/community-detail-Image/search-button.svg'
+import close from '@/../public/images/close-button.svg'
 
 const MusicSearchModal = ({
   setIsModal,
@@ -17,7 +20,7 @@ const MusicSearchModal = ({
   isModal: boolean
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
-  const { isChooseMusic } = useMusicSearchedStore()
+  const { chooseMusic, isChooseMusic, setChooseMusic } = useMusicSearchedStore()
   const [musicList, setMusicList] = useState<MusicInfoType[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const { form: keywordInput, onChange } = useInput({
@@ -57,7 +60,7 @@ const MusicSearchModal = ({
   )
 
   const onAddViewMusicHandler = () => {
-    if (!isChooseMusic) {
+    if (!isChooseMusic || !chooseMusic) {
       alert('음악을 선택해 주세요!')
       return
     }
@@ -80,26 +83,43 @@ const MusicSearchModal = ({
   return (
     <div className='fixed inset-0 z-50 flex h-screen w-full flex-col items-center justify-center bg-black bg-opacity-50'>
       <div
-        className={`${GOBACK_SHADOW} flex h-4/5 w-3/5 flex-col items-center overflow-y-scroll rounded-md bg-[#3D3D3D] pb-10 scrollbar-hide`}
+        className={`${GOBACK_SHADOW} relative flex h-[680px] w-[516px] flex-col items-center justify-center overflow-y-scroll rounded-[32px] border-[4px] border-solid border-[#474747] bg-[#3D3D3D] scrollbar-hide ${OPEN_ANOTHER_SHADOW} `}
       >
-        <form onSubmit={onSubmitHandler}>
-          <input
-            type='text'
-            name='keyword'
-            value={keyword}
-            ref={keywordRef}
-            onChange={onChange}
-            onKeyUp={(e) => handleKeyUp(e)}
-            className='border  border-black'
-          />
-          <button type='submit' className='m-3'>
-            검색
-          </button>
-          <button onClick={() => setIsModal(false)}>닫기</button>
+        <form
+          onSubmit={onSubmitHandler}
+          className=' absolute top-0 mt-[40px] flex w-full'
+        >
+          <div className='relative m-[0px_auto]'>
+            <input
+              type='text'
+              name='keyword'
+              value={keyword}
+              ref={keywordRef}
+              onChange={onChange}
+              placeholder='가수 또는 노래 제목을 입력해주세요'
+              onKeyUp={(e) => handleKeyUp(e)}
+              className={` placeholeder:tracking-[-0.03em] mx-[auto] w-[300px] rounded-[12px] bg-[rgba(255,255,255,0.1)] px-[8px] py-[16px] text-[14px]  ${OPEN_ANOTHER_SHADOW}`}
+            />
+            <button
+              type='submit'
+              className='absolute right-[2%] top-[12%] m-[10px]'
+            >
+              <Image src={search} alt='검색 아이콘' width={24} height={24} />
+            </button>
+          </div>
         </form>
-        <div className='flex flex-col border-[1px] border-solid border-primary'>
-          <div className='p-[36px]'>
-            <div className='flex flex-col items-start gap-[12px] overflow-y-scroll scrollbar-hide '>
+        <button
+          onClick={() => {
+            setIsModal(false)
+            setChooseMusic(null)
+          }}
+          className='absolute right-[32px] top-[32px] h-[24px] w-[24px]'
+        >
+          <Image src={close} alt='닫기 아이콘' width={24} height={24} />
+        </button>
+        <div className='mt-[36px] flex flex-col'>
+          <div>
+            <div className='flex h-[408px] w-full flex-col items-start gap-[12px] overflow-y-scroll scrollbar-hide '>
               {currentItems.map((item: any, index: number) => {
                 return (
                   <ModalMusicData
@@ -110,7 +130,7 @@ const MusicSearchModal = ({
                 )
               })}
             </div>
-            <div className='pt-[16px] [&_div]:m-0'>
+            <div className='mt-[16px] [&_div]:m-0'>
               {currentItems && currentItems.length > 0 ? (
                 <Pagination
                   currentPage={currentPage}
@@ -123,7 +143,7 @@ const MusicSearchModal = ({
             </div>
           </div>
         </div>
-        <div className='relative flex flex-row items-center justify-center shadow-primary'>
+        <div className='absolute bottom-[22px] flex flex-row items-center justify-center shadow-primary'>
           <button
             onClick={onAddViewMusicHandler}
             className='rounded-lg px-[10px] text-white'

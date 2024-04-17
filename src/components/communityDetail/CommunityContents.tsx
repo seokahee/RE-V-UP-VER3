@@ -12,16 +12,22 @@ import { musicDataInCommuDetail } from '@/query/communityDetail/queryKey'
 import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
 import { onDateTimeHandler } from '@/util/util'
 import message from '@/../public/images/message-text-square-02-gray.svg'
-import goback from '@/../public/images/goback.svg'
+import goback from '@/../public/images/community-detail-Image/back-allow.svg'
 import detailEdit from '@/../public/images/community-detail-Image/detail-edit.svg'
 import detailDelete from '@/../public/images/community-detail-Image/detail-delete.svg'
-import addMyPlayList from '@/../public/images/myPlayListButton.svg'
 import addCurrMusic from '@/../public/images/community-detail-Image/add-current-music.svg'
+import addMyPlayList from '@/../public/images/community-detail-Image/add-my-playlist.svg'
 import useInput from '@/hooks/useInput'
 import LikeButton from './LikeButton'
 import Link from 'next/link'
-import { GOBACK_SHADOW } from './detailCss'
-// pr 테스트
+
+import {
+  ADDED_CURRENT_MUSIC_SHADOW,
+  ADD_CURRENT_MUSIC_SHADOW,
+  ALLOW_SHADOW,
+  BOARD_TITLE_SHADOW,
+} from './communityCss'
+
 const CommunityContents = () => {
   const router = useRouter()
   const [isEdit, setIsEdit] = useState<boolean>(false)
@@ -90,8 +96,13 @@ const CommunityContents = () => {
   const onDeleteBoardHandler = async (e: MouseEvent) => {
     e.preventDefault()
 
-    deleteCommunityMutation.mutate(currentBoardId)
-    alert('삭제되었습니다.')
+    if (window.confirm('삭제하시겠습니까?') === true) {
+      deleteCommunityMutation.mutate(currentBoardId)
+      alert('삭제되었습니다.')
+    } else {
+      alert('삭제를 취소하셨습니다.')
+      return
+    }
     router.back()
   }
 
@@ -137,6 +148,7 @@ const CommunityContents = () => {
       router.replace('/login')
       return
     }
+
     if (window.confirm('마이플레이 리스트에 추가하시겠습니까?')) {
       if (myPlayList && myPlayList.length > 0) {
         const myList = myPlayList[0].myMusicIds
@@ -173,9 +185,14 @@ const CommunityContents = () => {
 
   return (
     <div className='mb-[8px] flex w-[732px] flex-col'>
-      <div className='flex flex-col gap-[40px]'>
-        <section className='flex h-[72px] w-[100%] items-center justify-center'>
-          <button onClick={onBackButtonHandler} className={`${GOBACK_SHADOW}`}>
+      <div className='flex flex-col gap-[16px]'>
+        <section
+          className={`mt-[32px] flex h-[72px] w-[100%] items-center justify-center rounded-[16px] border-[4px] border-solid border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.1)] px-[16px] py-[12px] ${BOARD_TITLE_SHADOW}`}
+        >
+          <button
+            onClick={onBackButtonHandler}
+            className={`flex h-[48px] w-[48px] items-center justify-center rounded-[12px] bg-[rgba(255,255,255,0.1)] ${ALLOW_SHADOW}`}
+          >
             <Image src={goback} alt='이전으로 아이콘' width={24} height={24} />
           </button>
           <h3 className='mx-[auto]'>음악 추천 게시판🦻</h3>
@@ -187,113 +204,130 @@ const CommunityContents = () => {
           ) : null}
         </section>
 
-        <section className='flex gap-[16px]'>
-          <div>
-            <Link href={`/userpage/${userId}`}>
-              <figure>
-                {userImage ? (
-                  <Image
-                    src={`${userImage}`}
-                    alt='유저 이미지'
-                    width={56}
-                    height={56}
-                    title={`${nickname}님의 페이지로 이동`}
+        <div className='flex w-full flex-col gap-[40px]'>
+          <article className='flex gap-[16px] border-b-[1px] border-solid border-[#000000] px-[16px] py-[30px]'>
+            <div className='flex'>
+              <Link href={`/userpage/${userId}`}>
+                <figure className='rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)]'>
+                  {userImage ? (
+                    <Image
+                      src={`${userImage}`}
+                      alt='유저 이미지'
+                      width={56}
+                      height={56}
+                      title={`${nickname}님의 페이지로 이동`}
+                      className='h-[56px] w-[56px] rounded-full'
+                    />
+                  ) : (
+                    <div className='h-[56px] w-[56px] border-[2px] border-solid border-[rgba(255,255,255,0.1)] bg-white'>
+                      <i></i>
+                    </div>
+                  )}
+                </figure>
+              </Link>
+            </div>
+
+            <section className='flex w-full flex-col '>
+              <div className='flex justify-between'>
+                {isEdit ? (
+                  <input
+                    type='text'
+                    name='boardTitle'
+                    maxLength={40}
+                    value={updatedTitle}
+                    onChange={onChangeEditForm}
+                    className='text-black'
                   />
                 ) : (
-                  <div className='h-[56px] w-[56px] bg-white'>
-                    <i></i>
+                  <div>{`${boardTitle}`}</div>
+                )}
+                <div>
+                  <div>
+                    {userId === uid && !isEdit && (
+                      <button onClick={onBoardEditHandler}>
+                        <Image
+                          src={detailEdit}
+                          alt='상세페이지 수정 아이콘'
+                          width={20}
+                          height={20}
+                        />
+                      </button>
+                    )}
+                    {userId === uid && (
+                      <button type='button' onClick={onDeleteBoardHandler}>
+                        <Image
+                          src={detailDelete}
+                          alt='상세페이지 삭제 아이콘'
+                          width={20}
+                          height={20}
+                        />
+                      </button>
+                    )}
                   </div>
-                )}
-              </figure>
-            </Link>
-          </div>
-
-          <article className='flex flex-col'>
-            <div className='flex justify-between'>
-              {isEdit ? (
-                <input
-                  type='text'
-                  name='boardTitle'
-                  value={updatedTitle}
-                  onChange={onChangeEditForm}
-                  className='text-black'
-                />
-              ) : (
-                <div>{`제목 : ${boardTitle}`}</div>
-              )}
-              <div>
-                {userId === uid && !isEdit && (
-                  <button onClick={onBoardEditHandler}>
-                    <Image
-                      src={detailEdit}
-                      alt='상세페이지 수정 아이콘'
-                      width={20}
-                      height={20}
-                    />
-                  </button>
-                )}
-                {userId === uid && (
-                  <button type='button' onClick={onDeleteBoardHandler}>
-                    <Image
-                      src={detailDelete}
-                      alt='상세페이지 삭제 아이콘'
-                      width={20}
-                      height={20}
-                    />
-                  </button>
-                )}
+                </div>
               </div>
-            </div>
-            <div className='flex justify-between'>
-              <div>{nickname}</div>
-              <div>{onDateTimeHandler(date)}</div>
-            </div>
-          </article>
-        </section>
-
-        <div className='flex flex-col gap-[40px]'>
-          <article className='flex gap-[32px]'>
-            <figure>
-              <Image
-                src={`${thumbnail}`}
-                alt='노래 앨범 이미지'
-                width={56}
-                height={56}
-              />
-            </figure>
-            <section className='flex'>
-              <div>
-                <div>{musicTitle}</div>
-                <div>{artist}</div>
+              <div className='flex justify-between'>
+                <div>{nickname}</div>
+                <div>{onDateTimeHandler(date)}</div>
               </div>
-              <div>{runTime}</div>
             </section>
-            <div className='flex'>
-              <div className='flex gap-[18px]'>
-                <button onClick={(e) => onAddPlayerHandler(e, uid, musicId)}>
-                  <Image
-                    src={addCurrMusic}
-                    alt='현재재생목록추가 아이콘'
-                    width={24}
-                    height={24}
-                  />
-                </button>
-                <button
-                  type='button'
-                  className='flex items-center justify-center rounded-full border border-black'
-                  onClick={() => onClickAddMyPlayListHandler(musicId)}
-                >
-                  <Image
-                    src={addMyPlayList}
-                    alt='마이플레이리스트에 저장 아이콘'
-                    width={48}
-                    height={48}
-                  />
-                </button>
-              </div>
+          </article>
+          <article
+            className={`flex w-full justify-between gap-[24px] rounded-[32px] bg-[rgba(255,255,255,0.1)] py-[20px] pl-[40px] pr-[20px]  ${ADDED_CURRENT_MUSIC_SHADOW}`}
+          >
+            <div className='flex w-full gap-[32px]'>
+              <figure>
+                <Image
+                  src={`${thumbnail}`}
+                  alt='노래 앨범 이미지'
+                  width={80}
+                  height={80}
+                  className='rounded-full'
+                />
+              </figure>
+              <section className='flex w-full justify-between'>
+                <div className='flex flex-col gap-[8px] '>
+                  <div>
+                    <p className='text-[24px] font-bold'>{musicTitle}</p>
+                  </div>
+                  <div>
+                    <p className='font-bold text-[rgba(255,255,255,0.4)]'>
+                      {artist}
+                    </p>
+                  </div>
+                </div>
+                <div className='flex items-center text-[16px] font-bold'>
+                  {runTime}
+                </div>
+              </section>
+            </div>
+            <div className='flex items-center justify-center gap-[16px]'>
+              <button
+                onClick={(e) => onAddPlayerHandler(e, uid, musicId)}
+                className={`flex h-[48px] w-[48px] items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW}`}
+              >
+                <Image
+                  src={addCurrMusic}
+                  alt='현재재생목록추가 아이콘'
+                  width={24}
+                  height={24}
+                />
+              </button>
+              <button
+                type='button'
+                className={`flex h-[48px] w-[48px] items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW}`}
+                onClick={() => onClickAddMyPlayListHandler(musicId)}
+              >
+                <Image
+                  src={addMyPlayList}
+                  alt='마이플레이리스트에 저장 아이콘'
+                  width={16}
+                  height={16}
+                />
+              </button>
             </div>
           </article>
-          <article>
+          <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
             {isEdit ? (
               <textarea
                 id='content'
@@ -301,22 +335,25 @@ const CommunityContents = () => {
                 value={updatedContent}
                 onChange={onChangeEditForm}
                 cols={30}
-                rows={10}
-                className='text-black'
+                rows={4}
+                maxLength={100}
+                className='w-full text-black'
               ></textarea>
             ) : (
-              <div>{`내용 : ${content}`}</div>
+              <div className='h-[200px] w-full px-[15px]'>{`${content}`}</div>
             )}
           </article>
+        </div>
 
+        <div className='flex w-full flex-col gap-[40px] '>
           <div className='flex gap-[16px]'>
-            <LikeButton boardId={currentBoardId} />
             <div className='flex gap-[7px]'>
               <figure>
                 <Image src={message} alt='댓글 아이콘' width={24} height={24} />
               </figure>
               <div>{comment.length ? comment.length : 0}</div>
             </div>
+            <LikeButton boardId={currentBoardId} />
           </div>
         </div>
       </div>

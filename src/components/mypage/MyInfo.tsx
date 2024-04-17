@@ -15,12 +15,13 @@ import MyPlaylist from './MyPlaylist'
 import { useSession } from 'next-auth/react'
 import right from '@/../public/images/chevron-right.svg'
 import pencil from '@/../public/images/pencil-line.svg'
-import ButtonPrimary from './ButtonPrimary'
+import ButtonPrimary from '../../util/ButtonPrimary'
 import FollowingList from './FollowingList'
 import FollowerList from './FollowerList'
+import { useRouter } from 'next/navigation'
 
 const MyInfo = () => {
-  const { data: userSessionInfo } = useSession()
+  const { data: userSessionInfo, status } = useSession()
   const uid = userSessionInfo?.user?.uid as string
 
   const [userImage, setUserImage] = useState('')
@@ -30,6 +31,7 @@ const MyInfo = () => {
   const [nickname, setNickname] = useState('')
   const [checkText, setCheckText] = useState('')
   const nicknameRef = useRef<HTMLInputElement>(null)
+  const router = useRouter()
 
   const [isVisibility, setIsVisibility] = useState({
     mbtiOpen: false,
@@ -192,6 +194,12 @@ const MyInfo = () => {
     'shadow-[0px_4px_1px_#0000001a,0px_-4px_4px_#ffffff1a,0px_0px_0px_3px_#ffffff33,inset_0px_1px_2px_#0000001a,inset_0px_-4px_1px_#ffffff0d,inset_0px_4px_1px_#0000004d] drop-shadow-[0px_4px_4px_#0000003f]'
 
   const inputFocus = 'focus:border-primary drop-shadow-none'
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.replace('/')
+    }
+  }, [router, status])
 
   if (isError) {
     return <>에러발생</>

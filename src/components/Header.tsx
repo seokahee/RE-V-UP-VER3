@@ -18,7 +18,7 @@ const Header = () => {
   if (path === '/mypage') {
     return (
       <header
-        className={`flex items-center justify-between border-b-2 border-solid py-4 ${check ? 'pl-[5rem]' : 'pl-[2.5rem]'}`}
+        className={`flex items-center justify-between border-b-2 border-solid py-4 pr-[2.5rem] ${check ? 'pl-[5rem] ' : 'pl-[2.5rem]'}`}
       >
         <nav>
           <Link href='/'>
@@ -59,7 +59,8 @@ const Header = () => {
   } else if (
     path === '/join' ||
     path === '/login' ||
-    path === '/personal-music'
+    path === '/personal-music' ||
+    path === '/new-password'
   ) {
     return (
       <header className='border-b-2  border-solid px-[2.5rem] py-4'>

@@ -4,8 +4,9 @@ import { useCurrentMusicStore } from '@/shared/store/playerStore'
 import { useSearchedKeywordStore } from '@/shared/store/searchStore'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useRef } from 'react'
-import search from '@/../public/images/Property 1=search-sm.png'
+import search from '@/../public/images/searchIcon (2).svg'
 import Image from 'next/image'
+import arrowSearch from '@/../public/images/arrow_forward_ios.svg'
 
 const SearchForm = () => {
   const {
@@ -53,11 +54,27 @@ const SearchForm = () => {
             name='selectedTabs'
             value={selectedTabs}
             onChange={onChange}
-            className='appearance-none bg-transparent'
+            className='appearance-none bg-transparent '
+            id='selectImg'
           >
-            <option value='musicInfo'>노래검색</option>
-            <option value='community'>게시글 검색</option>
+            <option
+              value='musicInfo'
+              className='appearance-none bg-transparent text-black focus:outline-none'
+            >
+              노래검색
+            </option>
+            <option
+              value='community'
+              className='appearance-none bg-transparent text-black focus:outline-none'
+            >
+              게시글 검색
+            </option>
           </select>
+          <label htmlFor='selectImg'>
+            <div className='inline-flex h-[18px] w-[18px] flex-col items-center justify-center gap-2.5 rounded bg-white bg-opacity-5 p-0.5'>
+              <Image src={arrowSearch} width={14} height={14} alt='검색' />
+            </div>
+          </label>
         </form>
       </div>
     </div>

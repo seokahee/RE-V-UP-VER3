@@ -15,13 +15,13 @@ const Container = ({
   const session = useSession()
   const check =
     session.status === 'authenticated' &&
-    !['/login', 'join', '/personal-music'].includes(path)
+    !['/login', '/join', '/personal-music', '/new-password'].includes(path)
 
   return (
     <div className='relative flex justify-center'>
       {check ? (
         <div
-          className={`musicPlayer min-h-[100vh] w-[388px] ${check ? 'mr-[-3.5rem]' : ''} z-[1]`}
+          className={`musicPlayer relative min-h-[100vh] w-[388px] ${check ? 'mr-[-3.5rem]' : ''} z-[1]`}
         >
           <MusicPlayer />
         </div>

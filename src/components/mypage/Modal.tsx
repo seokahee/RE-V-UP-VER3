@@ -1,4 +1,6 @@
 import React, { ReactNode } from 'react'
+import close from '@/../public/images/close-button.svg'
+import Image from 'next/image'
 
 type Modal = {
   children: ReactNode
@@ -20,7 +22,7 @@ const Modal = ({ children, onClick }: Modal) => {
           onClick={onClick}
           className='absolute right-[2rem] top-[2rem]'
         >
-          x
+          <Image src={close} width={24} height={24} alt='닫기 아이콘' />
         </button>
         {children}
       </div>
