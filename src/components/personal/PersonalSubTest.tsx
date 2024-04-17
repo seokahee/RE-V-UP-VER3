@@ -10,6 +10,7 @@ import right from '@/../public/images/double_arrow.svg'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { DROP_SHADOW, INPUT_SHADOW, INPUT_FOCUS } from '../login/loginCss'
+
 import type { PersonalInfo } from '@/types/personal/type'
 
 const PersonalSubTest = ({

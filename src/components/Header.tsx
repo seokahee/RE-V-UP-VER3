@@ -18,7 +18,7 @@ const Header = () => {
   if (path === '/mypage') {
     return (
       <header
-        className={`flex items-center justify-between border-b-2 border-solid py-4 ${check ? 'pl-[5rem] pr-[2.5rem]' : 'pl-[2.5rem]'}`}
+        className={`flex items-center justify-between border-b-2 border-solid py-4 pr-[2.5rem] ${check ? 'pl-[5rem] ' : 'pl-[2.5rem]'}`}
       >
         <nav>
           <Link href='/'>

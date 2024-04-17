@@ -4,7 +4,7 @@ import { useCurrentMusicStore } from '@/shared/store/playerStore'
 import { useSearchedKeywordStore } from '@/shared/store/searchStore'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useRef } from 'react'
-import search from '@/../public/images/Property 1=search-sm.png'
+import search from '@/../public/images/searchIcon (2).svg'
 import Image from 'next/image'
 import arrowSearch from '@/../public/images/arrow_forward_ios.svg'
 
