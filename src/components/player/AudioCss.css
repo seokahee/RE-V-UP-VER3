@@ -3,7 +3,6 @@
   border: none;
   box-shadow: none;
   height: 90px;
-  margin: 0px;
 }
 
 .rhap_play-status--playing {
@@ -11,21 +10,18 @@
   border: none;
   box-shadow: none;
   height: 90px;
-  margin: 0px;
 }
 
 .rhap_rewind-button,
 .rhap_forward-button {
   display: none !important;
 }
-
 .rhap_play-status--playing .rhap_volume-container {
   display: none !important;
 }
 .rhap_play-status--playing .progressbar {
   display: none !important;
 }
-
 .rhap_play-status--paused .rhap_volume-container {
   display: none !important;
 }
@@ -33,36 +29,54 @@
   display: none !important;
 }
 
-.rhap_additional-controls {
+/* 오디오 컨테이너 */
+/* .rhap_main {
   display: flex;
-  flex: 0 0 auto;
+  flex-direction: column;
   align-items: center;
-}
-
-.rhap_skip-button {
-  width: 88px;
-  height: 88px;
-  margin: 0px;
-}
-
-.rhap_play-pause-button {
-  width: 88px;
-  height: 88px;
-  margin: 0px;
-}
-.rhap_repeat-button {
-  width: 40px;
-  height: 60px;
-  margin: 0px;
-}
+} */
 
 /* 컨트롤러 버튼 컨테이너 */
 .rhap_controls-section {
+  margin: 0px;
+  position: absolute;
+  top: 580px;
+  left: 220px;
+}
+
+/* 이전, 다음곡 버튼 */
+.rhap_skip-button {
+  width: 56px;
+  height: 88px;
   display: flex;
-  align-items: center;
-  padding: 0;
-  width: 100%;
-  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.7);
+  border-radius: 16px;
+  box-shadow:
+    0px -4px 4px 2px rgba(0, 0, 0, 0.2),
+    0px 2px 4px rgba(255, 255, 255, 0.1),
+    inset 0px 4px 4px rgba(255, 255, 255, 0.1),
+    inset 0px 3px 1px rgba(255, 255, 255, 0.1),
+    inset 0px 4px 4px rgba(255, 255, 255, 0.2);
+}
+
+/* 재생, 정지 버튼 */
+.rhap_play-pause-button {
+  width: 88px;
+  height: 88px;
+  border: 1px solid rgba(0, 0, 0, 0.7);
+  border-radius: 16px;
+  box-shadow:
+    0px -4px 4px 2px rgba(0, 0, 0, 0.2),
+    0px 2px 4px rgba(255, 255, 255, 0.1),
+    inset 0px 4px 4px rgba(255, 255, 255, 0.1),
+    inset 0px 3px 1px rgba(255, 255, 255, 0.1),
+    inset 0px 4px 4px rgba(255, 255, 255, 0.2);
+}
+
+/* 반복버튼 */
+.rhap_repeat-button {
+  width: 40px;
+  height: 60px;
 }
 
 /* 재생 시간 */
@@ -72,21 +86,13 @@
   line-height: 150%;
 }
 
-/* 셔플 버튼 */
-.shuffleButton {
-  position: absolute;
-  left: 83%;
-  top: 65%;
-  cursor: pointer;
-}
-
 .rhap_progress-indicator {
   box-sizing: border-box;
   position: absolute;
   z-index: 2;
   width: 5px;
   height: 24px;
-  margin-left: -4px;
+  margin-left: 4px;
   top: 0px;
   background: #d5605c;
   box-shadow: rgba(134, 134, 134, 0.5) 0 0 5px;
@@ -94,57 +100,53 @@
 
 .rhap_progress-container {
   background-image: url('/images/playerBar.svg');
-  background-repeat: no-repeat; /* 이미지 반복 설정 */
-  background-size: cover; /* 이미지 크기 조정 */
-  background-position: center; /* 이미지 위치 설정 */
-  background:;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   z-index: 3;
   height: 32px;
-  width: 255px;
+  padding-right: 13px;
+  width: 260px;
 }
 
 .rhap_progress-filled {
-  opacity: 0; /* 투명하게 만들기 */
-  visibility: hidden; /* 숨기기 */
+  opacity: 0;
+  visibility: hidden;
   z-index: 3;
-  width: 255px;
+  /* width: 260px; */
 }
 
-.rhap_progress-bar-show-download {
+/* .rhap_progress-bar-show-download {
   background-image: url('/images/playerBar.svg');
-  background-repeat: no-repeat; /* 이미지 반복 설정 */
-  background-size: cover; /* 이미지 크기 조정 */
-  background-position: center; /* 이미지 위치 설정 */
-  background:;
-  z-index: 3;
-  width: 255px;
-}
-
-.rhap_progress-container {
-  background-image: url('/images/playerBar.svg');
-  background-repeat: no-repeat; /* 이미지 반복 설정 */
-  background-size: cover; /* 이미지 크기 조정 */
-  background-position: center; /* 이미지 위치 설정 */
-  background:;
-  z-index: 3;
-  width: 255px;
-}
-
-.rhap_progress-bar-show-download {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   background:;
   z-index: 3;
   width: 255px;
+} */
+
+/* .rhap_progress-container {
+  background-image: url('/images/playerBar.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background:;
+  z-index: 3;
+  width: 255px;
+} */
+
+.rhap_progress-bar-show-download {
+  /* background-repeat: no-repeat; */
+  /* background-size: cover; */
+  /* background-position: center; */
+  /* background:; */
+  z-index: 3;
+  /* width: 260px; */
   padding: 10px;
   background: transparent;
 }
+
 .rhap_download-progress {
   height: 0;
-  position: none;
-  z-index: 0;
-  background-color:;
-  border-radius: 0;
-  width: 255px;
 }

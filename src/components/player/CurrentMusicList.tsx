@@ -11,9 +11,13 @@ const CurrentMusicList = ({
   setMusicIndex,
 }: MusicListProps) => {
   return (
-    <div className='relative mt-[32px] flex flex-col'>
-      {currentPlayList.length === 0 && <div>현재 재생 목록이 없습니다</div>}
-      <div className='mt-[16px] flex max-h-[500px] flex-col justify-between overflow-y-auto overflow-x-hidden'>
+    <div className='relative mt-[100px] flex flex-col '>
+      {currentPlayList.length === 0 && (
+        <div className='absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-2/4 transform text-[18px] opacity-50'>
+          음악을 추가해주세요
+        </div>
+      )}
+      <div className='mt-[16px] flex max-h-[308px] flex-col justify-between overflow-y-auto overflow-x-hidden'>
         {currentPlayList.map((item) => {
           const musicIndex = currentPlayList.findIndex(
             (arr) => arr.musicId === item.musicId,
@@ -57,11 +61,11 @@ const CurrentMusicList = ({
         })}
       </div>
 
-      {!isLyrics && (
+      {!isLyrics && currentPlayList.length > 0 && (
         <button
           type='button'
           onClick={onDeleteCurrentMusicHandler}
-          className='via-gray-100 to-gray-300 shadow-outline-white absolute bottom-0  left-1/2 h-[56px] w-[113px] -translate-x-1/2 transform rounded-[16px] border-2 border-solid border-zinc-900 bg-gradient-to-br from-zinc-700 p-0 text-center shadow-md'
+          className='via-gray-100 to-gray-300 shadow-outline-white fixed bottom-0 h-[56px] w-[113px] translate-x-[-455px] translate-y-[-68px] transform rounded-[16px] border-2 border-solid border-zinc-800 bg-gradient-to-br from-zinc-700 p-0 text-center shadow-md'
         >
           {`${checkedList.length > 0 ? `${checkedList.length} 곡 삭제` : '곡 삭제'}`}
         </button>

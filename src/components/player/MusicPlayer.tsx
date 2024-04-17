@@ -123,6 +123,14 @@ const MusicPlayer = () => {
         .map((music) => music.musicId)
       deleteMutation.mutate({ uid, currentMusicData })
       setCheckedList([])
+
+      const isCurrentMusicDeleted = checkedList.includes(
+        currentPlaying!.musicId,
+      )
+      if (isCurrentMusicDeleted) {
+        setCurrentPlaying(null)
+        setMusicIndex(0)
+      }
     }
   }
   const onInsertMyPlayListHandler = async () => {
@@ -169,32 +177,30 @@ const MusicPlayer = () => {
   return (
     <div>
       <div>
-        <div>
-          <Player
-            currentPlaying={currentPlaying}
-            setCurrentPlaying={setCurrentPlaying}
-            currentPlayList={currentPlayList as CurrentPlayListType[]}
-            musicIndex={musicIndex}
-            isLyrics={isLyrics}
-            isRandom={isRandom}
-            onRandomMusicHandler={onRandomMusicHandler}
-            onPreviousHandler={onPreviousHandler}
-            onNextTrackHandler={onNextTrackHandler}
-            onLyricsToggle={onLyricsToggle}
-            onInsertMyPlayListHandler={onInsertMyPlayListHandler}
-          />
-        </div>
-        <div>
-          <CurrentMusicList
-            currentPlayList={currentPlayList as CurrentPlayListType[]}
-            isLyrics={isLyrics}
-            checkedList={checkedList}
-            setCurrentPlaying={setCurrentPlaying}
-            onChangeCheckMusicHandler={onChangeCheckMusicHandler}
-            onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
-            setMusicIndex={setMusicIndex}
-          />
-        </div>
+        <Player
+          currentPlaying={currentPlaying}
+          setCurrentPlaying={setCurrentPlaying}
+          currentPlayList={currentPlayList as CurrentPlayListType[]}
+          musicIndex={musicIndex}
+          isLyrics={isLyrics}
+          isRandom={isRandom}
+          onRandomMusicHandler={onRandomMusicHandler}
+          onPreviousHandler={onPreviousHandler}
+          onNextTrackHandler={onNextTrackHandler}
+          onLyricsToggle={onLyricsToggle}
+          onInsertMyPlayListHandler={onInsertMyPlayListHandler}
+        />
+      </div>
+      <div>
+        <CurrentMusicList
+          currentPlayList={currentPlayList as CurrentPlayListType[]}
+          isLyrics={isLyrics}
+          checkedList={checkedList}
+          setCurrentPlaying={setCurrentPlaying}
+          onChangeCheckMusicHandler={onChangeCheckMusicHandler}
+          onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
+          setMusicIndex={setMusicIndex}
+        />
       </div>
     </div>
   )

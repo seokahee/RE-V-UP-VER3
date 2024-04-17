@@ -3,10 +3,11 @@ import musicLyricsButton from '@/../public/images/musicLyricsButton.svg'
 import musicShuffle from '@/../public/images/musicShuffle.svg'
 import musicShuffleOff from '@/../public/images/musicShuffleOff.svg'
 import musicThumbnail from '@/../public/images/musicThumbnail.svg'
+import musicThumbnailDefault from '@/../public/images/musicThumbnailDefault.svg'
 import myPlayListButton from '@/../public/images/myPlayListButton.svg'
 import { PlayerProps } from '@/types/musicPlayer/types'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
 import './AudioCss.css'
@@ -31,8 +32,6 @@ const Player = ({
   onInsertMyPlayListHandler,
   onRandomMusicHandler,
 }: PlayerProps) => {
-  // const [boxShadowColorIndex, setBoxShadowColorIndex] = useState(0)
-
   useEffect(() => {
     if (!currentPlaying && currentPlayList.length > 0 && musicIndex !== null) {
       setCurrentPlaying(currentPlayList[musicIndex])
@@ -40,25 +39,6 @@ const Player = ({
       setCurrentPlaying(null)
     }
   }, [musicIndex, currentPlayList, currentPlaying])
-  console.log('플레이 리스트 인덱스', currentPlayList[musicIndex])
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setBoxShadowColorIndex(
-  //       (prevIndex) => (prevIndex + 1) % boxShadowColors.length,
-  //     )
-  //   }, 2000)
-
-  //   return () => clearInterval(interval)
-  // }, [])
-
-  // const boxShadowColors = [
-  //   '0px_2px_10px_5px_rgba(255,255,255,0.534)',
-  //   '0px_2px_10px_5px_rgba(134,127,223,0.75)',
-  //   '0px_2px_10px_5px_rgba(15,139,213,0.75)',
-  //   '0px_2px_10px_5px_rgba(213,193,99,0.43)',
-  //   '0px_2px_10px_5px_rgba(41,144,58,0.43)',
-  // ]
 
   const customIcons = {
     play: <MyPlayIcon />,
@@ -85,34 +65,42 @@ const Player = ({
             {currentPlaying?.artist}
           </div>
         </div>
+
         <div className='relative ml-[44px] mr-[44px] mt-[41px]'>
-          <div className='relative h-[300px] w-[300px]'>
-            {/* <Image
-              src={musicThumbnail}
-              alt='Album Circle'
-              width={300}
-              height={300}
-              className={`h-[300px] w-[300px] rounded-full shadow-${boxShadowColors[boxShadowColorIndex]}`}
-              // shadow-[0px_2px_10px_5px_rgba(210,137,176,0.5)]
-            /> */}
-            <Image
-              src={musicThumbnail}
-              alt='Album Circle'
-              width={300}
-              height={300}
-              className='h-[300px] w-[300px] rounded-full shadow-[0px_2px_10px_5px_rgba(255,255,255,0.534)]'
-            />
-          </div>
-          <div className='absolute left-[50px] top-[50px] h-[200px] w-[200px] '>
-            <Image
-              src={currentPlaying ? currentPlaying.thumbnail : musicThumbnail}
-              alt='Album Thumbnail'
-              width={200}
-              height={200}
-              className='h-[200px] w-[200px] rounded-full'
-            />
-          </div>
+          {currentPlaying ? (
+            <div className='relative h-[300px] w-[300px]'>
+              <Image
+                src={musicThumbnail}
+                alt='Album Circle'
+                width={300}
+                height={300}
+                className='h-[300px] w-[300px] rounded-full shadow-[0px_1px_30px_-5px_rgba(210,137,176,0.5)]'
+              />
+            </div>
+          ) : (
+            <div className='relative h-[300px] w-[300px]'>
+              <Image
+                src={musicThumbnailDefault}
+                alt='Album Circle'
+                width={300}
+                height={300}
+                className='h-[300px] w-[300px] rounded-full '
+              />
+            </div>
+          )}
+          {currentPlaying ? (
+            <div className='absolute left-[50px] top-[50px] h-[200px] w-[200px] '>
+              <Image
+                src={currentPlaying.thumbnail}
+                alt='Album Thumbnail'
+                width={200}
+                height={200}
+                className='h-[200px] w-[200px] rounded-full'
+              />
+            </div>
+          ) : null}
         </div>
+
         <div className='mx-auto flex items-center px-[24px]'>
           <div className='flex w-[316px] justify-between'>
             <button onClick={onLyricsToggle} className='h-[48px] w-[48px]'>
@@ -124,26 +112,28 @@ const Player = ({
                   alt='Lyrics'
                   width={48}
                   height={48}
+                  className='rounded-full border-2  border-black border-opacity-10 shadow-[0px_4px_1px_-1px_rgba(0,0,0,0.2),_0px_4px_8px_rgba(0,0,0,0.1),_0px_0px_0px_1px_rgba(255,255,255,0.15),_inset_0px_2px_0px_rgba(255,255,255,0.1),_inset_0px_-1px_2px_rgba(0,0,0,0.2),_inset_0px_-4px_1px_rgba(0,0,0,0.2)]'
+
+                  // className='rounded-full border-4 border-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
+                  // className='shadow-outline-white h-[48px] w-[48px] rounded-full  bg-gradient-to-br from-zinc-600 shadow-md'
+                  // className='h-[48px] w-[48px] rounded-full border-2 border-black border-opacity-10 bg-white bg-opacity-5 shadow shadow-inner'
                 />
               )}
             </button>
-            <button
-              type='button'
-              onClick={onInsertMyPlayListHandler}
-              className='h-[48px] w-[48px]'
-            >
+            <button type='button' onClick={onInsertMyPlayListHandler}>
               <Image
                 src={myPlayListButton}
                 alt='Album Circle'
                 width={48}
                 height={48}
+                className='shadow-outline-white h-[48px] w-[48px] rounded-full  bg-gradient-to-br from-zinc-600 shadow-md'
               />
             </button>
           </div>
         </div>
       </div>
 
-      <div className='rhap_controls-section'>
+      <div className='flex items-center'>
         <AudioPlayer
           src={currentPlaying ? currentPlaying.musicSource : ''}
           volume={0.5}
@@ -157,11 +147,11 @@ const Player = ({
         />
         <Image
           src={isRandom ? musicShuffleOff : musicShuffle}
-          alt='Lyrics'
-          width={55}
+          alt='shuffle'
+          width={50}
           height={60}
           onClick={onRandomMusicHandler}
-          className='shuffleButton'
+          className='absolute translate-x-[295px] translate-y-[87px] cursor-pointer'
         />
       </div>
     </div>
