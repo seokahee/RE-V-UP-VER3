@@ -77,6 +77,12 @@ const UserInfo = () => {
     }
   }, [router, status])
 
+  useEffect(() => {
+    if (uid === id) {
+      router.replace('/')
+    }
+  }, [router])
+
   if (isError) {
     return <>에러발생</>
   }
