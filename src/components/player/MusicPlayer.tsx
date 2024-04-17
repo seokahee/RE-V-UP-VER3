@@ -130,8 +130,16 @@ const MusicPlayer = () => {
         currentPlaying!.musicId,
       )
       if (isCurrentMusicDeleted) {
-        setCurrentPlaying(null)
-        setMusicIndex(0)
+        setCurrentPlaying(
+          currentPlayList[musicIndex]
+            ? (currentPlayList[musicIndex + 1] as CurrentPlayListType)
+            : null,
+        )
+        setCurrentPlaying(
+          currentPlayList[musicIndex]
+            ? (currentPlayList[musicIndex + 1] as CurrentPlayListType)
+            : null,
+        )
       }
     }
   }
@@ -178,7 +186,7 @@ const MusicPlayer = () => {
   }
   return (
     <div>
-      <div>
+      <div className='min-h-[650px]'>
         <Player
           currentPlaying={currentPlaying}
           setCurrentPlaying={setCurrentPlaying}

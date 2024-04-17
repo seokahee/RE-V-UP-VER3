@@ -1,15 +1,16 @@
-import musicList from '@/../public/images/musicList.svg'
+import addCurrMusic from '@/../public/images/community-detail-Image/add-current-music.svg'
+import addMyPlayList from '@/../public/images/community-detail-Image/add-my-playlist.svg'
 import musicLyricsButton from '@/../public/images/musicLyricsButton.svg'
 import musicShuffle from '@/../public/images/musicShuffle.svg'
 import musicShuffleOff from '@/../public/images/musicShuffleOff.svg'
 import musicThumbnail from '@/../public/images/musicThumbnail.svg'
 import musicThumbnailDefault from '@/../public/images/musicThumbnailDefault.svg'
-import myPlayListButton from '@/../public/images/myPlayListButton.svg'
 import { PlayerProps } from '@/types/musicPlayer/types'
 import Image from 'next/image'
 import { useEffect } from 'react'
 import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
+import { ADD_CURRENT_MUSIC_SHADOW } from '../communityDetail/communityCss'
 import './AudioCss.css'
 import FaForward from './playerIcons/FaForward'
 import MyLoopIcon from './playerIcons/MyLoopIcon'
@@ -68,7 +69,7 @@ const Player = ({
 
         <div className='relative ml-[44px] mr-[44px] mt-[41px]'>
           {currentPlaying ? (
-            <div className='relative h-[300px] w-[300px]'>
+            <div className=' h-[300px] w-[300px]'>
               <Image
                 src={musicThumbnail}
                 alt='Album Circle'
@@ -78,7 +79,7 @@ const Player = ({
               />
             </div>
           ) : (
-            <div className='relative h-[300px] w-[300px]'>
+            <div className=' h-[300px] w-[300px]'>
               <Image
                 src={musicThumbnailDefault}
                 alt='Album Circle'
@@ -105,34 +106,38 @@ const Player = ({
           <div className='flex w-[316px] justify-between'>
             <button onClick={onLyricsToggle} className='h-[48px] w-[48px]'>
               {isLyrics ? (
-                <Image src={musicList} alt='Lyrics' width={48} height={48} />
+                <Image
+                  src={addCurrMusic}
+                  alt='Lyrics'
+                  width={24}
+                  height={24}
+                  className={`flex h-[48px] w-[48px] items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW} `}
+                />
               ) : (
                 <Image
                   src={musicLyricsButton}
                   alt='Lyrics'
-                  width={48}
-                  height={48}
-                  className='rounded-full border-2  border-black border-opacity-10 shadow-[0px_4px_1px_-1px_rgba(0,0,0,0.2),_0px_4px_8px_rgba(0,0,0,0.1),_0px_0px_0px_1px_rgba(255,255,255,0.15),_inset_0px_2px_0px_rgba(255,255,255,0.1),_inset_0px_-1px_2px_rgba(0,0,0,0.2),_inset_0px_-4px_1px_rgba(0,0,0,0.2)]'
-
-                  // className='rounded-full border-4 border-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
-                  // className='shadow-outline-white h-[48px] w-[48px] rounded-full  bg-gradient-to-br from-zinc-600 shadow-md'
-                  // className='h-[48px] w-[48px] rounded-full border-2 border-black border-opacity-10 bg-white bg-opacity-5 shadow shadow-inner'
+                  width={24}
+                  height={24}
+                  className={`flex h-[48px] w-[48px] items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW}`}
                 />
               )}
             </button>
-            <button type='button' onClick={onInsertMyPlayListHandler}>
+            <button
+              type='button'
+              className={`flex h-[48px] w-[48px] items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW}`}
+              onClick={() => onInsertMyPlayListHandler}
+            >
               <Image
-                src={myPlayListButton}
-                alt='Album Circle'
-                width={48}
-                height={48}
-                className='shadow-outline-white h-[48px] w-[48px] rounded-full  bg-gradient-to-br from-zinc-600 shadow-md'
+                src={addMyPlayList}
+                alt='마이플레이리스트에 저장 아이콘'
+                width={24}
+                height={24}
               />
             </button>
           </div>
         </div>
       </div>
-
       <div className='flex items-center'>
         <AudioPlayer
           src={currentPlaying ? currentPlaying.musicSource : ''}
@@ -151,7 +156,7 @@ const Player = ({
           width={50}
           height={60}
           onClick={onRandomMusicHandler}
-          className='absolute translate-x-[295px] translate-y-[87px] cursor-pointer'
+          className='absolute translate-x-[318px] translate-y-[87px] cursor-pointer'
         />
       </div>
     </div>

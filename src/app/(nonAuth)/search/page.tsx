@@ -88,7 +88,7 @@ const Search = () => {
           <SearchedMusicData />
           <SearchedCommunityData />
           <div
-            className={selectedTabs === 'musicInfo' ? 'mb-[82px]' : 'mb-[32px]'}
+            className={selectedTabs === 'musicInfo' ? 'mt-[82px]' : 'mt-[32px]'}
           >
             <Pagination
               currentPage={currentPage}
