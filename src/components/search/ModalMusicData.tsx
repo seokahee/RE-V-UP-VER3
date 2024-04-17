@@ -43,7 +43,7 @@ const ModalMusicData = ({
     >
       <section className='flex w-full justify-between'>
         <article className='flex gap-[16px]'>
-          <div className='flex  items-center'>
+          <div className='flex  items-center gap-[16px]'>
             <div className='h-[48px] w-[48px] rounded-full'>
               <Image
                 src={item.thumbnail}
@@ -53,7 +53,7 @@ const ModalMusicData = ({
                 className='rounded-full'
               />
             </div>
-            <section className='flex flex-col justify-between'>
+            <section className='flex flex-col justify-between '>
               <div className=' font-bold'>Title {item.musicTitle}</div>
               <div className='text-[rgba(255,255,255,0.5)]'>
                 Artist {item.artist}

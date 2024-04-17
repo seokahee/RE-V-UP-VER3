@@ -9,7 +9,7 @@ import {
   removeLikedUser,
 } from '@/shared/communitydetail/detailApi'
 import { Props } from '@/types/communityDetail/detailTypes'
-import emptyHeart from '@/../public/images/Property 1=heart-rounded.svg'
+import emptyHeart from '@/../public/images/heart-rounded-gray.svg'
 import heart from '@/../public/images/likeFullHeart.svg'
 
 const LikeButton = ({ boardId }: Props) => {
@@ -76,7 +76,9 @@ const LikeButton = ({ boardId }: Props) => {
           )}
         </figure>
 
-        <p className='ml-[5px]'>{likeList !== null ? likeList?.length : 0}</p>
+        <p className='ml-[5px] text-[rgba(255,255,255,0.5)]'>
+          {likeList !== null ? likeList?.length + ' +' : 0}
+        </p>
       </div>
     </div>
   )
