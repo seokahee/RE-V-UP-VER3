@@ -15,7 +15,7 @@ import MyPlaylist from './MyPlaylist'
 import { useSession } from 'next-auth/react'
 import right from '@/../public/images/chevron-right.svg'
 import pencil from '@/../public/images/pencil-line.svg'
-import ButtonPrimary from './ButtonPrimary'
+import ButtonPrimary from '../../util/ButtonPrimary'
 import FollowingList from './FollowingList'
 import FollowerList from './FollowerList'
 

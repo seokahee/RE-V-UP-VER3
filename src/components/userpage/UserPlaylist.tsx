@@ -11,7 +11,7 @@ import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
 import LockContents from './LockContents'
 import Pagination from '../mypage/Pagination'
 import { useSession } from 'next-auth/react'
-import ButtonPrimary from '../mypage/ButtonPrimary'
+import ButtonPrimary from '../../util/ButtonPrimary'
 
 const UserPlaylist = ({
   data,

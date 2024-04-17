@@ -41,7 +41,9 @@ const WriteList = () => {
   const updateMutation = useMutation({
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['mypage'] })
       queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
+      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
     },
   })
 
