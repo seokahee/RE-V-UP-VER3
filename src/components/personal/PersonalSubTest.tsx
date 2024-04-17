@@ -4,7 +4,7 @@ import { useSurvey } from '@/shared/store/personalStore'
 import { useSession } from 'next-auth/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { insertUserChar } from '@/shared/personal/personalApi'
-import ButtonPrimary from '../mypage/ButtonPrimary'
+import ButtonPrimary from '../../util/ButtonPrimary'
 import PreviousButton from '../mypage/PreviousButton'
 import { useEffect } from 'react'
 

@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { useSurvey } from '@/shared/store/personalStore'
 import { useRouter } from 'next/navigation'
-import ButtonPrimary from '../mypage/ButtonPrimary'
+import ButtonPrimary from '../../util/ButtonPrimary'
 import PreviousButton from '../mypage/PreviousButton'
 
 const GenderPage = ({

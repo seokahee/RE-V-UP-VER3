@@ -2,7 +2,7 @@ import { getFollowDataFollowing, updateFollow } from '@/shared/mypage/api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import React from 'react'
-import ButtonSecondary from './ButtonSecondary'
+import ButtonSecondary from '../../util/ButtonSecondary'
 import Link from 'next/link'
 import Image from 'next/image'
 

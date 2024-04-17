@@ -15,7 +15,7 @@ import CheckboxItem from '../mypage/CheckboxItem'
 import type { PersonalRecommendProps } from '@/types/personal/type'
 import { useRouter } from 'next/navigation'
 import { SentenceMatch } from '@/util/personal/util'
-import ButtonPrimary from '../mypage/ButtonPrimary'
+import ButtonPrimary from '../../util/ButtonPrimary'
 
 const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
   const [checkedList, setCheckedList] = useState<string[]>([])

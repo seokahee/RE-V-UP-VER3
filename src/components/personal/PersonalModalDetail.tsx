@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Businessman from '@/../public/images/Businessman.svg'
-import ButtonPrimary from '../mypage/ButtonPrimary'
+import ButtonPrimary from '../../util/ButtonPrimary'
 import PreviousButton from '../mypage/PreviousButton'
 import submitIcon from '@/../public/images/Icon.svg'
 
