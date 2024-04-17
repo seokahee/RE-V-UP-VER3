@@ -92,6 +92,7 @@ const MusicSearchModal = ({
               value={keyword}
               ref={keywordRef}
               onChange={onChange}
+              placeholder='가수 또는 노래 제목을 입력하세요'
               onKeyUp={(e) => handleKeyUp(e)}
               className='border  border-black'
             />

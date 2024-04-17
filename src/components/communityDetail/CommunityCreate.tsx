@@ -106,13 +106,14 @@ const CommunityCreate = () => {
             onClick={(e) => {
               e.preventDefault()
               router.replace('/community')
+              setChooseMusic(null)
             }}
             className={`flex h-[48px] w-[48px] items-center justify-center rounded-[12px] bg-[rgba(255,255,255,0.1)] ${ALLOW_SHADOW}`}
           >
             <Image src={goback} alt='이전으로 아이콘' width={24} height={24} />
           </button>
-          <div>
-            <h3 className='mx-[auto]'>글쓰기</h3>
+          <div className='mx-[auto] text-center'>
+            <h3>글쓰기</h3>
           </div>
           <button
             className={`flex h-[48px] w-[120px] items-center justify-center rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
