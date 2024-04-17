@@ -124,7 +124,7 @@ const CommunityCreate = () => {
           <textarea
             name='content'
             value={content}
-            maxLength={50}
+            maxLength={100}
             onChange={onChangeHandler}
             className='focus:outline-todayPink mb-4 w-full rounded-lg border p-2 text-black'
             placeholder='추천할 음악에 대해 얘기해 주세요.'

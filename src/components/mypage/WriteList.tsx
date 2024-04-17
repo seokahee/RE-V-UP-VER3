@@ -8,6 +8,7 @@ import BoardItem from './BoardItem'
 import BoardNoData from './BoardNoData'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
 import { useSession } from 'next-auth/react'
+import { GET_MUSICLIST_QUERY_KEY } from '@/query/musicPlayer/musicPlayerQueryKey'
 
 const WriteList = () => {
   const { data: userSessionInfo } = useSession()
@@ -34,14 +35,19 @@ const WriteList = () => {
 
   const { data: playListCurrent } = useQuery({
     queryFn: () => getCurrentMusicData(uid),
-    queryKey: ['playListCurrent'],
+    queryKey: [GET_MUSICLIST_QUERY_KEY.GET_MY_CURRENT_MUSICLIST],
     enabled: !!uid,
   })
 
   const updateMutation = useMutation({
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSICLIST_QUERY_KEY.GET_MY_CURRENT_MUSICLIST],
+      })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSICLIST_QUERY_KEY.GET_CURRENT_MUSICLIST],
+      })
     },
   })
 

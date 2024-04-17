@@ -3,6 +3,14 @@
 import React, { FormEvent, useState } from 'react'
 import { updateUserPassword } from '@/shared/login/loginApi'
 import { useRouter } from 'next/navigation'
+import {
+  DOWN_ACTIVE_BUTTON,
+  DROP_SHADOW,
+  INPUT_FOCUS,
+  INPUT_SHADOW,
+  OPEN_ANOTHER_SHADOW,
+} from '../login/loginCss'
+import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 
 const FindPassword = () => {
   const [newPassword, setNewPassword] = useState<string>('')
@@ -37,18 +45,37 @@ const FindPassword = () => {
     }
   }
   return (
-    <div>
-      <div>
+    <div className='flex h-screen w-full flex-col items-center justify-center'>
+      <div
+        className={`flex h-[680px] w-[516px] flex-col items-center justify-center gap-[94px] rounded-[32px] border-[4px] border-solid border-[#474747] bg-[#3D3D3D] pb-[300px] ${OPEN_ANOTHER_SHADOW} `}
+      >
         <form onSubmit={findPassword}>
-          <div className='z-1500 text-black'>
-            <div>비밀번호 찾기</div>
-            <input
-              type='password'
-              autoFocus
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-            <button className='cursor-pointer'>
+          <div className='z-1500 flex flex-col gap-[32px] text-white'>
+            <div className='flex flex-col gap-[94px]'>
+              <h3 className='flex justify-center pt-[106px] text-[20px] font-bold'>
+                <p>비밀번호&nbsp;찾기</p>
+              </h3>
+              <div className='flex flex-col gap-[4px]'>
+                <label
+                  htmlFor='password'
+                  className='text-[rgba(255,255,255,0.3)]'
+                >
+                  새&nbsp;비밀번호
+                </label>
+                <input
+                  autoFocus
+                  id='password'
+                  type='password'
+                  value={newPassword}
+                  placeholder='새 비밀번호를 입력해 주세요.'
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className={`flex w-full items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] text-[16px] font-bold caret-primary  ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} placeholder:text-[rgba(255,255,255,0.3)]`}
+                />
+              </div>
+            </div>
+            <button
+              className={`flex h-[48px] w-[320px] items-center justify-center  rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
+            >
               {updateState ? '변경완료!' : '변경'}
             </button>
           </div>

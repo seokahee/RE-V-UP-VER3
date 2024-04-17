@@ -128,11 +128,12 @@ export const updateInProviderUserInfo = async ({
       error.details &&
       (error.details.includes('0 rows') || error.details.includes('already'))
     ) {
-      return
+      throw new Error('정보를 받아오지 못하고 있습니다. 문의해주세요')
     }
     alert('정보를 받아오지 못하고 있습니다. 문의해주세요')
     return
   }
+
   if (data) {
     return data
   }

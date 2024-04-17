@@ -39,6 +39,7 @@ const MusicPlayer = () => {
     mutationFn: insertMyPlayMusic,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myMusicIds'] })
+      queryClient.invalidateQueries({ queryKey: ['getMyMusicList'] })
     },
   })
 
@@ -46,6 +47,7 @@ const MusicPlayer = () => {
     mutationFn: updateMyPlayMusic,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myMusicIds'] })
+      queryClient.invalidateQueries({ queryKey: ['getMyMusicList'] })
     },
   })
 
