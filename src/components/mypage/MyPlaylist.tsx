@@ -6,7 +6,7 @@ import type { UserInfo } from '@/types/mypage/types'
 import Image from 'next/image'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
 import { useSession } from 'next-auth/react'
-import ButtonPrimary from './ButtonPrimary'
+import ButtonPrimary from '../../util/ButtonPrimary'
 import { queryClient } from '@/app/provider'
 
 const MyPlaylist = ({ data }: { data: UserInfo }) => {

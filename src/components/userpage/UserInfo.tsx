@@ -9,8 +9,8 @@ import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import UserPlaylist from './UserPlaylist'
 import { useSession } from 'next-auth/react'
-import ButtonPrimary from '../mypage/ButtonPrimary'
-import ButtonSecondary from '../mypage/ButtonSecondary'
+import ButtonPrimary from '../../util/ButtonPrimary'
+import ButtonSecondary from '../../util/ButtonSecondary'
 
 const UserInfo = () => {
   const { id } = useParams<{ id: string }>()
