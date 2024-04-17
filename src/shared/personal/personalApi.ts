@@ -162,7 +162,7 @@ export const getCurrentMusics = async (userId: string) => {
 }
 
 //현재 재생목록에 음악 추가
-export const insertPersonalResult = async ({
+export const updatePersonalResult = async ({
   userId,
   musicList,
 }: {
@@ -177,5 +177,25 @@ export const insertPersonalResult = async ({
   if (error) {
     throw new Error(error?.message || 'An unknown error occurred')
   }
-  return data
+}
+
+//현재 재생목록이 없을 경우 추가
+export const insertPersonalResult = async ({
+  userId,
+  musicList,
+}: {
+  userId: string
+  musicList: string[]
+}) => {
+  console.log(userId, '유저 아이디')
+  console.log(musicList, '음악목록')
+
+  const { data, error } = await supabase
+    .from('playlistCurrent')
+    .insert([{ userId: userId, currentMusicIds: musicList }])
+    .select()
+
+  if (error) {
+    throw new Error(error?.message || 'An unknown error occurred')
+  }
 }

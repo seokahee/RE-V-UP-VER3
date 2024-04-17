@@ -10,6 +10,7 @@ import {
   getPersonaledUser,
   updatePersonalMusic,
   insertPersonalResult,
+  updatePersonalResult,
 } from '@/shared/personal/personalApi'
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'
 
@@ -64,6 +65,7 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
       setCheckedList([])
+      refetchCurrent()
     },
   })
 
@@ -73,28 +75,38 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
       setCheckedList([])
+      refetchCurrent()
     },
   })
 
   const updateCurrentMusicMutation = useMutation({
+    mutationFn: updatePersonalResult,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
+      setCheckedList([])
+      refetchCurrent()
+    },
+  })
+
+  const insertCurrentMusicMutation = useMutation({
     mutationFn: insertPersonalResult,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
       setCheckedList([])
+      refetchCurrent()
     },
   })
 
   //현재 재생목록 리스트
-  const { data: current } = useQuery({
+  const { data: current, refetch: refetchCurrent } = useQuery({
     queryFn: () => getCurrentMusics(userChar.uid),
     queryKey: ['currentMusic'],
   })
 
-  if (!current) {
-    return
-  }
-  const currentList = current?.[0].currentMusicIds as string[]
-
+  const currentList =
+    current?.length === 0
+      ? []
+      : current?.[0]?.currentMusicIds || ([] as string[])
   //현재 재생목록에 결과추가
   const onSubmitCurrentMusic = () => {
     if (checkedList.length === 0) {
@@ -112,8 +124,14 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
       return
     }
 
-    const musicList = [...currentList, ...checkedList] as string[]
-    updateCurrentMusicMutation.mutate({ userId: userChar.uid, musicList })
+    if (!current || current.length === 0) {
+      const musicList = [...checkedList] as string[]
+      insertCurrentMusicMutation.mutate({ userId: userChar.uid, musicList })
+    } else {
+      const musicList = [...currentList, ...checkedList] as string[]
+      updateCurrentMusicMutation.mutate({ userId: userChar.uid, musicList })
+    }
+
     onSubmitPersonalResult()
   }
   //퍼스널 DB에 결과추가
