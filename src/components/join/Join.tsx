@@ -102,16 +102,16 @@ const Join = () => {
         alert(errorMessage)
         return
       }
+      saveSignUpInUserInfo({
+        userId,
+        email: userEmail,
+        password: userPw,
+        nickname: userNickname,
+        userType: 0,
+      })
+      router.push('/login')
     }
 
-    saveSignUpInUserInfo({
-      userId,
-      email: userEmail,
-      password: userPw,
-      nickname: userNickname,
-      userType: 0,
-    })
-    router.push('/login')
     reset()
   }
 

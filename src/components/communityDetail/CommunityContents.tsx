@@ -195,7 +195,9 @@ const CommunityContents = () => {
           >
             <Image src={goback} alt='이전으로 아이콘' width={24} height={24} />
           </button>
-          <h3 className='mx-[auto]'>음악 추천 게시판🦻</h3>
+          <h3 className='mx-[auto] text-[18px] font-bold'>
+            음악 추천 게시판🦻
+          </h3>
           {isEdit ? (
             <div>
               <button onClick={onEditCancelHandler}>수정취소</button>
@@ -208,7 +210,7 @@ const CommunityContents = () => {
           <article className='flex gap-[16px] border-b-[1px] border-solid border-[#000000] px-[16px] py-[30px]'>
             <div className='flex'>
               <Link href={`/userpage/${userId}`}>
-                <figure className='rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)]'>
+                <figure className='h-[56px] w-[56px] rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)] bg-[#2B2B2B]'>
                   {userImage ? (
                     <Image
                       src={`${userImage}`}
@@ -219,7 +221,7 @@ const CommunityContents = () => {
                       className='h-[56px] w-[56px] rounded-full'
                     />
                   ) : (
-                    <div className='h-[56px] w-[56px] border-[2px] border-solid border-[rgba(255,255,255,0.1)] bg-white'>
+                    <div className='h-[56px] w-[56px] rounded-full'>
                       <i></i>
                     </div>
                   )}
@@ -227,7 +229,7 @@ const CommunityContents = () => {
               </Link>
             </div>
 
-            <section className='flex w-full flex-col '>
+            <section className='flex w-full flex-col'>
               <div className='flex justify-between'>
                 {isEdit ? (
                   <input
@@ -236,10 +238,12 @@ const CommunityContents = () => {
                     maxLength={40}
                     value={updatedTitle}
                     onChange={onChangeEditForm}
-                    className='text-black'
+                    className='text-[18px]  font-bold text-black '
                   />
                 ) : (
-                  <div>{`${boardTitle}`}</div>
+                  <div>
+                    <p className=' text-[18px] font-bold '>{`${boardTitle}`}</p>
+                  </div>
                 )}
                 <div>
                   <div>
@@ -267,7 +271,9 @@ const CommunityContents = () => {
                 </div>
               </div>
               <div className='flex justify-between'>
-                <div>{nickname}</div>
+                <div>
+                  <p className=' text-[14px] font-bold'>{nickname}</p>
+                </div>
                 <div>{onDateTimeHandler(date)}</div>
               </div>
             </section>
@@ -275,18 +281,18 @@ const CommunityContents = () => {
           <article
             className={`flex w-full justify-between gap-[24px] rounded-[32px] bg-[rgba(255,255,255,0.1)] py-[20px] pl-[40px] pr-[20px]  ${ADDED_CURRENT_MUSIC_SHADOW}`}
           >
-            <div className='flex w-full gap-[32px]'>
-              <figure>
-                <Image
-                  src={`${thumbnail}`}
-                  alt='노래 앨범 이미지'
-                  width={80}
-                  height={80}
-                  className='rounded-full'
-                />
-              </figure>
-              <section className='flex w-full justify-between'>
-                <div className='flex flex-col gap-[8px] '>
+            <div className='flex w-full items-center justify-between '>
+              <section className='flex items-center gap-[32px]'>
+                <figure className='flex h-[80px] w-[80px] items-center rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.5)]'>
+                  <Image
+                    src={`${thumbnail}`}
+                    alt='노래 앨범 이미지'
+                    width={80}
+                    height={80}
+                    className='rounded-full '
+                  />
+                </figure>
+                <article className='flex flex-col gap-[8px] '>
                   <div>
                     <p className='text-[24px] font-bold'>{musicTitle}</p>
                   </div>
@@ -295,7 +301,9 @@ const CommunityContents = () => {
                       {artist}
                     </p>
                   </div>
-                </div>
+                </article>
+              </section>
+              <section className='flex'>
                 <div className='flex items-center text-[16px] font-bold'>
                   {runTime}
                 </div>
