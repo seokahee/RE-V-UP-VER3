@@ -8,33 +8,11 @@ export const getUserAndPlaylistData = async (
     const { data, error } = await supabase
       .from('userInfo')
       .select(
-        'userId, email, userType, nickname, following, follower, userChar, mbtiOpen, personalMusicOpen, playlistOpen, postsOpen, likedPostsOpen, userImage, personalMusic(resultSentence), playlistMy(myMusicIds, playlistId), playlistCurrent(currentId, currentMusicIds)',
+        'userId, email, userType, nickname, following, follower, userChar, mbtiOpen, personalMusicOpen, playlistOpen, postsOpen, likedPostsOpen, userImage, personalMusic(resultSentence)',
       )
       .eq('userId', userId)
       .limit(1)
       .single()
-
-    if (data?.playlistMy.length === 0) {
-      const newData = { userId, myMusicIds: [] }
-      const { error: insertError } = await supabase
-        .from('playlistMy')
-        .insert(newData)
-
-      if (insertError) {
-        console.error('Error inserting data:', insertError.message)
-      }
-    }
-
-    if (data?.playlistCurrent.length === 0) {
-      const newData = { userId, currentMusicIds: [] }
-      const { error: insertError } = await supabase
-        .from('playlistCurrent')
-        .insert(newData)
-
-      if (insertError) {
-        console.error('Error inserting data:', insertError.message)
-      }
-    }
 
     return data as UserInfo
   } catch (error) {
@@ -45,15 +23,16 @@ export const getUserAndPlaylistData = async (
 
 export const getUserPlaylistMyMusicInfoData = async (
   myMusicIds: string[],
-  start: number,
-  end: number,
 ): Promise<PlaylistMy[]> => {
   try {
+    console.log('music', myMusicIds)
+
     const { data, error } = await supabase
       .from('musicInfo')
       .select('*')
       .in('musicId', myMusicIds)
-      .range(start, end)
+
+    console.log(data)
 
     return data as PlaylistMy[]
   } catch (error) {
@@ -83,6 +62,40 @@ export const getMyMusicCount = async (
   }
 }
 
+export const getUserMyPlaylistData = async (userId: string) => {
+  try {
+    const { data } = await supabase
+      .from('playlistMy')
+      .select('myMusicIds')
+      .eq('userId', userId)
+      .single()
+
+    if (!data) {
+      const newData = { userId, myMusicIds: [] }
+      const { error: insertError } = await supabase
+        .from('playlistMy')
+        .insert(newData)
+
+      if (insertError) {
+        console.error('Error inserting data:', insertError.message)
+      }
+    }
+
+    if (data?.myMusicIds && data.myMusicIds.length > 0) {
+      const { data: myPlaylistData, error } = await supabase
+        .from('musicInfo')
+        .select('*')
+        .in('musicId', data.myMusicIds)
+      console.log([data, myPlaylistData])
+      return { playlistMyIds: data.myMusicIds, myPlaylistData: myPlaylistData }
+    }
+
+    return { playlistMyIds: [], myPlaylistData: [] }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const updateMyMusicIds = async ({
   userId,
   myMusicIds,
@@ -96,6 +109,8 @@ export const updateMyMusicIds = async ({
       .update({ myMusicIds: [...myMusicIds] })
       .eq('userId', userId)
       .select()
+
+    return data
   } catch (error) {
     console.error(error)
   }
