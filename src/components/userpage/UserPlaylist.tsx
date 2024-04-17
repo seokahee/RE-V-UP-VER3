@@ -140,18 +140,20 @@ const UserPlaylist = ({
               전체 담기
             </ButtonPrimary>
           </div>
-          <div
-            className={`fixed bottom-10 flex min-w-[114px] rounded-2xl border-2 border-[rgba(0,0,0,0.05)] ${shadow} overflow-hidden bg-[#ffffff19] backdrop-blur-sm`}
-            style={{ left: 'calc(50% + (388px / 2) - 56px)' }}
-          >
-            <button
-              type='button'
-              onClick={onClickAddHandler}
-              className='w-full p-4'
+          {checkedList.length > 0 && (
+            <div
+              className={`fixed bottom-10 flex min-w-[114px] rounded-2xl border-2 border-[rgba(0,0,0,0.05)] ${shadow} overflow-hidden bg-[#ffffff19] backdrop-blur-sm`}
+              style={{ left: 'calc(50% + (388px / 2) - 56px)' }}
             >
-              {checkedList.length}곡 담기
-            </button>
-          </div>
+              <button
+                type='button'
+                onClick={onClickAddHandler}
+                className='w-full p-4'
+              >
+                {checkedList.length}곡 담기
+              </button>
+            </div>
+          )}
           <ul className='tracking-[-0.03em]'>
             {userPlaylistMyData && userPlaylistMyData?.length > 0 ? (
               userPlaylistMyData?.map((item) => {

@@ -165,25 +165,27 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
         </h2>
         <ButtonPrimary onClick={onClickAllAddHandler}>전체 담기</ButtonPrimary>
       </div>
-      <div
-        className={`fixed bottom-10 flex min-w-[232px] items-center rounded-2xl border-2 border-[rgba(0,0,0,0.05)] ${shadow} overflow-hidden bg-[#ffffff19] backdrop-blur-sm`}
-        style={{ left: 'calc(50% + (388px / 2) - 56px)' }}
-      >
-        <button
-          type='button'
-          onClick={onClickDeleteHandler}
-          className='w-1/2 p-4'
+      {checkedList.length > 0 && (
+        <div
+          className={`fixed bottom-10 flex min-w-[232px] items-center rounded-2xl border-2 border-[rgba(0,0,0,0.05)] ${shadow} overflow-hidden bg-[#ffffff19] backdrop-blur-sm`}
+          style={{ left: 'calc(50% + (388px / 2) - 56px)' }}
         >
-          삭제
-        </button>
-        <button
-          type='button'
-          onClick={onClickAddHandler}
-          className='w-1/2 border-l border-l-[rgba(255,255,255,0.5)] p-4'
-        >
-          {checkedList.length}곡 담기
-        </button>
-      </div>
+          <button
+            type='button'
+            onClick={onClickDeleteHandler}
+            className='w-1/2 p-4'
+          >
+            삭제
+          </button>
+          <button
+            type='button'
+            onClick={onClickAddHandler}
+            className='w-1/2 border-l border-l-[rgba(255,255,255,0.5)] p-4'
+          >
+            {checkedList.length}곡 담기
+          </button>
+        </div>
+      )}
       <ul className='tracking-[-0.03em]'>
         {myPlaylistData && myPlaylistData?.length > 0 ? (
           myPlaylistData?.map((item) => {
