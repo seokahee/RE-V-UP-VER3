@@ -41,27 +41,6 @@ export const getUserPlaylistMyMusicInfoData = async (
   }
 }
 
-export const getMyMusicCount = async (
-  myMusicIds: string[],
-): Promise<number> => {
-  try {
-    const { data, error } = await supabase
-      .from('musicInfo')
-      .select('*')
-      .in('musicId', myMusicIds)
-
-    if (error) {
-      console.error(error)
-      return 0
-    }
-
-    return data?.length
-  } catch (error) {
-    console.error(error)
-    return 0
-  }
-}
-
 export const getUserMyPlaylistData = async (userId: string) => {
   try {
     const { data } = await supabase
@@ -187,11 +166,7 @@ export const uploadUserThumbnail = async ({
   }
 }
 
-export const getMyWriteListData = async (
-  userId: string,
-  start: number,
-  end: number,
-): Promise<Board[]> => {
+export const getMyWriteListData = async (userId: string): Promise<Board[]> => {
   try {
     const { data, error } = await supabase
       .from('community')
@@ -199,7 +174,6 @@ export const getMyWriteListData = async (
         '*, musicInfo(thumbnail, musicTitle), userInfo(nickname, userImage), comment(commentId)',
       )
       .eq('userId', userId)
-      .range(start, end)
 
     if (error) {
       console.error(error)
@@ -210,25 +184,6 @@ export const getMyWriteListData = async (
   } catch (error) {
     console.log(error)
     return []
-  }
-}
-
-export const getMyWriteListCount = async (userId: string): Promise<number> => {
-  try {
-    const { data, error } = await supabase
-      .from('community')
-      .select('boardId')
-      .eq('userId', userId)
-
-    if (error) {
-      console.error(error)
-      return 0
-    }
-
-    return data?.length
-  } catch (error) {
-    console.log(error)
-    return 0
   }
 }
 
@@ -331,11 +286,7 @@ export const updateFollow = async ({
   return
 }
 
-export const getLikeBoardData = async (
-  userId: string,
-  start: number,
-  end: number,
-): Promise<Board[]> => {
+export const getLikeBoardData = async (userId: string): Promise<Board[]> => {
   try {
     const { data, error } = await supabase
       .from('community')
@@ -343,7 +294,6 @@ export const getLikeBoardData = async (
         '*, musicInfo(thumbnail, musicTitle), userInfo(nickname, userImage), comment(commentId)',
       )
       .contains('likeList', [userId])
-      .range(start, end)
     if (error) {
       console.error(error)
       return []
@@ -353,24 +303,5 @@ export const getLikeBoardData = async (
   } catch (error) {
     console.log(error)
     return []
-  }
-}
-
-export const getLikeBoardCount = async (userId: string): Promise<number> => {
-  try {
-    const { data, error } = await supabase
-      .from('community')
-      .select('boardId')
-      .contains('likeList', [userId])
-
-    if (error) {
-      console.error(error)
-      return 0
-    }
-
-    return data?.length
-  } catch (error) {
-    console.log(error)
-    return 0
   }
 }
