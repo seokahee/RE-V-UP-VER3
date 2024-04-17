@@ -9,7 +9,7 @@ const PersonalTestResult = () => {
   return (
     <div className=' w-[516px] pb-[90px] pt-[70px]'>
       <div className=' h-[800px] rounded-[32px] bg-white  bg-opacity-10 '>
-        <p className='pt-[90px] text-center text-xl font-bold'>
+        <p className='pt-[50px] text-center text-xl font-bold'>
           당신의 음악 취향은....!
         </p>
         <ResultChart userChar={userChar} />

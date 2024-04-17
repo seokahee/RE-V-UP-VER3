@@ -92,7 +92,7 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
   }, [preference, dislike, chartRef.current])
 
   return (
-    <div className=' flex justify-center pt-[20px]'>
+    <div className=' flex justify-center pt-[15px]'>
       <canvas
         ref={chartRef}
         width={400}

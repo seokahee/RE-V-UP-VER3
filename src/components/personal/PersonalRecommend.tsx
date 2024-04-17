@@ -160,37 +160,37 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
       <div className='pt-[24px] text-center text-white'>
         <p>당신의 취향에 맞는 음악을 추천 해드릴게요 &#x1F642;</p>
       </div>
-      <div className='flex flex-row justify-center gap-12 pt-[16px] text-white text-opacity-50'>
+
+      {/** */}
+      <div className='flex justify-center gap-12 pt-[16px] text-white text-opacity-50'>
         {recommend?.map((item) => (
-          <div key={item.musicId}>
-            <label htmlFor={item.musicId}>
-              <input
-                type='checkbox'
-                id={item.musicId}
-                checked={checkedList.includes(item.musicId)}
-                onChange={(e) =>
-                  onChangeCheckMusicHandler(e.target.checked, item.musicId)
-                }
-                className='peer hidden'
-              />
-              <Image
-                src={item.thumbnail}
-                width={80}
-                height={80}
-                alt={`${item.musicTitle} 앨범 썸네일`}
-                className='rounded-full ring-4 ring-transparent peer-checked:ring-white'
-              />
-              <div className='text-lg font-bold peer-checked:text-white'>
-                <p>{item.musicTitle}</p>
-              </div>
-              <div className='text-sm font-medium peer-checked:text-white'>
-                {item.artist}
-              </div>
-              <div>
-                {currentList.includes(item.musicId) ? '현재 재생중' : ''}
-              </div>
-            </label>
-          </div>
+          <label htmlFor={item.musicId} key={item.musicId}>
+            <input
+              type='checkbox'
+              id={item.musicId}
+              checked={checkedList.includes(item.musicId)}
+              onChange={(e) =>
+                onChangeCheckMusicHandler(e.target.checked, item.musicId)
+              }
+              className='peer hidden'
+            />
+
+            <Image
+              src={item.thumbnail}
+              width={80}
+              height={80}
+              alt={`${item.musicTitle} 앨범 썸네일`}
+              className='rounded-full ring-4 ring-transparent peer-checked:ring-white'
+            />
+            <div className='w-[80px] text-lg font-bold peer-checked:text-white'>
+              <p className='w-[80px] text-center'>{item.musicTitle}</p>
+            </div>
+            <div className='text-center text-sm font-medium peer-checked:text-white '>
+              <p> {item.artist}</p>
+            </div>
+
+            <div>{currentList.includes(item.musicId) ? '현재 재생중' : ''}</div>
+          </label>
         ))}
       </div>
       <div className='flex justify-center gap-4 pt-[22px]'>
