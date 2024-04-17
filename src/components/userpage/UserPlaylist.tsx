@@ -153,51 +153,55 @@ const UserPlaylist = ({
             </button>
           </div>
           <ul className='tracking-[-0.03em]'>
-            {userPlaylistMyData && userPlaylistMyData?.length > 0
-              ? userPlaylistMyData?.map((item) => {
-                  return (
-                    <li
-                      key={item.musicId}
-                      className='flex items-center justify-between p-4'
-                    >
-                      <div className='flex items-center'>
-                        <CheckboxItem
-                          checked={checkedList.includes(item.musicId)}
-                          id={`user-${item.musicId}`}
-                          onChangeCheckMusicHandler={(e) =>
-                            onChangeCheckMusicHandler(
-                              e.target.checked,
-                              item.musicId,
-                            )
-                          }
+            {userPlaylistMyData && userPlaylistMyData?.length > 0 ? (
+              userPlaylistMyData?.map((item) => {
+                return (
+                  <li
+                    key={item.musicId}
+                    className='flex items-center justify-between p-4'
+                  >
+                    <div className='flex items-center'>
+                      <CheckboxItem
+                        checked={checkedList.includes(item.musicId)}
+                        id={`user-${item.musicId}`}
+                        onChangeCheckMusicHandler={(e) =>
+                          onChangeCheckMusicHandler(
+                            e.target.checked,
+                            item.musicId,
+                          )
+                        }
+                      />
+                      <figure className='ml-7 mr-4 overflow-hidden rounded-full'>
+                        <Image
+                          src={item.thumbnail}
+                          width={56}
+                          height={56}
+                          alt={`${item.musicTitle} 앨범 이미지`}
                         />
-                        <figure className='ml-7 mr-4 overflow-hidden rounded-full'>
-                          <Image
-                            src={item.thumbnail}
-                            width={56}
-                            height={56}
-                            alt={`${item.musicTitle} 앨범 이미지`}
-                          />
-                        </figure>
-                        <label
-                          htmlFor={`user-${item.musicId}`}
-                          className='flex flex-col'
-                        >
-                          <span className='text-[1.125rem]'>
-                            {item.musicTitle}
-                          </span>
-                          <span className='text-[0.875rem] text-[#ffffff7f]'>
-                            {item.artist}
-                          </span>
-                        </label>
-                      </div>
-                      <span className='text-[0.875rem] font-medium text-[#ffffff7f]'>
-                        {item.runTime}
-                      </span>
-                    </li>
-                  )
-                })
-              : '데이터가 없습니다'}
+                      </figure>
+                      <label
+                        htmlFor={`user-${item.musicId}`}
+                        className='flex flex-col'
+                      >
+                        <span className='text-[1.125rem]'>
+                          {item.musicTitle}
+                        </span>
+                        <span className='text-[0.875rem] text-[#ffffff7f]'>
+                          {item.artist}
+                        </span>
+                      </label>
+                    </div>
+                    <span className='text-[0.875rem] font-medium text-[#ffffff7f]'>
+                      {item.runTime}
+                    </span>
+                  </li>
+                )
+              })
+            ) : (
+              <li className='flex h-[300px] items-center justify-center text-xl text-white/50'>
+                {data?.nickname}님이 담은 노래가 없습니다.
+              </li>
+            )}
           </ul>
         </>
       ) : (
