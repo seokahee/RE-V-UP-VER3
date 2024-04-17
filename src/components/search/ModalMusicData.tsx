@@ -52,15 +52,15 @@ const ModalMusicData = ({
               className='rounded-full'
             />
           </div>
-          <article className='flex items-center justify-between'>
+          <article className='flex items-center justify-between gap-[10px]'>
             <div className='flex w-full flex-col justify-between'>
-              <div className='font-bold'>Title {item.musicTitle}</div>
+              <div className='w-full font-bold'>Title {item.musicTitle}</div>
               <div className='text-[rgba(255,255,255,0.5)]'>
                 Artist {item.artist}
               </div>
             </div>
-            <div className='ml-auto text-[rgba(255,255,255,0.5)]'>
-              {item.runTime}
+            <div className=' flex text-[rgba(255,255,255,0.5)]'>
+              <p>{item.runTime}</p>
             </div>
           </article>
         </div>
