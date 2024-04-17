@@ -82,7 +82,7 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
           </figure>
           <button
             type='button'
-            className='absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 group-hover:block'
+            className='absolute bottom-0 left-0 right-0 top-0 hidden items-center justify-center group-hover:flex [&_img]:h-auto [&_img]:w-auto'
             onClick={() => onClickAddCurrentMusicHandler(uid, item.musicId)}
           >
             <Image
