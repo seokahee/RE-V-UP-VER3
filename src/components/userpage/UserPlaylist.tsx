@@ -1,5 +1,5 @@
 import {
-  getMyMusicCount,
+  getUserMyPlaylistData,
   getUserPlaylistMyMusicInfoData,
 } from '@/shared/mypage/api'
 import type { UserInfo } from '@/types/mypage/types'
@@ -9,9 +9,9 @@ import CheckboxItem from '../mypage/CheckboxItem'
 import Image from 'next/image'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
 import LockContents from './LockContents'
-import Pagination from '../mypage/Pagination'
 import { useSession } from 'next-auth/react'
 import ButtonPrimary from '../mypage/ButtonPrimary'
+import { useParams } from 'next/navigation'
 
 const UserPlaylist = ({
   data,
@@ -24,7 +24,16 @@ const UserPlaylist = ({
   const uid = userSessionInfo?.user?.uid as string
   const [checkedList, setCheckedList] = useState<string[]>([])
   const queryClient = useQueryClient()
-  const [currentPage, setCurrentPage] = useState(1)
+  const { id } = useParams<{ id: string }>()
+
+  const { data: userPlaylistMyInfoData } = useQuery({
+    queryFn: () => getUserMyPlaylistData(id),
+    queryKey: ['userMyMusicIds'], //data
+    enabled: !!id,
+  })
+
+  const userPlaylistMyIds = userPlaylistMyInfoData?.playlistMyIds
+  const userPlaylistMyData = userPlaylistMyInfoData?.myPlaylistData
 
   const { data: myPlaylistCurrentData } = useQuery({
     queryFn: () => getCurrentMusicData(uid),
@@ -32,28 +41,14 @@ const UserPlaylist = ({
     enabled: !!uid,
   })
 
-  const { data: totalCount } = useQuery({
-    queryFn: () =>
-      getMyMusicCount(data?.playlistMy?.[0].myMusicIds as string[]),
-    queryKey: ['userMyMusicAllCount'],
-    enabled: !!data?.playlistMy?.length,
-  })
-
-  const PER_PAGE = 10
-  const totalPages = Math.ceil(totalCount! / PER_PAGE)
-  const start = (currentPage - 1) * PER_PAGE
-  const end = currentPage * PER_PAGE - 1
-
-  const { data: userPlaylistMyData } = useQuery({
-    queryFn: () =>
-      getUserPlaylistMyMusicInfoData(
-        data?.playlistMy?.[0].myMusicIds as string[],
-        start,
-        end,
-      ),
-    queryKey: ['userMyMusicIds', currentPage],
-    enabled: !!data?.playlistMy?.length,
-  })
+  // const { data: userPlaylistMyData } = useQuery({
+  //   queryFn: () =>
+  //     getUserPlaylistMyMusicInfoData(
+  //       data?.playlistMy?.[0].myMusicIds as string[],
+  //     ),
+  //   queryKey: ['userMyMusicIds', currentPage],
+  //   enabled: !!data?.playlistMy?.length,
+  // })
 
   const updateMutation = useMutation({
     mutationFn: updateCurrentMusic,
@@ -108,9 +103,7 @@ const UserPlaylist = ({
   }
 
   const onClickAllAddHandler = () => {
-    const userPlaylistMy = !data.playlistMy?.[0].myMusicIds
-      ? []
-      : data.playlistMy?.[0].myMusicIds
+    const userPlaylistMy = !userPlaylistMyIds ? [] : userPlaylistMyIds
     const myPlayListCurrent = !myPlaylistCurrentData?.[0].currentMusicIds
       ? []
       : myPlaylistCurrentData?.[0].currentMusicIds
@@ -125,7 +118,7 @@ const UserPlaylist = ({
       const addData = userPlaylistMy?.filter(
         (el) => !myPlayListCurrent!.includes(el),
       )
-
+      console.log('addData', addData)
       if (addData?.length === 0) {
         alert(`${userPlaylistMy?.length}개 모두 이미 추가되어 있습니다.`)
         return
@@ -133,7 +126,6 @@ const UserPlaylist = ({
 
       newData = [...myPlayListCurrent, ...addData!]
     } else {
-      console.log('userPlaylistCurrent', userPlaylistMy)
       newData = [...userPlaylistMy!]
     }
 
@@ -143,14 +135,6 @@ const UserPlaylist = ({
     })
     alert('추가가 완료되었습니다.')
     setCheckedList([])
-  }
-
-  const nextPage = () => {
-    setCurrentPage((prev) => prev + 1)
-  }
-
-  const prevPage = () => {
-    setCurrentPage((prev) => prev - 1)
   }
 
   const shadow =
@@ -227,7 +211,7 @@ const UserPlaylist = ({
                 })
               : '데이터가 없습니다'}
           </ul>
-          {userPlaylistMyData && userPlaylistMyData?.length > 0 ? (
+          {/* {userPlaylistMyData && userPlaylistMyData?.length > 0 ? (
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
@@ -237,7 +221,7 @@ const UserPlaylist = ({
             />
           ) : (
             ''
-          )}
+          )} */}
         </>
       ) : (
         <>
