@@ -30,7 +30,6 @@ const PersonalModalDetail = ({ isOpen, onClose }: PersonalModal) => {
     let expires = new Date()
     expires.setHours(expires.getHours() + 24)
     localStorage.setItem('homeVisited', expires.getTime().toString())
-    // 현재 시간의 24시간 뒤의 시간을 homeVisited에 저장
     onClose()
   }
   return (

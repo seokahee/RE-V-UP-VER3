@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useState } from 'react'
 import Image from 'next/image'
 import {
@@ -11,8 +12,9 @@ import {
   insertPersonalResult,
 } from '@/shared/personal/personalApi'
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'
-import CheckboxItem from '../mypage/CheckboxItem'
+
 import type { PersonalRecommendProps } from '@/types/personal/type'
+
 import { useRouter } from 'next/navigation'
 import { SentenceMatch } from '@/util/personal/util'
 import ButtonPrimary from '../../util/ButtonPrimary'
@@ -138,17 +140,27 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     router.push('/')
   }
 
-  console.log(checkedList, 'checkedList')
+  if (isLoading) {
+    return <div className='text-center'> 열심히 곡을 고르는 중입니다.</div>
+  }
+
+  if (isError) {
+    return (
+      <div className='text-center'>
+        에러가 발생했습니다. 잠시 후 다시 시도해주세요
+      </div>
+    )
+  }
 
   return (
     <div>
-      <div className=' pt-[16px] text-center text-sm font-medium text-white text-opacity-70'>
+      <div className='pt-[16px] text-center text-sm font-medium text-white text-opacity-70'>
         <p className='px-[20px]'>{SentenceMatch(userChar.mbti)}</p>
       </div>
-      <div className='pt-[24px] text-center text-sm text-white '>
+      <div className='pt-[24px] text-center text-white'>
         <p>당신의 취향에 맞는 음악을 추천 해드릴게요 &#x1F642;</p>
       </div>
-      <div className=' flex flex-row justify-center gap-12  pt-[16px] text-center text-white text-opacity-50'>
+      <div className='flex flex-row justify-center gap-12 pt-[16px] text-white text-opacity-50'>
         {recommend?.map((item) => (
           <div key={item.musicId}>
             <label htmlFor={item.musicId}>
@@ -166,9 +178,9 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
                 width={80}
                 height={80}
                 alt={`${item.musicTitle} 앨범 썸네일`}
-                className='  rounded-full ring-4 ring-transparent peer-checked:ring-white'
+                className='rounded-full ring-4 ring-transparent peer-checked:ring-white'
               />
-              <div className=' text-lg font-bold peer-checked:text-white'>
+              <div className='text-lg font-bold peer-checked:text-white'>
                 <p>{item.musicTitle}</p>
               </div>
               <div className='text-sm font-medium peer-checked:text-white'>

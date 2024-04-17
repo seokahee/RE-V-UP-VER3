@@ -8,7 +8,6 @@ import ButtonPrimary from '../../util/ButtonPrimary'
 import PreviousButton from '../mypage/PreviousButton'
 import { useEffect } from 'react'
 
-import { useRouter } from 'next/navigation'
 import { DROP_SHADOW, INPUT_SHADOW, INPUT_FOCUS } from '../login/loginCss'
 
 import type { PersonalInfo } from '@/types/personal/type'
@@ -22,7 +21,6 @@ const PersonalSubTest = ({
   const { data: userSessionInfo } = useSession()
   const userId = userSessionInfo?.user?.uid as string
   const queryClient = useQueryClient()
-  const router = useRouter()
 
   const [EI, setEI] = useState<string>('')
   const [SN, setSN] = useState<string>('')
