@@ -209,7 +209,10 @@ const CommunityContents = () => {
         <div className='flex w-full flex-col gap-[40px]'>
           <article className='flex gap-[16px] border-b-[1px] border-solid border-[#000000] px-[16px] py-[30px]'>
             <div className='flex'>
-              <Link href={`/userpage/${userId}`}>
+              <Link
+                href={`/userpage/${userId}`}
+                className={`${uid === userId ? 'pointer-events-none' : 'cursor-pointer'}`}
+              >
                 <figure className='h-[56px] w-[56px] rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)] bg-[#2B2B2B]'>
                   {userImage ? (
                     <Image
