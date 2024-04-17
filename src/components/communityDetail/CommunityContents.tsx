@@ -22,10 +22,10 @@ import LikeButton from './LikeButton'
 import Link from 'next/link'
 
 import {
+  ADDED_CURRENT_MUSIC_SHADOW,
   ADD_CURRENT_MUSIC_SHADOW,
   ALLOW_SHADOW,
   BOARD_TITLE_SHADOW,
-  MUSIC_STICK,
 } from './communityCss'
 
 const CommunityContents = () => {
@@ -208,7 +208,7 @@ const CommunityContents = () => {
           <article className='flex gap-[16px] border-b-[1px] border-solid border-[#000000] px-[16px] py-[30px]'>
             <div className='flex'>
               <Link href={`/userpage/${userId}`}>
-                <figure>
+                <figure className='rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)]'>
                   {userImage ? (
                     <Image
                       src={`${userImage}`}
@@ -216,9 +216,10 @@ const CommunityContents = () => {
                       width={56}
                       height={56}
                       title={`${nickname}님의 페이지로 이동`}
+                      className='h-[56px] w-[56px] rounded-full'
                     />
                   ) : (
-                    <div className='h-[56px] w-[56px] bg-white'>
+                    <div className='h-[56px] w-[56px] border-[2px] border-solid border-[rgba(255,255,255,0.1)] bg-white'>
                       <i></i>
                     </div>
                   )}
@@ -232,6 +233,7 @@ const CommunityContents = () => {
                   <input
                     type='text'
                     name='boardTitle'
+                    maxLength={40}
                     value={updatedTitle}
                     onChange={onChangeEditForm}
                     className='text-black'
@@ -271,7 +273,7 @@ const CommunityContents = () => {
             </section>
           </article>
           <article
-            className={`flex w-full justify-between gap-[24px] rounded-[32px] bg-[rgba(255,255,255,0.1)] py-[20px] pl-[40px] pr-[20px] ${MUSIC_STICK}`}
+            className={`flex w-full justify-between gap-[24px] rounded-[32px] bg-[rgba(255,255,255,0.1)] py-[20px] pl-[40px] pr-[20px]  ${ADDED_CURRENT_MUSIC_SHADOW}`}
           >
             <div className='flex w-full gap-[32px]'>
               <figure>
