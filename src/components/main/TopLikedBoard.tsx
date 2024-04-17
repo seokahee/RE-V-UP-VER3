@@ -75,43 +75,42 @@ const TopLikedBoard = () => {
                   key={item.boardId}
                   className={`mr-4 w-[356px] rounded-[2rem] border-4 border-[#00000070] bg-[#ffffff19] p-4 ${itemShadow}`}
                 >
-                  <div className='flex items-center'>
-                    <figure className='flex h-7 w-7 overflow-hidden rounded-full border-2 border-white bg-slate-200'>
-                      {item.userInfo.userImage && (
-                        <Image
-                          src={item.userInfo.userImage}
-                          alt={item.userInfo.nickname!}
-                          width={24}
-                          height={24}
-                        />
-                      )}
-                    </figure>
-                    <span className='pl-[6px] text-[1.125rem] font-semibold'>
-                      {item.userInfo.nickname}
-                    </span>
-                  </div>
-                  <Link
-                    href={`/community/${item.boardId}`}
-                    className='mt-4 block overflow-hidden text-ellipsis whitespace-nowrap tracking-[-0.03em] text-[#ffffff4c]'
-                  >
-                    {item.boardTitle}
+                  <Link href={`/community/${item.boardId}`}>
+                    <div className='flex items-center'>
+                      <figure className='flex h-7 w-7 overflow-hidden rounded-full border-2 border-white bg-slate-200'>
+                        {item.userInfo.userImage && (
+                          <Image
+                            src={item.userInfo.userImage}
+                            alt={item.userInfo.nickname!}
+                            width={24}
+                            height={24}
+                          />
+                        )}
+                      </figure>
+                      <span className='pl-[6px] text-[1.125rem] font-semibold'>
+                        {item.userInfo.nickname}
+                      </span>
+                    </div>
+                    <p className='mt-4 block overflow-hidden text-ellipsis whitespace-nowrap tracking-[-0.03em] text-[#ffffff4c]'>
+                      {item.boardTitle}
+                    </p>
+                    <div className='mt-9 flex items-center justify-end gap-2 text-[0.875rem] text-[#ffffff4c]'>
+                      <Image
+                        src={message}
+                        width={24}
+                        height={24}
+                        alt='댓글 아이콘'
+                      />{' '}
+                      {item.comment ? item.comment.length : 0}
+                      <Image
+                        src={heart}
+                        width={24}
+                        height={24}
+                        alt='좋아요 아이콘'
+                      />{' '}
+                      {likedLength}
+                    </div>
                   </Link>
-                  <div className='mt-9 flex items-center justify-end gap-2 text-[0.875rem] text-[#ffffff4c]'>
-                    <Image
-                      src={message}
-                      width={24}
-                      height={24}
-                      alt='댓글 아이콘'
-                    />{' '}
-                    {item.comment ? item.comment.length : 0}
-                    <Image
-                      src={heart}
-                      width={24}
-                      height={24}
-                      alt='좋아요 아이콘'
-                    />{' '}
-                    {likedLength}
-                  </div>
                 </li>
               )
             })}
