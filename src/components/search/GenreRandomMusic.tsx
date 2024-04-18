@@ -1,6 +1,6 @@
 import { getRandomMusicData } from '@/shared/main/api'
 import Pagination from '@/util/Pagination '
-import { modalPaging } from '@/util/util'
+import { paging } from '@/util/util'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import NoSearchResultItem from './NoSearchResultItem'
@@ -16,10 +16,11 @@ const GenreRandomMusic = () => {
     return <div>정보를 가져오고 있습니다</div>
   }
 
-  const { currentItems, nextPage, prevPage, totalPages } = modalPaging(
+  const { currentItems, nextPage, prevPage, totalPages } = paging(
     data,
     currentPage,
     setCurrentPage,
+    5,
   )
   return (
     <div>

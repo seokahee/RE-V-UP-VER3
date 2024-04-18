@@ -3,6 +3,7 @@ import { GOBACK_SHADOW } from '@/components/communityDetail/detailCss'
 import CommunityListData from '@/components/communityList/CommunityListData'
 import CommunityListSort from '@/components/communityList/CommunityListSort'
 import { getCommunityListInCommunity } from '@/query/community/communityQueryKey'
+import { CommunityType } from '@/types/community/type'
 import Pagination from '@/util/Pagination '
 import { paging } from '@/util/util'
 import Link from 'next/link'
@@ -39,7 +40,12 @@ const Community = () => {
     currentPage,
     setCurrentPage,
   )
-
+  const likedItem =
+    !isSort &&
+    currentItems.sort((a: any, b: any) => {
+      b.likeList - a.likeList
+    })
+  console.log('likedItem', likedItem)
   return (
     <div>
       <div className='shadow-mb relative mt-[32px] flex h-[72px] w-[732px] items-center justify-center rounded-xl border-4 border-white border-opacity-10 bg-white bg-opacity-10'>
@@ -55,15 +61,17 @@ const Community = () => {
       {currentItems.map((item: any) => {
         return <CommunityListData key={item.boardId} item={item} />
       })}
-      <div className='my-[32px]'>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          prevPage={prevPage}
-          nextPage={nextPage}
-          setCurrentPage={setCurrentPage}
-        />
-      </div>
+      {currentItems && currentItems.length > 0 ? (
+        <div className='my-[32px]'>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            prevPage={prevPage}
+            nextPage={nextPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </div>
+      ) : null}
     </div>
   )
 }
