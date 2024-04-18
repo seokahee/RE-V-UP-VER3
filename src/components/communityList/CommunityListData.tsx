@@ -5,6 +5,7 @@ import Link from 'next/link'
 import React from 'react'
 import comment from '@/../public/images/comment.svg'
 import like from '@/../public/images/like.svg'
+import userDefaultImg from '@/../public/images/userDefaultImg.svg'
 
 const CommunityListData = ({ item }: { item: CommunityType }) => {
   const keys = Object.keys(item.comment)
@@ -25,9 +26,13 @@ const CommunityListData = ({ item }: { item: CommunityType }) => {
               className='h-[59px] w-[59px] rounded-full'
             />
           ) : (
-            <div className='h-[59px] w-[59px] rounded-full bg-zinc-700 p-[28px]'>
-              <i></i>
-            </div>
+            <Image
+              src={userDefaultImg}
+              alt='유저 이미지'
+              width={56}
+              height={56}
+              className='h-[59px] w-[59px] rounded-full'
+            />
           )}
 
           <div className='flex h-[53px] w-[548px] flex-col gap-[8px]'>
