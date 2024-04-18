@@ -81,12 +81,12 @@ const FollowerList = ({ data, myFollowing }: FollowProps) => {
         return (
           <li key={item.userId} className='flex justify-between py-4'>
             <div className='flex items-center'>
-              <figure>
+              <figure className='flex h-[56px] w-[56px] items-center justify-center overflow-hidden rounded-full'>
                 {item.userImage && (
                   <Image
                     src={item.userImage}
-                    width={50}
-                    height={50}
+                    width={56}
+                    height={56}
                     alt={`${item.nickname} 프로필 이미지`}
                   />
                 )}
