@@ -1,15 +1,14 @@
 'use client'
 
-import { FormEvent, useEffect, useRef, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { findUserPassword } from '@/shared/login/loginApi'
 import Link from 'next/link'
 import Image from 'next/image'
 import Modal from '@/util/Modal'
 import useInput from '@/hooks/useInput'
-import findPwImg from '@/../public/images/findPassword.svg'
 import SocialLogin from '@/components/socialLogin/page'
+import { findUserPassword } from '@/shared/login/loginApi'
 import {
   DROP_SHADOW,
   SHADOW,
@@ -19,6 +18,7 @@ import {
   OPEN_ANOTHER_SHADOW,
 } from './loginCss'
 import { ACTIVE_BUTTON_SHADOW } from './buttonCss'
+import findPwImg from '@/../public/images/findPassword.svg'
 import close from '@/../public/images/close-button.svg'
 
 const Login = () => {
@@ -99,7 +99,7 @@ const Login = () => {
   }
 
   return (
-    <div className='flex h-full w-full flex-col items-center justify-center'>
+    <div className='flex h-screen w-full flex-col items-center justify-center  '>
       {isModalOpen && (
         <div className='z-1000 absolute inset-0 bg-black opacity-50'></div>
       )}
@@ -131,7 +131,7 @@ const Login = () => {
               <div>
                 <button
                   onClick={findPassword}
-                  className={`flex h-[48px] w-[320px] items-center justify-center  rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
+                  className={`flex h-[48px] w-[320px] items-center justify-center rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
                 >
                   {submitEmail ? '전송완료!' : '전송'}
                 </button>
@@ -141,9 +141,9 @@ const Login = () => {
         </Modal>
       )}
       <div
-        className={`border-gray-300 absolute  left-1/2 top-1/2  flex w-[516px] -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center overflow-hidden rounded-2xl border-none border-opacity-10 bg-white bg-opacity-10 pb-[16px] pt-[106px] ${SHADOW}`}
+        className={`border-gray-300 flex w-[516px] flex-col items-center justify-center overflow-scroll rounded-2xl border-none border-opacity-10 bg-white bg-opacity-10 pb-[16px] pt-[106px]  ${SHADOW}`}
       >
-        <section className='tracking-[-0.03em] '>
+        <section className='tracking-[-0.03em]'>
           <div className='text-center text-[24px] font-bold'>
             <p>V-UP에&nbsp;오신&nbsp;걸&nbsp;환영합니다</p>
           </div>
@@ -219,7 +219,7 @@ const Login = () => {
                 <p>아직&nbsp;회원이&nbsp;아니신가요?</p>
                 <Link
                   href={'/join'}
-                  className='pointer-events-none leading-[1.4rem] text-primary underline '
+                  className='leading-[1.4rem] text-primary underline '
                 >
                   <p>회원가입&nbsp;하기</p>
                 </Link>

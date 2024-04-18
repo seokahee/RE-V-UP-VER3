@@ -15,12 +15,13 @@ import MyPlaylist from './MyPlaylist'
 import { useSession } from 'next-auth/react'
 import right from '@/../public/images/chevron-right.svg'
 import pencil from '@/../public/images/pencil-line.svg'
-import ButtonPrimary from './ButtonPrimary'
+import ButtonPrimary from '../../util/ButtonPrimary'
 import FollowingList from './FollowingList'
 import FollowerList from './FollowerList'
+import { useRouter } from 'next/navigation'
 
 const MyInfo = () => {
-  const { data: userSessionInfo } = useSession()
+  const { data: userSessionInfo, status } = useSession()
   const uid = userSessionInfo?.user?.uid as string
 
   const [userImage, setUserImage] = useState('')
@@ -30,6 +31,7 @@ const MyInfo = () => {
   const [nickname, setNickname] = useState('')
   const [checkText, setCheckText] = useState('')
   const nicknameRef = useRef<HTMLInputElement>(null)
+  const router = useRouter()
 
   const [isVisibility, setIsVisibility] = useState({
     mbtiOpen: false,
@@ -193,6 +195,12 @@ const MyInfo = () => {
 
   const inputFocus = 'focus:border-primary drop-shadow-none'
 
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.replace('/')
+    }
+  }, [router, status])
+
   if (isError) {
     return <>에러발생</>
   }
@@ -248,7 +256,8 @@ const MyInfo = () => {
           </span>
         </p>
         <p className='mt-2 flex flex-wrap gap-4 text-[1rem] font-bold tracking-[-0.03em] text-[#ffffff80]'>
-          <span>{data?.userChar?.mbti}</span> |{' '}
+          <span>{data?.userChar?.mbti}</span>{' '}
+          {data?.userChar?.mbti && data?.userChar?.resultSentence ? '|' : ''}{' '}
           <span>{data?.userChar?.resultSentence}</span>
         </p>
       </div>

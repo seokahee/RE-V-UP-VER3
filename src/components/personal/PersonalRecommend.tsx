@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useState } from 'react'
 import Image from 'next/image'
 import {
@@ -9,13 +10,15 @@ import {
   getPersonaledUser,
   updatePersonalMusic,
   insertPersonalResult,
+  updatePersonalResult,
 } from '@/shared/personal/personalApi'
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'
-import CheckboxItem from '../mypage/CheckboxItem'
+
 import type { PersonalRecommendProps } from '@/types/personal/type'
+
 import { useRouter } from 'next/navigation'
 import { SentenceMatch } from '@/util/personal/util'
-import ButtonPrimary from '../mypage/ButtonPrimary'
+import ButtonPrimary from '../../util/ButtonPrimary'
 
 const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
   const [checkedList, setCheckedList] = useState<string[]>([])
@@ -62,6 +65,7 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
       setCheckedList([])
+      refetchCurrent()
     },
   })
 
@@ -71,28 +75,38 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
       setCheckedList([])
+      refetchCurrent()
     },
   })
 
   const updateCurrentMusicMutation = useMutation({
+    mutationFn: updatePersonalResult,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
+      setCheckedList([])
+      refetchCurrent()
+    },
+  })
+
+  const insertCurrentMusicMutation = useMutation({
     mutationFn: insertPersonalResult,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
       setCheckedList([])
+      refetchCurrent()
     },
   })
 
   //현재 재생목록 리스트
-  const { data: current } = useQuery({
+  const { data: current, refetch: refetchCurrent } = useQuery({
     queryFn: () => getCurrentMusics(userChar.uid),
     queryKey: ['currentMusic'],
   })
 
-  if (!current) {
-    return
-  }
-  const currentList = current?.[0].currentMusicIds as string[]
-
+  const currentList =
+    current?.length === 0
+      ? []
+      : current?.[0]?.currentMusicIds || ([] as string[])
   //현재 재생목록에 결과추가
   const onSubmitCurrentMusic = () => {
     if (checkedList.length === 0) {
@@ -110,8 +124,14 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
       return
     }
 
-    const musicList = [...currentList, ...checkedList] as string[]
-    updateCurrentMusicMutation.mutate({ userId: userChar.uid, musicList })
+    if (!current || current.length === 0) {
+      const musicList = [...checkedList] as string[]
+      insertCurrentMusicMutation.mutate({ userId: userChar.uid, musicList })
+    } else {
+      const musicList = [...currentList, ...checkedList] as string[]
+      updateCurrentMusicMutation.mutate({ userId: userChar.uid, musicList })
+    }
+
     onSubmitPersonalResult()
   }
   //퍼스널 DB에 결과추가
@@ -138,50 +158,60 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     router.push('/')
   }
 
-  console.log(checkedList, 'checkedList')
+  if (isLoading) {
+    return <div className='text-center'> 열심히 곡을 고르는 중입니다.</div>
+  }
+
+  if (isError) {
+    return (
+      <div className='text-center'>
+        에러가 발생했습니다. 잠시 후 다시 시도해주세요
+      </div>
+    )
+  }
 
   return (
     <div>
-      <div className='py-4 text-center text-sm font-medium text-white text-opacity-70'>
-        <p>{SentenceMatch(userChar.mbti)}</p>
+      <div className='pt-[16px] text-center text-sm font-medium text-white text-opacity-70'>
+        <p className='px-[20px]'>{SentenceMatch(userChar.mbti)}</p>
       </div>
-      <div className='py-4 text-center text-sm text-white '>
+      <div className='pt-[24px] text-center text-white'>
         <p>당신의 취향에 맞는 음악을 추천 해드릴게요 &#x1F642;</p>
       </div>
-      <div className=' flex flex-row justify-center  gap-12 py-4 text-center text-white text-opacity-50'>
+
+      {/** */}
+      <div className='flex justify-center gap-12 pt-[16px] text-white text-opacity-50'>
         {recommend?.map((item) => (
-          <div key={item.musicId}>
-            <label htmlFor={item.musicId}>
-              <input
-                type='checkbox'
-                id={item.musicId}
-                checked={checkedList.includes(item.musicId)}
-                onChange={(e) =>
-                  onChangeCheckMusicHandler(e.target.checked, item.musicId)
-                }
-                className='peer hidden'
-              />
-              <Image
-                src={item.thumbnail}
-                width={100}
-                height={100}
-                alt={`${item.musicTitle} 앨범 썸네일`}
-                className='  rounded-full ring-4 ring-transparent peer-checked:ring-white'
-              />
-              <div className=' text-lg font-bold peer-checked:text-white'>
-                <p>{item.musicTitle}</p>
-              </div>
-              <div className='text-sm font-medium peer-checked:text-white'>
-                {item.artist}
-              </div>
-              <div>
-                {currentList.includes(item.musicId) ? '현재 재생중' : ''}
-              </div>
-            </label>
-          </div>
+          <label htmlFor={item.musicId} key={item.musicId}>
+            <input
+              type='checkbox'
+              id={item.musicId}
+              checked={checkedList.includes(item.musicId)}
+              onChange={(e) =>
+                onChangeCheckMusicHandler(e.target.checked, item.musicId)
+              }
+              className='peer hidden'
+            />
+
+            <Image
+              src={item.thumbnail}
+              width={80}
+              height={80}
+              alt={`${item.musicTitle} 앨범 썸네일`}
+              className='rounded-full ring-4 ring-transparent peer-checked:ring-white'
+            />
+            <div className='w-[80px] text-lg font-bold peer-checked:text-white'>
+              <p className='w-[80px] text-center'>{item.musicTitle}</p>
+            </div>
+            <div className='text-center text-sm font-medium peer-checked:text-white '>
+              <p> {item.artist}</p>
+            </div>
+
+            <div>{currentList.includes(item.musicId) ? '현재 재생중' : ''}</div>
+          </label>
         ))}
       </div>
-      <div className='flex justify-center gap-4 py-8'>
+      <div className='flex justify-center gap-4 pt-[22px]'>
         <ButtonPrimary onClick={onSubmitCurrentMusic}>
           재생목록에 담기
         </ButtonPrimary>

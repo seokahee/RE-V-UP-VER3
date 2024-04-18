@@ -53,99 +53,107 @@ const TopLikedBoard = () => {
     <section className={`${!check ? 'pl-10' : 'pl-20'} mb-[7.8rem] mt-12`}>
       <SectionTitle>지금 핫한 게시글 🔥</SectionTitle>
       <div className='relative flex overflow-hidden'>
-        <ul
-          className=' flex flex-nowrap px-[1px] py-1'
-          style={{
-            transition: 'all 0.4s ease-in-out',
-            transform: `translateX(${position}px)`,
-          }}
-        >
-          {data
-            ?.sort((a, b) => {
-              return (
-                (!b.likeList ? 0 : b.likeList?.length) -
-                (!a.likeList ? 0 : a.likeList?.length)
-              )
-            })
-            .map((item) => {
-              const likedLength = item.likeList ? item.likeList.length : 0
+        {data && data.length > 0 ? (
+          <>
+            <ul
+              className=' flex flex-nowrap px-[1px] py-1'
+              style={{
+                transition: 'all 0.4s ease-in-out',
+                transform: `translateX(${position}px)`,
+              }}
+            >
+              {data
+                ?.sort((a, b) => {
+                  return (
+                    (!b.likeList ? 0 : b.likeList?.length) -
+                    (!a.likeList ? 0 : a.likeList?.length)
+                  )
+                })
+                .map((item) => {
+                  const likedLength = item.likeList ? item.likeList.length : 0
 
-              return (
-                <li
-                  key={item.boardId}
-                  className={`mr-4 w-[356px] rounded-[2rem] border-4 border-[#00000070] bg-[#ffffff19] p-4 ${itemShadow}`}
+                  return (
+                    <li
+                      key={item.boardId}
+                      className={`mr-4 w-[356px] rounded-[2rem] border-4 border-[#00000070] bg-[#ffffff19] p-4 ${itemShadow}`}
+                    >
+                      <Link href={`/community/${item.boardId}`}>
+                        <div className='flex items-center'>
+                          <figure className='flex h-7 w-7 overflow-hidden rounded-full border-2 border-white bg-slate-200'>
+                            {item.userInfo.userImage && (
+                              <Image
+                                src={item.userInfo.userImage}
+                                alt={item.userInfo.nickname!}
+                                width={24}
+                                height={24}
+                              />
+                            )}
+                          </figure>
+                          <span className='pl-[6px] text-[1.125rem] font-semibold'>
+                            {item.userInfo.nickname}
+                          </span>
+                        </div>
+                        <p className='mt-4 block overflow-hidden text-ellipsis whitespace-nowrap tracking-[-0.03em] text-[#ffffff4c]'>
+                          {item.boardTitle}
+                        </p>
+                        <div className='mt-9 flex items-center justify-end gap-2 text-[0.875rem] text-[#ffffff4c]'>
+                          <Image
+                            src={message}
+                            width={24}
+                            height={24}
+                            alt='댓글 아이콘'
+                          />{' '}
+                          {item.comment ? item.comment.length : 0}
+                          <Image
+                            src={heart}
+                            width={24}
+                            height={24}
+                            alt='좋아요 아이콘'
+                          />{' '}
+                          {likedLength}
+                        </div>
+                      </Link>
+                    </li>
+                  )
+                })}
+            </ul>
+
+            <div>
+              {position !== ((data?.length as number) - 1) * -MOVE_POINT && (
+                <button
+                  type='button'
+                  className={`absolute right-[40px] top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[#0000001a] bg-[#ffffff19] text-white backdrop-blur-md ${shadow}`}
+                  onClick={onClickNextHandler}
                 >
-                  <div className='flex items-center'>
-                    <figure className='flex h-7 w-7 overflow-hidden rounded-full border-2 border-white bg-slate-200'>
-                      {item.userInfo.userImage && (
-                        <Image
-                          src={item.userInfo.userImage}
-                          alt={item.userInfo.nickname!}
-                          width={24}
-                          height={24}
-                        />
-                      )}
-                    </figure>
-                    <span className='pl-[6px] text-[1.125rem] font-semibold'>
-                      {item.userInfo.nickname}
-                    </span>
-                  </div>
-                  <Link
-                    href={`/community/${item.boardId}`}
-                    className='mt-4 block overflow-hidden text-ellipsis whitespace-nowrap tracking-[-0.03em] text-[#ffffff4c]'
-                  >
-                    {item.boardTitle}
-                  </Link>
-                  <div className='mt-9 flex items-center justify-end gap-2 text-[0.875rem] text-[#ffffff4c]'>
-                    <Image
-                      src={message}
-                      width={24}
-                      height={24}
-                      alt='댓글 아이콘'
-                    />{' '}
-                    {item.comment ? item.comment.length : 0}
-                    <Image
-                      src={heart}
-                      width={24}
-                      height={24}
-                      alt='좋아요 아이콘'
-                    />{' '}
-                    {likedLength}
-                  </div>
-                </li>
-              )
-            })}
-        </ul>
-        <div>
-          {position !== ((data?.length as number) - 1) * -MOVE_POINT && (
-            <button
-              type='button'
-              className={`absolute right-[1px] top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[#0000001a] bg-[#ffffff19] text-white backdrop-blur-md ${shadow}`}
-              onClick={onClickNextHandler}
-            >
-              <Image
-                src={next}
-                width={24}
-                height={24}
-                alt='다음으로 넘어가기'
-              />
-            </button>
-          )}
-          {position !== 0 && (
-            <button
-              type='button'
-              className={`absolute left-[1px] top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[#0000001a] bg-[#ffffff19] text-white backdrop-blur-md ${shadow}`}
-              onClick={onClickPrevHandler}
-            >
-              <Image
-                src={prev}
-                width={24}
-                height={24}
-                alt='이전으로 넘어가기'
-              />
-            </button>
-          )}
-        </div>
+                  <Image
+                    src={next}
+                    width={24}
+                    height={24}
+                    alt='다음으로 넘어가기'
+                  />
+                </button>
+              )}
+              {position !== 0 && (
+                <button
+                  type='button'
+                  className={`absolute left-[1px] top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[#0000001a] bg-[#ffffff19] text-white backdrop-blur-md ${shadow}`}
+                  onClick={onClickPrevHandler}
+                >
+                  <Image
+                    src={prev}
+                    width={24}
+                    height={24}
+                    alt='이전으로 넘어가기'
+                  />
+                </button>
+              )}
+            </div>
+          </>
+        ) : (
+          <p className='flex h-[150px] w-full items-center justify-center text-[1rem] text-white/50'>
+            인기 게시글이 없습니다.
+          </p>
+        )}
       </div>
     </section>
   )

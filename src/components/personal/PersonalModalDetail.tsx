@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Businessman from '@/../public/images/Businessman.svg'
-import ButtonPrimary from '../mypage/ButtonPrimary'
+import ButtonPrimary from '../../util/ButtonPrimary'
 import PreviousButton from '../mypage/PreviousButton'
 import submitIcon from '@/../public/images/Icon.svg'
 
@@ -30,7 +30,6 @@ const PersonalModalDetail = ({ isOpen, onClose }: PersonalModal) => {
     let expires = new Date()
     expires.setHours(expires.getHours() + 24)
     localStorage.setItem('homeVisited', expires.getTime().toString())
-    // 현재 시간의 24시간 뒤의 시간을 homeVisited에 저장
     onClose()
   }
   return (
@@ -60,8 +59,10 @@ const PersonalModalDetail = ({ isOpen, onClose }: PersonalModal) => {
           </div>
           <div>
             <ButtonPrimary onClick={onPersonalTestHandler}>
-              진단 받기
-              <Image src={submitIcon} />
+              <div className='flex flex-row gap-4'>
+                <p>진단 받기</p>
+                <Image src={submitIcon} alt='화살표' width={8} height={14} />
+              </div>
             </ButtonPrimary>
           </div>
         </div>

@@ -18,11 +18,11 @@ const Header = () => {
   if (path === '/mypage') {
     return (
       <header
-        className={`flex items-center justify-between border-b-2 border-solid py-4 ${check ? 'pl-[5rem]' : 'pl-[2.5rem]'}`}
+        className={`flex h-[120px] w-[836px] items-center justify-between border-b-2 border-solid border-primary-black py-4 pr-[2.5rem] ${check ? 'pl-[5rem] ' : 'pl-[2.5rem]'}`}
       >
         <nav>
           <Link href='/'>
-            <h1 className='text-2xl font-bold italic text-primary-white '>
+            <h1 className='pr-[64px] text-[28px]  font-bold italic text-primary-white'>
               V-UP
             </h1>
           </Link>
@@ -59,20 +59,21 @@ const Header = () => {
   } else if (
     path === '/join' ||
     path === '/login' ||
-    path === '/personal-music'
+    path === '/personal-music' ||
+    path === '/new-password'
   ) {
     return (
-      <header className='border-b-2  border-solid px-[2.5rem] py-4'>
-        <nav className='flex flex-row  gap-2'>
-          <Link href='/' className=' w-[340px] '>
+      <header className='flex h-[120px] w-[836px] items-center justify-center border-b-2 border-solid border-primary-black px-[2.5rem] py-4'>
+        <nav className='flex w-screen flex-row'>
+          <Link href='/' className='pr-[300px]'>
             <Image
               src={back}
               alt='뒤로가기 아이콘'
-              className=' relative inline-flex h-12 w-12 items-center justify-center rounded-xl border-4 border-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
+              className='  relative inline-flex h-12 w-12  rounded-xl border-4 border-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
             />
           </Link>
           <Link href='/'>
-            <h1 className='text-2xl font-bold italic text-primary-white '>
+            <h1 className='text-[28px] font-bold italic text-primary-white '>
               V-UP
             </h1>
           </Link>
@@ -82,11 +83,13 @@ const Header = () => {
   } else {
     return (
       <header
-        className={`flex items-center justify-between border-b-2 border-solid py-4 ${check ? 'pl-[5rem]' : 'pl-[2.5rem]'} pr-[2.5rem]`}
+        className={`flex h-[120px] w-[836px] items-center justify-between border-b-2 border-solid border-primary-black py-4 ${check ? 'pl-[5rem]' : 'pl-[2.5rem]'} pr-[2.5rem]`}
       >
         <nav>
           <Link href='/'>
-            <p className='text-2xl font-bold italic text-primary-white'>V-UP</p>
+            <p className='text-[28px]  font-bold italic text-primary-white'>
+              V-UP
+            </p>
           </Link>
         </nav>
         <nav>
@@ -95,7 +98,7 @@ const Header = () => {
         <nav className='flex justify-between gap-2'>
           <Link
             href='/community'
-            className=' relative inline-flex h-12 w-12 items-center justify-center rounded-xl border-4 border-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
+            className=' relative inline-flex h-12 w-12 items-center justify-center rounded-xl border-4 border-primary-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
           >
             <Image src={commu} alt='' />
           </Link>

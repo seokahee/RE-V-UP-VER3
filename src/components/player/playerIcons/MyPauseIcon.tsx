@@ -17,6 +17,7 @@ const MyPauseIcon = () => {
           width='86'
           height='86'
           rx='15'
+          // stroke='#0000006a'
           stroke-opacity='0.7'
           stroke-width='2'
         />

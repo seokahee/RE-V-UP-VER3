@@ -8,22 +8,23 @@ const CommunityListSort = ({
   setIsSort: Dispatch<SetStateAction<boolean>>
 }) => {
   return (
-    <div className='flex  gap-2'>
+    <div className='flex  h-[22px] w-[58px] gap-2 text-[16px] leading-[140%]'>
       <button
         onClick={() => {
           setIsSort(true)
         }}
-        className={`${isSort ? 'text-zinc-400' : 'text-black'}`}
+        className={`${isSort ? 'font-bold text-[#685BFF]' : 'text-[rgba(255,255,255,0.5)]'}`}
       >
         최신순
       </button>
+      |
       <button
         onClick={() => {
           setIsSort(false)
         }}
-        className={`${isSort ? 'text-black' : 'text-zinc-400'}`}
+        className={`${isSort ? 'text-[rgba(255,255,255,0.5)]' : 'font-bold text-[#685BFF]'}`}
       >
-        좋아요
+        좋아요순
       </button>
     </div>
   )

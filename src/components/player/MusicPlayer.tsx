@@ -39,6 +39,7 @@ const MusicPlayer = () => {
     mutationFn: insertMyPlayMusic,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myMusicIds'] })
+      queryClient.invalidateQueries({ queryKey: ['getMyMusicList'] })
     },
   })
 
@@ -46,6 +47,7 @@ const MusicPlayer = () => {
     mutationFn: updateMyPlayMusic,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myMusicIds'] })
+      queryClient.invalidateQueries({ queryKey: ['getMyMusicList'] })
     },
   })
 
@@ -123,6 +125,22 @@ const MusicPlayer = () => {
         .map((music) => music.musicId)
       deleteMutation.mutate({ uid, currentMusicData })
       setCheckedList([])
+
+      const isCurrentMusicDeleted = checkedList.includes(
+        currentPlaying!.musicId,
+      )
+      if (isCurrentMusicDeleted) {
+        setCurrentPlaying(
+          currentPlayList[musicIndex]
+            ? (currentPlayList[musicIndex + 1] as CurrentPlayListType)
+            : null,
+        )
+        setCurrentPlaying(
+          currentPlayList[musicIndex]
+            ? (currentPlayList[musicIndex + 1] as CurrentPlayListType)
+            : null,
+        )
+      }
     }
   }
   const onInsertMyPlayListHandler = async () => {
@@ -168,33 +186,31 @@ const MusicPlayer = () => {
   }
   return (
     <div>
+      <div className='min-h-[675px]'>
+        <Player
+          currentPlaying={currentPlaying}
+          setCurrentPlaying={setCurrentPlaying}
+          currentPlayList={currentPlayList as CurrentPlayListType[]}
+          musicIndex={musicIndex}
+          isLyrics={isLyrics}
+          isRandom={isRandom}
+          onRandomMusicHandler={onRandomMusicHandler}
+          onPreviousHandler={onPreviousHandler}
+          onNextTrackHandler={onNextTrackHandler}
+          onLyricsToggle={onLyricsToggle}
+          onInsertMyPlayListHandler={onInsertMyPlayListHandler}
+        />
+      </div>
       <div>
-        <div>
-          <Player
-            currentPlaying={currentPlaying}
-            setCurrentPlaying={setCurrentPlaying}
-            currentPlayList={currentPlayList as CurrentPlayListType[]}
-            musicIndex={musicIndex}
-            isLyrics={isLyrics}
-            isRandom={isRandom}
-            onRandomMusicHandler={onRandomMusicHandler}
-            onPreviousHandler={onPreviousHandler}
-            onNextTrackHandler={onNextTrackHandler}
-            onLyricsToggle={onLyricsToggle}
-            onInsertMyPlayListHandler={onInsertMyPlayListHandler}
-          />
-        </div>
-        <div>
-          <CurrentMusicList
-            currentPlayList={currentPlayList as CurrentPlayListType[]}
-            isLyrics={isLyrics}
-            checkedList={checkedList}
-            setCurrentPlaying={setCurrentPlaying}
-            onChangeCheckMusicHandler={onChangeCheckMusicHandler}
-            onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
-            setMusicIndex={setMusicIndex}
-          />
-        </div>
+        <CurrentMusicList
+          currentPlayList={currentPlayList as CurrentPlayListType[]}
+          isLyrics={isLyrics}
+          checkedList={checkedList}
+          setCurrentPlaying={setCurrentPlaying}
+          onChangeCheckMusicHandler={onChangeCheckMusicHandler}
+          onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
+          setMusicIndex={setMusicIndex}
+        />
       </div>
     </div>
   )

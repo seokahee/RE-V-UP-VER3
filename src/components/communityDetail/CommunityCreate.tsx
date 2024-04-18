@@ -10,9 +10,15 @@ import {
   validateFormBlank,
 } from '@/query/communityDetail/mutation'
 import MusicSearch from '../search/MusicSearch'
-import goback from '@/../public/images/goback.svg'
 import useInput from '@/hooks/useInput'
-import { GOBACK_SHADOW } from './detailCss'
+import goback from '@/../public/images/goback.svg'
+import {
+  ADDED_CURRENT_MUSIC_SHADOW,
+  ADD_BOARD_STICK,
+  ALLOW_SHADOW,
+} from './communityCss'
+import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
+import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 
 const CommunityCreate = () => {
   const router = useRouter()
@@ -58,7 +64,7 @@ const CommunityCreate = () => {
       return
     }
 
-    if (!isChooseMusic) {
+    if (!isChooseMusic || !chooseMusic) {
       alert('음악 선택은 필수입니다!')
       return
     }
@@ -91,21 +97,28 @@ const CommunityCreate = () => {
 
   return (
     <div>
-      <form onSubmit={onSumitHandler}>
-        <div className='flex h-[72px] w-[100%] items-center justify-between'>
+      <form onSubmit={onSumitHandler} className='flex flex-col gap-[32px]'>
+        <div
+          className={`mt-[32px] flex h-[72px] w-[100%] items-center justify-between rounded-[16px] border-[4px] border-solid border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.1)] px-[24px] py-[12px] tracking-[-0.03em] ${ADD_BOARD_STICK}`}
+        >
           <button
             onClick={(e) => {
               e.preventDefault()
               router.replace('/community')
+              setChooseMusic(null)
             }}
-            className={`${GOBACK_SHADOW}`}
+            className={`flex h-[48px] w-[48px] items-center justify-center rounded-[12px] bg-[rgba(255,255,255,0.1)] ${ALLOW_SHADOW}`}
           >
             <Image src={goback} alt='이전으로 아이콘' width={24} height={24} />
           </button>
-          <div>
-            <h3 className='mx-[auto]'>글쓰기</h3>
+          <div className='mx-[auto] text-center'>
+            <h3>글쓰기</h3>
           </div>
-          <button>등록</button>
+          <button
+            className={`flex h-[48px] w-[120px] items-center justify-center rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
+          >
+            <p>등록하기</p>
+          </button>
         </div>
 
         <div>
@@ -115,51 +128,59 @@ const CommunityCreate = () => {
               name='boardTitle'
               value={boardTitle}
               ref={refTitle}
-              maxLength={20}
+              maxLength={40}
               onChange={onChangeHandler}
-              className='focus:outline-todayPink mb-4 w-full rounded-lg border p-2 text-black'
+              className=' mb-4 w-full rounded-lg border-none bg-[rgba(255,255,255,0.1)] p-2'
               placeholder='제목을 입력해 주세요.'
             />
           </div>
           <textarea
             name='content'
             value={content}
-            maxLength={50}
+            maxLength={100}
             onChange={onChangeHandler}
-            className='focus:outline-todayPink mb-4 w-full rounded-lg border p-2 text-black'
+            className='mb-4 h-[200px] w-full rounded-lg border-none bg-[rgba(255,255,255,0.1)] p-2 '
             placeholder='추천할 음악에 대해 얘기해 주세요.'
           ></textarea>
         </div>
       </form>
 
       <article className='flex flex-col gap-[16px]'>
-        <div className='flex gap-[16px]'>
+        <section className='flex gap-[16px]'>
           <MusicSearch />
-          <section className='flex gap-[16px]'>
-            <div>
-              {thumbnail ? (
-                <Image
-                  src={thumbnail}
-                  alt='노래앨범이미지'
-                  width={80}
-                  height={80}
-                />
-              ) : (
-                <div className='h-[80px] w-[80px] rounded-[16px] border-[1px] border-solid border-black'>
-                  <i></i>
-                </div>
-              )}
-            </div>
-            <article className='flex items-center justify-center [&_div]:flex [&_div]:gap-[16px]'>
+          <article
+            className={`flex h-[88px] w-[602px] gap-[16px] rounded-[16px] bg-[rgba(255,255,255,0.1)] p-[16px] ${ADDED_CURRENT_MUSIC_SHADOW} flex gap-[16px]`}
+          >
+            <section className='flex gap-[16px]'>
               <div className='flex items-center'>
-                <p className='text-[24px] font-bold'>{musicTitle}</p>
-                <p className='text-[16px] font-bold'>{artist}</p>
+                {thumbnail ? (
+                  <Image
+                    src={thumbnail}
+                    alt='노래앨범이미지'
+                    width={56}
+                    height={56}
+                    className='rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)]'
+                  />
+                ) : (
+                  <div className='h-[56px] w-[56px] rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)]'>
+                    <i></i>
+                  </div>
+                )}
               </div>
-            </article>
-          </section>
-        </div>
+              <article className='flex w-full items-center justify-center [&_div]:flex [&_div]:gap-[16px]'>
+                <div className='flex w-full items-center'>
+                  <p className='text-[24px] font-bold'>{musicTitle}</p>
+
+                  <p className='text-[16px] font-bold'>{artist}</p>
+                </div>
+              </article>
+            </section>
+          </article>
+        </section>
         <div>
-          <p>게시글을 등록하기 위해 음악을 추가 해야돼요!</p>
+          <p className='text-[14px] text-[rgba(255,255,255,0.5)]'>
+            게시글을 등록하기 위해 음악을 추가 해야돼요!
+          </p>
         </div>
       </article>
     </div>

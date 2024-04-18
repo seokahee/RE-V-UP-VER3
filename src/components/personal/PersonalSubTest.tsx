@@ -1,14 +1,13 @@
-'use client'
 import React, { useState } from 'react'
 import { useSurvey } from '@/shared/store/personalStore'
 import { useSession } from 'next-auth/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { insertUserChar } from '@/shared/personal/personalApi'
-import ButtonPrimary from '../mypage/ButtonPrimary'
+import ButtonPrimary from '@/util/ButtonPrimary'
 import PreviousButton from '../mypage/PreviousButton'
-import { useEffect } from 'react'
-
-import { useRouter } from 'next/navigation'
+import left from '@/../public/images/double_arrow_left.svg'
+import right from '@/../public/images/double_arrow.svg'
+import Image from 'next/image'
 import { DROP_SHADOW, INPUT_SHADOW, INPUT_FOCUS } from '../login/loginCss'
 
 import type { PersonalInfo } from '@/types/personal/type'
@@ -18,16 +17,18 @@ const PersonalSubTest = ({
 }: {
   setPageCount: React.Dispatch<React.SetStateAction<string>>
 }) => {
-  const { addUserChar, userGender } = useSurvey()
+  const { addUserChar, userGender, userChar } = useSurvey()
   const { data: userSessionInfo } = useSession()
   const userId = userSessionInfo?.user?.uid as string
   const queryClient = useQueryClient()
-  const router = useRouter()
 
-  const [EI, setEI] = useState<string>('')
-  const [SN, setSN] = useState<string>('')
-  const [TF, setTF] = useState<string>('T')
-  const [PJ, setPJ] = useState<string>('P')
+  const exMbti = userChar.mbti
+
+  const [exEI, exSN, exTF, exPJ] = exMbti.split('')
+  const [EI, setEI] = useState<boolean>(exEI === 'E' ? false : true ?? false)
+  const [SN, setSN] = useState<boolean>(exSN === 'N' ? false : true ?? false)
+  const [TF, setTF] = useState<boolean>(exTF === 'F' ? false : true ?? false)
+  const [PJ, setPJ] = useState<boolean>(exPJ === 'J' ? false : true ?? false)
 
   const insertUserCharMutation = useMutation({
     mutationFn: insertUserChar,
@@ -36,31 +37,18 @@ const PersonalSubTest = ({
     },
   })
 
-  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    if (name === 'EI') {
-      setEI(value)
-    } else if (name === 'SN') {
-      setSN(value)
-    } else if (name === 'TF') {
-      setTF(value)
-    } else if (name === 'PJ') {
-      setPJ(value)
-    }
-  }
-
   const calculateMBTI = () => {
-    return EI + SN + TF + PJ
+    const changeEI = EI ? 'I' : 'E'
+    const changeSN = SN ? 'S' : 'N'
+    const changeTF = TF ? 'T' : 'F'
+    const changePJ = PJ ? 'P' : 'J'
+
+    return changeEI + changeSN + changeTF + changePJ
   }
 
   const mbti = calculateMBTI()
 
   const onsubmitResultHandler = () => {
-    // if (!EI || !SN || !TF || !PJ) {
-    //   alert('모든 항목을 선택해주세요.')
-    //   return
-    // }
-
     addUserChar({ gender: userGender, mbti, uid: userId })
     const personalUser: PersonalInfo = {
       mbti: mbti,
@@ -69,147 +57,172 @@ const PersonalSubTest = ({
 
     insertUserCharMutation.mutate({ userId: userId, personalUser })
 
-    setEI('')
-    setSN('')
-    setTF('')
-    setPJ('')
-
     handleNextClick('pageThree')
   }
-
-  console.log(EI, SN, TF, PJ, 'MBTI')
   const handleNextClick = (param: string) => {
     return setPageCount(param)
   }
 
   return (
-    <div className='grid place-items-center'>
-      {' '}
-      <br />
-      <div className='grid h-[450px] h-screen w-[600px] place-items-center space-y-4 rounded-[32px] bg-white bg-opacity-10'>
-        <div className='flex justify-center'>
-          <div className='flex items-center'>
-            <label
-              htmlFor='checkEI'
-              className='border-gray-400 relative h-10 w-20 rounded-full border-2 bg-white'
-            >
+    <div className='w-[516px] justify-center pb-[90px] pt-[70px]'>
+      {/**wrap */}
+      <div className='h-[800px] rounded-[32px] bg-white bg-opacity-10'>
+        <div>
+          <p className='pt-[106px] text-center text-xl font-bold text-white'>
+            MBTI를 입력해주세요!
+          </p>
+        </div>
+        <div className='pt-[37px]'>
+          <div className='mb-4 flex flex-row justify-center'>
+            {' '}
+            <span className='mr-2 text-2xl font-bold'>E</span>
+            <label className='relative mb-4 h-6 w-20 rounded-[148.50px] border-2 bg-indigo-500 p-[3px] shadow shadow-inner'>
               <input
                 type='checkbox'
                 id='checkEI'
                 className='peer sr-only'
-                onChange={(e) => setEI(e.target.checked ? 'E' : 'I')}
+                checked={EI}
+                onChange={(e) => setEI(e.target.checked)}
               />
               <span
-                className={`absolute left-1 top-1 h-4/5 w-2/5 rounded-full bg-blue-700 transition-all duration-500 ${
-                  EI === 'E' ? 'left-11 bg-rose-600' : 'bg-gray-700 left-auto'
-                }`}
-              ></span>
-            </label>
-            <span className='ml-2 text-lg font-bold'></span>
+                className={`absolute top-1/2 h-[18px] w-[18px] -translate-y-1/2 rounded-full bg-blue-700 transition-all duration-500 ${
+                  EI === false ? 'right-auto bg-white' : 'right-1 bg-white'
+                } flex items-center justify-center`}
+              >
+                {EI === false ? (
+                  <Image src={left} alt='왼쪽' width={12} height={12} />
+                ) : null}
+                {EI === true ? (
+                  <Image src={right} alt='오른쪽' width={12} height={12} />
+                ) : null}
+              </span>
+            </label>{' '}
+            <span className='ml-2 text-2xl font-bold'>I</span>
           </div>
-        </div>
-        {/* */}
-        <div className='flex justify-center'>
-          <div className='flex items-center'>
-            <label
-              htmlFor='checkSN'
-              className='border-gray-400 relative h-10 w-20 rounded-full border-2 bg-white'
-            >
+          {/** */}
+          <div className='mb-4 flex flex-row justify-center'>
+            {' '}
+            <span className='mr-2 text-2xl font-bold'>N</span>
+            <label className='relative mb-4 h-6 w-20 rounded-[148.50px] border-2 bg-indigo-500 p-[3px] shadow shadow-inner'>
               <input
                 type='checkbox'
                 id='checkSN'
                 className='peer sr-only'
-                onClick={(e) => setSN(e.target.checked ? 'S' : 'N')}
+                checked={SN}
+                onChange={(e) => setSN(e.target.checked)}
               />
               <span
-                className={`absolute left-1 top-1 h-4/5 w-2/5 rounded-full bg-blue-700 transition-all duration-500 ${
-                  SN === 'S' ? 'left-11 bg-rose-600' : 'bg-gray-700 left-auto'
-                }`}
-              ></span>
-            </label>
-            <span className='ml-2 text-lg font-bold'>{SN}</span>
+                className={`absolute top-1/2 h-[18px] w-[18px] -translate-y-1/2 rounded-full bg-blue-700 transition-all duration-500 ${
+                  SN === false ? 'right-auto bg-white' : 'right-1 bg-white'
+                } flex items-center justify-center`}
+              >
+                {SN === false ? (
+                  <Image src={left} alt='왼쪽' width={12} height={12} />
+                ) : null}
+                {SN === true ? (
+                  <Image src={right} alt='오른쪽' width={12} height={12} />
+                ) : null}
+              </span>
+            </label>{' '}
+            <span className='ml-2 text-2xl font-bold'>S</span>
           </div>
-        </div>
-        {/* */}
-        <div className='flex justify-center'>
-          <div className='flex items-center'>
+
+          {/** */}
+          <div className='mb-4 flex flex-row justify-center'>
+            {' '}
+            <span className='mr-2 text-2xl font-bold'>F</span>
             <label
               htmlFor='checkTF'
-              className='border-gray-400 relative h-10 w-20 rounded-full border-2 bg-white'
+              className='relative mb-4 h-6 w-20 rounded-[148.50px] border-2 bg-indigo-500 p-[3px] shadow shadow-inner'
             >
               <input
                 type='checkbox'
                 id='checkTF'
                 className='peer sr-only'
-                onClick={(e) => setTF(e.target.checked ? 'T' : 'F')}
+                checked={TF}
+                onChange={(e) => setTF(e.target.checked)}
               />
               <span
-                className={`absolute left-1 top-1 h-4/5 w-2/5 rounded-full bg-blue-700 transition-all duration-500 ${
-                  TF === 'T' ? 'left-11 bg-rose-600' : 'bg-gray-700 left-auto'
-                }`}
-              ></span>
+                className={`absolute top-1/2 h-[18px] w-[18px] -translate-y-1/2 rounded-full bg-blue-700 transition-all duration-500 ${
+                  TF === false ? 'right-auto bg-white' : 'right-1 bg-white'
+                } flex items-center justify-center`}
+              >
+                {TF === false ? (
+                  <Image src={left} alt='왼쪽' width={12} height={12} />
+                ) : null}
+                {TF === true ? (
+                  <Image src={right} alt='오른쪽' width={12} height={12} />
+                ) : null}
+              </span>
             </label>
-            <span className='ml-2 text-lg font-bold'>{TF}</span>
+            <span className='ml-2 text-2xl font-bold'>T</span>
           </div>
         </div>
         {/* */}
-        <div className='flex justify-center'>
-          <div className='flex items-center'>
-            <label
-              htmlFor='checkPJ'
-              className='border-gray-400 relative h-10 w-20 rounded-full border-2 bg-white'
+        <div className='mb-4 flex flex-row justify-center'>
+          <span className='mr-2 text-2xl font-bold'>J</span>
+          <label
+            htmlFor='checkPJ'
+            className='relative mb-4 h-6 w-20 rounded-[148.50px] border-2 bg-indigo-500 p-[3px] shadow shadow-inner'
+          >
+            <input
+              type='checkbox'
+              id='checkPJ'
+              className='peer sr-only'
+              checked={PJ}
+              onChange={(e) => setPJ(e.target.checked)}
+            />
+            <span
+              className={`absolute top-1/2 h-[18px] w-[18px] -translate-y-1/2 rounded-full bg-blue-700 transition-all duration-500 ${
+                PJ === false ? 'right-auto bg-white' : 'right-1 bg-white'
+              } flex items-center justify-center`}
             >
-              <input
-                type='checkbox'
-                id='checkPJ'
-                className='peer sr-only'
-                onClick={(e) => setPJ(e.target.checked ? 'P' : 'J')}
-              />
-              <span
-                className={`absolute left-1 top-1 h-4/5 w-2/5 rounded-full bg-blue-700 transition-all duration-500 ${
-                  PJ === 'P' ? 'left-11 bg-rose-600' : 'bg-gray-700 left-auto'
-                }`}
-              ></span>
-            </label>
-            <span className='ml-2 text-lg font-bold'>{PJ}</span>
-          </div>
+              {PJ === false ? (
+                <Image src={left} alt='왼쪽' width={12} height={12} />
+              ) : null}
+              {PJ === true ? (
+                <Image src={right} alt='오른쪽' width={12} height={12} />
+              ) : null}
+            </span>
+          </label>
+          <span className='ml-2 text-2xl font-bold'>P</span>
         </div>
+        {/**입력한 MBTI 표시 */}
+        <div className='flex justify-center gap-2 pt-[58px]'>
+          <p
+            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 pt-[8px] text-center text-7xl  font-bold `}
+          >
+            {EI ? 'I' : 'E'}
+          </p>
+          <p
+            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 pt-[8px] text-center text-7xl  font-bold `}
+          >
+            {SN ? 'S' : 'N'}
+          </p>
+          <p
+            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 pt-[8px] text-center text-7xl  font-bold `}
+          >
+            {TF ? 'T' : 'F'}
+          </p>
+          <p
+            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} h-[88px] w-[72px] rounded-xl bg-white  bg-opacity-10 pt-[8px] text-center text-7xl  font-bold `}
+          >
+            {PJ ? 'P' : 'J'}
+          </p>
+        </div>
+        {/**입력한 MBTI 표시 */}
+        {/**버튼 */}
+        <div className='flex justify-center gap-4  pt-[70px]'>
+          <PreviousButton onClick={() => handleNextClick('pageOne')}>
+            이전
+          </PreviousButton>
+          <ButtonPrimary onClick={onsubmitResultHandler}>
+            결과보러가기
+          </ButtonPrimary>
+        </div>{' '}
+        {/**버튼 */}
       </div>
-      <br />
-      {/** */}
-      <div className='flex justify-center gap-2'>
-        <p
-          className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  font-bold `}
-        >
-          {EI}
-        </p>
-        <p
-          className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  font-bold `}
-        >
-          {SN}
-        </p>
-        <p
-          className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  font-bold `}
-        >
-          {TF}
-        </p>
-        <p
-          className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl  bg-white bg-opacity-10 text-center text-7xl  font-bold `}
-        >
-          {PJ}
-        </p>
-      </div>{' '}
-      <br />
-      <br />
-      <div className='flex justify-center gap-4'>
-        <PreviousButton onClick={() => handleNextClick('pageOne')}>
-          이전
-        </PreviousButton>
-        <ButtonPrimary onClick={onsubmitResultHandler}>
-          결과보러가기
-        </ButtonPrimary>
-      </div>{' '}
-      <br />
+      {/**wrap */}
     </div>
   )
 }

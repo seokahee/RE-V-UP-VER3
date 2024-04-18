@@ -2,7 +2,7 @@ import { getFollowDataFollowing, updateFollow } from '@/shared/mypage/api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import React from 'react'
-import ButtonSecondary from './ButtonSecondary'
+import ButtonSecondary from '../../util/ButtonSecondary'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -62,12 +62,12 @@ const FollowingList = ({ data }: FollowProps) => {
         return (
           <li key={item.userId} className='flex justify-between py-4'>
             <div className='flex items-center'>
-              <figure>
+              <figure className='flex h-[56px] w-[56px] items-center justify-center overflow-hidden rounded-full'>
                 {item.userImage && (
                   <Image
                     src={item.userImage}
-                    width={50}
-                    height={50}
+                    width={56}
+                    height={56}
                     alt={`${item.nickname} 프로필 이미지`}
                   />
                 )}

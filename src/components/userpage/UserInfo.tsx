@@ -1,20 +1,21 @@
 import { getUserAndPlaylistData, updateFollow } from '@/shared/mypage/api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Image from 'next/image'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import UserPlaylist from './UserPlaylist'
 import { useSession } from 'next-auth/react'
-import ButtonPrimary from '../mypage/ButtonPrimary'
-import ButtonSecondary from '../mypage/ButtonSecondary'
+import ButtonPrimary from '../../util/ButtonPrimary'
+import ButtonSecondary from '../../util/ButtonSecondary'
 
 const UserInfo = () => {
   const { id } = useParams<{ id: string }>()
-  const { data: userSessionInfo } = useSession()
+  const { data: userSessionInfo, status } = useSession()
   const uid = userSessionInfo?.user?.uid as string
   const queryClient = useQueryClient()
 
   const [isFollow, setIsFollow] = useState(false)
+  const router = useRouter()
 
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getUserAndPlaylistData(id),
@@ -31,6 +32,7 @@ const UserInfo = () => {
   const unFollowMutation = useMutation({
     mutationFn: updateFollow,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['mypage'] })
       queryClient.invalidateQueries({ queryKey: ['userpage'] })
     },
   })
@@ -68,6 +70,18 @@ const UserInfo = () => {
       setIsFollow(true)
     }
   }, [data])
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.replace('/')
+    }
+  }, [router, status])
+
+  useEffect(() => {
+    if (uid === id) {
+      router.replace('/')
+    }
+  }, [router])
 
   if (isError) {
     return <>에러발생</>

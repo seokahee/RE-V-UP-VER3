@@ -1,5 +1,5 @@
-import musicList from '@/../public/images/musicList.svg'
-import myPlayListButton from '@/../public/images/myPlayListButton.svg'
+import addCurrMusic from '@/../public/images/community-detail-Image/add-current-music.svg'
+import addMyPlayList from '@/../public/images/community-detail-Image/add-my-playlist.svg'
 import { getMusicList } from '@/query/musicPlayer/musicPlayerQueryKey'
 import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
 import { insertMyPlayMusic, updateMyPlayMusic } from '@/shared/musicPlayer/api'
@@ -8,6 +8,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { ADD_CURRENT_MUSIC_SHADOW } from '../communityDetail/communityCss'
 
 const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
   const queryClient = useQueryClient()
@@ -119,20 +120,28 @@ const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
         </div>
       </div>
       <div className='h-48px flex w-[122px] gap-[16px]'>
-        <button onClick={() => onClickAddCurrentMusicHandler(item.musicId)}>
+        <button
+          onClick={() => onClickAddCurrentMusicHandler(item.musicId)}
+          className={`flex h-[48px] w-[48px] items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW}`}
+        >
           <Image
-            src={musicList}
-            width={48}
-            height={48}
-            alt='현재 플레이리스트 등록 버튼'
+            src={addCurrMusic}
+            alt='현재재생목록추가 아이콘'
+            width={24}
+            height={24}
           />
         </button>
-        <button onClick={() => onClickAddMyPlayListHandler(item.musicId)}>
+
+        <button
+          type='button'
+          className={`flex h-[48px] w-[48px] items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW}`}
+          onClick={() => onClickAddMyPlayListHandler(item.musicId)}
+        >
           <Image
-            src={myPlayListButton}
-            width={48}
-            height={48}
-            alt='마이플레이리스트 등록 버튼'
+            src={addMyPlayList}
+            alt='마이플레이리스트에 저장 아이콘'
+            width={16}
+            height={16}
           />
         </button>
       </div>
