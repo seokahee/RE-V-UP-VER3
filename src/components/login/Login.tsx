@@ -209,12 +209,12 @@ const Login = () => {
               ></Image>
             </div>
             <section className='flex flex-col items-center gap-[68px] text-[14px]'>
-              <div className='flex flex-col gap-[16px] font-bold tracking-[-0.03em] text-[rgba(255,255,255,0.5)]'>
+              {/* <div className='flex flex-col gap-[16px] font-bold tracking-[-0.03em] text-[rgba(255,255,255,0.5)]'>
                 <p>SNS로&nbsp;간편하게&nbsp;시작하기</p>
                 <div>
                   <SocialLogin />
                 </div>
-              </div>
+              </div> */}
               <div className='flex gap-[8px]'>
                 <p>아직&nbsp;회원이&nbsp;아니신가요?</p>
                 <Link
