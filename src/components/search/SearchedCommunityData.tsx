@@ -52,7 +52,11 @@ const SearchedCommunityData = () => {
                           height={18}
                           className='h-[18] w-[18px]'
                         />
-                        {`${item.likeList.length > 99 ? `${item.likeList.length}+` : item.likeList.length}`}
+                        {!item.likeList
+                          ? 0
+                          : item.likeList.length > 99
+                            ? '99+'
+                            : item.likeList.length}
                       </div>
                       <div className='h-20px flex w-[52px] items-center gap-1'>
                         <Image
@@ -62,7 +66,7 @@ const SearchedCommunityData = () => {
                           height={18}
                           className='h-[18px] w-[18px]'
                         />
-                        {`${numKeys > 99 ? `${numKeys}+` : numKeys}`}
+                        {!numKeys ? 0 : numKeys > 99 ? '99+' : numKeys}
                       </div>
                     </div>
                   </div>
