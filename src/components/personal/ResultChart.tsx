@@ -39,7 +39,6 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
             type: 'radar',
             data: {
               labels: labels,
-
               datasets: [
                 {
                   label: '장르별 음악 선호도',
@@ -85,7 +84,6 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
               },
             },
           } as ChartConfiguration)
-
           chartInstance.current = newChart
         }
       }

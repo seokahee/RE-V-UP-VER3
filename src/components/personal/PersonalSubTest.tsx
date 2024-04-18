@@ -74,7 +74,6 @@ const PersonalSubTest = ({
         </div>
         <div className='pt-[37px]'>
           <div className='mb-4 flex flex-row justify-center'>
-            {' '}
             <span className='mr-2 text-2xl font-bold'>E</span>
             <label className='relative mb-4 h-6 w-20 rounded-[148.50px] border-2 bg-indigo-500 p-[3px] shadow shadow-inner'>
               <input
@@ -96,12 +95,11 @@ const PersonalSubTest = ({
                   <Image src={right} alt='오른쪽' width={12} height={12} />
                 ) : null}
               </span>
-            </label>{' '}
+            </label>
             <span className='ml-2 text-2xl font-bold'>I</span>
           </div>
           {/** */}
           <div className='mb-4 flex flex-row justify-center'>
-            {' '}
             <span className='mr-2 text-2xl font-bold'>N</span>
             <label className='relative mb-4 h-6 w-20 rounded-[148.50px] border-2 bg-indigo-500 p-[3px] shadow shadow-inner'>
               <input
@@ -126,10 +124,8 @@ const PersonalSubTest = ({
             </label>{' '}
             <span className='ml-2 text-2xl font-bold'>S</span>
           </div>
-
           {/** */}
           <div className='mb-4 flex flex-row justify-center'>
-            {' '}
             <span className='mr-2 text-2xl font-bold'>F</span>
             <label
               htmlFor='checkTF'
@@ -210,8 +206,6 @@ const PersonalSubTest = ({
             {PJ ? 'P' : 'J'}
           </p>
         </div>
-        {/**입력한 MBTI 표시 */}
-        {/**버튼 */}
         <div className='flex justify-center gap-4  pt-[70px]'>
           <PreviousButton onClick={() => handleNextClick('pageOne')}>
             이전
@@ -219,8 +213,7 @@ const PersonalSubTest = ({
           <ButtonPrimary onClick={onsubmitResultHandler}>
             결과보러가기
           </ButtonPrimary>
-        </div>{' '}
-        {/**버튼 */}
+        </div>
       </div>
       {/**wrap */}
     </div>
