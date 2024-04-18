@@ -1,4 +1,4 @@
-import { CurrentPlayListType, MyPlayListType } from '@/types/musicPlayer/types'
+import { MyPlayListType } from '@/types/musicPlayer/types'
 import { supabase } from '../supabase/supabase'
 
 export const getCurrentMusicList = async (userId: string) => {
@@ -16,7 +16,7 @@ export const getCurrentMusicList = async (userId: string) => {
         .from('musicInfo')
         .select('*')
         .in('musicId', musicIds)
-        .order('musicTitle', { ascending: false })
+      // .order('musicTitle', { ascending: false })
       return musicInfo
     }
   }

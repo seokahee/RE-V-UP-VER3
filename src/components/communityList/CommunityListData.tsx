@@ -46,7 +46,7 @@ const CommunityListData = ({ item }: { item: CommunityType }) => {
                     height={18}
                     className='h-[18] w-[18px]'
                   />
-                  {`${item.likeList.length}+`}
+                  {`${item.likeList.length > 99 ? `${item.likeList.length}+` : item.likeList.length}`}
                 </div>
                 <div className='h-20px flex w-[52px] items-center gap-1'>
                   <Image
@@ -56,7 +56,7 @@ const CommunityListData = ({ item }: { item: CommunityType }) => {
                     height={18}
                     className='h-[18px] w-[18px]'
                   />
-                  {`${numKeys}+`}
+                  {`${numKeys > 99 ? `${numKeys}+` : numKeys}`}
                 </div>
               </div>
             </div>

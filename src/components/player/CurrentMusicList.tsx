@@ -69,7 +69,7 @@ const CurrentMusicList = ({
         })}
       </div>
 
-      {!isLyrics && currentPlayList.length > 0 && (
+      {!isLyrics && currentPlayList.length > 0 && checkedList.length > 0 && (
         <button
           type='button'
           onClick={onDeleteCurrentMusicHandler}

@@ -14,5 +14,3 @@ export const getCommunityList = async (isSort: boolean) => {
     return []
   }
 }
-
-// 페이지네이션에서 좋아요 리스트 기준 정렬을 해줘야함
