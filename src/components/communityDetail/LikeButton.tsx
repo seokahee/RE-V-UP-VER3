@@ -8,7 +8,7 @@ import {
   getClickLikedUser,
   removeLikedUser,
 } from '@/shared/communitydetail/detailApi'
-import { Props } from '@/types/communityDetail/detailTypes'
+import type { Props } from '@/types/communityDetail/detailTypes'
 import emptyHeart from '@/../public/images/heart-rounded-gray.svg'
 import heart from '@/../public/images/likeFullHeart.svg'
 
