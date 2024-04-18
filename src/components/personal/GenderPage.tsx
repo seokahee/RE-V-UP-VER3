@@ -28,7 +28,6 @@ const GenderPage = ({
     setPageCount(param)
   }
 
-  console.log(gender, '성별')
   return (
     <div className='w-[516px] pb-[90px] pt-[70px]'>
       <div className='h-[800px] rounded-[32px] bg-white bg-opacity-10'>
@@ -49,7 +48,11 @@ const GenderPage = ({
                 onChange={() => handleGenderChange('male')}
                 className='peer hidden'
               />
-              <p className='inline-flex h-[100px] w-[336px] items-center justify-center rounded-xl border-4 border-black border-opacity-10 bg-white bg-opacity-20 shadow shadow-inner peer-checked:bg-primary'>
+              <p
+                className='inline-flex h-[100px] w-[336px] items-center 
+              justify-center rounded-xl border-4 border-black border-opacity-10 
+              bg-white bg-opacity-20  peer-checked:bg-primary'
+              >
                 남자
               </p>
             </label>

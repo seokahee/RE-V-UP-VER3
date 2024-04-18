@@ -65,7 +65,6 @@ export const getUserMyPlaylistData = async (userId: string) => {
         .from('musicInfo')
         .select('*')
         .in('musicId', data.myMusicIds)
-      console.log([data, myPlaylistData])
       return { playlistMyIds: data.myMusicIds, myPlaylistData: myPlaylistData }
     }
 

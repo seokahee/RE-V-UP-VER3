@@ -10,14 +10,14 @@ import {
   getPersonaledUser,
   updatePersonalMusic,
   insertPersonalResult,
+  updatePersonalResult,
 } from '@/shared/personal/personalApi'
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'
-
-import type { PersonalRecommendProps } from '@/types/personal/type'
-
 import { useRouter } from 'next/navigation'
 import { SentenceMatch } from '@/util/personal/util'
 import ButtonPrimary from '../../util/ButtonPrimary'
+
+import type { PersonalRecommendProps } from '@/types/personal/type'
 
 const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
   const [checkedList, setCheckedList] = useState<string[]>([])
@@ -25,13 +25,11 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
   const mbtiStatus = userChar.mbti
   const router = useRouter()
 
-  //뮤직 장르 코드
   const { data: musicPreferenceData } = useQuery({
     queryFn: () => recommendMusic(mbtiStatus),
     queryKey: ['personal'],
   })
 
-  //추천 음악
   const {
     data: recommend,
     isLoading,
@@ -52,50 +50,57 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     }
   }
 
-  //퍼스널 뮤직진단 사용자 리스트
   const { data: personalUser } = useQuery({
     queryFn: () => getPersonaledUser(),
     queryKey: ['personalReuslt'],
   })
 
-  //퍼스널 뮤직 진단에 추가
   const addPersonalResultMutation = useMutation({
     mutationFn: insertPersonalMusic,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
       setCheckedList([])
+      refetchCurrent()
     },
   })
 
-  //퍼스널 뮤직 진단을 이전에 받았을 경우 진단 수정
   const updatePersonalResultMutation = useMutation({
     mutationFn: updatePersonalMusic,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
       setCheckedList([])
+      refetchCurrent()
     },
   })
 
   const updateCurrentMusicMutation = useMutation({
+    mutationFn: updatePersonalResult,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
+      setCheckedList([])
+      refetchCurrent()
+    },
+  })
+
+  const insertCurrentMusicMutation = useMutation({
     mutationFn: insertPersonalResult,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
       setCheckedList([])
+      refetchCurrent()
     },
   })
 
-  //현재 재생목록 리스트
-  const { data: current } = useQuery({
+  const { data: current, refetch: refetchCurrent } = useQuery({
     queryFn: () => getCurrentMusics(userChar.uid),
     queryKey: ['currentMusic'],
   })
 
-  if (!current) {
-    return
-  }
-  const currentList = current?.[0].currentMusicIds as string[]
+  const currentList =
+    current?.length === 0
+      ? []
+      : current?.[0]?.currentMusicIds || ([] as string[])
 
-  //현재 재생목록에 결과추가
   const onSubmitCurrentMusic = () => {
     if (checkedList.length === 0) {
       alert('선택된 곡이 없습니다.')
@@ -112,11 +117,16 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
       return
     }
 
-    const musicList = [...currentList, ...checkedList] as string[]
-    updateCurrentMusicMutation.mutate({ userId: userChar.uid, musicList })
+    if (!current || current.length === 0) {
+      const musicList = [...checkedList] as string[]
+      insertCurrentMusicMutation.mutate({ userId: userChar.uid, musicList })
+    } else {
+      const musicList = [...currentList, ...checkedList] as string[]
+      updateCurrentMusicMutation.mutate({ userId: userChar.uid, musicList })
+    }
     onSubmitPersonalResult()
   }
-  //퍼스널 DB에 결과추가
+
   const onSubmitPersonalResult = () => {
     const personalMusicData = {
       userChar,
@@ -160,8 +170,6 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
       <div className='pt-[24px] text-center text-white'>
         <p>당신의 취향에 맞는 음악을 추천 해드릴게요 &#x1F642;</p>
       </div>
-
-      {/** */}
       <div className='flex justify-center gap-12 pt-[16px] text-white text-opacity-50'>
         {recommend?.map((item) => (
           <label htmlFor={item.musicId} key={item.musicId}>
@@ -174,7 +182,6 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
               }
               className='peer hidden'
             />
-
             <Image
               src={item.thumbnail}
               width={80}
@@ -188,7 +195,6 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
             <div className='text-center text-sm font-medium peer-checked:text-white '>
               <p> {item.artist}</p>
             </div>
-
             <div>{currentList.includes(item.musicId) ? '현재 재생중' : ''}</div>
           </label>
         ))}
