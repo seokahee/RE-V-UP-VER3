@@ -22,7 +22,7 @@ const Header = () => {
       >
         <nav>
           <Link href='/'>
-            <h1 className='pr-[64px] text-2xl font-bold italic text-primary-white'>
+            <h1 className='pr-[64px] text-[28px]  font-bold italic text-primary-white'>
               V-UP
             </h1>
           </Link>
@@ -73,7 +73,7 @@ const Header = () => {
             />
           </Link>
           <Link href='/'>
-            <h1 className='text-2xl font-bold italic text-primary-white '>
+            <h1 className='text-[28px] font-bold italic text-primary-white '>
               V-UP
             </h1>
           </Link>
@@ -87,7 +87,9 @@ const Header = () => {
       >
         <nav>
           <Link href='/'>
-            <p className='text-2xl font-bold italic text-primary-white'>V-UP</p>
+            <p className='text-[28px]  font-bold italic text-primary-white'>
+              V-UP
+            </p>
           </Link>
         </nav>
         <nav>
