@@ -9,6 +9,7 @@ import LockContents from './LockContents'
 import { useSession } from 'next-auth/react'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import { useParams } from 'next/navigation'
+import arrow from '@/../public/images/chevron-down.svg'
 
 const UserPlaylist = ({
   data,
@@ -22,6 +23,7 @@ const UserPlaylist = ({
   const [checkedList, setCheckedList] = useState<string[]>([])
   const queryClient = useQueryClient()
   const { id } = useParams<{ id: string }>()
+  const [toggle, setToggle] = useState(false)
 
   const { data: userPlaylistMyInfoData } = useQuery({
     queryFn: () => getUserMyPlaylistData(id),
@@ -45,6 +47,10 @@ const UserPlaylist = ({
       queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
     },
   })
+
+  const checkListReset = () => {
+    setCheckedList([])
+  }
 
   const onChangeCheckMusicHandler = (checked: boolean, id: string) => {
     if (checked) {
@@ -87,7 +93,7 @@ const UserPlaylist = ({
     })
 
     alert('추가가 완료되었습니다.')
-    setCheckedList([])
+    checkListReset()
   }
 
   const onClickAllAddHandler = () => {
@@ -122,19 +128,36 @@ const UserPlaylist = ({
       currentList: newData,
     })
     alert('추가가 완료되었습니다.')
-    setCheckedList([])
+    checkListReset()
+  }
+
+  const onClickToggleHandler = () => {
+    setToggle((prev) => !prev)
+    checkListReset()
   }
 
   const shadow =
     'shadow-[-4px_-4px_8px_rgba(255,255,255,0.05),4px_4px_8px_rgba(0,0,0,0.7)]'
+
+  const toggleStyle = 'h-0 opacity-0'
 
   return (
     <div className='mt-[5rem]'>
       {isVisibility ? (
         <>
           <div className='flex items-center justify-between'>
-            <h2 className='text-[1.25rem] font-bold'>
-              {data?.nickname}님의 플레이리스트
+            <h2
+              className='flex cursor-pointer items-center gap-2 text-[1.25rem] font-bold'
+              onClick={onClickToggleHandler}
+            >
+              {data?.nickname}님의 플레이리스트{' '}
+              <Image
+                src={arrow}
+                height={24}
+                width={24}
+                className={`${toggle ? '' : 'rotate-180'}`}
+                alt='화살표 아이콘'
+              />
             </h2>
             <ButtonPrimary onClick={onClickAllAddHandler}>
               전체 담기
@@ -154,7 +177,9 @@ const UserPlaylist = ({
               </button>
             </div>
           )}
-          <ul className='tracking-[-0.03em]'>
+          <ul
+            className={`tracking-[-0.03em] ${toggle ? toggleStyle : ''} overflow-hidden transition-opacity ease-in-out`}
+          >
             {userPlaylistMyData && userPlaylistMyData?.length > 0 ? (
               userPlaylistMyData?.map((item) => {
                 return (
