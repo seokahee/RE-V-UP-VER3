@@ -10,7 +10,6 @@ const LogOutButton = () => {
     const loginStatus = await getSession()
     await supabase.auth.signOut()
 
-    localStorage.clear()
     await signOut({ redirect: true, callbackUrl: '/' })
 
     if (loginStatus === null) {

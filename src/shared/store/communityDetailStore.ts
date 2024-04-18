@@ -44,8 +44,7 @@ export const useMusicSearchedStore = create(
         set({ editValue: { editBoardTitle, editContent } }),
       setChooseMusic: (chooseMusic: Partial<MusicInfoType> | null) =>
         set((initialState) => ({ ...initialState, chooseMusic })),
-      setIsChooseMusic: (click: boolean) =>
-        set((initialState) => ({ ...initialState, isChooseMusic: click })),
+      setIsChooseMusic: (click: boolean) => set({ isChooseMusic: click }),
       setSelectedCardIndex: (index: number | null) =>
         set((initialState) => ({ ...initialState, selectedCardIndex: index })),
     }),

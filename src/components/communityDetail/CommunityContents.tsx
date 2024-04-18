@@ -27,9 +27,14 @@ import {
   ALLOW_SHADOW,
   BOARD_TITLE_SHADOW,
 } from './communityCss'
+import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
+import CommentsPage from '@/app/(auth)/comment/page'
+import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
+import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 
 const CommunityContents = () => {
   const router = useRouter()
+  const { setIsChooseMusic } = useMusicSearchedStore()
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const { data: userSessionInfo, status } = useSession()
   const uid = userSessionInfo?.user?.uid as string
@@ -42,6 +47,7 @@ const CommunityContents = () => {
     isPending,
     isLoading,
     error,
+    commentsData,
   } = musicDataInCommuDetail(uid, currentBoardId)
 
   const {
@@ -71,6 +77,14 @@ const CommunityContents = () => {
     onChange: onChangeEditForm,
   } = useInput({ boardTitle, content })
   const { boardTitle: updatedTitle, content: updatedContent } = editForm
+  const commentLength =
+    commentsData && commentsData.length > 99
+      ? 99
+      : commentsData
+        ? commentsData.length
+        : 0
+  const commentPlusCondition =
+    commentsData && commentsData.length && commentsData.length > 99 ? '+' : null
 
   const onBoardEditHandler = (e: MouseEvent) => {
     e.preventDefault()
@@ -112,6 +126,7 @@ const CommunityContents = () => {
 
   const onBackButtonHandler = () => {
     setIsEdit(false)
+    setIsChooseMusic(false)
     router.back()
   }
 
@@ -184,36 +199,61 @@ const CommunityContents = () => {
   }
 
   return (
-    <div className='mb-[8px] flex w-[732px] flex-col'>
-      <div className='flex flex-col gap-[16px]'>
+    <div className='flex w-[732px] flex-col'>
+      <div className='mb-[8px] flex flex-col gap-[16px]'>
         <section
-          className={`mt-[32px] flex h-[72px] w-[100%] items-center justify-center rounded-[16px] border-[4px] border-solid border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.1)] px-[16px] py-[12px] ${BOARD_TITLE_SHADOW}`}
+          className={`justify-betweeen relative mt-[32px] flex h-[72px] w-[100%] items-center rounded-[16px] border-[4px] border-solid border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.1)] px-[16px] py-[12px] ${BOARD_TITLE_SHADOW}`}
         >
-          <button
-            onClick={onBackButtonHandler}
-            className={`flex h-[48px] w-[48px] items-center justify-center rounded-[12px] bg-[rgba(255,255,255,0.1)] ${ALLOW_SHADOW}`}
-          >
-            <Image src={goback} alt='이전으로 아이콘' width={24} height={24} />
-          </button>
+          <div>
+            {isEdit ? (
+              <button
+                onClick={onEditCancelHandler}
+                className={`flex h-[48px] w-[48px] items-center justify-center rounded-[12px] bg-[rgba(255,255,255,0.1)] ${ALLOW_SHADOW}`}
+              >
+                <Image
+                  src={goback}
+                  alt='수정취소 아이콘'
+                  width={24}
+                  height={24}
+                />
+              </button>
+            ) : (
+              <button
+                onClick={onBackButtonHandler}
+                className={`flex h-[48px] w-[48px] items-center justify-center rounded-[12px] bg-[rgba(255,255,255,0.1)] ${ALLOW_SHADOW}`}
+              >
+                <Image
+                  src={goback}
+                  alt='이전으로 아이콘'
+                  width={24}
+                  height={24}
+                />
+              </button>
+            )}
+          </div>
           <h3 className='mx-[auto] text-[18px] font-bold'>
             음악 추천 게시판🦻
           </h3>
           {isEdit ? (
-            <div>
-              <button onClick={onEditCancelHandler}>수정취소</button>
-              <button onClick={onBoardEditCompleteHandler}>수정완료</button>
+            <div className='absolute right-[12px] top-[12.5%]'>
+              <button
+                onClick={onBoardEditCompleteHandler}
+                className={`flex h-[48px] w-[120px] items-center justify-center rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
+              >
+                <p>수정완료</p>
+              </button>
             </div>
           ) : null}
         </section>
 
         <div className='flex w-full flex-col gap-[40px]'>
-          <article className='flex gap-[16px] border-b-[1px] border-solid border-[#000000] px-[16px] py-[30px]'>
+          <article className='flex items-center gap-[16px] border-b-[1px] border-solid border-[#000000] px-[16px] py-[30px]'>
             <div className='flex'>
               <Link
                 href={`/userpage/${userId}`}
                 className={`${uid === userId ? 'pointer-events-none' : 'cursor-pointer'}`}
               >
-                <figure className='h-[56px] w-[56px] rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)] bg-[#2B2B2B]'>
+                <figure className='h-[56px] w-[56px] items-center rounded-full '>
                   {userImage ? (
                     <Image
                       src={`${userImage}`}
@@ -221,10 +261,10 @@ const CommunityContents = () => {
                       width={56}
                       height={56}
                       title={`${nickname}님의 페이지로 이동`}
-                      className='h-[56px] w-[56px] rounded-full'
+                      className='h-[56px] w-[56px] rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)] bg-[#2B2B2B]'
                     />
                   ) : (
-                    <div className='h-[56px] w-[56px] rounded-full'>
+                    <div className='h-[56px] w-[56px] rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)] bg-[#2B2B2B]'>
                       <i></i>
                     </div>
                   )}
@@ -232,8 +272,8 @@ const CommunityContents = () => {
               </Link>
             </div>
 
-            <section className='flex w-full flex-col'>
-              <div className='flex justify-between'>
+            <section className='flex w-full flex-col gap-[16px]'>
+              <div className='flex w-full justify-between'>
                 {isEdit ? (
                   <input
                     type='text'
@@ -241,11 +281,11 @@ const CommunityContents = () => {
                     maxLength={40}
                     value={updatedTitle}
                     onChange={onChangeEditForm}
-                    className='text-[18px]  font-bold text-black '
+                    className='flex w-full rounded-[12px] border-none bg-[rgba(255,255,255,0.1)] px-[4px] pt-[4px] text-[18px] font-bold tracking-[-0.03em]'
                   />
                 ) : (
-                  <div>
-                    <p className=' text-[18px] font-bold '>{`${boardTitle}`}</p>
+                  <div className='flex flex-col items-center justify-center'>
+                    <p className='flex flex-col items-center justify-center text-center text-[18px] font-bold '>{`${boardTitle}`}</p>
                   </div>
                 )}
                 <div>
@@ -274,10 +314,14 @@ const CommunityContents = () => {
                 </div>
               </div>
               <div className='flex justify-between'>
-                <div>
-                  <p className=' text-[14px] font-bold'>{nickname}</p>
+                <div className='flex items-center'>
+                  <p className=' text-center text-[14px] font-bold text-[rgba(255,255,255,0.5)]'>
+                    {nickname}
+                  </p>
                 </div>
-                <div>{onDateTimeHandler(date)}</div>
+                <div className='text-[rgba(255,255,255,0.5)]'>
+                  {onDateTimeHandler(date)}
+                </div>
               </div>
             </section>
           </article>
@@ -286,7 +330,7 @@ const CommunityContents = () => {
           >
             <div className='flex w-full items-center justify-between '>
               <section className='flex items-center gap-[32px]'>
-                <figure className='flex h-[80px] w-[80px] items-center rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.5)]'>
+                <figure className='flex h-[80px] w-[80px] items-center rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)]'>
                   <Image
                     src={`${thumbnail}`}
                     alt='노래 앨범 이미지'
@@ -347,11 +391,11 @@ const CommunityContents = () => {
                 onChange={onChangeEditForm}
                 cols={30}
                 rows={4}
-                maxLength={100}
-                className='w-full text-black'
+                maxLength={200}
+                className='mb-4 h-[200px] w-full  rounded-lg border-none bg-[rgba(255,255,255,0.1)] p-2 px-[15px]'
               ></textarea>
             ) : (
-              <div className='h-[200px] w-full px-[15px]'>{`${content}`}</div>
+              <div className='h-[200px] w-full px-[15px] tracking-[-0.03em]'>{`${content}`}</div>
             )}
           </article>
         </div>
@@ -362,12 +406,18 @@ const CommunityContents = () => {
               <figure>
                 <Image src={message} alt='댓글 아이콘' width={24} height={24} />
               </figure>
-              <div>{comment.length ? comment.length : 0}</div>
+              <div className='text-[rgba(255,255,255,0.5)]'>
+                <p>
+                  {commentLength}
+                  {commentPlusCondition}
+                </p>
+              </div>
             </div>
             <LikeButton boardId={currentBoardId} />
           </div>
         </div>
       </div>
+      {isEdit ? null : <CommentsPage />}
     </div>
   )
 }
