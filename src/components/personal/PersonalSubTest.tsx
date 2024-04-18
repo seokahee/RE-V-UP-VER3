@@ -8,7 +8,6 @@ import PreviousButton from '../mypage/PreviousButton'
 import left from '@/../public/images/double_arrow_left.svg'
 import right from '@/../public/images/double_arrow.svg'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import { DROP_SHADOW, INPUT_SHADOW, INPUT_FOCUS } from '../login/loginCss'
 
 import type { PersonalInfo } from '@/types/personal/type'
@@ -18,16 +17,16 @@ const PersonalSubTest = ({
 }: {
   setPageCount: React.Dispatch<React.SetStateAction<string>>
 }) => {
-  const { addUserChar, userGender } = useSurvey()
+  const { addUserChar, userGender, userChar } = useSurvey()
   const { data: userSessionInfo } = useSession()
   const userId = userSessionInfo?.user?.uid as string
   const queryClient = useQueryClient()
-  const router = useRouter()
 
-  const [EI, setEI] = useState<string>('I')
-  const [SN, setSN] = useState<string>('N')
-  const [TF, setTF] = useState<string>('T')
-  const [PJ, setPJ] = useState<string>('P')
+  const [first, second, third, fourth] = userChar.mbti.split('')
+  const [EI, setEI] = useState<string>(first)
+  const [SN, setSN] = useState<string>(second)
+  const [TF, setTF] = useState<string>(third)
+  const [PJ, setPJ] = useState<string>(fourth)
 
   const insertUserCharMutation = useMutation({
     mutationFn: insertUserChar,
@@ -253,24 +252,24 @@ const PersonalSubTest = ({
             <span className='ml-2 text-2xl font-bold'>J</span>
           </div>
         </div>
-        <div className='flex justify-center gap-2  pt-[58px]'>
+        <div className='flex justify-center gap-2 pt-[58px]'>
           <p
-            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  font-bold `}
+            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 pt-[8px] text-center text-7xl  font-bold `}
           >
             {EI}
           </p>
           <p
-            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  font-bold `}
+            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 pt-[8px] text-center text-7xl  font-bold `}
           >
             {SN}
           </p>
           <p
-            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 text-center text-7xl  font-bold `}
+            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} h-[88px] w-[72px] rounded-xl bg-white bg-opacity-10 pt-[8px] text-center text-7xl  font-bold `}
           >
             {TF}
           </p>
           <p
-            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS}  h-[88px] w-[72px] rounded-xl  bg-white bg-opacity-10 text-center text-7xl  font-bold `}
+            className={`${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} h-[88px] w-[72px] rounded-xl bg-white  bg-opacity-10 pt-[8px] text-center text-7xl  font-bold `}
           >
             {PJ}
           </p>

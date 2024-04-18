@@ -256,7 +256,8 @@ const MyInfo = () => {
           </span>
         </p>
         <p className='mt-2 flex flex-wrap gap-4 text-[1rem] font-bold tracking-[-0.03em] text-[#ffffff80]'>
-          <span>{data?.userChar?.mbti}</span> |{' '}
+          <span>{data?.userChar?.mbti}</span>{' '}
+          {data?.userChar?.mbti && data?.userChar?.resultSentence ? '|' : ''}{' '}
           <span>{data?.userChar?.resultSentence}</span>
         </p>
       </div>
