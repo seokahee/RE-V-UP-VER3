@@ -84,7 +84,6 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
               },
             },
           } as ChartConfiguration)
-
           chartInstance.current = newChart
         }
       }
