@@ -168,7 +168,9 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
                   <div className='flex flex-row gap-1'>
                     <Image src={heart} alt='찬 하트' width={24} height={24} />
                     <p className='ml-[5px] text-[rgba(255,255,255,0.5)]'>
-                      {item.commentLikeList.length} +
+                      {item.commentLikeList.length > 99
+                        ? item.commentLikeList.length + '+'
+                        : item.commentLikeList.length}
                     </p>
                   </div>
                 ) : (
@@ -180,7 +182,9 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
                       height={24}
                     />
                     <p className='ml-[5px] text-[rgba(255,255,255,0.5)]'>
-                      {item.commentLikeList.length} +
+                      {item.commentLikeList.length > 99
+                        ? item.commentLikeList.length + '+'
+                        : item.commentLikeList.length}
                     </p>
                   </div>
                 )}
