@@ -70,8 +70,8 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
       className={`mr-6 w-[144px] list-none bg-[#ffffff19] ${itemShadow} overflow-hidden rounded-[2rem] border-4 border-[#00000070] p-2 text-center`}
     >
       <div>
-        <div className='group relative mb-2 h-[120px] w-[120px] overflow-hidden rounded-full border-2 border-[#ffffff19] [&_img]:h-auto [&_img]:w-full'>
-          <figure>
+        <div className='group relative mb-2 h-[120px] w-[120px] overflow-hidden rounded-full border-2 border-[#ffffff19]'>
+          <figure className='h-[120px] w-[120px] [&_img]:h-auto [&_img]:w-full'>
             <Image
               className='group-hover:blur-sm'
               src={item.thumbnail}
