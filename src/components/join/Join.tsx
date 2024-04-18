@@ -1,6 +1,6 @@
 'use client'
 
-import { FormEvent } from 'react'
+import { FormEvent, useRef } from 'react'
 import Link from 'next/link'
 import { saveSignUpInUserInfo, signUp } from '@/shared/join/joinApi'
 import useInput from '@/hooks/useInput'
@@ -21,6 +21,7 @@ import {
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 
 const Join = () => {
+  const refPassword = useRef<HTMLInputElement>(null)
   const router = useRouter()
   const joinState = {
     userEmail: '',
@@ -40,9 +41,10 @@ const Join = () => {
 
   const blankPattern = /[\s]/g
   const validateCheckAgree = checkAgree
-  const validatePwLength = userPw.length < 6
   const validatePassword = !(userPw === userPwCheck)
   const validateEmptyValue = !(userEmail || userPwCheck || userNickname)
+  const validateDetailPw =
+    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[~?!@#$%^&*_-]).{6,}$/
 
   const onClickCheckboxHandler = () => {
     setJoin((prevForm) => ({ ...prevForm, checkAgree: !prevForm.checkAgree }))
@@ -66,13 +68,16 @@ const Join = () => {
       return
     }
 
-    if (validatePassword || userPwBlank === '') {
-      alert('비밀번호를 다시 입력해주세요.')
+    if (!validateDetailPw.test(userPw)) {
+      alert(
+        '비밀번호는 6자 이상, 숫자, 대문자, 소문자, 특수문자를 모두 포함해야 합니다.',
+      )
+      refPassword.current?.focus()
       return
     }
 
-    if (validatePwLength) {
-      alert('비밀번호는 최소 6글자 이상 작성해 주세요')
+    if (validatePassword || userPwBlank === '') {
+      alert('비밀번호를 다시 입력해주세요.')
       return
     }
 
@@ -89,6 +94,7 @@ const Join = () => {
     const userId = signUpResult?.data?.user?.id
 
     if (signUpResult) {
+      //가입한 이력이 있을 때
       if (signUpResult.data?.user?.identities?.length === 0) {
         alert('이미 존재하는 이메일입니다.')
         return
@@ -146,12 +152,22 @@ const Join = () => {
                     type='password'
                     name='userPw'
                     value={userPw}
+                    ref={refPassword}
                     maxLength={12}
                     placeholder='비밀번호'
                     onChange={onChangeHandler}
                     className={`flex w-full items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] font-bold caret-primary  ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} placeholder:text-[rgba(255,255,255,0.3)]`}
                   />
                 </label>
+
+                <div>
+                  {!validateDetailPw.test(userPw) && userPw?.length > 0 ? (
+                    <p className='text-primary'>
+                      비밀번호는 6자 이상, 숫자, 대문자, 소문자, 특수문자를 모두
+                      포함해야 합니다.
+                    </p>
+                  ) : null}
+                </div>
 
                 <label className='flex flex-col '>
                   <p>비밀번호 확인</p>
@@ -165,13 +181,20 @@ const Join = () => {
                     className={`flex w-full items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] font-bold caret-primary  ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} placeholder:text-[rgba(255,255,255,0.3)]`}
                   />
                 </label>
+                <div>
+                  {validatePassword && userPwCheck?.length > 0 ? (
+                    <p className='text-primary'>
+                      비밀번호를 다시 입력해주세요.
+                    </p>
+                  ) : null}
+                </div>
                 <label className='flex flex-col '>
                   <p>닉네임</p>
                   <input
                     type='text'
                     name='userNickname'
                     maxLength={10}
-                    placeholder='닉네임을 적어주세요'
+                    placeholder='닉네임을 적어주세요(10자 이내)'
                     value={userNickname}
                     onChange={onChangeHandler}
                     className={`flex w-full items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] text-[16px] font-bold caret-primary  ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} placeholder:text-[rgba(255,255,255,0.3)]`}
