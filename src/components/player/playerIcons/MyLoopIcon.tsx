@@ -3,8 +3,8 @@ import React from 'react'
 const MyLoopIcon = () => {
   return (
     <svg
-      width='48'
-      height='61'
+      width='50'
+      height='60'
       viewBox='0 0 48 61'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'

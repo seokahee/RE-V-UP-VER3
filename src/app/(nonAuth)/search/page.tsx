@@ -12,7 +12,7 @@ import {
 } from '@/shared/store/searchStore'
 import { CurrentPlayListType } from '@/types/musicPlayer/types'
 import Pagination from '@/util/Pagination '
-import { modalPaging } from '@/util/util'
+import { paging } from '@/util/util'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
@@ -63,10 +63,11 @@ const Search = () => {
   const searchedResult =
     selectedTabs === 'musicInfo' ? filteredMusic : filteredCommunity
 
-  const { currentItems, nextPage, prevPage, totalPages } = modalPaging(
+  const { currentItems, nextPage, prevPage, totalPages } = paging(
     searchedResult,
     currentPage,
     setCurrentPage,
+    5,
   )
 
   if (!keyword) {
@@ -87,17 +88,21 @@ const Search = () => {
           </div>
           <SearchedMusicData />
           <SearchedCommunityData />
-          <div
-            className={selectedTabs === 'musicInfo' ? 'mt-[82px]' : 'mt-[32px]'}
-          >
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              prevPage={prevPage}
-              nextPage={nextPage}
-              setCurrentPage={setCurrentPage}
-            />
-          </div>
+          {currentItems && currentItems.length > 0 ? (
+            <div
+              className={
+                selectedTabs === 'musicInfo' ? 'mt-[82px]' : 'mt-[32px]'
+              }
+            >
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                prevPage={prevPage}
+                nextPage={nextPage}
+                setCurrentPage={setCurrentPage}
+              />
+            </div>
+          ) : null}
         </div>
       ) : (
         <div>
