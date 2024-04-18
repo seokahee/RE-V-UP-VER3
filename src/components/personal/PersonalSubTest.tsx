@@ -8,7 +8,6 @@ import PreviousButton from '../mypage/PreviousButton'
 import left from '@/../public/images/double_arrow_left.svg'
 import right from '@/../public/images/double_arrow.svg'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import { DROP_SHADOW, INPUT_SHADOW, INPUT_FOCUS } from '../login/loginCss'
 
 import type { PersonalInfo } from '@/types/personal/type'
@@ -22,8 +21,7 @@ const PersonalSubTest = ({
   const { data: userSessionInfo } = useSession()
   const userId = userSessionInfo?.user?.uid as string
   const queryClient = useQueryClient()
-  const router = useRouter()
-  console.log(userChar.mbti, '????')
+
   const [first, second, third, fourth] = userChar.mbti.split('')
   const [EI, setEI] = useState<string>(first)
   const [SN, setSN] = useState<string>(second)
