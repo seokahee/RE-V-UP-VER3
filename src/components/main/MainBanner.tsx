@@ -2,6 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
+import Link from 'next/link'
 import React, { useState } from 'react'
 
 const MainBanner = () => {
@@ -21,11 +22,15 @@ const MainBanner = () => {
   const bannerArray = [
     {
       id: 1,
-      src: 'https://hxavgjouatzlrjtjgrth.supabase.co/storage/v1/object/public/adBanner/1.png',
+      src: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/adBanner/userTestBanner.jpg`,
+      url: 'https://docs.google.com/forms/d/1UIuYIuQYtkDPL6LkMxE8VdDlt36HhwDvpHBZ2pepvIY/viewform?edit_requested=true',
+      text: '유저테스트 참여하고 기프티콘 받아가세요!',
     },
     {
       id: 2,
-      src: 'https://hxavgjouatzlrjtjgrth.supabase.co/storage/v1/object/public/adBanner/2.png',
+      src: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/adBanner/1.png`,
+      url: '',
+      text: '',
     },
   ]
 
@@ -43,12 +48,23 @@ const MainBanner = () => {
               key={item.id}
               className={`w-full transition-opacity [&_img]:h-auto [&_img]:w-full ${slide === idx ? 'block' : 'hidden'} `}
             >
-              <Image
-                src={item.src}
-                width={732}
-                height={180}
-                alt={`배너 이미지 ${idx}`}
-              />
+              {item.url ? (
+                <Link href={item.url} target='_blank'>
+                  <Image
+                    src={item.src}
+                    width={732}
+                    height={180}
+                    alt={item.text}
+                  />
+                </Link>
+              ) : (
+                <Image
+                  src={item.src}
+                  width={732}
+                  height={180}
+                  alt={item.text}
+                />
+              )}
             </li>
           )
         })}
