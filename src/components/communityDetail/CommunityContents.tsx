@@ -1,6 +1,6 @@
 'use client'
 
-import { MouseEvent, useState } from 'react'
+import { MouseEvent, useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -27,9 +27,12 @@ import {
   ALLOW_SHADOW,
   BOARD_TITLE_SHADOW,
 } from './communityCss'
+import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
+import CommentsPage from '@/app/(auth)/comment/page'
 
 const CommunityContents = () => {
   const router = useRouter()
+  const { setIsChooseMusic } = useMusicSearchedStore()
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const { data: userSessionInfo, status } = useSession()
   const uid = userSessionInfo?.user?.uid as string
@@ -42,6 +45,7 @@ const CommunityContents = () => {
     isPending,
     isLoading,
     error,
+    commentsData,
   } = musicDataInCommuDetail(uid, currentBoardId)
 
   const {
@@ -112,6 +116,7 @@ const CommunityContents = () => {
 
   const onBackButtonHandler = () => {
     setIsEdit(false)
+    setIsChooseMusic(false)
     router.back()
   }
 
@@ -184,8 +189,8 @@ const CommunityContents = () => {
   }
 
   return (
-    <div className='mb-[8px] flex w-[732px] flex-col'>
-      <div className='flex flex-col gap-[16px]'>
+    <div className='flex w-[732px] flex-col'>
+      <div className='mb-[8px] flex flex-col gap-[16px]'>
         <section
           className={`mt-[32px] flex h-[72px] w-[100%] items-center justify-center rounded-[16px] border-[4px] border-solid border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.1)] px-[16px] py-[12px] ${BOARD_TITLE_SHADOW}`}
         >
@@ -362,12 +367,13 @@ const CommunityContents = () => {
               <figure>
                 <Image src={message} alt='댓글 아이콘' width={24} height={24} />
               </figure>
-              <div>{comment.length ? comment.length : 0}</div>
+              <div>{commentsData ? commentsData.length : 0}</div>
             </div>
             <LikeButton boardId={currentBoardId} />
           </div>
         </div>
       </div>
+      {isEdit ? null : <CommentsPage />}
     </div>
   )
 }
