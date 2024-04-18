@@ -16,17 +16,24 @@ const CommunityListData = ({ item }: { item: CommunityType }) => {
         className='flex h-[112px] w-[732px] justify-between border-b border-black p-[16px]'
       >
         <div className='flex h-[80px] w-[620px] items-center gap-[16px]'>
-          <Image
-            src={item.userInfo.userImage}
-            alt={`${item.userInfo.nickname}님의 이미지`}
-            width={56}
-            height={56}
-            className='h-[59px] w-[59px] rounded-full'
-          />
+          {item.userInfo.userImage ? (
+            <Image
+              src={item.userInfo.userImage}
+              alt={`${item.userInfo.nickname}님의 이미지`}
+              width={56}
+              height={56}
+              className='h-[59px] w-[59px] rounded-full'
+            />
+          ) : (
+            <div className='h-[59px] w-[59px] rounded-full bg-zinc-700 p-[28px]'>
+              <i></i>
+            </div>
+          )}
+
           <div className='flex h-[53px] w-[548px] flex-col gap-[8px]'>
             <div className='text-[18px]'>{item.boardTitle}</div>
             <div className='flex h-[20px] w-[548px] items-center justify-between pr-[32px]'>
-              <div className='flex h-[20px] w-[160px] gap-[16px] text-[14px] opacity-[50%]'>
+              <div className='flex h-[20px] gap-[16px] text-[14px] opacity-[50%]'>
                 <div>{item.userInfo.nickname}</div>
                 <div>{onDateHandler(item.date)}</div>
               </div>
@@ -39,7 +46,7 @@ const CommunityListData = ({ item }: { item: CommunityType }) => {
                     height={18}
                     className='h-[18] w-[18px]'
                   />
-                  {`${item.likeList.length}+`}
+                  {`${item.likeList.length > 99 ? `${item.likeList.length}+` : item.likeList.length}`}
                 </div>
                 <div className='h-20px flex w-[52px] items-center gap-1'>
                   <Image
@@ -49,7 +56,7 @@ const CommunityListData = ({ item }: { item: CommunityType }) => {
                     height={18}
                     className='h-[18px] w-[18px]'
                   />
-                  {`${numKeys}+`}
+                  {`${numKeys > 99 ? `${numKeys}+` : numKeys}`}
                 </div>
               </div>
             </div>

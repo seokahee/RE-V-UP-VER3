@@ -8,15 +8,17 @@ import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
 import { useSession } from 'next-auth/react'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import { queryClient } from '@/app/provider'
+import arrow from '@/../public/images/chevron-down.svg'
 
 const MyPlaylist = ({ data }: { data: UserInfo }) => {
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user?.uid as string
   const [checkedList, setCheckedList] = useState<string[]>([])
+  const [toggle, setToggle] = useState(false)
 
   const { data: playlistMyData } = useQuery({
     queryFn: () => getUserMyPlaylistData(uid),
-    queryKey: ['myMusicIds'], //data
+    queryKey: ['myMusicIds'],
     enabled: !!uid,
   })
 
@@ -54,6 +56,10 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     }
   }
 
+  const checkListReset = () => {
+    setCheckedList([])
+  }
+
   const onClickDeleteHandler = async () => {
     if (checkedList.length === 0) {
       alert('삭제할 노래를 선택해주세요!')
@@ -68,7 +74,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
         myMusicIds: newData,
       })
       alert('삭제가 완료되었습니다.')
-      setCheckedList([])
+      checkListReset()
     } catch (error) {
       console.log(error)
     }
@@ -109,7 +115,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       })
 
       alert('추가가 완료되었습니다.')
-      setCheckedList([])
+      checkListReset()
     } catch (error) {
       console.error('Error updating data:', error)
     }
@@ -148,20 +154,37 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
         currentList: newData,
       })
       alert('추가가 완료되었습니다.')
-      setCheckedList([])
+      checkListReset()
     } catch (error) {
       console.error('Error updating data:', error)
     }
   }
 
+  const onClickToggleHandler = () => {
+    setToggle((prev) => !prev)
+    checkListReset()
+  }
+
   const shadow =
     'shadow-[-4px_-4px_8px_rgba(255,255,255,0.05),4px_4px_8px_rgba(0,0,0,0.7)]'
+
+  const toggleStyle = 'h-0 opacity-0'
 
   return (
     <div className='mt-[5rem]'>
       <div className='flex items-center justify-between'>
-        <h2 className='text-[1.25rem] font-bold'>
+        <h2
+          className='flex cursor-pointer items-center gap-2 text-[1.25rem] font-bold'
+          onClick={onClickToggleHandler}
+        >
           {data?.nickname}님의 플레이리스트
+          <Image
+            src={arrow}
+            height={24}
+            width={24}
+            className={`${toggle ? '' : 'rotate-180'}`}
+            alt='화살표 아이콘'
+          />
         </h2>
         <ButtonPrimary onClick={onClickAllAddHandler}>전체 담기</ButtonPrimary>
       </div>
@@ -186,7 +209,9 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
           </button>
         </div>
       )}
-      <ul className='tracking-[-0.03em]'>
+      <ul
+        className={`tracking-[-0.03em] ${toggle ? toggleStyle : ''} overflow-hidden transition-opacity ease-in-out`}
+      >
         {myPlaylistData && myPlaylistData?.length > 0 ? (
           myPlaylistData?.map((item) => {
             return (

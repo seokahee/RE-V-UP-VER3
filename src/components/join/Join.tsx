@@ -1,26 +1,26 @@
 'use client'
 
-import { FormEvent } from 'react'
+import { FormEvent, useRef } from 'react'
 import Link from 'next/link'
-import { saveSignUpInUserInfo, signUp } from '@/shared/join/joinApi'
-import useInput from '@/hooks/useInput'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { validateFormBlank } from '@/query/communityDetail/mutation'
-import AllowUserInfo from './AllowUserInfo'
-import check from '@/../public/images/check-box.svg'
-import allowCheck from '@/../public/images/allow-check-box.svg'
-import Image from 'next/image'
+import { saveSignUpInUserInfo, signUp } from '@/shared/join/joinApi'
 import {
   DOWN_ACTIVE_BUTTON,
   DROP_SHADOW,
   INPUT_FOCUS,
   INPUT_SHADOW,
   OPEN_ANOTHER_SHADOW,
-  SHADOW,
 } from '../login/loginCss'
+import check from '@/../public/images/check-box.svg'
+import allowCheck from '@/../public/images/allow-check-box.svg'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
+import AllowUserInfo from './AllowUserInfo'
+import useInput from '@/hooks/useInput'
 
 const Join = () => {
+  const refPassword = useRef<HTMLInputElement>(null)
   const router = useRouter()
   const joinState = {
     userEmail: '',
@@ -40,9 +40,9 @@ const Join = () => {
 
   const blankPattern = /[\s]/g
   const validateCheckAgree = checkAgree
-  const validatePwLength = userPw.length < 6
   const validatePassword = !(userPw === userPwCheck)
   const validateEmptyValue = !(userEmail || userPwCheck || userNickname)
+  const validateDetailPw = /^(?=.*?[a-z])(?=.*?[0-9]).{6,}$/
 
   const onClickCheckboxHandler = () => {
     setJoin((prevForm) => ({ ...prevForm, checkAgree: !prevForm.checkAgree }))
@@ -66,13 +66,14 @@ const Join = () => {
       return
     }
 
-    if (validatePassword || userPwBlank === '') {
-      alert('비밀번호를 다시 입력해주세요.')
+    if (!validateDetailPw.test(userPw)) {
+      alert('비밀번호는 6자 이상, 숫자, 소문자를 모두 포함해야 합니다.')
+      refPassword.current?.focus()
       return
     }
 
-    if (validatePwLength) {
-      alert('비밀번호는 최소 6글자 이상 작성해 주세요')
+    if (validatePassword || userPwBlank === '') {
+      alert('비밀번호를 다시 입력해주세요.')
       return
     }
 
@@ -88,28 +89,38 @@ const Join = () => {
 
     const userId = signUpResult?.data?.user?.id
 
-    if (signUpResult) {
-      if (signUpResult.data?.user?.identities?.length === 0) {
-        alert('이미 존재하는 이메일입니다.')
-        return
-      }
-
-      if (
-        (signUpResult.error && signUpResult.error.message.includes('0 rows')) ||
-        (signUpResult.error && signUpResult.error.message.includes('already'))
-      ) {
-        const errorMessage = '이미 존재하는 이메일 입니다.'
-        alert(errorMessage)
-        return
-      }
-      saveSignUpInUserInfo({
+    if (!userId) {
+      alert('이미 존재하는 이메일 입니다.')
+      return
+    } else {
+      await saveSignUpInUserInfo({
         userId,
         email: userEmail,
         password: userPw,
         nickname: userNickname,
         userType: 0,
       })
+      alert('V-UP에 오신 걸 환영합니다!')
       router.push('/login')
+    }
+
+    if (signUpResult) {
+      if (
+        signUpResult.data?.user?.identities?.length === 0 ||
+        (signUpResult.error && signUpResult.error.status === 422)
+      ) {
+        alert('이미 존재하는 이메일입니다.')
+        return
+      }
+
+      if (signUpResult.error) {
+        const error = signUpResult.error
+
+        if (error.message === 'Email rate limit exceeded') {
+          alert('잦은 요청으로 잠시 후에 다시 시도 해주세요.')
+          return
+        }
+      }
     }
 
     reset()
@@ -146,6 +157,7 @@ const Join = () => {
                     type='password'
                     name='userPw'
                     value={userPw}
+                    ref={refPassword}
                     maxLength={12}
                     placeholder='비밀번호'
                     onChange={onChangeHandler}
@@ -153,23 +165,40 @@ const Join = () => {
                   />
                 </label>
 
+                <div>
+                  {!validateDetailPw.test(userPw) && userPw?.length > 0 ? (
+                    <p className='text-primary'>
+                      비밀번호는 6자 이상, 숫자, 소문자를 모두 포함해야 합니다.
+                    </p>
+                  ) : null}
+                </div>
+
                 <label className='flex flex-col '>
                   <p>비밀번호 확인</p>
                   <input
                     type='password'
                     name='userPwCheck'
+                    maxLength={12}
                     placeholder='비밀번호 확인'
                     value={userPwCheck}
                     onChange={onChangeHandler}
                     className={`flex w-full items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] font-bold caret-primary  ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} placeholder:text-[rgba(255,255,255,0.3)]`}
                   />
                 </label>
+                <div>
+                  {validatePassword && userPwCheck?.length > 0 ? (
+                    <p className='text-primary'>
+                      비밀번호를 다시 입력해주세요.
+                    </p>
+                  ) : null}
+                </div>
                 <label className='flex flex-col '>
                   <p>닉네임</p>
                   <input
                     type='text'
                     name='userNickname'
-                    placeholder='닉네임을 적어주세요'
+                    maxLength={10}
+                    placeholder='닉네임을 적어주세요(10자 이내)'
                     value={userNickname}
                     onChange={onChangeHandler}
                     className={`flex w-full items-center gap-4 rounded-[12px] border-2 border-white border-opacity-10 bg-white bg-opacity-10 px-[12px] py-[13px] text-[16px] font-bold caret-primary  ${INPUT_SHADOW} ${DROP_SHADOW} ${INPUT_FOCUS} placeholder:text-[rgba(255,255,255,0.3)]`}

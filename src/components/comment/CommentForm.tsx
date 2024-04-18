@@ -7,6 +7,7 @@ import { addComment } from '@/shared/comment/commentApi'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import submitIcon from '@/../public/images/Icon.svg'
 import Image from 'next/image'
+import { INPUT_SHADOW } from '../login/loginCss'
 
 const CommentForm = ({ boardId }: { boardId: string }) => {
   const [comment, setComment] = useState<string>('')
@@ -49,12 +50,14 @@ const CommentForm = ({ boardId }: { boardId: string }) => {
   }
   return (
     <>
-      <div className='mb-[40px] inline-flex w-[732px] items-center justify-start gap-8 rounded-xl border-2 border-white border-opacity-10 bg-white bg-opacity-10 p-3'>
+      <div
+        className={`mb-[40px] inline-flex w-[732px] items-center justify-start gap-8 rounded-xl border-2 border-white border-opacity-10 bg-white bg-opacity-10 p-3  ${INPUT_SHADOW} `}
+      >
         <form onSubmit={onCommentSubmitHandler} className='flex items-center'>
           <input
             type='text'
             placeholder='댓글을 작성해주세요'
-            className='w-[620px] appearance-none bg-transparent focus:outline-none'
+            className={`w-[620px] appearance-none bg-transparent placeholder:font-bold placeholder:text-white placeholder:text-opacity-40 focus:outline-none `}
             onChange={(e) => setComment(e.target.value)}
             value={comment}
           />

@@ -1,11 +1,11 @@
 'use client'
 
 import { getGenreMusicData } from '@/shared/main/api'
-import { useQuery } from '@tanstack/react-query'
-import NoSearchResultItem from './NoSearchResultItem'
-import { useState } from 'react'
-import { modalPaging } from '@/util/util'
 import Pagination from '@/util/Pagination '
+import { paging } from '@/util/util'
+import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
+import NoSearchResultItem from './NoSearchResultItem'
 
 const GenreMusicRecommendations = ({
   musicPreferenceData,
@@ -22,10 +22,11 @@ const GenreMusicRecommendations = ({
   if (isLoading) {
     return <div>정보를 가져오고 있습니다</div>
   }
-  const { currentItems, nextPage, prevPage, totalPages } = modalPaging(
+  const { currentItems, nextPage, prevPage, totalPages } = paging(
     data,
     currentPage,
     setCurrentPage,
+    5,
   )
 
   return (
@@ -34,7 +35,7 @@ const GenreMusicRecommendations = ({
         이런 음악은 어떠신가요? 🎶
       </div>
       <div>
-        {data?.map((item) => {
+        {currentItems?.map((item: any) => {
           return <NoSearchResultItem key={item.musicId} item={item} />
         })}
       </div>

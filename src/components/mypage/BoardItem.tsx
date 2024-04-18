@@ -42,7 +42,11 @@ const BoardItem = ({
             </div>
             <div className='flex items-center gap-1'>
               <Image src={heart} width={18} height={18} alt='좋아요 아이콘' />{' '}
-              {item.likeList ? item.likeList.length : 0}
+              {!item.likeList
+                ? 0
+                : item.likeList.length > 99
+                  ? '99+'
+                  : item.likeList.length}
               <Image
                 src={message}
                 width={18}
@@ -50,7 +54,11 @@ const BoardItem = ({
                 className='ml-1'
                 alt='댓글 아이콘'
               />{' '}
-              {item.comment ? item.comment.length : 0}
+              {!item.comment
+                ? 0
+                : item.comment.length > 99
+                  ? '99+'
+                  : item.comment.length}
             </div>
           </div>
         </div>

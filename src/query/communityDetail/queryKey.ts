@@ -1,3 +1,4 @@
+import { getComments } from '@/shared/comment/commentApi'
 import { readCommunityDetail } from '@/shared/communitydetail/detailApi'
 import { getCurrentMusicData } from '@/shared/main/api'
 import { getMyMusicList } from '@/shared/musicPlayer/api'
@@ -33,6 +34,11 @@ export const musicDataInCommuDetail = (uid: string, currentBoardId: string) => {
     queryKey: [COMMUNITY_DETAIL_QUERY_KEY.COMMUNITY_DETAIL],
   })
 
+  const { data: commentsData } = useQuery({
+    queryFn: () => getComments(currentBoardId),
+    queryKey: ['comment'],
+  })
+
   return {
     playListCurrent,
     myPlayList,
@@ -40,5 +46,6 @@ export const musicDataInCommuDetail = (uid: string, currentBoardId: string) => {
     isPending,
     isLoading,
     error,
+    commentsData,
   }
 }

@@ -21,14 +21,3 @@ export const getSearchedCommunityData = async (keyword: string) => {
     .order('date', { ascending: false })
   return data
 }
-
-export const modalMusicSearchData = async (keyword: string) => {
-  const { data } = await supabase
-    .from('musicInfo')
-    .select(
-      'musicId, musicTitle, artist, thumbnail, release, musicSource, runTime',
-    )
-    .or(`musicTitle.ilike.%${keyword}%,artist.ilike.%${keyword}%`)
-    .order('musicTitle', { ascending: false })
-  return data
-}

@@ -1,7 +1,7 @@
-import CommunityDetailRead from '@/components/communityDetail/communityDetailRead'
+import CommunityContents from '@/components/communityDetail/CommunityContents'
 
 const CommunityPage = () => {
-  return <CommunityDetailRead />
+  return <CommunityContents />
 }
 
 export default CommunityPage

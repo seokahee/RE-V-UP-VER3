@@ -7,16 +7,6 @@ export const signUp = async ({ email, password }: JoinApi) => {
     password,
   })
 
-  if (error) {
-    if (error.message.includes('unique')) {
-      alert('이미 가입된 이메일입니다.')
-      return
-    } else {
-      alert('가입 중 오류가 발생했습니다. 문의해주세요.')
-    }
-  } else {
-    alert('회원가입이 완료되었습니다.')
-  }
   return { data, error }
 }
 
@@ -44,8 +34,11 @@ export const saveSignUpInUserInfo = async ({
     .select()
 
   if (error) {
-    console.log(error)
-    throw new Error('오류로 인해 가입정보가 승인되지 않았습니다.')
+    console.error(error)
+    if (error.code == '23505') {
+      alert('이미 있는 이메일입니다.')
+      throw new Error('이미 있는 이메일입니다.')
+    }
   }
   return data
 }
@@ -55,6 +48,7 @@ export const getSignUpUserList = async () => {
     .from('userInfo')
     .select('*')
   if (signUpUserListError) {
+    console.error(signUpUserListError)
     throw new Error('오류로 인해 정보를 가져오지 못 하고 있습니다')
   }
   return signUpUserList

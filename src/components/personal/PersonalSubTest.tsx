@@ -8,7 +8,12 @@ import PreviousButton from '../mypage/PreviousButton'
 import left from '@/../public/images/double_arrow_left.svg'
 import right from '@/../public/images/double_arrow.svg'
 import Image from 'next/image'
-import { DROP_SHADOW, INPUT_SHADOW, INPUT_FOCUS } from '../login/loginCss'
+import {
+  DROP_SHADOW,
+  INPUT_SHADOW,
+  INPUT_FOCUS,
+  OPEN_ANOTHER_SHADOW,
+} from '../login/loginCss'
 
 import type { PersonalInfo } from '@/types/personal/type'
 
@@ -66,7 +71,9 @@ const PersonalSubTest = ({
   return (
     <div className='w-[516px] justify-center pb-[90px] pt-[70px]'>
       {/**wrap */}
-      <div className='h-[800px] rounded-[32px] bg-white bg-opacity-10'>
+      <div
+        className={`h-[800px] rounded-[32px] bg-white bg-opacity-10 ${OPEN_ANOTHER_SHADOW}`}
+      >
         <div>
           <p className='pt-[106px] text-center text-xl font-bold text-white'>
             MBTI를 입력해주세요!
@@ -126,10 +133,8 @@ const PersonalSubTest = ({
             </label>{' '}
             <span className='ml-2 text-2xl font-bold'>S</span>
           </div>
-
           {/** */}
           <div className='mb-4 flex flex-row justify-center'>
-            {' '}
             <span className='mr-2 text-2xl font-bold'>F</span>
             <label
               htmlFor='checkTF'

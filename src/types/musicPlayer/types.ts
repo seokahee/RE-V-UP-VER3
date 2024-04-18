@@ -53,7 +53,6 @@ export type SearchResultType = {
 
 export type PlayerProps = {
   currentPlaying: CurrentPlayListType | null
-
   isLyrics: boolean
   currentPlayList: CurrentPlayListType[]
   musicIndex: number
@@ -67,6 +66,7 @@ export type PlayerProps = {
 }
 
 export type MusicListProps = {
+  currentPlaying: CurrentPlayListType | null
   isLyrics: boolean
   checkedList: string[]
   currentPlayList: CurrentPlayListType[]
