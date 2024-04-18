@@ -59,11 +59,11 @@ const Player = ({
       <div className='flex flex-col items-center'>
         <div className='mt-[40px] flex flex-col items-center gap-[8px] p-[0px]'>
           <div className=' text-center text-[20px] font-bold leading-[150%]  tracking-tighter text-white opacity-80'>
-            {currentPlaying?.musicTitle}
+            {currentPlaying ? currentPlaying.musicTitle : 'V-UP'}
           </div>
 
           <div className='text-center text-[18px] leading-[150%] tracking-tighter text-white opacity-50'>
-            {currentPlaying?.artist}
+            {currentPlaying ? currentPlaying.artist : '-'}
           </div>
         </div>
 
@@ -75,7 +75,7 @@ const Player = ({
                 alt='Album Circle'
                 width={300}
                 height={300}
-                className='h-[300px] w-[300px] rounded-full shadow-[0px_1px_30px_-5px_rgba(210,137,176,0.5)]'
+                className='h-[300px] w-[300px] rounded-full shadow-[0px_0px_16px_rgba(210,137,176,0.5)]'
               />
             </div>
           ) : (
@@ -85,7 +85,7 @@ const Player = ({
                 alt='Album Circle'
                 width={300}
                 height={300}
-                className='h-[300px] w-[300px] rounded-full '
+                className='h-[300px] w-[300px] rounded-full shadow-[0px_4px_4px_-5px_rgba(0,0,0,0.25)]'
               />
             </div>
           )}
@@ -109,16 +109,16 @@ const Player = ({
                 <Image
                   src={addCurrMusic}
                   alt='Lyrics'
-                  width={24}
-                  height={24}
+                  width={16}
+                  height={16}
                   className={`flex h-[48px] w-[48px] items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW} `}
                 />
               ) : (
                 <Image
                   src={musicLyricsButton}
                   alt='Lyrics'
-                  width={24}
-                  height={24}
+                  width={16}
+                  height={16}
                   className={`flex h-[48px] w-[48px] items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW}`}
                 />
               )}
@@ -126,7 +126,7 @@ const Player = ({
             <button
               type='button'
               className={`flex h-[48px] w-[48px] items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW}`}
-              onClick={() => onInsertMyPlayListHandler}
+              onClick={onInsertMyPlayListHandler}
             >
               <Image
                 src={addMyPlayList}

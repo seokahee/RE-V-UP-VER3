@@ -1,9 +1,10 @@
-import {
+import type {
   addCommnity,
   getLikeListCommunity,
   readCommuDetail,
   updateCommuity,
 } from '@/types/communityDetail/detailTypes'
+import type { comment } from '@/types/comment/type'
 import { supabase } from '../supabase/supabase'
 
 export const readCommunityDetail = async (boardId: string) => {
@@ -11,7 +12,7 @@ export const readCommunityDetail = async (boardId: string) => {
     const { data, error } = await supabase
       .from('community')
       .select(
-        'boardId, boardTitle, date, musicId, content, likeList, userId, userInfo(nickname, userImage, userId), comment(commentId), musicInfo(musicId, musicTitle, artist, thumbnail, runTime)',
+        'boardId, boardTitle, date, musicId, content, likeList, userId, userInfo(nickname, userImage, userId), comment(commentId, boardId), musicInfo(musicId, musicTitle, artist, thumbnail, runTime)',
       )
       .eq('boardId', boardId)
       .single()
@@ -120,7 +121,14 @@ export const removeLikedUser = async (
   }
 }
 
-// const { data, error } = await supabase
-//   .from('community')
-//   .insert([{ some_column: 'someValue' }, { some_column: 'otherValue' }])
-//   .select()
+export const getComments = async (boardId: string): Promise<comment[]> => {
+  let { data: comment, error } = await supabase
+    .from('comment')
+    .select('*,userInfo(userId, nickname, userImage)')
+    .order('commentDate', { ascending: true })
+    .eq('boardId', boardId)
+  if (error) {
+    throw error.message
+  }
+  return comment as comment[]
+}

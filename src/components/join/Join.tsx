@@ -102,7 +102,7 @@ const Join = () => {
         alert(errorMessage)
         return
       }
-      saveSignUpInUserInfo({
+      await saveSignUpInUserInfo({
         userId,
         email: userEmail,
         password: userPw,
@@ -158,6 +158,7 @@ const Join = () => {
                   <input
                     type='password'
                     name='userPwCheck'
+                    maxLength={12}
                     placeholder='비밀번호 확인'
                     value={userPwCheck}
                     onChange={onChangeHandler}
@@ -169,6 +170,7 @@ const Join = () => {
                   <input
                     type='text'
                     name='userNickname'
+                    maxLength={10}
                     placeholder='닉네임을 적어주세요'
                     value={userNickname}
                     onChange={onChangeHandler}

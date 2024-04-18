@@ -64,7 +64,7 @@ const CommunityCreate = () => {
       return
     }
 
-    if (!isChooseMusic || !chooseMusic) {
+    if (!chooseMusic) {
       alert('음악 선택은 필수입니다!')
       return
     }
@@ -122,7 +122,7 @@ const CommunityCreate = () => {
         </div>
 
         <div>
-          <div>
+          <div className='w-full'>
             <input
               type='text'
               name='boardTitle'
@@ -137,7 +137,7 @@ const CommunityCreate = () => {
           <textarea
             name='content'
             value={content}
-            maxLength={100}
+            maxLength={200}
             onChange={onChangeHandler}
             className='mb-4 h-[200px] w-full rounded-lg border-none bg-[rgba(255,255,255,0.1)] p-2 '
             placeholder='추천할 음악에 대해 얘기해 주세요.'

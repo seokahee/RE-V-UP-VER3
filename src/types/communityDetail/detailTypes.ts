@@ -13,6 +13,7 @@ export type readCommuDetail = {
   }
   comment: {
     commentId: string
+    boardId: string
   }[]
   musicInfo: {
     musicId: string
