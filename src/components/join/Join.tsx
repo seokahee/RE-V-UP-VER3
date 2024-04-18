@@ -2,23 +2,22 @@
 
 import { FormEvent, useRef } from 'react'
 import Link from 'next/link'
-import { saveSignUpInUserInfo, signUp } from '@/shared/join/joinApi'
-import useInput from '@/hooks/useInput'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { validateFormBlank } from '@/query/communityDetail/mutation'
-import AllowUserInfo from './AllowUserInfo'
-import check from '@/../public/images/check-box.svg'
-import allowCheck from '@/../public/images/allow-check-box.svg'
-import Image from 'next/image'
+import { saveSignUpInUserInfo, signUp } from '@/shared/join/joinApi'
 import {
   DOWN_ACTIVE_BUTTON,
   DROP_SHADOW,
   INPUT_FOCUS,
   INPUT_SHADOW,
   OPEN_ANOTHER_SHADOW,
-  SHADOW,
 } from '../login/loginCss'
+import check from '@/../public/images/check-box.svg'
+import allowCheck from '@/../public/images/allow-check-box.svg'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
+import AllowUserInfo from './AllowUserInfo'
+import useInput from '@/hooks/useInput'
 
 const Join = () => {
   const refPassword = useRef<HTMLInputElement>(null)
