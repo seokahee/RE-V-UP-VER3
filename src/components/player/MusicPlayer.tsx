@@ -15,14 +15,20 @@ import CurrentMusicList from './CurrentMusicList'
 import Player from './Player'
 
 const MusicPlayer = () => {
-  const [musicIndex, setMusicIndex] = useState<number>(0)
-  const [checkedList, setCheckedList] = useState<string[]>([])
-  const [isLyrics, setIsLyrics] = useState(false)
-  const [isRandom, setIsRandom] = useState(false)
-  const { data: userSessionInfo } = useSession()
-  const uid = userSessionInfo?.user.uid as string
   const [currentPlaying, setCurrentPlaying] =
     useState<CurrentPlayListType | null>(null)
+
+  const [musicIndex, setMusicIndex] = useState<number>(0)
+
+  const [checkedList, setCheckedList] = useState<string[]>([])
+
+  const [isLyrics, setIsLyrics] = useState(false)
+
+  const [isRandom, setIsRandom] = useState(false)
+
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user.uid as string
+
   const router = useRouter()
 
   const { currentPlayList, myPlayList, isError } = getMusicList(uid)
@@ -135,11 +141,6 @@ const MusicPlayer = () => {
             ? (currentPlayList[musicIndex + 1] as CurrentPlayListType)
             : null,
         )
-        setCurrentPlaying(
-          currentPlayList[musicIndex]
-            ? (currentPlayList[musicIndex + 1] as CurrentPlayListType)
-            : null,
-        )
       }
     }
   }
@@ -186,7 +187,7 @@ const MusicPlayer = () => {
   }
   return (
     <div>
-      <div className='min-h-[675px]'>
+      <div className='min-h-[690px]'>
         <Player
           currentPlaying={currentPlaying}
           setCurrentPlaying={setCurrentPlaying}
@@ -203,6 +204,7 @@ const MusicPlayer = () => {
       </div>
       <div>
         <CurrentMusicList
+          currentPlaying={currentPlaying}
           currentPlayList={currentPlayList as CurrentPlayListType[]}
           isLyrics={isLyrics}
           checkedList={checkedList}

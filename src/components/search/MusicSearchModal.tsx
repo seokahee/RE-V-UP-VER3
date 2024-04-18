@@ -1,18 +1,18 @@
-import React, { FormEvent, KeyboardEvent, useRef, useState } from 'react'
-import Image from 'next/image'
-import { useModalMusicResultStore } from '@/shared/store/searchStore'
-import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
-import { modalMusicSearchData } from '@/shared/search/api'
-import type { MusicInfoType } from '@/types/musicPlayer/types'
-import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
-import { GOBACK_SHADOW } from '../communityDetail/detailCss'
-import { DOWN_ACTIVE_BUTTON, OPEN_ANOTHER_SHADOW } from '../login/loginCss'
-import { modalPaging } from '@/util/util'
-import Pagination from '@/util/Pagination '
-import useInput from '@/hooks/useInput'
-import ModalMusicData from './ModalMusicData'
-import search from '@/../public/images/community-detail-Image/search-button.svg'
 import close from '@/../public/images/close-button.svg'
+import search from '@/../public/images/community-detail-Image/search-button.svg'
+import useInput from '@/hooks/useInput'
+import { getSearchedMusicData } from '@/shared/search/api'
+import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
+import { useModalMusicResultStore } from '@/shared/store/searchStore'
+import type { MusicInfoType } from '@/types/musicPlayer/types'
+import Pagination from '@/util/Pagination '
+import { paging } from '@/util/util'
+import Image from 'next/image'
+import React, { FormEvent, KeyboardEvent, useRef, useState } from 'react'
+import { GOBACK_SHADOW } from '../communityDetail/detailCss'
+import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
+import { DOWN_ACTIVE_BUTTON, OPEN_ANOTHER_SHADOW } from '../login/loginCss'
+import ModalMusicData from './ModalMusicData'
 
 const MusicSearchModal = ({
   setIsModal,
@@ -34,29 +34,32 @@ const MusicSearchModal = ({
 
   const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
     if (!keyword) {
       alert('검색 키워드를 입력해 주세요')
-      return keywordRef.current?.focus()
+      keywordRef.current?.focus()
+      return
     }
 
     const getMusicData = async (keyword: string) => {
-      const data = await modalMusicSearchData(keyword)
+      const data = await getSearchedMusicData(keyword)
       modalMusicResult(data as MusicInfoType[])
 
       if (data && data?.length > 0) {
         setMusicList(data)
       } else {
         alert('검색 결과가 없습니다')
+        console.log('????????????????????????')
+        return
       }
     }
     getMusicData(keyword)
   }
 
-  const { currentItems, nextPage, prevPage, totalPages } = modalPaging(
+  const { currentItems, nextPage, prevPage, totalPages } = paging(
     musicList,
     currentPage,
     setCurrentPage,
+    5,
   )
 
   const onAddViewMusicHandler = () => {
@@ -97,7 +100,6 @@ const MusicSearchModal = ({
               ref={keywordRef}
               onChange={onChange}
               placeholder='가수 또는 노래 제목을 입력해주세요'
-              onKeyUp={(e) => handleKeyUp(e)}
               className={` placeholeder:tracking-[-0.03em] mx-[auto] w-[300px] rounded-[12px] bg-[rgba(255,255,255,0.1)] px-[8px] py-[16px] text-[14px]  ${OPEN_ANOTHER_SHADOW}`}
             />
             <button
