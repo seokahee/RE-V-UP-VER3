@@ -15,7 +15,7 @@ export const getBannerData = async (userId: string): Promise<Banner[]> => {
       .from('advertisement')
       .select('adId, userId, imageUrl')
       .eq('userId', userId)
-    console.log(data)
+
     return data as Banner[]
   } catch (error) {
     console.error(error)
