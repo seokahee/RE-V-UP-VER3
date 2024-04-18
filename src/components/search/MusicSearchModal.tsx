@@ -99,7 +99,6 @@ const MusicSearchModal = ({
               ref={keywordRef}
               onChange={onChange}
               placeholder='가수 또는 노래 제목을 입력해주세요'
-              onKeyUp={(e) => handleKeyUp(e)}
               className={` placeholeder:tracking-[-0.03em] mx-[auto] w-[300px] rounded-[12px] bg-[rgba(255,255,255,0.1)] px-[8px] py-[16px] text-[14px]  ${OPEN_ANOTHER_SHADOW}`}
             />
             <button
