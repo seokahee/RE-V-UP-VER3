@@ -43,8 +43,7 @@ const Join = () => {
   const validateCheckAgree = checkAgree
   const validatePassword = !(userPw === userPwCheck)
   const validateEmptyValue = !(userEmail || userPwCheck || userNickname)
-  const validateDetailPw =
-    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[~?!@#$%^&*_-]).{6,}$/
+  const validateDetailPw = /^(?=.*?[a-z])(?=.*?[0-9]).{6,}$/
 
   const onClickCheckboxHandler = () => {
     setJoin((prevForm) => ({ ...prevForm, checkAgree: !prevForm.checkAgree }))
@@ -69,9 +68,7 @@ const Join = () => {
     }
 
     if (!validateDetailPw.test(userPw)) {
-      alert(
-        '비밀번호는 6자 이상, 숫자, 대문자, 소문자, 특수문자를 모두 포함해야 합니다.',
-      )
+      alert('비밀번호는 6자 이상, 숫자, 소문자를 모두 포함해야 합니다.')
       refPassword.current?.focus()
       return
     }
@@ -93,21 +90,10 @@ const Join = () => {
 
     const userId = signUpResult?.data?.user?.id
 
-    if (signUpResult) {
-      //가입한 이력이 있을 때
-      if (signUpResult.data?.user?.identities?.length === 0) {
-        alert('이미 존재하는 이메일입니다.')
-        return
-      }
-
-      if (
-        (signUpResult.error && signUpResult.error.message.includes('0 rows')) ||
-        (signUpResult.error && signUpResult.error.message.includes('already'))
-      ) {
-        const errorMessage = '이미 존재하는 이메일 입니다.'
-        alert(errorMessage)
-        return
-      }
+    if (!userId) {
+      alert('이미 존재하는 이메일 입니다.')
+      return
+    } else {
       await saveSignUpInUserInfo({
         userId,
         email: userEmail,
@@ -115,7 +101,27 @@ const Join = () => {
         nickname: userNickname,
         userType: 0,
       })
+      alert('V-UP에 오신 걸 환영합니다!')
       router.push('/login')
+    }
+
+    if (signUpResult) {
+      if (
+        signUpResult.data?.user?.identities?.length === 0 ||
+        (signUpResult.error && signUpResult.error.status === 422)
+      ) {
+        alert('이미 존재하는 이메일입니다.')
+        return
+      }
+
+      if (signUpResult.error) {
+        const error = signUpResult.error
+
+        if (error.message === 'Email rate limit exceeded') {
+          alert('잦은 요청으로 잠시 후에 다시 시도 해주세요.')
+          return
+        }
+      }
     }
 
     reset()
@@ -163,8 +169,7 @@ const Join = () => {
                 <div>
                   {!validateDetailPw.test(userPw) && userPw?.length > 0 ? (
                     <p className='text-primary'>
-                      비밀번호는 6자 이상, 숫자, 대문자, 소문자, 특수문자를 모두
-                      포함해야 합니다.
+                      비밀번호는 6자 이상, 숫자, 소문자를 모두 포함해야 합니다.
                     </p>
                   ) : null}
                 </div>
