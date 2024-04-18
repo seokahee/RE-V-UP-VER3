@@ -17,6 +17,10 @@ const LikeButton = ({ boardId }: Props) => {
   const uid = userSessionInfo?.user.uid
   const [like, setLike] = useState<boolean | null>(null)
   const [likeList, setLikeList] = useState<string[]>([])
+  const likeLength =
+    likeList && likeList.length > 99 ? 99 : likeList ? likeList.length : 0
+  const likePlusCondition =
+    likeList && likeList.length && likeList.length > 99 ? '+' : null
 
   useEffect(() => {
     const likedStatus = async () => {
@@ -76,8 +80,9 @@ const LikeButton = ({ boardId }: Props) => {
           )}
         </figure>
 
-        <p className='ml-[5px] text-[rgba(255,255,255,0.5)]'>
-          {likeList !== null ? likeList?.length + ' +' : 0}
+        <p className='text-[rgba(255,255,255,0.5)]'>
+          {likeLength}
+          {likePlusCondition}
         </p>
       </div>
     </div>

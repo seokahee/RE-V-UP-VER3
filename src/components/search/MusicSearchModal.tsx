@@ -20,7 +20,8 @@ const MusicSearchModal = ({
   isModal: boolean
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
-  const { chooseMusic, isChooseMusic, setChooseMusic } = useMusicSearchedStore()
+  const { chooseMusic, isChooseMusic, setChooseMusic, setIsChooseMusic } =
+    useMusicSearchedStore()
   const [musicList, setMusicList] = useState<MusicInfoType[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const { form: keywordInput, onChange } = useInput({
@@ -53,6 +54,7 @@ const MusicSearchModal = ({
       }
     }
     getMusicData(keyword)
+    setIsChooseMusic(false)
   }
 
   const { currentItems, nextPage, prevPage, totalPages } = paging(
@@ -113,7 +115,7 @@ const MusicSearchModal = ({
         <button
           onClick={() => {
             setIsModal(false)
-            setChooseMusic(null)
+            setIsChooseMusic(false)
           }}
           className='absolute right-[32px] top-[32px] h-[24px] w-[24px]'
         >
