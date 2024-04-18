@@ -77,7 +77,12 @@ const CommunityContents = () => {
     onChange: onChangeEditForm,
   } = useInput({ boardTitle, content })
   const { boardTitle: updatedTitle, content: updatedContent } = editForm
-  const commentLength = commentsData ? commentsData.length : 0
+  const commentLength =
+    commentsData && commentsData.length > 99
+      ? 99
+      : commentsData
+        ? commentsData.length
+        : 0
   const commentPlusCondition =
     commentsData && commentsData.length && commentsData.length > 99 ? '+' : null
 
