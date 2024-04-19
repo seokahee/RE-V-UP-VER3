@@ -10,6 +10,7 @@ import next from '@/../public/images/next.svg'
 import prev from '@/../public/images/prev.svg'
 import heart from '@/../public/images/heart-rounded-gray.svg'
 import message from '@/../public/images/message-text-square-02-gray.svg'
+import defaultUserImg from '@/../public/images/userDefaultImg.svg'
 import { useSession } from 'next-auth/react'
 
 const TopLikedBoard = () => {
@@ -79,8 +80,15 @@ const TopLikedBoard = () => {
                     >
                       <Link href={`/community/${item.boardId}`}>
                         <div className='flex items-center'>
-                          <figure className='flex h-7 w-7 overflow-hidden rounded-full border-2 border-white bg-slate-200'>
-                            {item.userInfo.userImage && (
+                          <figure className='flex h-7 w-7 overflow-hidden rounded-full border-2 border-white bg-[#2b2b2b]'>
+                            {!item.userInfo.userImage ? (
+                              <Image
+                                src={defaultUserImg}
+                                alt={item.userInfo.nickname!}
+                                width={24}
+                                height={24}
+                              />
+                            ) : (
                               <Image
                                 src={item.userInfo.userImage}
                                 alt={item.userInfo.nickname!}

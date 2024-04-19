@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import PreviousButton from '../mypage/PreviousButton'
 import { OPEN_ANOTHER_SHADOW } from '../login/loginCss'
+import Swal from 'sweetalert2'
 
 const GenderPage = ({
   setPageCount,
@@ -21,7 +22,11 @@ const GenderPage = ({
 
   const handleNextClick = (param: string) => {
     if (!gender) {
-      alert('성별을 선택해주세요.')
+      // alert('성별을 선택해주세요.')
+      Swal.fire({
+        icon: 'error',
+        title: '성별을 선택해주세요.',
+      })
       return
     }
 

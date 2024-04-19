@@ -15,10 +15,12 @@ import MyPlaylist from './MyPlaylist'
 import { useSession } from 'next-auth/react'
 import right from '@/../public/images/chevron-right.svg'
 import pencil from '@/../public/images/pencil-line.svg'
+import defaultUserImg from '@/../public/images/userDefaultImg.svg'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import FollowingList from './FollowingList'
 import FollowerList from './FollowerList'
 import { useRouter } from 'next/navigation'
+import Swal from 'sweetalert2'
 
 const MyInfo = () => {
   const { data: userSessionInfo, status } = useSession()
@@ -94,7 +96,7 @@ const MyInfo = () => {
     }
   }
 
-  const onClickUpdateHandler = () => {
+  const onClickUpdateHandler = async () => {
     if (!nickname.trim()) {
       setCheckText('닉네임을 입력해주세요')
       nicknameRef.current?.focus()
@@ -116,7 +118,14 @@ const MyInfo = () => {
       playlistOpen,
       postsOpen,
     })
-    alert('정보 변경이 완료되었습니다.')
+    await Swal.fire({
+      icon: 'success',
+      title: '정보 변경이 완료되었습니다.',
+      showConfirmButton: false,
+      timer: 1500,
+      background: '#2B2B2B',
+      color: '#ffffff',
+    })
     onClickCloseModalHandler()
   }
 
@@ -131,23 +140,44 @@ const MyInfo = () => {
   const selectFileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0] as File
 
-    if (window.confirm('선택한 이미지로 업로드를 진행할까요?')) {
-      if (!file) {
-        alert('선택된 이미지가 없습니다. 이미지를 선택해주세요.')
-        return
-      }
-      const data = await updateUserThumbnailMutation.mutateAsync({
-        userId: uid,
-        file,
+    // if (window.confirm('선택한 이미지로 업로드를 진행할까요?')) {
+    if (!file) {
+      Swal.fire({
+        icon: 'warning',
+        title: '선택된 이미지가 없습니다. 이미지를 선택해주세요.',
+        showConfirmButton: false,
+        timer: 1500,
+        background: '#2B2B2B',
+        color: '#ffffff',
       })
-
-      if (data) {
-        setUserImage(data?.[0].userImage as string)
-        alert('업로드 완료!')
-      } else {
-        alert('파일이 업로드 되지 않았습니다.')
-      }
+      return
     }
+    const data = await updateUserThumbnailMutation.mutateAsync({
+      userId: uid,
+      file,
+    })
+
+    if (data) {
+      setUserImage(data?.[0].userImage as string)
+      await Swal.fire({
+        icon: 'success',
+        title: '업로드가 완료되었습니다.',
+        showConfirmButton: false,
+        timer: 1500,
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
+    } else {
+      await Swal.fire({
+        icon: 'error',
+        title: '파일이 업로드 되지 않았습니다.',
+        showConfirmButton: false,
+        timer: 1500,
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
+    }
+    // }
   }
 
   const onClickCloseFollowModalHandler = () => {
@@ -215,7 +245,15 @@ const MyInfo = () => {
         <div className='mb-4 flex items-center justify-between pt-1'>
           <div>
             <figure className='flex h-[84px] w-[84px] overflow-hidden rounded-full border-2 border-[#ffffff1a] bg-[#2b2b2b]'>
-              {userImage && (
+              {!userImage ? (
+                <Image
+                  src={defaultUserImg}
+                  width={80}
+                  height={80}
+                  alt={`${data?.nickname} 프로필 이미지`}
+                  priority={true}
+                />
+              ) : (
                 <Image
                   src={userImage}
                   width={80}
@@ -267,13 +305,20 @@ const MyInfo = () => {
           <div className='px-[3.25rem] tracking-[-0.03em]'>
             <label className='relative mx-auto mb-8 mt-4 block h-[84px] w-[84px] cursor-pointer overflow-hidden rounded-full border-2 border-[#ffffff1a] bg-[#00000080] text-center [&>input]:hidden'>
               <figure className=''>
-                {userImage && (
+                {!userImage ? (
+                  <Image
+                    src={defaultUserImg}
+                    width={80}
+                    height={80}
+                    alt={`${data?.nickname} 프로필 이미지`}
+                    className='blur-sm'
+                  />
+                ) : (
                   <Image
                     src={userImage}
                     width={80}
                     height={80}
                     alt={`${data?.nickname} 프로필 이미지`}
-                    priority={true}
                     className='blur-sm'
                   />
                 )}
