@@ -31,7 +31,7 @@ const CommunityListData = ({ item }: { item: CommunityType }) => {
               alt='유저 이미지'
               width={56}
               height={56}
-              className='h-[59px] w-[59px] rounded-full'
+              className='h-[59px] w-[59px] rounded-full object-cover'
             />
           )}
 

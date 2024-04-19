@@ -13,11 +13,11 @@ import { useState } from 'react'
 import 'react-h5-audio-player/lib/styles.css'
 import CurrentMusicList from './CurrentMusicList'
 import Player from './Player'
+import Swal from 'sweetalert2'
 
 const MusicPlayer = () => {
   const [currentPlaying, setCurrentPlaying] =
     useState<CurrentPlayListType | null>(null)
-
   const [musicIndex, setMusicIndex] = useState<number>(0)
   const [checkedList, setCheckedList] = useState<string[]>([])
   const [isLyrics, setIsLyrics] = useState(false)
@@ -115,74 +115,120 @@ const MusicPlayer = () => {
   }
 
   const onDeleteCurrentMusicHandler = async () => {
-    if (checkedList.length === 0) {
-      alert('삭제할 노래를 선택해주세요')
-      return
-    }
-    if (window.confirm('선택 항목을 삭제하시겠습니까?')) {
-      const currentMusicData = currentPlayList.filter(
-        (music) => !checkedList.includes(music.musicId),
-      )
-
-      deleteMutation.mutate({
-        uid,
-        currentMusicData: currentMusicData.map((music) => music.musicId),
-      })
-      setCheckedList([])
-
-      const isCurrentMusicDeleted = checkedList.includes(
-        currentPlaying!.musicId,
-      )
-      if (isCurrentMusicDeleted) {
-        setCurrentPlaying(
-          currentPlayList[musicIndex]
-            ? (currentMusicData[0] as CurrentPlayListType)
-            : null,
+    Swal.fire({
+      title: '선택한 노래를 삭제하시겠습니까?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+      background: '#2B2B2B',
+      color: '#ffffff',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const currentMusicData = currentPlayList.filter(
+          (music) => !checkedList.includes(music.musicId),
         )
+        deleteMutation.mutate({
+          uid,
+          currentMusicData: currentMusicData.map((music) => music.musicId),
+        })
+        setCheckedList([])
+        const isCurrentMusicDeleted = checkedList.includes(
+          currentPlaying!.musicId,
+        )
+        if (isCurrentMusicDeleted) {
+          setCurrentPlaying(
+            currentPlayList[musicIndex]
+              ? (currentMusicData[0] as CurrentPlayListType)
+              : null,
+          )
+        }
+        Swal.fire({
+          title: '재생목록이 삭제되었습니다.',
+          icon: 'success',
+          background: '#2B2B2B',
+          color: '#ffffff',
+        })
       }
-    }
+    })
   }
 
   const onInsertMyPlayListHandler = async () => {
     if (checkedList.length === 0) {
-      alert('저장할 노래를 선택해주세요')
+      Swal.fire({
+        icon: 'warning',
+        title: '추가할 노래를 선택해 주세요',
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       return
     }
+
     if (uid === '' || !uid) {
-      alert(
-        '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
-      )
+      Swal.fire({
+        icon: 'error',
+        title:
+          '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
+      })
       router.replace('/login')
       return
     }
-    if (window.confirm('선택한 곡을 마이플레이 리스트에 추가하시겠습니까?')) {
-      if (myPlayList && myPlayList.length > 0) {
-        const myIndex = myPlayList.flatMap((item) => {
-          return item.myMusicIds
-        })
 
-        // some - || / every - &&
-        const uniqueValues = checkedList.filter((value) => {
-          return myIndex.every((item) => {
-            return item !== value
+    Swal.fire({
+      title: '선택한 곡을 마이플레이 리스트에 추가하시겠습니까?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+      background: '#2B2B2B',
+      color: '#ffffff',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (myPlayList && myPlayList.length > 0) {
+          const myIndex = myPlayList.flatMap((item) => {
+            return item.myMusicIds
           })
-        })
-        if (uniqueValues.length === 0) {
-          alert('이미 추가된 노래입니다.')
-          setCheckedList([])
-          return
+
+          // some - || / every - &&
+          const uniqueValues = checkedList.filter((value) => {
+            return myIndex.every((item) => {
+              return item !== value
+            })
+          })
+          if (uniqueValues.length === 0) {
+            Swal.fire({
+              icon: 'warning',
+              title: '이미 추가된 노래입니다.',
+              background: '#2B2B2B',
+              color: '#ffffff',
+            })
+            setCheckedList([])
+            return
+          } else {
+            const updateList = [...myIndex, ...uniqueValues]
+            updateMutation.mutate({ userId: uid, myMusicList: updateList })
+            Swal.fire({
+              icon: 'success',
+              title: '마이플레이 리스트에 추가 되었습니다.',
+              background: '#2B2B2B',
+              color: '#ffffff',
+            })
+            setCheckedList([])
+          }
         } else {
-          const updateList = [...myIndex, ...uniqueValues]
-          updateMutation.mutate({ userId: uid, myMusicList: updateList })
-          alert('마이플레이리스트에 추가 되었습니다.')
+          insertMutation.mutate({ userId: uid, musicId: checkedList })
+          Swal.fire({
+            icon: 'success',
+            title: '마이플레이 리스트에 추가 되었습니다.',
+            background: '#2B2B2B',
+            color: '#ffffff',
+          })
           setCheckedList([])
         }
-      } else {
-        insertMutation.mutate({ userId: uid, musicId: checkedList })
-        alert('마이플레이리스트에 추가 되었습니다.')
-        setCheckedList([])
       }
-    }
+    })
   }
   return (
     <div>

@@ -1,5 +1,6 @@
 import { MyPlayListType } from '@/types/musicPlayer/types'
 import { supabase } from '../supabase/supabase'
+import Swal from 'sweetalert2'
 
 export const getCurrentMusicList = async (userId: string) => {
   const { data: currentMusic } = await supabase
@@ -42,9 +43,6 @@ export const updateCurrentMusic = async ({
     .from('playlistCurrent')
     .update({ currentMusicIds: currentMusicData })
     .eq('userId', uid)
-  if (!error) {
-    alert('재생 목록이 삭제되었습니다.')
-  }
 }
 
 export const insertMyPlayMusic = async ({

@@ -8,7 +8,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import submitIcon from '@/../public/images/Icon.svg'
 import Image from 'next/image'
 import { INPUT_SHADOW } from '../login/loginCss'
-
+import Swal from 'sweetalert2'
 const CommentForm = ({ boardId }: { boardId: string }) => {
   const [comment, setComment] = useState<string>('')
   const queryClient = useQueryClient()
@@ -29,12 +29,24 @@ const CommentForm = ({ boardId }: { boardId: string }) => {
     e.preventDefault()
 
     if (userId === '') {
-      alert('로그인 후 이용해 주세요')
+      // alert('로그인 후 이용해 주세요')
+      Swal.fire({
+        icon: 'error',
+        title: '로그인 후 이용해 주세요',
+        color: '#ffffff',
+        background: '#2B2B2B',
+      })
       return
     }
 
     if (!comment) {
-      alert('댓글을 입력해 주세요!')
+      // alert('댓글을 입력해 주세요!')
+      Swal.fire({
+        icon: 'error',
+        title: '댓글 작성을 완료해주세요!',
+        color: '#ffffff',
+        background: '#2B2B2B',
+      })
       return
     }
 
@@ -45,8 +57,14 @@ const CommentForm = ({ boardId }: { boardId: string }) => {
       commentDate: getToday(),
       commentContent: comment,
     }
+
+    // alert('댓글 등록이 완료됐습니다.')
+    await Swal.fire({
+      text: '댓글 등록이 완료됐습니다.',
+      background: '#2B2B2B',
+      color: '#ffffff',
+    })
     addCommentMutation.mutate(newComment)
-    alert('댓글 등록이 완료됐습니다.')
   }
   return (
     <>
