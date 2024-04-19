@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useSession } from 'next-auth/react'
 import plus from '@/../public/images/plus.svg'
+import Swal from 'sweetalert2'
 
 const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
   const queryClient = useQueryClient()
@@ -38,11 +39,19 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
     },
   })
 
-  const onClickAddCurrentMusicHandler = (userId: string, musicId: string) => {
+  const onClickAddCurrentMusicHandler = async (
+    userId: string,
+    musicId: string,
+  ) => {
     if (!userId) {
-      alert(
-        '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
-      )
+      await Swal.fire({
+        icon: 'error',
+        title:
+          '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
+        confirmButtonText: '확인',
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       router.replace('/login')
       return
     }
@@ -50,7 +59,14 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
     if (playListCurrent && playListCurrent.length > 0) {
       const currentList = playListCurrent[0].currentMusicIds
       if (currentList.find((el) => el === musicId)) {
-        alert('이미 추가된 노래입니다.') //이후에 삭제 예정
+        await Swal.fire({
+          icon: 'warning',
+          title: '이미 추가된 노래입니다.',
+          showConfirmButton: false,
+          timer: 1500,
+          background: '#2B2B2B',
+          color: '#ffffff',
+        })
         return
       }
       currentList.push(musicId)
@@ -58,7 +74,14 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
     } else {
       insertMutation.mutate({ userId, musicId })
     }
-    alert('현재 재생목록에 추가 되었습니다.') //이후에 삭제 예정
+    await Swal.fire({
+      icon: 'success',
+      title: '현재 재생목록에 추가 되었습니다.',
+      showConfirmButton: false,
+      timer: 1500,
+      background: '#2B2B2B',
+      color: '#ffffff',
+    })
   }
 
   const itemShadow =

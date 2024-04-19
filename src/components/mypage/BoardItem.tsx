@@ -6,6 +6,7 @@ import React from 'react'
 import play from '@/../public/images/play.svg'
 import heart from '@/../public/images/heart-rounded-gray.svg'
 import message from '@/../public/images/message-text-square-02-gray.svg'
+import defaultUserImg from '@/../public/images/userDefaultImg.svg'
 
 const BoardItem = ({
   data: item,
@@ -18,7 +19,15 @@ const BoardItem = ({
     <li className='flex justify-between gap-8 border-b border-solid border-black p-4'>
       <div className='flex w-[calc(100%-120px)] items-center gap-4'>
         <figure className='flex h-[60px] w-[60px] items-center justify-center overflow-hidden rounded-full border-2 border-[#ffffff1a] bg-[#2b2b2b]'>
-          {item.userInfo?.userImage && (
+          {!item.userInfo?.userImage ? (
+            <Image
+              src={defaultUserImg}
+              width={56}
+              height={56}
+              alt={`${item.userInfo.nickname} 프로필 이미지`}
+              priority={true}
+            />
+          ) : (
             <Image
               src={item.userInfo.userImage}
               width={56}
