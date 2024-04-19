@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import { queryClient } from '@/app/provider'
 import arrow from '@/../public/images/chevron-down.svg'
+import Swal from 'sweetalert2'
 
 const MyPlaylist = ({ data }: { data: UserInfo }) => {
   const { data: userSessionInfo } = useSession()
@@ -62,7 +63,13 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
 
   const onClickDeleteHandler = async () => {
     if (checkedList.length === 0) {
-      alert('삭제할 노래를 선택해주세요!')
+      await Swal.fire({
+        icon: 'warning',
+        title: '삭제할 노래를 선택해주세요!',
+        confirmButtonText: '확인',
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       return
     }
     const myMusicIds = playlistMyIds as string[]
@@ -73,16 +80,29 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
         userId: uid,
         myMusicIds: newData,
       })
-      alert('삭제가 완료되었습니다.')
+      await Swal.fire({
+        icon: 'success',
+        title: '현재 재생목록에 추가 되었습니다.',
+        showConfirmButton: false,
+        timer: 1500,
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       checkListReset()
     } catch (error) {
       console.log(error)
     }
   }
 
-  const onClickAddHandler = () => {
+  const onClickAddHandler = async () => {
     if (checkedList.length === 0) {
-      alert('추가할 노래를 선택해주세요!')
+      await Swal.fire({
+        icon: 'warning',
+        title: '추가할 노래를 선택해주세요',
+        confirmButtonText: '확인',
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       return
     }
 
@@ -97,9 +117,14 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       )
 
       if (addData.length === 0) {
-        alert(
-          `선택하신 ${checkedList.length}개의 곡 모두 이미 추가되어 있습니다.`,
-        )
+        await Swal.fire({
+          icon: 'warning',
+          title: `선택하신 ${checkedList.length}개의 곡 모두 이미 추가되어 있습니다.`,
+          showConfirmButton: false,
+          timer: 1500,
+          background: '#2B2B2B',
+          color: '#ffffff',
+        })
         return
       }
 
@@ -113,15 +138,21 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
         userId: uid,
         currentList: newData,
       })
-
-      alert('추가가 완료되었습니다.')
+      await Swal.fire({
+        icon: 'success',
+        title: '현재 재생목록에 추가 되었습니다.',
+        showConfirmButton: false,
+        timer: 1500,
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       checkListReset()
     } catch (error) {
       console.error('Error updating data:', error)
     }
   }
 
-  const onClickAllAddHandler = () => {
+  const onClickAllAddHandler = async () => {
     const playListCurrentIds = !playlistCurrentData?.[0]?.currentMusicIds
       ? []
       : playlistCurrentData?.[0].currentMusicIds
@@ -129,7 +160,14 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     let newData = []
 
     if (playListMyIds?.length === 0) {
-      alert('추가할 곡이 없습니다.')
+      await Swal.fire({
+        icon: 'info',
+        title: '추가할 곡이 없습니다.',
+        showConfirmButton: false,
+        timer: 1500,
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       return
     }
 
@@ -139,7 +177,14 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       )
 
       if (addData.length === 0) {
-        alert(`${playListMyIds.length}개 모두 이미 추가되어 있습니다.`)
+        await Swal.fire({
+          icon: 'info',
+          title: `선택하신 ${playListMyIds.length}개 모두 이미 추가되어 있습니다.`,
+          showConfirmButton: false,
+          timer: 1500,
+          background: '#2B2B2B',
+          color: '#ffffff',
+        })
         return
       }
 
@@ -153,7 +198,6 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
         userId: uid,
         currentList: newData,
       })
-      alert('추가가 완료되었습니다.')
       checkListReset()
     } catch (error) {
       console.error('Error updating data:', error)

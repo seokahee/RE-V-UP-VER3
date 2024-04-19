@@ -11,6 +11,7 @@ import { GET_MUSICLIST_QUERY_KEY } from '@/query/musicPlayer/musicPlayerQueryKey
 import { paging } from '@/util/util'
 import Pagination from '@/util/Pagination '
 import type { Board } from '@/types/mypage/types'
+import Swal from 'sweetalert2'
 
 const WriteList = () => {
   const { data: userSessionInfo } = useSession()
@@ -49,17 +50,22 @@ const WriteList = () => {
     },
   })
 
-  const onClickAddCurrentMusicHandler = (musicId: string) => {
+  const onClickAddCurrentMusicHandler = async (musicId: string) => {
     const currentList = playListCurrent?.length
       ? playListCurrent[0].currentMusicIds
       : []
     if (currentList.find((el) => el === musicId)) {
-      alert('이미 추가된 노래입니다.')
+      await Swal.fire({
+        icon: 'warning',
+        title: '이미 추가된 노래입니다.',
+        confirmButtonText: '확인',
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       return
     }
     currentList.push(musicId)
     updateMutation.mutate({ userId: uid, currentList })
-    alert('현재 재생목록에 추가 되었습니다.')
   }
 
   if (isError) {
