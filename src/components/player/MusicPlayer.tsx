@@ -60,7 +60,6 @@ const MusicPlayer = () => {
     console.error('현재 플레이리스트를 가져오지 못했습니다')
     return
   }
-
   const onLyricsToggle = () => {
     setIsLyrics((prev) => !prev)
   }
