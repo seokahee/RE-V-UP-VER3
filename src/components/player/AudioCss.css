@@ -94,7 +94,8 @@
 }
 
 .rhap_progress-container {
-  padding: 10px 0px;
+  /* padding: 10px 0px; */
+  height: 12px;
   background: rgba(104, 91, 225, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
@@ -107,7 +108,8 @@
 
 .rhap_progress-filled {
   background-color: #685bff;
-  padding: 10px 3px;
+  padding: 0px 3px;
+  height: 12px;
   border-radius: 99px;
   box-shadow:
     0px 4px 4px rgba(0, 0, 0, 0.2),
@@ -119,9 +121,8 @@
     inset 0px -4px 1px rgba(0, 0, 0, 0.2);
 }
 .rhap_progress-bar-show-download {
-  padding: 10px 0px;
   background: transparent;
-  top: -10px;
+  height: 12px;
 }
 .rhap_download-progress {
   background: transparent;
