@@ -61,7 +61,7 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
     if (editedText === '') {
       Swal.fire({
         icon: 'error',
-        title: '마저 수정을 완료해주세요!',
+        title: '댓글 내용을 입력해주세요!',
         color: '#ffffff',
         background: '#2B2B2B',
       })
