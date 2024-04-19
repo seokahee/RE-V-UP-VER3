@@ -1,5 +1,8 @@
 import { queryClient } from '@/app/provider'
-import { getMusicList } from '@/query/musicPlayer/musicPlayerQueryKey'
+import {
+  GET_MUSIC_LIST_QUERY_KEYS,
+  getMusicList,
+} from '@/query/musicPlayer/musicPlayerQueryKeys'
 import {
   insertMyPlayMusic,
   updateCurrentMusic,
@@ -11,9 +14,9 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import 'react-h5-audio-player/lib/styles.css'
+import Swal from 'sweetalert2'
 import CurrentMusicList from './CurrentMusicList'
 import Player from './Player'
-import Swal from 'sweetalert2'
 
 const MusicPlayer = () => {
   const [currentPlaying, setCurrentPlaying] =
@@ -31,24 +34,36 @@ const MusicPlayer = () => {
   const deleteMutation = useMutation({
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
-      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_CURRENT_MUSIC_LIST],
+      })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.CURRENT_MUSIC_INFO],
+      })
     },
   })
 
   const insertMutation = useMutation({
     mutationFn: insertMyPlayMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['myMusicIds'] })
-      queryClient.invalidateQueries({ queryKey: ['getMyMusicList'] })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_MUSIC_INFO],
+      })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_MUSIC_LIST],
+      })
     },
   })
 
   const updateMutation = useMutation({
     mutationFn: updateMyPlayMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['myMusicIds'] })
-      queryClient.invalidateQueries({ queryKey: ['getMyMusicList'] })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_MUSIC_INFO],
+      })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_MUSIC_LIST],
+      })
     },
   })
 

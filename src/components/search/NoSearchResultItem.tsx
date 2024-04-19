@@ -1,6 +1,9 @@
 import addCurrMusic from '@/../public/images/community-detail-Image/add-current-music.svg'
 import addMyPlayList from '@/../public/images/community-detail-Image/add-my-playlist.svg'
-import { getMusicList } from '@/query/musicPlayer/musicPlayerQueryKey'
+import {
+  GET_MUSIC_LIST_QUERY_KEYS,
+  getMusicList,
+} from '@/query/musicPlayer/musicPlayerQueryKeys'
 import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
 import { insertMyPlayMusic, updateMyPlayMusic } from '@/shared/musicPlayer/api'
 import type { GenreMusicInfo } from '@/types/main/types'
@@ -8,8 +11,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { ADD_CURRENT_MUSIC_SHADOW } from '../communityDetail/communityCss'
 import Swal from 'sweetalert2'
+import { ADD_CURRENT_MUSIC_SHADOW } from '../communityDetail/communityCss'
 
 const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
   const queryClient = useQueryClient()
@@ -21,27 +24,35 @@ const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
   const insertCurrentMutation = useMutation({
     mutationFn: insertCurrentMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.CURRENT_MUSIC_INFO],
+      })
     },
   })
   const updateCurrentMutation = useMutation({
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.CURRENT_MUSIC_INFO],
+      })
     },
   })
 
   const insertMyMutation = useMutation({
     mutationFn: insertMyPlayMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getMyMusicList'] })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_MUSIC_LIST],
+      })
     },
   })
 
   const updateMyMutation = useMutation({
     mutationFn: updateMyPlayMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getMyMusicList'] })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_MUSIC_LIST],
+      })
     },
   })
 

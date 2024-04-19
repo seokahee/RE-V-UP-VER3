@@ -9,11 +9,11 @@ import Pagination from '@/util/Pagination '
 import { paging } from '@/util/util'
 import Image from 'next/image'
 import React, { FormEvent, KeyboardEvent, useRef, useState } from 'react'
+import Swal from 'sweetalert2'
 import { GOBACK_SHADOW } from '../communityDetail/detailCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 import { DOWN_ACTIVE_BUTTON, OPEN_ANOTHER_SHADOW } from '../login/loginCss'
 import ModalMusicData from './ModalMusicData'
-import Swal from 'sweetalert2'
 
 const MusicSearchModal = ({
   setIsModal,
@@ -50,7 +50,6 @@ const MusicSearchModal = ({
         setMusicList(data)
       } else {
         alert('검색 결과가 없습니다')
-        console.log('????????????????????????')
         return
       }
     }
