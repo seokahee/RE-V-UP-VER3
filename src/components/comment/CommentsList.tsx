@@ -15,7 +15,7 @@ import edit from '@/../public/images/pencil-01.svg'
 import deleteIcon from '@/../public/images/Frame 532.svg'
 import emptyHeart from '@/../public/images/heart-rounded-gray.svg'
 import heart from '@/../public/images/heart-rounded.svg'
-import noAvatar from '@/../public/images/Frame 669.svg'
+import userDefaultImg from '@/../public/images/userDefaultImg.svg'
 import Swal from 'sweetalert2'
 import Link from 'next/link'
 
@@ -43,6 +43,8 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
     await Swal.fire({
       title: '선택한 댓글을 삭제하시겠습니까?',
       icon: 'question',
+      background: '#2B2B2B',
+      color: '#ffffff',
     })
     deleteCommentMutation.mutate(commentId)
     // alert('선택한 댓글을 삭제하시겠습니까?')
@@ -57,12 +59,19 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
 
   const onUpdateCommentHandler = async (commentId: string) => {
     if (editedText === '') {
-      alert('수정된 내용이 없습니다')
+      Swal.fire({
+        icon: 'error',
+        title: '마저 수정을 완료해주세요!',
+        color: '#ffffff',
+        background: '#2B2B2B',
+      })
       return
     }
     await Swal.fire({
       title: '댓글을 수정하시겠습니까?',
       icon: 'question',
+      background: '#2B2B2B',
+      color: '#ffffff',
     })
     const editedComment = {
       commentDate: getToday(),
@@ -80,10 +89,14 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
     },
   })
 
-  const onLikeHandler = (commentId: string) => {
+  const onLikeHandler = async (commentId: string) => {
     if (!userId) {
       // alert('로그인 후 이용해 주세요')
-      Swal.fire('로그인 후 이용해 주세요')
+      await Swal.fire({
+        text: '로그인 후 이용해 주세요',
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       return
     }
 
@@ -112,7 +125,7 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
                       />
                     )}
                     <Image
-                      src={noAvatar}
+                      src={userDefaultImg}
                       alt=''
                       width={20}
                       height={20}
@@ -120,9 +133,8 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
                     />
                   </p>
                 </Link>
-                <p className='font-medium'>{item.userInfo?.nickname}</p>{' '}
+                <p className='font-medium'>{item.userInfo?.nickname}</p>
               </div>
-
               <div className='flex basis-1/2 justify-end'>
                 <p className='text-sm font-medium text-white text-opacity-50'>
                   {onDateTimeHandler(item.commentDate)}
