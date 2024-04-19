@@ -15,6 +15,7 @@ import MyPlaylist from './MyPlaylist'
 import { useSession } from 'next-auth/react'
 import right from '@/../public/images/chevron-right.svg'
 import pencil from '@/../public/images/pencil-line.svg'
+import defaultUserImg from '@/../public/images/userDefaultImg.svg'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import FollowingList from './FollowingList'
 import FollowerList from './FollowerList'
@@ -244,7 +245,15 @@ const MyInfo = () => {
         <div className='mb-4 flex items-center justify-between pt-1'>
           <div>
             <figure className='flex h-[84px] w-[84px] overflow-hidden rounded-full border-2 border-[#ffffff1a] bg-[#2b2b2b]'>
-              {userImage && (
+              {!userImage ? (
+                <Image
+                  src={defaultUserImg}
+                  width={80}
+                  height={80}
+                  alt={`${data?.nickname} 프로필 이미지`}
+                  priority={true}
+                />
+              ) : (
                 <Image
                   src={userImage}
                   width={80}
@@ -296,14 +305,21 @@ const MyInfo = () => {
           <div className='px-[3.25rem] tracking-[-0.03em]'>
             <label className='relative mx-auto mb-8 mt-4 block h-[84px] w-[84px] cursor-pointer overflow-hidden rounded-full border-2 border-[#ffffff1a] bg-[#00000080] text-center [&>input]:hidden'>
               <figure className=''>
-                {userImage && (
+                {!userImage ? (
+                  <Image
+                    src={defaultUserImg}
+                    width={80}
+                    height={80}
+                    alt={`${data?.nickname} 프로필 이미지`}
+                    priority={true}
+                  />
+                ) : (
                   <Image
                     src={userImage}
                     width={80}
                     height={80}
                     alt={`${data?.nickname} 프로필 이미지`}
                     priority={true}
-                    className='blur-sm'
                   />
                 )}
               </figure>
