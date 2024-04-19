@@ -21,16 +21,16 @@ const CommunityListData = ({ item }: { item: CommunityType }) => {
             <Image
               src={item.userInfo.userImage}
               alt={`${item.userInfo.nickname}님의 이미지`}
-              width={56}
-              height={56}
+              width={59}
+              height={59}
               className='h-[59px] w-[59px] rounded-full'
             />
           ) : (
             <Image
               src={userDefaultImg}
               alt='유저 이미지'
-              width={56}
-              height={56}
+              width={59}
+              height={59}
               className='h-[59px] w-[59px] rounded-full object-cover'
             />
           )}
@@ -49,7 +49,6 @@ const CommunityListData = ({ item }: { item: CommunityType }) => {
                     alt='좋아요 이미지'
                     width={18}
                     height={18}
-                    className='h-[18] w-[18px]'
                   />
                   {!item.likeList
                     ? 0
@@ -63,7 +62,6 @@ const CommunityListData = ({ item }: { item: CommunityType }) => {
                     alt='댓글 이미지'
                     width={18}
                     height={18}
-                    className='h-[18px] w-[18px]'
                   />
                   {!numKeys ? 0 : numKeys > 99 ? '99+' : numKeys}
                 </div>
@@ -75,7 +73,7 @@ const CommunityListData = ({ item }: { item: CommunityType }) => {
             alt='앨범 썸네일'
             width={80}
             height={80}
-            className='h-[80] w-[80] rounded-full'
+            className='rounded-full'
           />
         </div>
       </div>

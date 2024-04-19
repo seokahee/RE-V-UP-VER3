@@ -75,7 +75,7 @@ const Player = ({
                 alt='Album Circle'
                 width={300}
                 height={300}
-                className='h-[300px] w-[300px] rounded-full shadow-[0px_0px_16px_rgba(210,137,176,0.5)]'
+                className='rounded-full shadow-[0px_0px_16px_rgba(210,137,176,0.5)]'
               />
             </div>
           ) : (
@@ -85,7 +85,7 @@ const Player = ({
                 alt='Album Circle'
                 width={300}
                 height={300}
-                className='h-[300px] w-[300px] rounded-full shadow-[0px_4px_4px_-5px_rgba(0,0,0,0.25)]'
+                className='rounded-full shadow-[0px_4px_4px_-5px_rgba(0,0,0,0.25)]'
               />
             </div>
           )}
@@ -96,7 +96,7 @@ const Player = ({
                 alt='Album Thumbnail'
                 width={200}
                 height={200}
-                className='h-[200px] w-[200px] rounded-full'
+                className='rounded-full'
               />
             </div>
           ) : null}
@@ -109,17 +109,17 @@ const Player = ({
                 <Image
                   src={addCurrMusic}
                   alt='Lyrics'
-                  width={16}
-                  height={16}
-                  className={`flex h-[48px] w-[48px] items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW} `}
+                  width={48}
+                  height={48}
+                  className={`flex items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW} `}
                 />
               ) : (
                 <Image
                   src={musicLyricsButton}
                   alt='Lyrics'
-                  width={16}
-                  height={16}
-                  className={`flex h-[48px] w-[48px] items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW}`}
+                  width={48}
+                  height={48}
+                  className={`flex  items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW}`}
                 />
               )}
             </button>
