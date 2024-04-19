@@ -19,7 +19,7 @@ const UserInfo = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getUserAndPlaylistData(id),
-    queryKey: ['userpage', id],
+    queryKey: [`userpage-${id}`, id],
     enabled: !!id,
   })
 
@@ -33,7 +33,7 @@ const UserInfo = () => {
     mutationFn: updateFollow,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['mypage'] })
-      queryClient.invalidateQueries({ queryKey: ['userpage'] })
+      queryClient.invalidateQueries({ queryKey: [`userpage-${id}`] })
     },
   })
 
