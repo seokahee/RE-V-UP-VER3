@@ -123,7 +123,6 @@ const CommunityContents = () => {
     Swal.fire({
       title: '게시글 삭제',
       text: '정말 삭제 하시겠습니까?',
-      icon: 'warning',
 
       showCancelButton: true,
       confirmButtonColor: '#685BFF',
