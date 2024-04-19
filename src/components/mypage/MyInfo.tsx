@@ -304,6 +304,7 @@ const MyInfo = () => {
               className={`mb-1 block w-full rounded-xl border-2 border-[#ffffff1a] bg-[#ffffff1a] p-3 ${inputShadow} text-[1rem] font-bold outline-none ${inputFocus} [&_placeholder]:text-[#ffffff4d]`}
               ref={nicknameRef}
               onChange={onChangeInput}
+              maxLength={10}
               placeholder='변경할 닉네임을 입력해주세요'
             />
 
