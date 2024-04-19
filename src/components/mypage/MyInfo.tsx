@@ -19,6 +19,7 @@ import ButtonPrimary from '../../util/ButtonPrimary'
 import FollowingList from './FollowingList'
 import FollowerList from './FollowerList'
 import { useRouter } from 'next/navigation'
+import Swal from 'sweetalert2'
 
 const MyInfo = () => {
   const { data: userSessionInfo, status } = useSession()
@@ -94,7 +95,7 @@ const MyInfo = () => {
     }
   }
 
-  const onClickUpdateHandler = () => {
+  const onClickUpdateHandler = async () => {
     if (!nickname.trim()) {
       setCheckText('닉네임을 입력해주세요')
       nicknameRef.current?.focus()
@@ -116,7 +117,14 @@ const MyInfo = () => {
       playlistOpen,
       postsOpen,
     })
-    alert('정보 변경이 완료되었습니다.')
+    await Swal.fire({
+      icon: 'success',
+      title: '정보 변경이 완료되었습니다.',
+      showConfirmButton: false,
+      timer: 1500,
+      background: '#2B2B2B',
+      color: '#ffffff',
+    })
     onClickCloseModalHandler()
   }
 
@@ -133,7 +141,14 @@ const MyInfo = () => {
 
     if (window.confirm('선택한 이미지로 업로드를 진행할까요?')) {
       if (!file) {
-        alert('선택된 이미지가 없습니다. 이미지를 선택해주세요.')
+        Swal.fire({
+          icon: 'warning',
+          title: '선택된 이미지가 없습니다. 이미지를 선택해주세요.',
+          showConfirmButton: false,
+          timer: 1500,
+          background: '#2B2B2B',
+          color: '#ffffff',
+        })
         return
       }
       const data = await updateUserThumbnailMutation.mutateAsync({
@@ -143,9 +158,23 @@ const MyInfo = () => {
 
       if (data) {
         setUserImage(data?.[0].userImage as string)
-        alert('업로드 완료!')
+        await Swal.fire({
+          icon: 'success',
+          title: '업로드가 완료되었습니다.',
+          showConfirmButton: false,
+          timer: 1500,
+          background: '#2B2B2B',
+          color: '#ffffff',
+        })
       } else {
-        alert('파일이 업로드 되지 않았습니다.')
+        await Swal.fire({
+          icon: 'error',
+          title: '파일이 업로드 되지 않았습니다.',
+          showConfirmButton: false,
+          timer: 1500,
+          background: '#2B2B2B',
+          color: '#ffffff',
+        })
       }
     }
   }
