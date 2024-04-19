@@ -16,6 +16,8 @@ import deleteIcon from '@/../public/images/Frame 532.svg'
 import emptyHeart from '@/../public/images/heart-rounded-gray.svg'
 import heart from '@/../public/images/heart-rounded.svg'
 import noAvatar from '@/../public/images/Frame 669.svg'
+import Swal from 'sweetalert2'
+import Link from 'next/link'
 
 const CommentsList = ({ boardId }: { boardId: string }) => {
   const { data: userSessionInfo } = useSession()
@@ -37,9 +39,13 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
     },
   })
 
-  const onDeleteCommentHandler = (commentId: string) => {
+  const onDeleteCommentHandler = async (commentId: string) => {
+    await Swal.fire({
+      title: '선택한 댓글을 삭제하시겠습니까?',
+      icon: 'question',
+    })
     deleteCommentMutation.mutate(commentId)
-    alert('선택한 댓글을 삭제하시겠습니까?')
+    // alert('선택한 댓글을 삭제하시겠습니까?')
   }
 
   const updateCommentMutation = useMutation({
@@ -49,12 +55,15 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
     },
   })
 
-  const onUpdateCommentHandler = (commentId: string) => {
+  const onUpdateCommentHandler = async (commentId: string) => {
     if (editedText === '') {
       alert('수정된 내용이 없습니다')
       return
     }
-    alert('수정 하시겠습니까?')
+    await Swal.fire({
+      title: '댓글을 수정하시겠습니까?',
+      icon: 'question',
+    })
     const editedComment = {
       commentDate: getToday(),
       commentContent: editedText,
@@ -73,7 +82,8 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
 
   const onLikeHandler = (commentId: string) => {
     if (!userId) {
-      alert('로그인 후 이용해 주세요')
+      // alert('로그인 후 이용해 주세요')
+      Swal.fire('로그인 후 이용해 주세요')
       return
     }
 
@@ -87,26 +97,32 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
           <div className='inline-flex w-full flex-col items-start justify-start gap-4 border-b border-white border-opacity-10 py-4'>
             <div className=' flex w-full flex-row'>
               <div className='flex basis-1/2 flex-row gap-2'>
-                <p className='h-6 w-6 overflow-hidden rounded-full border-2 border-white bg-black bg-opacity-10'>
-                  {item.userInfo?.userImage && (
+                <Link
+                  href={`/userpage/${item.userInfo.userId}`}
+                  className={`${item.userInfo.userId === userId ? 'pointer-events-none' : 'cursor-pointer'}`}
+                >
+                  <p className='h-6 w-6 overflow-hidden rounded-full border-2 border-white bg-black bg-opacity-10'>
+                    {item.userInfo?.userImage && (
+                      <Image
+                        src={item.userInfo.userImage}
+                        alt=''
+                        width={20}
+                        height={20}
+                        className='rounded-full object-cover '
+                      />
+                    )}
                     <Image
-                      src={item.userInfo.userImage}
+                      src={noAvatar}
                       alt=''
                       width={20}
                       height={20}
                       className='rounded-full object-cover '
                     />
-                  )}
-                  <Image
-                    src={noAvatar}
-                    alt=''
-                    width={20}
-                    height={20}
-                    className='rounded-full object-cover '
-                  />
-                </p>
-                <p className='font-medium'>{item.userInfo?.nickname}</p>
+                  </p>
+                </Link>
+                <p className='font-medium'>{item.userInfo?.nickname}</p>{' '}
               </div>
+
               <div className='flex basis-1/2 justify-end'>
                 <p className='text-sm font-medium text-white text-opacity-50'>
                   {onDateTimeHandler(item.commentDate)}

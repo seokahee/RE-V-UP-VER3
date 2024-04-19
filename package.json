@@ -22,6 +22,7 @@
     "react-dom": "^18",
     "react-h5-audio-player": "^3.9.1",
     "react-player": "^2.15.1",
+    "sweetalert2": "^11.10.8",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss-animate": "^1.0.7",
     "zustand": "^4.5.2"
