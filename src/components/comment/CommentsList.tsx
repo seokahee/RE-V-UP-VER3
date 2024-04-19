@@ -15,6 +15,7 @@ import edit from '@/../public/images/pencil-01.svg'
 import deleteIcon from '@/../public/images/Frame 532.svg'
 import emptyHeart from '@/../public/images/heart-rounded-gray.svg'
 import heart from '@/../public/images/heart-rounded.svg'
+import noAvatar from '@/../public/images/Frame 669.svg'
 
 const CommentsList = ({ boardId }: { boardId: string }) => {
   const { data: userSessionInfo } = useSession()
@@ -86,29 +87,36 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
           <div className='inline-flex w-full flex-col items-start justify-start gap-4 border-b border-white border-opacity-10 py-4'>
             <div className=' flex w-full flex-row'>
               <div className='flex basis-1/2 flex-row gap-2'>
-                <p className='h-6 w-6 overflow-hidden rounded-full border-2 border-white'>
+                <p className='h-6 w-6 overflow-hidden rounded-full border-2 border-white bg-black bg-opacity-10'>
                   {item.userInfo?.userImage && (
                     <Image
                       src={item.userInfo.userImage}
                       alt=''
                       width={20}
                       height={20}
-                      className='rounded-full object-cover'
+                      className='rounded-full object-cover '
                     />
                   )}
+                  <Image
+                    src={noAvatar}
+                    alt=''
+                    width={20}
+                    height={20}
+                    className='rounded-full object-cover '
+                  />
                 </p>
-                <p>{item.userInfo?.nickname}</p>
+                <p className='font-medium'>{item.userInfo?.nickname}</p>
               </div>
               <div className='flex basis-1/2 justify-end'>
-                {onDateTimeHandler(item.commentDate)}
+                <p className='text-sm font-medium text-white text-opacity-50'>
+                  {onDateTimeHandler(item.commentDate)}
+                </p>
               </div>
             </div>
             <div className='flex w-full flex-row'>
-              {/**유저 이미지, 닉네임, 날짜 */}
               {editedCommentId === item.commentId ? (
                 <div className='flex w-full'>
                   <div className='flex basis-1/2'>
-                    {' '}
                     <input
                       type='text'
                       value={editedText}
@@ -117,7 +125,6 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
                     />
                   </div>
                   <div className='flex basis-1/2 justify-end'>
-                    {' '}
                     <button
                       onClick={() => onUpdateCommentHandler(item.commentId)}
                     >
@@ -128,7 +135,9 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
               ) : (
                 <div className='flex w-full flex-row'>
                   <div className='flex basis-1/2'>
-                    <p>{item.commentContent}</p>
+                    <p className='text-sm font-medium text-white'>
+                      {item.commentContent}
+                    </p>
                   </div>
                   <div className='flex basis-1/2 justify-end'>
                     {item.userInfo?.userId === userId && (
@@ -169,7 +178,7 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
                     <Image src={heart} alt='찬 하트' width={24} height={24} />
                     <p className='ml-[5px] text-[rgba(255,255,255,0.5)]'>
                       {item.commentLikeList.length > 99
-                        ? item.commentLikeList.length + '+'
+                        ? '99+'
                         : item.commentLikeList.length}
                     </p>
                   </div>
@@ -183,7 +192,7 @@ const CommentsList = ({ boardId }: { boardId: string }) => {
                     />
                     <p className='ml-[5px] text-[rgba(255,255,255,0.5)]'>
                       {item.commentLikeList.length > 99
-                        ? item.commentLikeList.length + '+'
+                        ? '99+'
                         : item.commentLikeList.length}
                     </p>
                   </div>

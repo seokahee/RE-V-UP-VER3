@@ -9,6 +9,7 @@ import Image from 'next/image'
 import commu from '@/../public/images/Property 1=message-chat-circle.svg'
 import people from '@/../public/images/Property 1=user-01.svg'
 import back from '@/../public/images/Property 1=chevron-left.svg'
+import { OPEN_ANOTHER_SHADOW } from './login/loginCss'
 
 const Header = () => {
   const { data: user, status } = useSession()
@@ -27,17 +28,17 @@ const Header = () => {
             </h1>
           </Link>
         </nav>
-        <nav className='flex justify-between  gap-2'>
+        <nav className='flex justify-between  gap-4'>
           <Link
             href='/community'
-            className=' relative inline-flex h-12 w-12 items-center justify-center rounded-xl border-4 border-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
+            className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white bg-opacity-10 ${OPEN_ANOTHER_SHADOW}`}
           >
             <Image src={commu} alt='커뮤니티 아이콘' />
           </Link>
           {!user ? (
             <Link
               href='/join'
-              className=' relative inline-flex h-12 w-12 items-center justify-center rounded-xl border-4 border-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
+              className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white bg-opacity-10 ${OPEN_ANOTHER_SHADOW}`}
             >
               <Image src={commu} alt='커뮤니티 아이콘' />
             </Link>
@@ -46,7 +47,7 @@ const Header = () => {
               {' '}
               <Link
                 href='/mypage'
-                className=' relative inline-flex h-12 w-12 items-center justify-center rounded-xl border-4 border-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
+                className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white bg-opacity-10 ${OPEN_ANOTHER_SHADOW}`}
               >
                 <Image src={people} alt='마이페이지 아이콘' />
               </Link>
@@ -69,7 +70,7 @@ const Header = () => {
             <Image
               src={back}
               alt='뒤로가기 아이콘'
-              className='  relative inline-flex h-12 w-12  rounded-xl border-4 border-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
+              className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white bg-opacity-10 ${OPEN_ANOTHER_SHADOW}`}
             />
           </Link>
           <Link href='/'>
@@ -95,17 +96,17 @@ const Header = () => {
         <nav>
           <SearchComponent />
         </nav>
-        <nav className='flex justify-between gap-2'>
+        <nav className='flex justify-between gap-4'>
           <Link
             href='/community'
-            className=' relative inline-flex h-12 w-12 items-center justify-center rounded-xl border-4 border-primary-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
+            className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white bg-opacity-10 ${OPEN_ANOTHER_SHADOW}`}
           >
             <Image src={commu} alt='' />
           </Link>
           {!user ? (
             <Link
               href='/login'
-              className=' relative inline-flex h-12 w-12 items-center justify-center rounded-xl border-4 border-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
+              className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white bg-opacity-10 ${OPEN_ANOTHER_SHADOW}`}
             >
               <Image src={people} alt='' />
             </Link>
@@ -113,7 +114,7 @@ const Header = () => {
             <>
               <Link
                 href='/mypage'
-                className=' relative inline-flex h-12 w-12 items-center justify-center rounded-xl border-4 border-black border-opacity-10 bg-white bg-opacity-10 shadow shadow-inner'
+                className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white bg-opacity-10 ${OPEN_ANOTHER_SHADOW}`}
               >
                 <Image src={people} alt='' />
               </Link>

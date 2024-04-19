@@ -7,6 +7,7 @@ import Businessman from '@/../public/images/Businessman.svg'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import PreviousButton from '../mypage/PreviousButton'
 import submitIcon from '@/../public/images/Icon.svg'
+import { OPEN_ANOTHER_SHADOW } from '../login/loginCss'
 
 import type { PersonalModal } from '@/types/personal/type'
 
@@ -35,7 +36,9 @@ const PersonalModalDetail = ({ isOpen, onClose }: PersonalModal) => {
   return (
     <div className='fixed inset-0 z-50 flex items-center justify-center '>
       <div className='fixed inset-0 bg-primary-black opacity-70'></div>
-      <div className='fixed z-10 space-y-10 rounded-[33px] rounded-xl border-4 border-black border-opacity-10 bg-modal-black p-8 text-center shadow shadow-inner '>
+      <div
+        className={`fixed z-10 space-y-10 rounded-[33px] rounded-xl  border-opacity-10 bg-modal-black ${OPEN_ANOTHER_SHADOW} p-8 text-center `}
+      >
         <div>
           <span className='text-xl font-bold'>퍼스널 뮤직 진단 받기</span>
           <span className='flex justify-center py-4'>
