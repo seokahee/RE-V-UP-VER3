@@ -43,9 +43,6 @@ export const updateCurrentMusic = async ({
     .from('playlistCurrent')
     .update({ currentMusicIds: currentMusicData })
     .eq('userId', uid)
-  if (!error) {
-    alert('재생 목록이 삭제되었습니다.')
-  }
 }
 
 export const insertMyPlayMusic = async ({

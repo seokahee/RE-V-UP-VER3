@@ -8,6 +8,7 @@ import Image from 'next/image'
 import arrowSearch from '@/../public/images/arrow_forward_ios.svg'
 import rectangle from '@/../public/images/Rectangle 156.svg'
 import { OPEN_ANOTHER_SHADOW } from '../login/loginCss'
+import Swal from 'sweetalert2'
 
 const SearchForm = () => {
   const {
@@ -26,7 +27,12 @@ const SearchForm = () => {
   const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!keyword) {
-      alert('검색 키워드를 입력해 주세요')
+      Swal.fire({
+        icon: 'warning',
+        title: '검색 키워드를 입력해 주세요',
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       return keywordRef.current?.focus()
     }
 

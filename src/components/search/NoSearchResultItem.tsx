@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ADD_CURRENT_MUSIC_SHADOW } from '../communityDetail/communityCss'
+import Swal from 'sweetalert2'
 
 const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
   const queryClient = useQueryClient()
@@ -46,9 +47,13 @@ const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
 
   const onClickAddCurrentMusicHandler = (musicId: string) => {
     if (uid === '' || !uid) {
-      alert(
-        '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
-      )
+      Swal.fire({
+        icon: 'error',
+        title:
+          '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       router.replace('/login')
       return
     }
@@ -57,7 +62,12 @@ const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
       const currentList = playListCurrent[0].currentMusicIds
 
       if (currentList.find((el) => el === musicId)) {
-        alert('이미 추가된 노래입니다.') //이후에 삭제 예정
+        Swal.fire({
+          icon: 'warning',
+          title: '이미 추가된 노래입니다.',
+          background: '#2B2B2B',
+          color: '#ffffff',
+        })
         return
       }
       currentList.push(musicId)
@@ -65,33 +75,64 @@ const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
     } else {
       insertCurrentMutation.mutate({ userId: uid, musicId })
     }
-    alert('현재 재생목록에 추가 되었습니다.') //이후에 삭제 예정
+    Swal.fire({
+      icon: 'success',
+      title: '현재 플레이 리스트에 추가되었습니다',
+      background: '#2B2B2B',
+      color: '#ffffff',
+    })
   }
 
   const onClickAddMyPlayListHandler = async (musicId: string) => {
     if (uid === '' || !uid) {
-      alert(
-        '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
-      )
+      Swal.fire({
+        icon: 'error',
+        title:
+          '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       router.replace('/login')
       return
     }
-    if (window.confirm('마이플레이 리스트에 추가하시겠습니까?')) {
-      if (myPlayList && myPlayList.length > 0) {
-        const myList = myPlayList[0].myMusicIds
 
-        if (myList.find((el) => el === musicId)) {
-          alert('이미 추가된 노래입니다.')
-          return
+    Swal.fire({
+      title: '마이플레이 리스트에 추가하시겠습니까?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+      background: '#2B2B2B',
+      color: '#ffffff',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (myPlayList && myPlayList.length > 0) {
+          const myList = myPlayList[0].myMusicIds
+
+          if (myList.find((el) => el === musicId)) {
+            Swal.fire({
+              icon: 'warning',
+              title: '이미 추가된 노래입니다.',
+              background: '#2B2B2B',
+              color: '#ffffff',
+            })
+            return
+          }
+          myList.push(musicId)
+          updateMyMutation.mutate({ userId: uid, myMusicList: myList })
+        } else {
+          const myMusicId = [musicId]
+          insertMyMutation.mutate({ userId: uid, musicId: myMusicId })
         }
-        myList.push(musicId)
-        updateMyMutation.mutate({ userId: uid, myMusicList: myList })
-      } else {
-        const myMusicId = [musicId]
-        insertMyMutation.mutate({ userId: uid, musicId: myMusicId })
+        Swal.fire({
+          icon: 'success',
+          title: '마이플레이 리스트에 추가 되었습니다.',
+          background: '#2B2B2B',
+          color: '#ffffff',
+        })
       }
-      alert('마이플레이리스트에 추가 되었습니다.')
-    }
+    })
   }
 
   return (
