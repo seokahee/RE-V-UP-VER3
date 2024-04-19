@@ -11,8 +11,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { ADD_CURRENT_MUSIC_SHADOW } from '../communityDetail/communityCss'
 import Swal from 'sweetalert2'
+import { ADD_CURRENT_MUSIC_SHADOW } from '../communityDetail/communityCss'
 
 const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
   const queryClient = useQueryClient()

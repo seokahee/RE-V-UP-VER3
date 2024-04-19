@@ -1,11 +1,11 @@
 'use client'
+import comment from '@/../public/images/comment.svg'
+import like from '@/../public/images/like.svg'
+import userDefaultImg from '@/../public/images/userDefaultImg.svg'
 import { useSearchedResultStore } from '@/shared/store/searchStore'
 import { onDateHandler } from '@/util/util'
 import Image from 'next/image'
 import Link from 'next/link'
-import comment from '@/../public/images/comment.svg'
-import like from '@/../public/images/like.svg'
-import userDefaultImg from '@/../public/images/userDefaultImg.svg'
 
 const SearchedCommunityData = () => {
   const { searchedData } = useSearchedResultStore()

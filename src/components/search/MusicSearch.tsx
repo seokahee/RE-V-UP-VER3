@@ -1,8 +1,8 @@
-import { MouseEvent, useState } from 'react'
-import MusicSearchModal from './MusicSearchModal'
-import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
-import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
+import { MouseEvent, useState } from 'react'
+import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
+import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
+import MusicSearchModal from './MusicSearchModal'
 
 const MusicSearch = () => {
   const [isModal, setIsModal] = useState<boolean>(false)
