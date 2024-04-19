@@ -1,14 +1,14 @@
 'use client'
+import rectangle from '@/../public/images/Rectangle 156.svg'
+import arrowSearch from '@/../public/images/arrow_forward_ios.svg'
+import search from '@/../public/images/searchIcon (2).svg'
 import useInput from '@/hooks/useInput'
 import { useSearchedKeywordStore } from '@/shared/store/searchStore'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useRef } from 'react'
-import search from '@/../public/images/searchIcon (2).svg'
-import Image from 'next/image'
-import arrowSearch from '@/../public/images/arrow_forward_ios.svg'
-import rectangle from '@/../public/images/Rectangle 156.svg'
-import { OPEN_ANOTHER_SHADOW } from '../login/loginCss'
 import Swal from 'sweetalert2'
+import { OPEN_ANOTHER_SHADOW } from '../login/loginCss'
 
 const SearchForm = () => {
   const {

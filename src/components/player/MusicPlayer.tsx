@@ -14,9 +14,9 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import 'react-h5-audio-player/lib/styles.css'
+import Swal from 'sweetalert2'
 import CurrentMusicList from './CurrentMusicList'
 import Player from './Player'
-import Swal from 'sweetalert2'
 
 const MusicPlayer = () => {
   const [currentPlaying, setCurrentPlaying] =
