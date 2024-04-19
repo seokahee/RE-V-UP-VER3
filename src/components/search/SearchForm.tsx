@@ -7,6 +7,7 @@ import search from '@/../public/images/searchIcon (2).svg'
 import Image from 'next/image'
 import arrowSearch from '@/../public/images/arrow_forward_ios.svg'
 import rectangle from '@/../public/images/Rectangle 156.svg'
+import { OPEN_ANOTHER_SHADOW } from '../login/loginCss'
 
 const SearchForm = () => {
   const {
@@ -36,8 +37,9 @@ const SearchForm = () => {
 
   return (
     <div
-      className='inline-flex w-[300px] items-center justify-between rounded-xl 
-    border-4 border-black border-opacity-10 bg-white bg-opacity-10 py-2 pl-4 shadow shadow-inner'
+      className={`inline-flex w-[300px] items-center justify-between rounded-xl ${OPEN_ANOTHER_SHADOW}
+      bg-white bg-opacity-10 py-2 pl-4 
+   `}
     >
       <div className='flex items-center'>
         <form onSubmit={onSubmitHandler} className='flex flex-row'>
