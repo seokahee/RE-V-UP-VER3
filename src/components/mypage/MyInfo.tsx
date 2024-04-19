@@ -140,44 +140,44 @@ const MyInfo = () => {
   const selectFileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0] as File
 
-    if (window.confirm('선택한 이미지로 업로드를 진행할까요?')) {
-      if (!file) {
-        Swal.fire({
-          icon: 'warning',
-          title: '선택된 이미지가 없습니다. 이미지를 선택해주세요.',
-          showConfirmButton: false,
-          timer: 1500,
-          background: '#2B2B2B',
-          color: '#ffffff',
-        })
-        return
-      }
-      const data = await updateUserThumbnailMutation.mutateAsync({
-        userId: uid,
-        file,
+    // if (window.confirm('선택한 이미지로 업로드를 진행할까요?')) {
+    if (!file) {
+      Swal.fire({
+        icon: 'warning',
+        title: '선택된 이미지가 없습니다. 이미지를 선택해주세요.',
+        showConfirmButton: false,
+        timer: 1500,
+        background: '#2B2B2B',
+        color: '#ffffff',
       })
-
-      if (data) {
-        setUserImage(data?.[0].userImage as string)
-        await Swal.fire({
-          icon: 'success',
-          title: '업로드가 완료되었습니다.',
-          showConfirmButton: false,
-          timer: 1500,
-          background: '#2B2B2B',
-          color: '#ffffff',
-        })
-      } else {
-        await Swal.fire({
-          icon: 'error',
-          title: '파일이 업로드 되지 않았습니다.',
-          showConfirmButton: false,
-          timer: 1500,
-          background: '#2B2B2B',
-          color: '#ffffff',
-        })
-      }
+      return
     }
+    const data = await updateUserThumbnailMutation.mutateAsync({
+      userId: uid,
+      file,
+    })
+
+    if (data) {
+      setUserImage(data?.[0].userImage as string)
+      await Swal.fire({
+        icon: 'success',
+        title: '업로드가 완료되었습니다.',
+        showConfirmButton: false,
+        timer: 1500,
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
+    } else {
+      await Swal.fire({
+        icon: 'error',
+        title: '파일이 업로드 되지 않았습니다.',
+        showConfirmButton: false,
+        timer: 1500,
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
+    }
+    // }
   }
 
   const onClickCloseFollowModalHandler = () => {
@@ -311,7 +311,7 @@ const MyInfo = () => {
                     width={80}
                     height={80}
                     alt={`${data?.nickname} 프로필 이미지`}
-                    priority={true}
+                    className='blur-sm'
                   />
                 ) : (
                   <Image
@@ -319,7 +319,7 @@ const MyInfo = () => {
                     width={80}
                     height={80}
                     alt={`${data?.nickname} 프로필 이미지`}
-                    priority={true}
+                    className='blur-sm'
                   />
                 )}
               </figure>
