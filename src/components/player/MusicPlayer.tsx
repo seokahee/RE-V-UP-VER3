@@ -19,20 +19,16 @@ const MusicPlayer = () => {
     useState<CurrentPlayListType | null>(null)
 
   const [musicIndex, setMusicIndex] = useState<number>(0)
-
   const [checkedList, setCheckedList] = useState<string[]>([])
-
   const [isLyrics, setIsLyrics] = useState(false)
-
   const [isRandom, setIsRandom] = useState(false)
-
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user.uid as string
-
   const router = useRouter()
 
   const { currentPlayList, myPlayList, isError } = getMusicList(uid)
 
+  // check
   const deleteMutation = useMutation({
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
@@ -58,18 +54,15 @@ const MusicPlayer = () => {
   })
 
   if (!currentPlayList) {
-    return
+    return []
   }
   if (isError) {
     console.error('현재 플레이리스트를 가져오지 못했습니다')
     return
   }
-
   const onLyricsToggle = () => {
     setIsLyrics((prev) => !prev)
   }
-
-  const randomIndex = Math.floor(Math.random() * currentPlayList.length)
 
   const onRandomMusicHandler = () => {
     setIsRandom((prev) => {
@@ -87,8 +80,9 @@ const MusicPlayer = () => {
         setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
       }
     } else {
-      setMusicIndex(randomIndex)
-      setCurrentPlaying(currentPlayList[randomIndex] as CurrentPlayListType)
+      setMusicIndex(Math.floor(Math.random() * currentPlayList.length))
+      setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
+      console.log('currentPlaying', currentPlaying)
     }
   }
 
@@ -106,8 +100,8 @@ const MusicPlayer = () => {
         )
       }
     } else {
-      setMusicIndex(randomIndex)
-      setCurrentPlaying(currentPlayList[randomIndex] as CurrentPlayListType)
+      setMusicIndex(Math.floor(Math.random() * currentPlayList.length))
+      setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
     }
   }
 
@@ -126,10 +120,14 @@ const MusicPlayer = () => {
       return
     }
     if (window.confirm('선택 항목을 삭제하시겠습니까?')) {
-      const currentMusicData = currentPlayList
-        .filter((music) => !checkedList.includes(music.musicId))
-        .map((music) => music.musicId)
-      deleteMutation.mutate({ uid, currentMusicData })
+      const currentMusicData = currentPlayList.filter(
+        (music) => !checkedList.includes(music.musicId),
+      )
+
+      deleteMutation.mutate({
+        uid,
+        currentMusicData: currentMusicData.map((music) => music.musicId),
+      })
       setCheckedList([])
 
       const isCurrentMusicDeleted = checkedList.includes(
@@ -138,12 +136,13 @@ const MusicPlayer = () => {
       if (isCurrentMusicDeleted) {
         setCurrentPlaying(
           currentPlayList[musicIndex]
-            ? (currentPlayList[musicIndex + 1] as CurrentPlayListType)
+            ? (currentMusicData[0] as CurrentPlayListType)
             : null,
         )
       }
     }
   }
+
   const onInsertMyPlayListHandler = async () => {
     if (checkedList.length === 0) {
       alert('저장할 노래를 선택해주세요')

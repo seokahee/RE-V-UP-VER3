@@ -19,15 +19,17 @@
 .rhap_play-status--playing .rhap_volume-container {
   display: none !important;
 }
-.rhap_play-status--playing .progressbar {
+
+.rhap_play-status--paused .rhap_volume-container {
   display: none !important;
 }
-.rhap_play-status--paused .rhap_volume-container {
+
+/* .rhap_play-status--playing .progressbar {
   display: none !important;
 }
 .rhap_play-status--paused .progressbar {
   display: none !important;
-}
+} */
 
 /* 오디오 컨테이너 */
 .rhap_main {
@@ -88,40 +90,40 @@
 }
 
 .rhap_progress-indicator {
-  box-sizing: border-box;
-  position: absolute;
-  z-index: 2;
-  width: 5px;
-  height: 24px;
-  margin-left: 4px;
-  top: 0px;
-  background: #d5605c;
-  box-shadow: rgba(134, 134, 134, 0.5) 0 0 5px;
+  display: none;
 }
 
 .rhap_progress-container {
-  background-image: url('/images/playerBar.svg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  z-index: 3;
-  height: 32px;
-  padding-right: 13px;
-  width: 260px;
+  /* padding: 10px 0px; */
+  height: 12px;
+  background: rgba(104, 91, 225, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0px 0px 0px 1px rgba(0, 0, 0, 0.3),
+    0px 0px 0px 2px rgba(0, 0, 0, 0.1),
+    0px 8px 12px rgba(0, 0, 0, 0.1),
+    inset 0px 0px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 99px;
 }
 
 .rhap_progress-filled {
-  opacity: 0;
-  visibility: hidden;
-  z-index: 3;
+  background-color: #685bff;
+  padding: 0px 3px;
+  height: 12px;
+  border-radius: 99px;
+  box-shadow:
+    0px 4px 4px rgba(0, 0, 0, 0.2),
+    0px 0px 0px 1px rgba(255, 255, 255, 0.2),
+    0px 0px 0px 4px rgba(255, 255, 255, 0.05),
+    0px 0px 0px 3px rgba(0, 0, 0, 0.5),
+    inset 0px 1px 2px rgba(255, 255, 255, 0.2),
+    inset 0px 4px 1px rgba(255, 255, 255, 0.1),
+    inset 0px -4px 1px rgba(0, 0, 0, 0.2);
 }
-
 .rhap_progress-bar-show-download {
-  z-index: 3;
-  padding: 10px;
   background: transparent;
+  height: 12px;
 }
-
 .rhap_download-progress {
-  height: 0;
+  background: transparent;
 }
