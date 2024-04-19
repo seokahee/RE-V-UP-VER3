@@ -203,3 +203,44 @@ const SearchedMusicData = () => {
   )
 }
 export default SearchedMusicData
+
+// 프로그레스바
+
+// .rhap_progress-indicator {
+//   box-sizing: border-box;
+//   position: absolute;
+//   z-index: 2;
+//   width: 5px;
+//   height: 24px;
+//   margin-left: 4px;
+//   top: 0px;
+//   background: #d5605c;
+//   box-shadow: rgba(134, 134, 134, 0.5) 0 0 5px;
+// }
+
+// .rhap_progress-container {
+//   background-image: url('/images/playerBar.svg');
+//   background-repeat: no-repeat;
+//   background-size: cover;
+//   background-position: center;
+//   z-index: 3;
+//   height: 32px;
+//   padding-right: 13px;
+//   width: 260px;
+// }
+
+// .rhap_progress-filled {
+//   opacity: 0;
+//   visibility: hidden;
+//   z-index: 3;
+// }
+
+// .rhap_progress-bar-show-download {
+//   z-index: 3;
+//   padding: 10px;
+//   background: transparent;
+// }
+
+// .rhap_download-progress {
+//   height: 0;
+// }

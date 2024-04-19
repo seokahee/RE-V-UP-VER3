@@ -28,7 +28,6 @@ const MusicPlayer = () => {
 
   const { currentPlayList, myPlayList, isError } = getMusicList(uid)
 
-  // check
   const deleteMutation = useMutation({
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
