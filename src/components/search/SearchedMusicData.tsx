@@ -1,7 +1,10 @@
 'use client'
 import addCurrMusic from '@/../public/images/community-detail-Image/add-current-music.svg'
 import addMyPlayList from '@/../public/images/community-detail-Image/add-my-playlist.svg'
-import { getMusicList } from '@/query/musicPlayer/musicPlayerQueryKey'
+import {
+  GET_MUSIC_LIST_QUERY_KEYS,
+  getMusicList,
+} from '@/query/musicPlayer/musicPlayerQueryKeys'
 import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
 import { insertMyPlayMusic, updateMyPlayMusic } from '@/shared/musicPlayer/api'
 import { useSearchedResultStore } from '@/shared/store/searchStore'
@@ -25,27 +28,35 @@ const SearchedMusicData = () => {
   const insertCurrentMutation = useMutation({
     mutationFn: insertCurrentMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.CURRENT_MUSIC_INFO],
+      })
     },
   })
   const updateCurrentMutation = useMutation({
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.CURRENT_MUSIC_INFO],
+      })
     },
   })
 
   const insertMyMutation = useMutation({
     mutationFn: insertMyPlayMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getMyMusicList'] })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_MUSIC_LIST],
+      })
     },
   })
 
   const updateMyMutation = useMutation({
     mutationFn: updateMyPlayMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getMyMusicList'] })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_MUSIC_LIST],
+      })
     },
   })
 
