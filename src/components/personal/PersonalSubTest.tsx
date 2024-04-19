@@ -8,7 +8,12 @@ import PreviousButton from '../mypage/PreviousButton'
 import left from '@/../public/images/double_arrow_left.svg'
 import right from '@/../public/images/double_arrow.svg'
 import Image from 'next/image'
-import { DROP_SHADOW, INPUT_SHADOW, INPUT_FOCUS } from '../login/loginCss'
+import {
+  DROP_SHADOW,
+  INPUT_SHADOW,
+  INPUT_FOCUS,
+  OPEN_ANOTHER_SHADOW,
+} from '../login/loginCss'
 
 import type { PersonalInfo } from '@/types/personal/type'
 
@@ -66,7 +71,9 @@ const PersonalSubTest = ({
   return (
     <div className='w-[516px] justify-center pb-[90px] pt-[70px]'>
       {/**wrap */}
-      <div className='h-[800px] rounded-[32px] bg-white bg-opacity-10'>
+      <div
+        className={`h-[800px] rounded-[32px] bg-white bg-opacity-10 ${OPEN_ANOTHER_SHADOW}`}
+      >
         <div>
           <p className='pt-[106px] text-center text-xl font-bold text-white'>
             MBTI를 입력해주세요!
@@ -74,6 +81,7 @@ const PersonalSubTest = ({
         </div>
         <div className='pt-[37px]'>
           <div className='mb-4 flex flex-row justify-center'>
+            {' '}
             <span className='mr-2 text-2xl font-bold'>E</span>
             <label className='relative mb-4 h-6 w-20 rounded-[148.50px] border-2 bg-indigo-500 p-[3px] shadow shadow-inner'>
               <input
@@ -95,11 +103,12 @@ const PersonalSubTest = ({
                   <Image src={right} alt='오른쪽' width={12} height={12} />
                 ) : null}
               </span>
-            </label>
+            </label>{' '}
             <span className='ml-2 text-2xl font-bold'>I</span>
           </div>
           {/** */}
           <div className='mb-4 flex flex-row justify-center'>
+            {' '}
             <span className='mr-2 text-2xl font-bold'>N</span>
             <label className='relative mb-4 h-6 w-20 rounded-[148.50px] border-2 bg-indigo-500 p-[3px] shadow shadow-inner'>
               <input
@@ -206,6 +215,8 @@ const PersonalSubTest = ({
             {PJ ? 'P' : 'J'}
           </p>
         </div>
+        {/**입력한 MBTI 표시 */}
+        {/**버튼 */}
         <div className='flex justify-center gap-4  pt-[70px]'>
           <PreviousButton onClick={() => handleNextClick('pageOne')}>
             이전
@@ -213,7 +224,8 @@ const PersonalSubTest = ({
           <ButtonPrimary onClick={onsubmitResultHandler}>
             결과보러가기
           </ButtonPrimary>
-        </div>
+        </div>{' '}
+        {/**버튼 */}
       </div>
       {/**wrap */}
     </div>

@@ -4,6 +4,7 @@ import { useSurvey } from '@/shared/store/personalStore'
 import { useRouter } from 'next/navigation'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import PreviousButton from '../mypage/PreviousButton'
+import { OPEN_ANOTHER_SHADOW } from '../login/loginCss'
 
 const GenderPage = ({
   setPageCount,
@@ -30,7 +31,9 @@ const GenderPage = ({
 
   return (
     <div className='w-[516px] pb-[90px] pt-[70px]'>
-      <div className='h-[800px] rounded-[32px] bg-white bg-opacity-10'>
+      <div
+        className={`h-[800px] rounded-[32px] bg-white bg-opacity-10 ${OPEN_ANOTHER_SHADOW}`}
+      >
         <div>
           <p className='pt-[106px] text-center text-xl font-bold'>
             성별을 선택해주세요
@@ -49,11 +52,11 @@ const GenderPage = ({
                 className='peer hidden'
               />
               <p
-                className='inline-flex h-[100px] w-[336px] items-center 
-              justify-center rounded-xl border-4 border-black border-opacity-10 
-              bg-white bg-opacity-20  peer-checked:bg-primary'
+                className={`inline-flex h-[100px] w-[336px] items-center 
+              justify-center rounded-xl  ${OPEN_ANOTHER_SHADOW}
+              bg-white bg-opacity-20  text-lg font-bold peer-checked:bg-primary `}
               >
-                남자
+                남성
               </p>
             </label>
           </div>
@@ -68,8 +71,12 @@ const GenderPage = ({
                 onChange={() => handleGenderChange('female')}
                 className='peer hidden'
               />
-              <p className='inline-flex h-[100px] w-[336px] items-center justify-center rounded-xl border-4 border-black border-opacity-10 bg-white bg-opacity-20 shadow shadow-inner peer-checked:bg-primary'>
-                여자
+              <p
+                className={`inline-flex h-[100px] w-[336px] items-center 
+              justify-center rounded-xl  ${OPEN_ANOTHER_SHADOW}
+              bg-white bg-opacity-20  text-lg font-bold peer-checked:bg-primary `}
+              >
+                여성
               </p>
             </label>
           </div>

@@ -168,9 +168,11 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
         <p className='px-[20px]'>{SentenceMatch(userChar.mbti)}</p>
       </div>
       <div className='pt-[24px] text-center text-white'>
-        <p>당신의 취향에 맞는 음악을 추천 해드릴게요 &#x1F642;</p>
+        <p className='text-sm font-medium'>
+          당신의 취향에 맞는 음악을 추천 해드릴게요 &#x1F642;
+        </p>
       </div>
-      <div className='flex justify-center gap-12 pt-[16px] text-white text-opacity-50'>
+      <div className='flex justify-center gap-5 pt-[16px] text-white text-opacity-50'>
         {recommend?.map((item) => (
           <label htmlFor={item.musicId} key={item.musicId}>
             <input
@@ -182,20 +184,28 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
               }
               className='peer hidden'
             />
-            <Image
-              src={item.thumbnail}
-              width={80}
-              height={80}
-              alt={`${item.musicTitle} 앨범 썸네일`}
-              className='rounded-full ring-4 ring-transparent peer-checked:ring-white'
-            />
-            <div className='w-[80px] text-lg font-bold peer-checked:text-white'>
-              <p className='w-[80px] text-center'>{item.musicTitle}</p>
+            <div className='flex w-[130px] justify-center'>
+              <Image
+                src={item.thumbnail}
+                width={80}
+                height={80}
+                alt={`${item.musicTitle} 앨범 썸네일`}
+                className='rounded-full ring-4 ring-transparent peer-checked:ring-white'
+              />
+            </div>
+            <div className='w-[100px]  peer-checked:text-white'>
+              <p className='w-[130px] text-center text-lg font-bold'>
+                {item.musicTitle}
+              </p>
             </div>
             <div className='text-center text-sm font-medium peer-checked:text-white '>
               <p> {item.artist}</p>
             </div>
-            <div>{currentList.includes(item.musicId) ? '현재 재생중' : ''}</div>
+            <div>
+              <p className='text-center text-sm'>
+                {currentList.includes(item.musicId) ? '현재 재생중' : ''}
+              </p>
+            </div>
           </label>
         ))}
       </div>
