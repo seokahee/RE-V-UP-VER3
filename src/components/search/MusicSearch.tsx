@@ -6,12 +6,12 @@ import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
 
 const MusicSearch = () => {
   const [isModal, setIsModal] = useState<boolean>(false)
-  const { chooseMusic, isChooseMusic, setChooseMusic, setIsChooseMusic } =
-    useMusicSearchedStore()
+  const { setIsChooseMusic } = useMusicSearchedStore()
 
   const onModalOpenHandler = (e: MouseEvent) => {
     e.preventDefault()
     setIsModal(true)
+    setIsChooseMusic(false)
   }
 
   return (

@@ -13,6 +13,7 @@ import { GOBACK_SHADOW } from '../communityDetail/detailCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 import { DOWN_ACTIVE_BUTTON, OPEN_ANOTHER_SHADOW } from '../login/loginCss'
 import ModalMusicData from './ModalMusicData'
+import Swal from 'sweetalert2'
 
 const MusicSearchModal = ({
   setIsModal,
@@ -64,13 +65,25 @@ const MusicSearchModal = ({
     5,
   )
 
-  const onAddViewMusicHandler = () => {
+  const onAddViewMusicHandler = async () => {
     if (!isChooseMusic || !chooseMusic) {
-      alert('음악을 선택해 주세요!')
+      await Swal.fire({
+        text: '음악을 선택해 주세요!',
+        confirmButtonText: '확인',
+        confirmButtonColor: '#685BFF',
+        color: '#ffffff',
+        background: '#2B2B2B',
+      })
       return
     }
 
-    alert('음악이 등록되었습니다.')
+    await Swal.fire({
+      text: '음악이 등록되었습니다.',
+      confirmButtonText: '확인',
+      confirmButtonColor: '#685BFF',
+      color: '#ffffff',
+      background: '#2B2B2B',
+    })
     setIsModal(false)
   }
 

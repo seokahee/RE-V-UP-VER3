@@ -19,6 +19,7 @@ import {
 } from './communityCss'
 import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
+import Swal from 'sweetalert2'
 
 const CommunityCreate = () => {
   const router = useRouter()
@@ -55,17 +56,36 @@ const CommunityCreate = () => {
       validateFormBlank(boardTitle, content)
 
     if (!boardTitle || titleBlank === '') {
-      alert('제목을 입력해 주세요!')
+      await Swal.fire({
+        text: '제목을 입력해 주세요!',
+        confirmButtonText: '확인',
+        confirmButtonColor: '#685BFF',
+        color: '#ffffff',
+        background: '#2B2B2B',
+      })
+
       return
     }
 
     if (!content || contentBlack === '') {
-      alert('내용을 입력해 주세요!')
+      await Swal.fire({
+        text: '내용을 입력해 주세요!',
+        confirmButtonText: '확인',
+        confirmButtonColor: '#685BFF',
+        color: '#ffffff',
+        background: '#2B2B2B',
+      })
       return
     }
 
     if (!chooseMusic) {
-      alert('음악 선택은 필수입니다!')
+      await Swal.fire({
+        text: '음악 선택은 필수입니다!',
+        confirmButtonText: '확인',
+        confirmButtonColor: '#685BFF',
+        color: '#ffffff',
+        background: '#2B2B2B',
+      })
       return
     }
 
@@ -78,19 +98,37 @@ const CommunityCreate = () => {
         musicId,
       }
       addCommunityMutation.mutate(newData)
-      alert('등록이 완료됐습니다.')
+      await Swal.fire({
+        text: '등록이 완료됐습니다.',
+        confirmButtonText: '확인',
+        confirmButtonColor: '#685BFF',
+        color: '#ffffff',
+        background: '#2B2B2B',
+      })
       reset()
       setChooseMusic(null)
       router.push('/community')
     }
     if (!userSessionInfo) {
-      alert('오류로 인해 정보를 저장할 수 없습니다.')
+      Swal.fire({
+        text: '오류로 인해 정보를 저장할 수 없습니다.',
+        confirmButtonText: '확인',
+        confirmButtonColor: '#685BFF',
+        color: '#ffffff',
+        background: '#2B2B2B',
+      })
       return
     }
   }
 
   if (status === 'unauthenticated') {
-    alert('로그인한 유저만 이용 가능합니다.')
+    Swal.fire({
+      text: '로그인한 유저만 이용 가능합니다.',
+      confirmButtonText: '확인',
+      confirmButtonColor: '#685BFF',
+      color: '#ffffff',
+      background: '#2B2B2B',
+    })
     router.replace('/')
     return
   }

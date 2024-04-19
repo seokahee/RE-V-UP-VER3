@@ -17,6 +17,7 @@ import detailEdit from '@/../public/images/community-detail-Image/detail-edit.sv
 import detailDelete from '@/../public/images/community-detail-Image/detail-delete.svg'
 import addCurrMusic from '@/../public/images/community-detail-Image/add-current-music.svg'
 import addMyPlayList from '@/../public/images/community-detail-Image/add-my-playlist.svg'
+import userDefault from '@/../public/images/userDefaultImg.svg'
 import useInput from '@/hooks/useInput'
 import LikeButton from './LikeButton'
 import Link from 'next/link'
@@ -31,6 +32,7 @@ import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
 import CommentsPage from '@/app/(auth)/comment/page'
 import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
+import Swal from 'sweetalert2'
 
 const CommunityContents = () => {
   const router = useRouter()
@@ -103,21 +105,58 @@ const CommunityContents = () => {
         content: updatedContent,
       })
     }
-    alert('내용을 수정하셨습니다.')
+    await Swal.fire({
+      title: '게시글 수정',
+      text: '내용을 수정하셨습니다.',
+      confirmButtonText: '확인',
+      confirmButtonColor: '#685BFF',
+      color: '#ffffff',
+      background: '#2B2B2B',
+    })
+
     setIsEdit(false)
   }
 
   const onDeleteBoardHandler = async (e: MouseEvent) => {
     e.preventDefault()
 
-    if (window.confirm('삭제하시겠습니까?') === true) {
-      deleteCommunityMutation.mutate(currentBoardId)
-      alert('삭제되었습니다.')
-    } else {
-      alert('삭제를 취소하셨습니다.')
-      return
-    }
-    router.back()
+    Swal.fire({
+      title: '게시글 삭제',
+      text: '정말 삭제 하시겠습니까?',
+
+      showCancelButton: true,
+      confirmButtonColor: '#685BFF',
+      cancelButtonColor: '#000000',
+      confirmButtonText: '확인',
+      cancelButtonText: '취소',
+      color: '#ffffff',
+      background: '#2B2B2B',
+
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteCommunityMutation.mutate(currentBoardId)
+        Swal.fire({
+          title: '게시글 삭제',
+          text: '게시글을 삭제하셨습니다.',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#685BFF',
+          color: '#ffffff',
+          background: '#2B2B2B',
+        })
+      } else {
+        Swal.fire({
+          title: '게시글 삭제 취소',
+          text: '삭제를 취소하셨습니다.',
+          confirmButtonText: '취소',
+          confirmButtonColor: '#685BFF',
+          color: '#ffffff',
+          background: '#2B2B2B',
+        })
+        return
+      }
+      router.back()
+    })
   }
 
   const onEditCancelHandler = () => {
@@ -130,12 +169,21 @@ const CommunityContents = () => {
     router.back()
   }
 
-  const onAddPlayerHandler = (e: MouseEvent, uid: string, musicId: string) => {
+  const onAddPlayerHandler = async (
+    e: MouseEvent,
+    uid: string,
+    musicId: string,
+  ) => {
     e.preventDefault()
     if (!uid) {
-      alert(
-        '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
-      )
+      await Swal.fire({
+        text: '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
+        confirmButtonText: '확인',
+        confirmButtonColor: '#685BFF',
+        color: '#ffffff',
+        background: '#2B2B2B',
+      })
+
       router.replace('/login')
       return
     }
@@ -143,7 +191,14 @@ const CommunityContents = () => {
     if (playListCurrent && playListCurrent.length > 0) {
       const currentList = playListCurrent[0].currentMusicIds
       if (currentList.find((el) => el === musicId)) {
-        alert('이미 추가된 노래입니다.')
+        await Swal.fire({
+          text: '이미 추가된 노래입니다.',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#685BFF',
+          color: '#ffffff',
+          background: '#2B2B2B',
+        })
+
         return
       }
 
@@ -152,34 +207,70 @@ const CommunityContents = () => {
     } else {
       insertMutation.mutate({ userId: uid, musicId })
     }
-    alert('현재 재생목록에 추가 되었습니다.')
+    await Swal.fire({
+      text: '현재 재생목록에 추가 되었습니다.',
+      confirmButtonText: '확인',
+      confirmButtonColor: '#685BFF',
+      color: '#ffffff',
+      background: '#2B2B2B',
+    })
   }
 
   const onClickAddMyPlayListHandler = async (musicId: string) => {
     if (uid === '' || !uid) {
-      alert(
-        '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
-      )
+      await Swal.fire({
+        text: '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
+        confirmButtonText: '확인',
+        confirmButtonColor: '#685BFF',
+        color: '#ffffff',
+        background: '#2B2B2B',
+      })
       router.replace('/login')
       return
     }
+    //////////////////
+    Swal.fire({
+      text: '마이플레이 리스트에 추가하시겠습니까?',
 
-    if (window.confirm('마이플레이 리스트에 추가하시겠습니까?')) {
-      if (myPlayList && myPlayList.length > 0) {
-        const myList = myPlayList[0].myMusicIds
+      showCancelButton: true,
+      confirmButtonColor: '#685BFF',
+      cancelButtonColor: '#000000',
+      confirmButtonText: '추가',
+      cancelButtonText: '취소',
+      color: '#ffffff',
+      background: '#2B2B2B',
 
-        if (myList.find((el) => el === musicId)) {
-          alert('이미 추가된 노래입니다.')
-          return
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (myPlayList && myPlayList.length > 0) {
+          const myList = myPlayList[0].myMusicIds
+
+          if (myList.find((el) => el === musicId)) {
+            Swal.fire({
+              text: '이미 추가된 노래입니다.',
+              confirmButtonText: '확인',
+              confirmButtonColor: '#685BFF',
+              color: '#ffffff',
+              background: '#2B2B2B',
+            })
+            return
+          }
+          myList.push(musicId)
+          updateMyMutation.mutate({ userId: uid, myMusicList: myList })
+        } else {
+          const myMusicId = [musicId]
+          insertMyMutation.mutate({ userId: uid, musicId: myMusicId })
         }
-        myList.push(musicId)
-        updateMyMutation.mutate({ userId: uid, myMusicList: myList })
-      } else {
-        const myMusicId = [musicId]
-        insertMyMutation.mutate({ userId: uid, musicId: myMusicId })
+        Swal.fire({
+          text: '마이플레이리스트에 추가 되었습니다.',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#685BFF',
+          color: '#ffffff',
+          background: '#2B2B2B',
+        })
       }
-      alert('마이플레이리스트에 추가 되었습니다.')
-    }
+    })
   }
 
   if (!boardTitle || !content || !comment || !date) return null
@@ -193,7 +284,13 @@ const CommunityContents = () => {
     return <div>정보를 가져오지 못하고 있습니다. 로딩바자뤼</div>
   }
   if (status === 'unauthenticated') {
-    alert('로그인한 유저만 이용 가능합니다.')
+    Swal.fire({
+      text: '로그인한 유저만 이용 가능합니다.',
+      confirmButtonText: '확인',
+      confirmButtonColor: '#685BFF',
+      color: '#ffffff',
+      background: '#2B2B2B',
+    })
     router.replace('/')
     return
   }
@@ -264,9 +361,14 @@ const CommunityContents = () => {
                       className='h-[56px] w-[56px] rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)] bg-[#2B2B2B]'
                     />
                   ) : (
-                    <div className='h-[56px] w-[56px] rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)] bg-[#2B2B2B]'>
-                      <i></i>
-                    </div>
+                    <Image
+                      src={userDefault}
+                      alt='유저 이미지'
+                      width={56}
+                      height={56}
+                      title={`${nickname}님의 페이지로 이동`}
+                      className='h-[56px] w-[56px] rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)] bg-[#2B2B2B]'
+                    />
                   )}
                 </figure>
               </Link>
