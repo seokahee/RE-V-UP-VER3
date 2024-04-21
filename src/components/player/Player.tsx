@@ -7,7 +7,7 @@ import musicThumbnail from '@/../public/images/musicThumbnail.svg'
 import musicThumbnailDefault from '@/../public/images/musicThumbnailDefault.svg'
 import { PlayerProps } from '@/types/musicPlayer/types'
 import Image from 'next/image'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
 import { ADD_CURRENT_MUSIC_SHADOW } from '../communityDetail/communityCss'
@@ -50,10 +50,31 @@ const Player = ({
     loopOff: <MyLoopOffIcon />,
     progressJump: <FaForward />,
   }
-  const onplayHandler = (arg: any) => {
-    setCurrentPlaying(arg)
+
+  const imageRef = useRef<HTMLImageElement>(null)
+
+  const startAnimation = () => {
+    if (imageRef.current) {
+      const imageElement = imageRef.current
+      imageElement.classList.add('rotate-with-shadow')
+    }
   }
 
+  const stopAnimation = () => {
+    if (imageRef.current) {
+      const imageElement = imageRef.current
+      imageElement.classList.remove('rotate-with-shadow')
+    }
+  }
+
+  const onplayHandler = (arg: any) => {
+    setCurrentPlaying(arg)
+    startAnimation()
+  }
+
+  const onPauseHandler = () => {
+    stopAnimation()
+  }
   return (
     <div>
       <div className='flex flex-col items-center'>
@@ -75,7 +96,9 @@ const Player = ({
                 alt='Album Circle'
                 width={300}
                 height={300}
-                className='rounded-full shadow-[0px_0px_16px_rgba(210,137,176,0.5)]'
+                className='element rounded-full'
+                ref={imageRef}
+                // className='rotate element rounded-full shadow-[0px_0px_16px_rgba(210,137,176,0.5)]'
               />
             </div>
           ) : (
@@ -149,6 +172,7 @@ const Player = ({
           onPlay={() => {
             onplayHandler(currentPlaying)
           }}
+          onPause={onPauseHandler}
         />
         <Image
           src={isRandom ? musicShuffleOff : musicShuffle}
