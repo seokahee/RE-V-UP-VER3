@@ -5,7 +5,7 @@ import 'react-quill/dist/quill.snow.css'
 import dynamic from 'next/dynamic'
 import loading from '@/../public/images/loadingBar.gif'
 import Image from 'next/image'
-import ReactQuill, { Quill, ReactQuillProps } from 'react-quill'
+import { Quill, ReactQuillProps } from 'react-quill'
 import { ImageActions } from '@xeger/quill-image-actions'
 import { ImageFormats } from '@xeger/quill-image-formats'
 
@@ -59,15 +59,15 @@ const CommunityQuillEditor = ({
     ['clean'],
   ]
 
-  const imageHandler = () => {
-    // const input = document.createElement('input')
-    // input.setAttribute('type', 'file')
-    // input.setAttribute('accept', 'image/*')
-    // input.click()
+  const onImageHandler = () => {
+    const input = document.createElement('input')
+    input.setAttribute('type', 'file')
+    input.setAttribute('accept', 'image/*')
+    input.click()
     // input.addEventListener('change', async () => {
-    //   const file = input?.files[0]
-    //   try {
-    //     // const res = await supabase.({ img: file })
+    // const file = input?.files[0]
+    // try {
+    // const res = await supabase.({ img: file })
     //     const imgUrl = res?.data.imgUrl
     //     const editor = quillRef?.current?.getEditor()
     //     const range = editor.getSelection()
@@ -89,7 +89,7 @@ const CommunityQuillEditor = ({
           parchment: Quill.import('parchment'),
         },
         handlers: {
-          image: imageHandler,
+          image: onImageHandler,
         },
       },
     }),
