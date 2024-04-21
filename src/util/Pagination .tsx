@@ -22,7 +22,7 @@ const Pagination = ({
   return (
     <div className='text-center'>
       {currentPage !== 1 && (
-        <button onClick={prevPage}>
+        <button className='mx-[4px] px-[4px]' onClick={prevPage}>
           <Image
             src={prevPageButton}
             alt='이전페이지 버튼'
@@ -38,7 +38,7 @@ const Pagination = ({
             return (
               <button
                 key={idx + 1}
-                className={`mx-1 px-1 text-[18px] ${idx + 1 !== currentPage && 'opacity-[30%]'}`}
+                className={`mx-[4px] px-[4px] text-[18px] ${idx + 1 !== currentPage && 'opacity-[30%]'}`}
                 onClick={() => setCurrentPage(idx + 1)}
               >
                 {idx + 1}
@@ -47,7 +47,7 @@ const Pagination = ({
           })}
 
       {currentPage !== totalPages && (
-        <button onClick={nextPage}>
+        <button className='mx-[4px] px-[4px]' onClick={nextPage}>
           <Image
             src={nextPageButton}
             alt='다음페이지 버튼'
