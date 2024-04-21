@@ -1,15 +1,15 @@
+import plus from '@/../public/images/plus.svg'
 import {
   getCurrentMusicData,
   insertCurrentMusic,
   updateCurrentMusic,
 } from '@/shared/main/api'
 import type { GenreMusicInfo } from '@/types/main/types'
+import { dragHandler } from '@/util/util'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React from 'react'
-import { useSession } from 'next-auth/react'
-import plus from '@/../public/images/plus.svg'
 import Swal from 'sweetalert2'
 
 const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
@@ -89,6 +89,10 @@ const GenreMusicItem = ({ item }: { item: GenreMusicInfo }) => {
 
   return (
     <li
+      draggable='true'
+      onDragStart={(e) => {
+        dragHandler(e, item)
+      }}
       key={item.musicId}
       className={`mr-6 w-[144px] list-none bg-[#ffffff19] ${itemShadow} overflow-hidden rounded-[2rem] border-4 border-[#00000070] p-2 text-center`}
     >

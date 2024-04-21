@@ -1,4 +1,7 @@
+import { PlaylistCurrent } from '@/types/main/types'
+import { MusicInfoType } from '@/types/musicPlayer/types'
 import { Dispatch, SetStateAction } from 'react'
+import Swal from 'sweetalert2'
 
 export const onDateHandler = (itemDate: string) => {
   const date = new Date(itemDate).toLocaleString('ko-KR', {
@@ -60,4 +63,22 @@ export const onDateTimeHandler = (itemDate: string) => {
     minute: '2-digit',
   })
   return date
+}
+
+export const dragHandler = (
+  e: React.DragEvent<HTMLLIElement>,
+  item: MusicInfoType,
+) => {
+  e.dataTransfer.setData(
+    'musicInfo',
+    JSON.stringify({
+      musicSource: item.thumbnail,
+      musicId: item.musicId,
+      musicTitle: item.musicTitle,
+      musicArtist: item.artist,
+      musicLyrics: item.lyrics,
+      musicRunTime: item.runTime,
+      musicUrl: item.musicSource,
+    }),
+  )
 }

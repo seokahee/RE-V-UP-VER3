@@ -13,6 +13,7 @@ const Community = () => {
 
   const { communityList, isLoading, isError, refetch } =
     getCommunityListInCommunity(isSort)
+
   useEffect(() => {
     refetch()
   }, [isSort, refetch])

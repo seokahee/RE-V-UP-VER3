@@ -8,6 +8,7 @@ import {
 import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
 import { insertMyPlayMusic, updateMyPlayMusic } from '@/shared/musicPlayer/api'
 import { useSearchedResultStore } from '@/shared/store/searchStore'
+import { dragHandler } from '@/util/util'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -154,6 +155,10 @@ const SearchedMusicData = () => {
       {musicData.map((item) => {
         return (
           <li
+            draggable='true'
+            onDragStart={(e) => {
+              dragHandler(e, item)
+            }}
             key={item.musicId}
             className='flex h-[88px] w-[732px] list-none items-start gap-[19px] p-[16px]'
           >
@@ -214,44 +219,3 @@ const SearchedMusicData = () => {
   )
 }
 export default SearchedMusicData
-
-// 프로그레스바
-
-// .rhap_progress-indicator {
-//   box-sizing: border-box;
-//   position: absolute;
-//   z-index: 2;
-//   width: 5px;
-//   height: 24px;
-//   margin-left: 4px;
-//   top: 0px;
-//   background: #d5605c;
-//   box-shadow: rgba(134, 134, 134, 0.5) 0 0 5px;
-// }
-
-// .rhap_progress-container {
-//   background-image: url('/images/playerBar.svg');
-//   background-repeat: no-repeat;
-//   background-size: cover;
-//   background-position: center;
-//   z-index: 3;
-//   height: 32px;
-//   padding-right: 13px;
-//   width: 260px;
-// }
-
-// .rhap_progress-filled {
-//   opacity: 0;
-//   visibility: hidden;
-//   z-index: 3;
-// }
-
-// .rhap_progress-bar-show-download {
-//   z-index: 3;
-//   padding: 10px;
-//   background: transparent;
-// }
-
-// .rhap_download-progress {
-//   height: 0;
-// }
