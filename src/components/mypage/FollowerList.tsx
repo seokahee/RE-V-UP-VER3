@@ -1,10 +1,10 @@
+import { GET_USER_INFO } from '@/query/user/userQueryKeys'
 import { getFollowDataFollower, updateFollow } from '@/shared/mypage/api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
-import React from 'react'
-import ButtonSecondary from '../../util/ButtonSecondary'
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
+import ButtonSecondary from '../../util/ButtonSecondary'
 
 type FollowProps = {
   data: string[]
@@ -22,16 +22,16 @@ const FollowerList = ({ data, myFollowing }: FollowProps) => {
     isError,
   } = useQuery({
     queryFn: () => getFollowDataFollower(uid),
-    queryKey: ['follower'],
+    queryKey: [GET_USER_INFO.MY_FOLLOWER],
     enabled: !!uid,
   })
 
   const unFollowMutation = useMutation({
     mutationFn: updateFollow,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['follower'] })
-      queryClient.invalidateQueries({ queryKey: ['mypage'] })
-      queryClient.invalidateQueries({ queryKey: ['following'] })
+      queryClient.invalidateQueries({ queryKey: [GET_USER_INFO.MY_FOLLOWER] })
+      queryClient.invalidateQueries({ queryKey: [GET_USER_INFO.MYPAGE] })
+      queryClient.invalidateQueries({ queryKey: [GET_USER_INFO.MY_FOLLOWING] })
     },
   })
 

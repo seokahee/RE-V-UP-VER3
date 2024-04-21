@@ -1,14 +1,16 @@
-import { getLikeBoardData } from '@/shared/mypage/api'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import React, { useState } from 'react'
-import BoardItem from './BoardItem'
-import BoardNoData from './BoardNoData'
+import { GET_MUSIC_LIST_QUERY_KEYS } from '@/query/musicPlayer/musicPlayerQueryKeys'
+import { GET_USER_INFO } from '@/query/user/userQueryKeys'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
-import { useSession } from 'next-auth/react'
+import { getLikeBoardData } from '@/shared/mypage/api'
+import { Board } from '@/types/mypage/types'
 import Pagination from '@/util/Pagination '
 import { paging } from '@/util/util'
-import { Board } from '@/types/mypage/types'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
+import { useState } from 'react'
 import Swal from 'sweetalert2'
+import BoardItem from './BoardItem'
+import BoardNoData from './BoardNoData'
 
 const LikeBoardList = () => {
   const { data: userSessionInfo } = useSession()
@@ -18,7 +20,7 @@ const LikeBoardList = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getLikeBoardData(uid),
-    queryKey: ['likeBoard', currentPage],
+    queryKey: [GET_USER_INFO.MY_LIKE_BOARD_LIST],
     enabled: !!uid,
   })
 
@@ -31,15 +33,19 @@ const LikeBoardList = () => {
 
   const { data: playListCurrent } = useQuery({
     queryFn: () => getCurrentMusicData(uid),
-    queryKey: ['playListCurrent'],
+    queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_CURRENT_MUSIC_LIST],
     enabled: !!uid,
   })
 
   const updateMutation = useMutation({
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
-      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_CURRENT_MUSIC_LIST],
+      })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.CURRENT_MUSIC_INFO],
+      })
     },
   })
 

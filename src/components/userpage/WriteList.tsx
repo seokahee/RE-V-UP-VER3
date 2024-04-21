@@ -1,18 +1,18 @@
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
 import { getMyWriteListData } from '@/shared/mypage/api'
+import { getUserVisibilityData } from '@/shared/userpage/api'
+import type { Board } from '@/types/mypage/types'
+import Pagination from '@/util/Pagination '
+import { paging } from '@/util/util'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 import { useParams } from 'next/navigation'
-import React, { useState } from 'react'
+import { useState } from 'react'
+import Swal from 'sweetalert2'
 import BoardItem from '../mypage/BoardItem'
 import BoardNoData from '../mypage/BoardNoData'
-import { getUserVisibilityData } from '@/shared/userpage/api'
 import LockContents from './LockContents'
-import { useSession } from 'next-auth/react'
-import { GET_MUSICLIST_QUERY_KEY } from '@/query/musicPlayer/musicPlayerQueryKeys'
-import { paging } from '@/util/util'
-import Pagination from '@/util/Pagination '
-import type { Board } from '@/types/mypage/types'
-import Swal from 'sweetalert2'
+import { GET_MUSIC_LIST_QUERY_KEYS } from '@/query/musicPlayer/musicPlayerQueryKeys'
 
 const WriteList = () => {
   const { data: userSessionInfo } = useSession()
@@ -23,7 +23,7 @@ const WriteList = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getMyWriteListData(id),
-    queryKey: ['userWriteList', currentPage],
+    queryKey: [`userWriteList-${id}`],
     enabled: !!id,
   })
 
@@ -36,13 +36,13 @@ const WriteList = () => {
 
   const { data: playListCurrent } = useQuery({
     queryFn: () => getCurrentMusicData(uid),
-    queryKey: [GET_MUSICLIST_QUERY_KEY.GET_MY_CURRENT_MUSICLIST],
+    queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_CURRENT_MUSIC_LIST],
     enabled: !!uid,
   })
 
   const { data: UserVisibilityData } = useQuery({
     queryFn: () => getUserVisibilityData(id),
-    queryKey: ['userVisibilitys', id],
+    queryKey: [`userVisibilitys-${id}`, id],
     enabled: !!id,
   })
 
@@ -50,10 +50,10 @@ const WriteList = () => {
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [GET_MUSICLIST_QUERY_KEY.GET_MY_CURRENT_MUSICLIST],
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_CURRENT_MUSIC_LIST],
       })
       queryClient.invalidateQueries({
-        queryKey: [GET_MUSICLIST_QUERY_KEY.GET_CURRENT_MUSICLIST],
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.CURRENT_MUSIC_INFO],
       })
     },
   })

@@ -7,6 +7,7 @@ import UserPlaylist from './UserPlaylist'
 import { useSession } from 'next-auth/react'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import ButtonSecondary from '../../util/ButtonSecondary'
+import { GET_USER_INFO } from '@/query/user/userQueryKeys'
 
 const UserInfo = () => {
   const { id } = useParams<{ id: string }>()
@@ -25,14 +26,14 @@ const UserInfo = () => {
 
   const { data: myInfo } = useQuery({
     queryFn: () => getUserAndPlaylistData(uid),
-    queryKey: ['mypage', uid],
+    queryKey: [GET_USER_INFO.MYPAGE, uid],
     enabled: !!uid,
   })
 
   const unFollowMutation = useMutation({
     mutationFn: updateFollow,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['mypage'] })
+      queryClient.invalidateQueries({ queryKey: [GET_USER_INFO.MYPAGE] })
       queryClient.invalidateQueries({ queryKey: [`userpage-${id}`] })
     },
   })

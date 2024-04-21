@@ -21,6 +21,7 @@ import FollowingList from './FollowingList'
 import FollowerList from './FollowerList'
 import { useRouter } from 'next/navigation'
 import Swal from 'sweetalert2'
+import { GET_USER_INFO } from '@/query/user/userQueryKeys'
 
 const MyInfo = () => {
   const { data: userSessionInfo, status } = useSession()
@@ -47,21 +48,21 @@ const MyInfo = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getUserAndPlaylistData(uid),
-    queryKey: ['mypage', uid],
+    queryKey: [GET_USER_INFO.MYPAGE, uid],
     enabled: !!uid,
   })
 
   const updateUserInfoMutation = useMutation({
     mutationFn: updateUserInfo,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['mypage'] })
+      queryClient.invalidateQueries({ queryKey: [GET_USER_INFO.MYPAGE] })
     },
   })
 
   const updateUserThumbnailMutation = useMutation({
     mutationFn: uploadUserThumbnail,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['mypage'] })
+      queryClient.invalidateQueries({ queryKey: [GET_USER_INFO.MYPAGE] })
     },
   })
 
