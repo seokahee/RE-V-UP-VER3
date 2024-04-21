@@ -1,6 +1,6 @@
 'use client'
 
-import { MouseEvent, useState } from 'react'
+import { MouseEvent, useRef, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -33,8 +33,11 @@ import CommentsPage from '@/app/(auth)/comment/page'
 import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 import Swal from 'sweetalert2'
+import ReactQuill from 'react-quill'
+import CommunityQuillEditor from './CommunityQuillEditor'
 
 const CommunityContents = () => {
+  const quillRef = useRef<ReactQuill>(null)
   const router = useRouter()
   const { setIsChooseMusic } = useMusicSearchedStore()
   const [isEdit, setIsEdit] = useState<boolean>(false)
@@ -79,6 +82,7 @@ const CommunityContents = () => {
     onChange: onChangeEditForm,
   } = useInput({ boardTitle, content })
   const { boardTitle: updatedTitle, content: updatedContent } = editForm
+
   const commentLength =
     commentsData && commentsData.length > 99
       ? 99
@@ -486,18 +490,25 @@ const CommunityContents = () => {
           </article>
           <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
             {isEdit ? (
-              <textarea
-                id='content'
-                name='content'
-                value={updatedContent}
-                onChange={onChangeEditForm}
-                cols={30}
-                rows={4}
-                maxLength={200}
-                className='mb-4 h-[200px] w-full  rounded-lg border-none bg-[rgba(255,255,255,0.1)] p-2 px-[15px]'
-              ></textarea>
+              // <textarea
+              //   id='content'
+              //   name='content'
+              //   value={updatedContent}
+              //   onChange={onChangeEditForm}
+              //   cols={30}
+              //   rows={4}
+              //   maxLength={200}
+              //   className='mb-4 h-[200px] w-full  rounded-lg border-none bg-[rgba(255,255,255,0.1)] p-2 px-[15px]'
+              // ></textarea>
+              <CommunityQuillEditor
+                quillRef={quillRef}
+                content={updatedContent}
+                setCommunityForm={setEditForm}
+              />
             ) : (
-              <div className='h-[200px] w-full px-[15px] tracking-[-0.03em]'>{`${content}`}</div>
+              <div className='h-[200px] w-full px-[15px] tracking-[-0.03em]'>
+                {`${content}`}
+              </div>
             )}
           </article>
         </div>

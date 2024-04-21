@@ -20,7 +20,8 @@ import {
 import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 import Swal from 'sweetalert2'
-import QuillEditor from './QuillEditor'
+import CommunityQuillEditor from './CommunityQuillEditor'
+import ReactQuill from 'react-quill'
 
 type CommunityForm = {
   boardTitle: string
@@ -28,7 +29,7 @@ type CommunityForm = {
 }
 
 const CommunityCreate = () => {
-  const quillRef = useRef<string>()
+  const quillRef = useRef<ReactQuill>(null)
   const router = useRouter()
   const refTitle = useRef<HTMLInputElement>(null)
   const { chooseMusic, setChooseMusic } = useMusicSearchedStore()
@@ -50,12 +51,6 @@ const CommunityCreate = () => {
   })
 
   const { boardTitle, content } = communityForm
-  console.log(communityForm)
-  useEffect(() => {
-    if (refTitle.current !== null) {
-      refTitle.current.focus()
-    }
-  }, [])
 
   const onSumitHandler = async (e: FormEvent) => {
     e.preventDefault()
@@ -101,7 +96,8 @@ const CommunityCreate = () => {
       const { uid } = userSessionInfo.user
       const newData = {
         boardTitle,
-        content,
+        // content: content,
+        content: content,
         userId: uid,
         musicId,
       }
@@ -140,6 +136,12 @@ const CommunityCreate = () => {
     router.replace('/')
     return
   }
+
+  useEffect(() => {
+    if (refTitle.current !== null) {
+      refTitle.current.focus()
+    }
+  }, [])
 
   return (
     <div>
@@ -190,7 +192,8 @@ const CommunityCreate = () => {
             placeholder='추천할 음악에 대해 얘기해 주세요.'
           ></textarea> */}
           <div>
-            <QuillEditor
+            <CommunityQuillEditor
+              quillRef={quillRef}
               content={content}
               setCommunityForm={setCommunityForm}
             />
