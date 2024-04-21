@@ -20,11 +20,18 @@ import {
 import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 import Swal from 'sweetalert2'
+import QuillEditor from './QuillEditor'
+
+type CommunityForm = {
+  boardTitle: string
+  content: string
+}
 
 const CommunityCreate = () => {
+  const quillRef = useRef<string>()
   const router = useRouter()
   const refTitle = useRef<HTMLInputElement>(null)
-  const { chooseMusic, isChooseMusic, setChooseMusic } = useMusicSearchedStore()
+  const { chooseMusic, setChooseMusic } = useMusicSearchedStore()
   const { addCommunityMutation } = useCoummunityItem()
   const { data: userSessionInfo, status } = useSession()
   const musicId = chooseMusic?.musicId as string
@@ -34,15 +41,16 @@ const CommunityCreate = () => {
 
   const {
     form: communityForm,
+    setForm: setCommunityForm,
     onChange: onChangeHandler,
     reset,
-  } = useInput({
+  } = useInput<CommunityForm>({
     boardTitle: '',
     content: '',
   })
 
   const { boardTitle, content } = communityForm
-
+  console.log(communityForm)
   useEffect(() => {
     if (refTitle.current !== null) {
       refTitle.current.focus()
@@ -172,14 +180,21 @@ const CommunityCreate = () => {
               placeholder='제목을 입력해 주세요.'
             />
           </div>
-          <textarea
+          {/* <textarea
+            
             name='content'
             value={content}
             maxLength={200}
             onChange={onChangeHandler}
             className='mb-4 h-[200px] w-full rounded-lg border-none bg-[rgba(255,255,255,0.1)] p-2 '
             placeholder='추천할 음악에 대해 얘기해 주세요.'
-          ></textarea>
+          ></textarea> */}
+          <div>
+            <QuillEditor
+              content={content}
+              setCommunityForm={setCommunityForm}
+            />
+          </div>
         </div>
       </form>
 
