@@ -232,7 +232,7 @@ const CommunityContents = () => {
       router.replace('/login')
       return
     }
-    //////////////////
+
     Swal.fire({
       text: '마이플레이 리스트에 추가하시겠습니까?',
 
