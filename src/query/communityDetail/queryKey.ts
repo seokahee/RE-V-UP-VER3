@@ -3,17 +3,17 @@ import { readCommunityDetail } from '@/shared/communitydetail/detailApi'
 import { getCurrentMusicData } from '@/shared/main/api'
 import { getMyMusicList } from '@/shared/musicPlayer/api'
 import { useQuery } from '@tanstack/react-query'
+import { GET_USER_INFO } from '../user/userQueryKeys'
+import { GET_MUSIC_LIST_QUERY_KEYS } from '../musicPlayer/musicPlayerQueryKeys'
 
-export const COMMUNITY_DETAIL_QUERY_KEY = {
+export const GET_COMMUNITY_DETAIL_QUERY_KEYS = {
   COMMUNITY_DETAIL: 'CommunityDetail',
-  PLAYLIST_CURRENT: 'playListCurrent',
-  GET_MY_MUSICLIST: 'mypage',
 }
 
 export const musicDataInCommuDetail = (uid: string, currentBoardId: string) => {
   const { data: playListCurrent } = useQuery({
     queryFn: () => getCurrentMusicData(uid),
-    queryKey: [COMMUNITY_DETAIL_QUERY_KEY.PLAYLIST_CURRENT],
+    queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_CURRENT_MUSIC_LIST],
     enabled: !!uid,
   })
 
@@ -21,7 +21,7 @@ export const musicDataInCommuDetail = (uid: string, currentBoardId: string) => {
     queryFn: ({ queryKey }) => {
       return getMyMusicList(queryKey[1])
     },
-    queryKey: [COMMUNITY_DETAIL_QUERY_KEY.GET_MY_MUSICLIST, uid],
+    queryKey: [GET_USER_INFO.MYPAGE, uid],
   })
 
   const {
@@ -31,7 +31,7 @@ export const musicDataInCommuDetail = (uid: string, currentBoardId: string) => {
     error,
   } = useQuery({
     queryFn: () => readCommunityDetail(currentBoardId.toString()),
-    queryKey: [COMMUNITY_DETAIL_QUERY_KEY.COMMUNITY_DETAIL],
+    queryKey: [GET_COMMUNITY_DETAIL_QUERY_KEYS.COMMUNITY_DETAIL],
   })
 
   const { data: commentsData } = useQuery({
