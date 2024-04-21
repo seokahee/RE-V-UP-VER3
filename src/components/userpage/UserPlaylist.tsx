@@ -11,6 +11,7 @@ import ButtonPrimary from '../../util/ButtonPrimary'
 import { useParams } from 'next/navigation'
 import arrow from '@/../public/images/chevron-down.svg'
 import Swal from 'sweetalert2'
+import { GET_MUSIC_LIST_QUERY_KEYS } from '@/query/musicPlayer/musicPlayerQueryKeys'
 
 const UserPlaylist = ({
   data,
@@ -28,7 +29,7 @@ const UserPlaylist = ({
 
   const { data: userPlaylistMyInfoData } = useQuery({
     queryFn: () => getUserMyPlaylistData(id),
-    queryKey: ['userMyMusicIds'], //data
+    queryKey: [`userMyMusicIds-${id}`], //data
     enabled: !!id,
   })
 
@@ -37,15 +38,19 @@ const UserPlaylist = ({
 
   const { data: myPlaylistCurrentData } = useQuery({
     queryFn: () => getCurrentMusicData(uid),
-    queryKey: ['playListCurrent', uid],
+    queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_CURRENT_MUSIC_LIST, uid],
     enabled: !!uid,
   })
 
   const updateMutation = useMutation({
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['playListCurrent'] })
-      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_CURRENT_MUSIC_LIST],
+      })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.CURRENT_MUSIC_INFO],
+      })
     },
   })
 
