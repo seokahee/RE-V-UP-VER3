@@ -7,11 +7,12 @@ import BoardItem from './BoardItem'
 import BoardNoData from './BoardNoData'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
 import { useSession } from 'next-auth/react'
-import { GET_MUSICLIST_QUERY_KEY } from '@/query/musicPlayer/musicPlayerQueryKeys'
 import { paging } from '@/util/util'
 import Pagination from '@/util/Pagination '
 import type { Board } from '@/types/mypage/types'
 import Swal from 'sweetalert2'
+import { GET_MUSIC_LIST_QUERY_KEYS } from '@/query/musicPlayer/musicPlayerQueryKeys'
+import { GET_USER_INFO } from '@/query/user/userQueryKeys'
 
 const WriteList = () => {
   const { data: userSessionInfo } = useSession()
@@ -21,7 +22,7 @@ const WriteList = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getMyWriteListData(uid),
-    queryKey: ['myWriteList', currentPage],
+    queryKey: [GET_USER_INFO.MY_WRITE_BOARD_LIST],
     enabled: !!uid,
   })
 
@@ -34,7 +35,7 @@ const WriteList = () => {
 
   const { data: playListCurrent } = useQuery({
     queryFn: () => getCurrentMusicData(uid),
-    queryKey: [GET_MUSICLIST_QUERY_KEY.GET_MY_CURRENT_MUSICLIST],
+    queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_CURRENT_MUSIC_LIST],
     enabled: !!uid,
   })
 
@@ -42,10 +43,10 @@ const WriteList = () => {
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [GET_MUSICLIST_QUERY_KEY.GET_MY_CURRENT_MUSICLIST],
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_CURRENT_MUSIC_LIST],
       })
       queryClient.invalidateQueries({
-        queryKey: [GET_MUSICLIST_QUERY_KEY.GET_CURRENT_MUSICLIST],
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.CURRENT_MUSIC_INFO],
       })
     },
   })

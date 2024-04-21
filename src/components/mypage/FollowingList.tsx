@@ -5,6 +5,7 @@ import React from 'react'
 import ButtonSecondary from '../../util/ButtonSecondary'
 import Link from 'next/link'
 import Image from 'next/image'
+import { GET_USER_INFO } from '@/query/user/userQueryKeys'
 
 type FollowProps = {
   data: string[]
@@ -21,15 +22,15 @@ const FollowingList = ({ data }: FollowProps) => {
     isError,
   } = useQuery({
     queryFn: () => getFollowDataFollowing(uid),
-    queryKey: ['following'],
+    queryKey: [GET_USER_INFO.MY_FOLLOWING],
     enabled: !!uid,
   })
 
   const unFollowMutation = useMutation({
     mutationFn: updateFollow,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['following'] })
-      queryClient.invalidateQueries({ queryKey: ['mypage'] })
+      queryClient.invalidateQueries({ queryKey: [GET_USER_INFO.MY_FOLLOWING] })
+      queryClient.invalidateQueries({ queryKey: [GET_USER_INFO.MYPAGE] })
     },
   })
 
