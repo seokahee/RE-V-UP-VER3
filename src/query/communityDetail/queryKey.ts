@@ -8,6 +8,7 @@ import { GET_MUSIC_LIST_QUERY_KEYS } from '../musicPlayer/musicPlayerQueryKeys'
 
 export const GET_COMMUNITY_DETAIL_QUERY_KEYS = {
   COMMUNITY_DETAIL: 'CommunityDetail',
+  COMMUNITY_COMMENTS: 'comment',
 }
 
 export const musicDataInCommuDetail = (uid: string, currentBoardId: string) => {
@@ -36,7 +37,7 @@ export const musicDataInCommuDetail = (uid: string, currentBoardId: string) => {
 
   const { data: commentsData } = useQuery({
     queryFn: () => getComments(currentBoardId),
-    queryKey: ['comment'],
+    queryKey: [GET_COMMUNITY_DETAIL_QUERY_KEYS.COMMUNITY_COMMENTS],
   })
 
   return {
