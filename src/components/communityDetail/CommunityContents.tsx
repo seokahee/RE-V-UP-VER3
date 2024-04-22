@@ -1,9 +1,13 @@
 'use client'
 
 import { MouseEvent, useRef, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { useParams, useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
+import ReactQuill from 'react-quill'
+import Swal from 'sweetalert2'
+import DOMPurify from 'dompurify'
 import {
   useCoummunityCreateItem,
   useCoummunityItem,
@@ -32,31 +36,31 @@ import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
 import CommentsPage from '@/app/(auth)/comment/page'
 import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
-import Swal from 'sweetalert2'
-import ReactQuill from 'react-quill'
-import dynamic from 'next/dynamic'
 import CommunityQuillEditor from './CommunityQuillEditor'
 import loading from '@/../public/images/loadingBar.gif'
 
-// import CommunityQuillEditor, { QuillEditor } from './CommunityQuillEditor'
-export const QuillEditor = dynamic(
-  async () => {
-    const { default: RQ } = await import('react-quill')
-    return function comp({ forwardedRef, ...props }: any) {
-      return <RQ ref={forwardedRef} {...props} />
-    }
-  },
-  {
-    ssr: false,
-    loading: () => {
-      return (
-        <div>
-          <Image src={loading} width={50} height={50} alt='로딩바' />
-        </div>
+export const QuillEditor =
+  typeof window === 'object'
+    ? dynamic(
+        async () => {
+          const { default: RQ } = await import('react-quill')
+          return function comp({ forwardedRef, ...props }: any) {
+            return <RQ ref={forwardedRef} {...props} />
+          }
+        },
+        {
+          ssr: false,
+          loading: () => {
+            return (
+              <div>
+                <Image src={loading} width={50} height={50} alt='로딩바' />
+              </div>
+            )
+          },
+        },
       )
-    },
-  },
-)
+    : () => false
+
 const CommunityContents = () => {
   const quillRef = useRef<ReactQuill>(null)
   const router = useRouter()
@@ -103,6 +107,7 @@ const CommunityContents = () => {
     onChange: onChangeEditForm,
   } = useInput({ boardTitle, content })
   const { boardTitle: updatedTitle, content: updatedContent } = editForm
+  const sanitizedHtmlContent = DOMPurify.sanitize(updatedContent)
 
   const commentLength =
     commentsData && commentsData.length > 99
@@ -522,6 +527,7 @@ const CommunityContents = () => {
                 value={content}
                 readOnly={true}
                 className='h-[200px] w-full px-[15px] tracking-[-0.03em]'
+                dangerouslySetInnerHTML={{ __html: sanitizedHtmlContent }}
               />
             )}
           </article>

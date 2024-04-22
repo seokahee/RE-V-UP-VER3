@@ -179,13 +179,13 @@ const CommunityCreate = () => {
             />
           </div>
 
-          <div className='h-[200px]'>
+          <article className='h-[200px]'>
             <CommunityQuillEditor
               quillRef={quillRef}
               content={content}
               setCommunityForm={setCommunityForm}
             />
-          </div>
+          </article>
         </div>
       </form>
       <div className='mt-[88px]'>

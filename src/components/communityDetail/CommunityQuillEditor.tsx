@@ -6,12 +6,7 @@ import dynamic from 'next/dynamic'
 import loading from '@/../public/images/loadingBar.gif'
 import Image from 'next/image'
 import { Quill, ReactQuillProps } from 'react-quill'
-import { ImageActions } from '@xeger/quill-image-actions'
-import { ImageFormats } from '@xeger/quill-image-formats'
 import { formats, toolbarOptions } from './value'
-
-// Quill.register('modules/imageActions', ImageActions)
-// Quill.register('modules/imageFormats', ImageFormats)
 
 type QuillEditorProps = {
   content: string
@@ -21,65 +16,68 @@ type QuillEditorProps = {
   quillRef: React.RefObject<ReactQuillProps>
 }
 
-export const QuillEditor = dynamic(
-  async () => {
-    const { default: RQ } = await import('react-quill')
-    return function comp({ forwardedRef, ...props }: any) {
-      return <RQ ref={forwardedRef} {...props} />
-    }
-  },
-  {
-    ssr: false,
-    loading: () => {
-      return (
-        <div>
-          <Image src={loading} width={50} height={50} alt='로딩바' />
-        </div>
+export const QuillEditor =
+  typeof window === 'object'
+    ? dynamic(
+        async () => {
+          const { default: RQ } = await import('react-quill')
+          return function comp({ forwardedRef, ...props }: any) {
+            return <RQ ref={forwardedRef} {...props} />
+          }
+        },
+        {
+          ssr: false,
+          loading: () => {
+            return (
+              <div>
+                <Image src={loading} width={50} height={50} alt='로딩바' />
+              </div>
+            )
+          },
+        },
       )
-    },
-  },
-)
+    : () => false
 
 const CommunityQuillEditor = ({
   content,
   setCommunityForm,
   quillRef,
 }: QuillEditorProps) => {
-  const onImageHandler = () => {
-    const input = document.createElement('input')
-    input.setAttribute('type', 'file')
-    input.setAttribute('accept', 'image/*')
-    input.click()
-    // input.addEventListener('change', async () => {
-    // const file = input?.files[0]
-    // try {
-    // const res = await supabase.({ img: file })
-    //     const imgUrl = res?.data.imgUrl
-    //     const editor = quillRef?.current?.getEditor()
-    //     const range = editor.getSelection()
-    //     editor.insertEmbed(range.index, 'image', imgUrl)
-    //     editor.setSelection(range.index + 1)
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // })
-  }
+  // const onImageHandler = () => {
+  //   if (typeof window !== 'undefined') {
+  //     const input = document.createElement('input')
+  //     input.setAttribute('type', 'file')
+  //     input.setAttribute('accept', 'image/*')
+  //     input.click()
+  // input.addEventListener('change', async () => {
+  // const file = input?.files[0]
+  // try {
+  // const res = await supabase.({ img: file })
+  //     const imgUrl = res?.data.imgUrl
+  //     const editor = quillRef?.current?.getEditor()
+  //     const range = editor.getSelection()
+  //     editor.insertEmbed(range.index, 'image', imgUrl)
+  //     editor.setSelection(range.index + 1)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // })
+  //   }
+  // }
 
   const modules = useMemo(
     () => ({
-      // imageActions: {},
-      // imageFormats: {},
       toolbar: {
         container: toolbarOptions,
         ImageResize: {
           parchment: Quill.import('parchment'),
         },
-        handlers: {
-          image: onImageHandler,
-        },
+        // handlers: {
+        //   image: onImageHandler,
+        // },
       },
     }),
-    [],
+    [quillRef],
   )
 
   const onEditorChangeHandler = (value: string) => {
