@@ -17,7 +17,7 @@ type QuillEditorProps = {
 }
 
 export const QuillEditor =
-  typeof window === 'object'
+  typeof window !== 'undefined'
     ? dynamic(
         async () => {
           const { default: RQ } = await import('react-quill')

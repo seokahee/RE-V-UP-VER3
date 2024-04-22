@@ -92,7 +92,6 @@ const CommunityCreate = () => {
       const { uid } = userSessionInfo.user
       const newData = {
         boardTitle,
-        // content: content,
         content: content,
         userId: uid,
         musicId,
