@@ -253,24 +253,6 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     enabled: hasNextPage,
   })
 
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver((entries) => {
-  //     entries.forEach((entry) => {
-  //       if (entry.isIntersecting) {
-  //         fetchNextPage()
-  //       }
-  //     })
-  //   })
-
-  //   if (ref.current) {
-  //     observer.observe(ref.current) //주시 대상 목록에 추가
-  //   }
-
-  //   return () => {
-  //     observer.disconnect()
-  //   }
-  // }, [playlistMyData, ref.current])
-
   const shadow =
     'shadow-[-4px_-4px_8px_rgba(255,255,255,0.05),4px_4px_8px_rgba(0,0,0,0.7)]'
 
