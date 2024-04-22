@@ -113,11 +113,10 @@ export const getUserMyPlaylistDataInfinite = async (
         playlistMyIds: data.myMusicIds,
         myPlaylistData: myPlaylistData,
         isLast: totalPages === pageParam,
-        pageParam,
       }
     }
 
-    return { playlistMyIds: [], myPlaylistData: [], isLast: true, pageParam }
+    return { playlistMyIds: [], myPlaylistData: [], isLast: true }
   } catch (error) {
     console.log(error)
   }
