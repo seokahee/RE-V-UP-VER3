@@ -7,13 +7,13 @@ import {
 import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
 import { insertMyPlayMusic, updateMyPlayMusic } from '@/shared/musicPlayer/api'
 import type { GenreMusicInfo } from '@/types/main/types'
+import { dragHandler } from '@/util/util'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import Swal from 'sweetalert2'
 import { ADD_CURRENT_MUSIC_SHADOW } from '../communityDetail/communityCss'
-import { dragHandler } from '@/util/util'
 
 const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
   const queryClient = useQueryClient()
@@ -77,6 +77,8 @@ const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
         Swal.fire({
           icon: 'warning',
           title: '이미 추가된 노래입니다.',
+          showConfirmButton: false,
+          timer: 1500,
           background: '#2B2B2B',
           color: '#ffffff',
         })
@@ -90,6 +92,8 @@ const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
     Swal.fire({
       icon: 'success',
       title: '현재 플레이 리스트에 추가되었습니다',
+      showConfirmButton: false,
+      timer: 1500,
       background: '#2B2B2B',
       color: '#ffffff',
     })
@@ -126,6 +130,8 @@ const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
             Swal.fire({
               icon: 'warning',
               title: '이미 추가된 노래입니다.',
+              showConfirmButton: false,
+              timer: 1500,
               background: '#2B2B2B',
               color: '#ffffff',
             })
@@ -140,6 +146,8 @@ const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
         Swal.fire({
           icon: 'success',
           title: '마이플레이 리스트에 추가 되었습니다.',
+          showConfirmButton: false,
+          timer: 1500,
           background: '#2B2B2B',
           color: '#ffffff',
         })
@@ -157,7 +165,7 @@ const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
       className='flex h-[88px] w-[732px] list-none items-start gap-[19px] p-[16px]'
     >
       <div className='flex h-[56px] w-[588px] gap-[16px]'>
-        <div className='h-[56px] w-[56px]'>
+        <figure className='h-[56px] w-[56px]'>
           <Image
             src={item.thumbnail}
             width={56}
@@ -165,10 +173,10 @@ const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
             alt={`${item.musicTitle} 앨범 썸네일`}
             className='rounded-full'
           />
-        </div>
+        </figure>
         <div className='flex h-[48px] w-[516px] items-center justify-between pr-[32px]'>
           <div className='flex flex-col gap-[3px]'>
-            <span className='text-[18px] font-bold'>{item.musicTitle}</span>
+            <h1 className='text-[18px] font-bold'>{item.musicTitle}</h1>
             <span className='text-[14px] font-bold opacity-[50%]'>
               {item.artist}
             </span>

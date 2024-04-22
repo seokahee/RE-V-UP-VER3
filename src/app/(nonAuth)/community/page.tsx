@@ -46,7 +46,7 @@ const Community = () => {
     })
   console.log('likedItem', likedItem)
   return (
-    <div>
+    <section>
       <div className='shadow-mb relative mt-[32px] flex h-[72px] w-[732px] items-center justify-center rounded-xl border-4 border-white border-opacity-10 bg-white bg-opacity-10'>
         <h1 className='text-[20px] font-bold'>음악 추천 게시판🦻</h1>
         <div className='absolute right-[20px] flex h-12 w-40 items-center justify-center rounded-xl border border-dim-black bg-primary font-bold'>
@@ -71,7 +71,7 @@ const Community = () => {
           />
         </div>
       ) : null}
-    </div>
+    </section>
   )
 }
 

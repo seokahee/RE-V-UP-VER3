@@ -158,6 +158,8 @@ const MusicPlayer = () => {
         }
         Swal.fire({
           title: '재생목록이 삭제되었습니다.',
+          showConfirmButton: false,
+          timer: 1500,
           icon: 'success',
           background: '#2B2B2B',
           color: '#ffffff',
@@ -171,6 +173,8 @@ const MusicPlayer = () => {
       Swal.fire({
         icon: 'warning',
         title: '추가할 노래를 선택해 주세요',
+        showConfirmButton: false,
+        timer: 1500,
         background: '#2B2B2B',
         color: '#ffffff',
       })
@@ -203,6 +207,8 @@ const MusicPlayer = () => {
             Swal.fire({
               icon: 'warning',
               title: '이미 추가된 노래입니다.',
+              showConfirmButton: false,
+              timer: 1500,
               background: '#2B2B2B',
               color: '#ffffff',
             })
@@ -214,6 +220,8 @@ const MusicPlayer = () => {
             Swal.fire({
               icon: 'success',
               title: '마이플레이 리스트에 추가 되었습니다.',
+              showConfirmButton: false,
+              timer: 1500,
               background: '#2B2B2B',
               color: '#ffffff',
             })
@@ -224,6 +232,8 @@ const MusicPlayer = () => {
           Swal.fire({
             icon: 'success',
             title: '마이플레이 리스트에 추가 되었습니다.',
+            showConfirmButton: false,
+            timer: 1500,
             background: '#2B2B2B',
             color: '#ffffff',
           })

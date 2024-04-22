@@ -9,6 +9,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import Swal from 'sweetalert2'
 import CheckboxItem from '../mypage/CheckboxItem'
+import { useState } from 'react'
 
 const CurrentMusicList = ({
   currentPlaying,
@@ -20,6 +21,8 @@ const CurrentMusicList = ({
   onDeleteCurrentMusicHandler,
   setMusicIndex,
 }: MusicListProps) => {
+  const [selectAll, setSelectAll] = useState(false)
+
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user?.uid as string
 
@@ -77,6 +80,17 @@ const CurrentMusicList = ({
   const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
   }
+
+  const selectAllHandler = () => {
+    //   const allChecked: any = currentPlayList.map((item) => item.musicId)
+    //   if (selectAll) {
+    //     onChangeCheckMusicHandler(false, allChecked)
+    //   } else {
+    //     onChangeCheckMusicHandler(true, allChecked)
+    //   }
+    //   setSelectAll((prev) => !prev)
+  }
+
   return (
     <div
       className='mt-[16px] flex max-h-[450px] min-h-[450px] flex-col overflow-y-auto overflow-x-hidden'
@@ -138,6 +152,13 @@ const CurrentMusicList = ({
           )
         })}
       </div>
+      <button
+        type='button'
+        onClick={selectAllHandler}
+        className='bg-gray-200 mb-4 rounded-md px-3 py-1 text-sm'
+      >
+        {selectAll ? '전체 해제' : '전체 선택'}
+      </button>
 
       {!isLyrics && currentPlayList.length > 0 && checkedList.length > 0 && (
         <button

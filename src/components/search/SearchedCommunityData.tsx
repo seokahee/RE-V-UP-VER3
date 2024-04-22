@@ -12,13 +12,13 @@ const SearchedCommunityData = () => {
   const { communityData } = searchedData
 
   return (
-    <div>
+    <ul className='list-none'>
       {communityData.map((item) => {
         const keys = Object.keys(item.comment)
         const numKeys = keys.length
         return (
           <Link href={`/community/${item.boardId}`}>
-            <div
+            <li
               key={item.boardId}
               className='flex h-[112px] w-[732px] justify-between border-b border-black p-[16px]'
             >
@@ -42,11 +42,11 @@ const SearchedCommunityData = () => {
                 )}
 
                 <div className='flex h-[53px] w-[548px] flex-col gap-[8px]'>
-                  <div className='text-[18px]'>{item.boardTitle}</div>
+                  <h1 className='text-[18px]'>{item.boardTitle}</h1>
                   <div className='flex h-[20px] w-[548px] items-center justify-between pr-[32px]'>
                     <div className='flex h-[20px] w-[160px] gap-[16px] text-[14px] opacity-[50%]'>
-                      <div>{item.userInfo.nickname}</div>
-                      <div>{onDateHandler(item.date)}</div>
+                      <span>{item.userInfo.nickname}</span>
+                      <span>{onDateHandler(item.date)}</span>
                     </div>
                     <div className='flex h-[20px] w-[112px] items-center gap-[8px] text-[14px] opacity-[50%]'>
                       <div className='h-20px flex w-[52px] items-center gap-1'>
@@ -82,11 +82,11 @@ const SearchedCommunityData = () => {
                   className='rounded-full'
                 />
               </div>
-            </div>
+            </li>
           </Link>
         )
       })}
-    </div>
+    </ul>
   )
 }
 
