@@ -10,8 +10,8 @@ import { ImageActions } from '@xeger/quill-image-actions'
 import { ImageFormats } from '@xeger/quill-image-formats'
 import { formats, toolbarOptions } from './value'
 
-Quill.register('modules/imageActions', ImageActions)
-Quill.register('modules/imageFormats', ImageFormats)
+// Quill.register('modules/imageActions', ImageActions)
+// Quill.register('modules/imageFormats', ImageFormats)
 
 type QuillEditorProps = {
   content: string
@@ -67,8 +67,8 @@ const CommunityQuillEditor = ({
 
   const modules = useMemo(
     () => ({
-      imageActions: {},
-      imageFormats: {},
+      // imageActions: {},
+      // imageFormats: {},
       toolbar: {
         container: toolbarOptions,
         ImageResize: {
@@ -97,7 +97,7 @@ const CommunityQuillEditor = ({
       modules={modules}
       formats={formats}
       placeholder='추천할 음악에 대해 얘기해 주세요.'
-      className='rounded-[12px] text-white  [&_.ql-container.ql-snow]:rounded-[12px] [&_.ql-container.ql-snow]:border-[#ffffff1a] [&_.ql-editor.ql-blank::before]:text-[#ffffff5a] [&_.ql-editor.ql-blank]:text-white [&_.ql-editor]:h-[200px] [&_.ql-editor]:rounded-[12px] [&_.ql-editor]:bg-[#ffffff1a] [&_.ql-toolbar.ql-snow]:rounded-[12px] [&_.ql-toolbar.ql-snow]:border-[#ffffff1a] [&_quill]:rounded-[12px] '
+      className='rounded-[12px] text-white [&_.ql-container.ql-snow]:rounded-[12px] [&_.ql-container.ql-snow]:border-[#ffffff1a] [&_.ql-editor.ql-blank::before]:text-[16px] [&_.ql-editor.ql-blank::before]:not-italic [&_.ql-editor.ql-blank::before]:text-[#ffffff5a] [&_.ql-editor.ql-blank]:text-white [&_.ql-editor]:h-[200px] [&_.ql-editor]:rounded-[12px] [&_.ql-editor]:bg-[#ffffff1a] [&_.ql-toolbar.ql-snow]:rounded-[12px] [&_.ql-toolbar.ql-snow]:border-[#ffffff1a] [&_quill]:rounded-[12px] '
       ref={quillRef}
     />
   )
