@@ -507,7 +507,7 @@ const CommunityContents = () => {
               />
             ) : (
               <div className='h-[200px] w-full px-[15px] tracking-[-0.03em]'>
-                {`${content}`}
+                <p>{content}</p>
               </div>
             )}
           </article>
