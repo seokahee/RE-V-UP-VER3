@@ -4,7 +4,7 @@ export const getSearchedMusicData = async (keyword: string) => {
   const { data } = await supabase
     .from('musicInfo')
     .select(
-      'musicId, musicTitle, artist, thumbnail, release, musicSource,runTime',
+      'musicId, musicTitle, artist, lyrics ,thumbnail, release, musicSource,runTime',
     )
     .or(`musicTitle.ilike.%${keyword}%,artist.ilike.%${keyword}%`)
     .order('musicTitle', { ascending: false })

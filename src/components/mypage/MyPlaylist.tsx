@@ -1,31 +1,56 @@
 import arrow from '@/../public/images/chevron-down.svg'
 import { queryClient } from '@/app/provider'
+import { GET_MUSIC_LIST_QUERY_KEYS } from '@/query/musicPlayer/musicPlayerQueryKeys'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
-import { getUserMyPlaylistData, updateMyMusicIds } from '@/shared/mypage/api'
+import {
+  getUserMyPlaylistDataInfinite,
+  updateMyMusicIds,
+} from '@/shared/mypage/api'
 import type { UserInfo } from '@/types/mypage/types'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useIntersectionObserver } from '@/util/useIntersectionObserver'
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Swal from 'sweetalert2'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import CheckboxItem from './CheckboxItem'
-import { GET_MUSIC_LIST_QUERY_KEYS } from '@/query/musicPlayer/musicPlayerQueryKeys'
 
 const MyPlaylist = ({ data }: { data: UserInfo }) => {
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user?.uid as string
   const [checkedList, setCheckedList] = useState<string[]>([])
   const [toggle, setToggle] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
 
-  const { data: playlistMyData } = useQuery({
-    queryFn: () => getUserMyPlaylistData(uid),
-    queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_MUSIC_INFO],
+  const PER_PAGE = 5
+
+  const {
+    data: playlistMyData,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery({
+    queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_MUSIC_INFO, uid],
+    queryFn: ({ pageParam = 1 }) =>
+      getUserMyPlaylistDataInfinite(uid, pageParam, PER_PAGE),
+    select: (data) => ({
+      pages: data.pages.map((pageData) => pageData?.myPlaylistData!).flat(),
+      pageParams: data.pageParams,
+      playlistMyIds: data.pages[0]?.playlistMyIds,
+    }),
+    getNextPageParam: (lastPage, _, lastPageParam) => {
+      if (!lastPage || lastPage.isLast) {
+        return null
+      }
+      //lastPageParam + 1 을 해서 다음 페이지로 넘기기
+      return lastPageParam + 1
+    },
+    initialPageParam: 1,
     enabled: !!uid,
   })
 
   const playlistMyIds = playlistMyData?.playlistMyIds
-  const myPlaylistData = playlistMyData?.myPlaylistData
+  const myPlaylistData = playlistMyData?.pages
 
   const { data: playlistCurrentData } = useQuery({
     queryFn: () => getCurrentMusicData(uid),
@@ -91,7 +116,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       })
       await Swal.fire({
         icon: 'success',
-        title: '현재 재생목록에 추가 되었습니다.',
+        title: '삭제가 완료 되었습니다.',
         showConfirmButton: false,
         timer: 1500,
         background: '#2B2B2B',
@@ -218,6 +243,16 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     checkListReset()
   }
 
+  //감시하는 요소가 보여지면 fetchNextPage 실행하도록 하는 onIntersect로직을 useIntersectionObserver 에 넘겨줌
+  const onIntersect = ([entry]: IntersectionObserverEntry[]) =>
+    entry.isIntersecting && fetchNextPage()
+
+  useIntersectionObserver({
+    target: ref,
+    onIntersect,
+    enabled: hasNextPage,
+  })
+
   const shadow =
     'shadow-[-4px_-4px_8px_rgba(255,255,255,0.05),4px_4px_8px_rgba(0,0,0,0.7)]'
 
@@ -310,6 +345,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
           </li>
         )}
       </ul>
+      {hasNextPage && <div ref={ref}></div>}
     </div>
   )
 }

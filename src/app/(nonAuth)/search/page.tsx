@@ -2,10 +2,7 @@
 import NoSearchResult from '@/components/search/NoSearchResult'
 import SearchedCommunityData from '@/components/search/SearchedCommunityData'
 import SearchedMusicData from '@/components/search/SearchedMusicData'
-import {
-  getSearchedCommunityData,
-  getSearchedMusicData,
-} from '@/shared/search/api'
+import { searchedData } from '@/query/search/searchQueryKeys'
 import {
   useSearchedKeywordStore,
   useSearchedResultStore,
@@ -13,7 +10,6 @@ import {
 import { CurrentPlayListType } from '@/types/musicPlayer/types'
 import Pagination from '@/util/Pagination '
 import { paging } from '@/util/util'
-import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
 const Search = () => {
@@ -23,23 +19,11 @@ const Search = () => {
   const searchResultData = useSearchedResultStore(
     (state) => state.searchResultData,
   )
-  const {
-    data: musicResult,
-    isLoading: musicDataIsLoading,
-    isError: musicDataIsError,
-  } = useQuery({
-    queryFn: () => getSearchedMusicData(keyword),
-    queryKey: ['getSearchedMusicData', keyword],
-  })
 
-  const {
-    data: communityResult,
-    isLoading: communityDataIsLoading,
-    isError: communityDataIsError,
-  } = useQuery({
-    queryFn: () => getSearchedCommunityData(keyword),
-    queryKey: ['getSearchedCommunityData', keyword],
-  })
+  const { musicResult, musicDataIsLoading, musicDataIsError } =
+    searchedData(keyword)
+  const { communityResult, communityDataIsLoading, communityDataIsError } =
+    searchedData(keyword)
 
   const isLoadingSate = musicDataIsLoading && communityDataIsLoading
   const isErrorState = musicDataIsError && communityDataIsError

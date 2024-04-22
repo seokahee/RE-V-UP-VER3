@@ -1,6 +1,5 @@
 import { MyPlayListType } from '@/types/musicPlayer/types'
 import { supabase } from '../supabase/supabase'
-import Swal from 'sweetalert2'
 
 export const getCurrentMusicList = async (userId: string) => {
   const { data: currentMusic } = await supabase
