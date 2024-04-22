@@ -1,8 +1,10 @@
 import arrow from '@/../public/images/chevron-down.svg'
 import { queryClient } from '@/app/provider'
+import { GET_MUSIC_LIST_QUERY_KEYS } from '@/query/musicPlayer/musicPlayerQueryKeys'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
 import { getUserMyPlaylistData, updateMyMusicIds } from '@/shared/mypage/api'
 import type { UserInfo } from '@/types/mypage/types'
+import { dragHandler } from '@/util/util'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -10,7 +12,6 @@ import { useState } from 'react'
 import Swal from 'sweetalert2'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import CheckboxItem from './CheckboxItem'
-import { GET_MUSIC_LIST_QUERY_KEYS } from '@/query/musicPlayer/musicPlayerQueryKeys'
 
 const MyPlaylist = ({ data }: { data: UserInfo }) => {
   const { data: userSessionInfo } = useSession()
@@ -269,6 +270,10 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
           myPlaylistData?.map((item) => {
             return (
               <li
+                draggable='true'
+                onDragStart={(e) => {
+                  dragHandler(e, item)
+                }}
                 key={item.musicId}
                 className='flex items-center justify-between p-4'
               >

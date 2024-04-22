@@ -11,7 +11,6 @@ import {
 import { CurrentPlayListType } from '@/types/musicPlayer/types'
 import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import 'react-h5-audio-player/lib/styles.css'
 import Swal from 'sweetalert2'
@@ -27,7 +26,6 @@ const MusicPlayer = () => {
   const [isRandom, setIsRandom] = useState(false)
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user.uid as string
-  const router = useRouter()
 
   const { currentPlayList, myPlayList, isError } = getMusicList(uid)
 
@@ -176,16 +174,6 @@ const MusicPlayer = () => {
         background: '#2B2B2B',
         color: '#ffffff',
       })
-      return
-    }
-
-    if (uid === '' || !uid) {
-      Swal.fire({
-        icon: 'error',
-        title:
-          '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
-      })
-      router.replace('/login')
       return
     }
 
