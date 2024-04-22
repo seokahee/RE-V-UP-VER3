@@ -24,13 +24,6 @@
   display: none !important;
 }
 
-/* .rhap_play-status--playing .progressbar {
-  display: none !important;
-}
-.rhap_play-status--paused .progressbar {
-  display: none !important;
-} */
-
 /* 오디오 컨테이너 */
 .rhap_main {
   position: relative;
@@ -90,34 +83,37 @@
 }
 
 .rhap_progress-indicator {
-  display: none;
+  box-sizing: border-box;
+  position: absolute;
+  width: 5px;
+  height: 25px;
+  margin-left: 6px;
+  border-radius: 0px;
+  top: -5px;
+  background: #d5605c;
+  box-shadow: inset 0px 6px 4px rgba(0, 0, 0, 0.7);
 }
 
 .rhap_progress-container {
-  height: 12px;
-  background: rgba(104, 91, 225, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-image: url('/images/playerBar.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 32px;
+  padding-right: 17px;
+  width: 260px;
   box-shadow:
-    0px 0px 0px 1px rgba(0, 0, 0, 0.3),
-    0px 0px 0px 2px rgba(0, 0, 0, 0.1),
-    0px 8px 12px rgba(0, 0, 0, 0.1),
-    inset 0px 0px 20px rgba(0, 0, 0, 0.3);
-  border-radius: 99px;
+    0px 2px 1px rgba(255, 255, 255, 0.5),
+    0px -4px 4px rgba(0, 0, 0, 0.2),
+    0px 0px 0px 3px rgba(0, 0, 0, 0.1),
+    inset 0px 1px 2px rgba(255, 255, 255, 0.05),
+    inset 0px 4px 1px rgba(0, 0, 0, 0.1),
+    inset 0px -2px 4px rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
 }
 
 .rhap_progress-filled {
-  background-color: #685bff;
-  padding: 0px 3px;
-  height: 12px;
-  border-radius: 99px;
-  box-shadow:
-    0px 4px 4px rgba(0, 0, 0, 0.2),
-    0px 0px 0px 1px rgba(255, 255, 255, 0.2),
-    0px 0px 0px 4px rgba(255, 255, 255, 0.05),
-    0px 0px 0px 3px rgba(0, 0, 0, 0.5),
-    inset 0px 1px 2px rgba(255, 255, 255, 0.2),
-    inset 0px 4px 1px rgba(255, 255, 255, 0.1),
-    inset 0px -4px 1px rgba(0, 0, 0, 0.2);
+  display: none;
 }
 .rhap_progress-bar-show-download {
   background: transparent;
@@ -125,4 +121,31 @@
 }
 .rhap_download-progress {
   background: transparent;
+}
+
+@keyframes rotateAnimation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shadowAnimation {
+  0% {
+    box-shadow: 0px 0px 20px rgba(245, 200, 224, 0.8);
+  }
+  50% {
+    box-shadow: 0px 0px 60px rgba(210, 137, 176, 0.8);
+  }
+  100% {
+    box-shadow: 0px 0px 20px #ffffff91;
+  }
+}
+
+.rotate-with-shadow {
+  animation:
+    rotateAnimation 5s infinite,
+    shadowAnimation 5s infinite;
 }

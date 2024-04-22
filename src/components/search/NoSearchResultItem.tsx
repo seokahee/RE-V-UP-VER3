@@ -13,6 +13,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import Swal from 'sweetalert2'
 import { ADD_CURRENT_MUSIC_SHADOW } from '../communityDetail/communityCss'
+import { dragHandler } from '@/util/util'
 
 const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
   const queryClient = useQueryClient()
@@ -148,6 +149,10 @@ const NoSearchResultItem = ({ item }: { item: GenreMusicInfo }) => {
 
   return (
     <li
+      draggable='true'
+      onDragStart={(e) => {
+        dragHandler(e, item)
+      }}
       key={item.musicId}
       className='flex h-[88px] w-[732px] list-none items-start gap-[19px] p-[16px]'
     >

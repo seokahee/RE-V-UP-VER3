@@ -8,6 +8,7 @@ export type MusicInfoType = {
   release: string
   thumbnail: string
   runTime: string
+  lyrics: string
 }
 
 export type CurrentPlayListType = {

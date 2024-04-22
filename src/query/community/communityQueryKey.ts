@@ -1,8 +1,8 @@
 import { getCommunityList } from '@/shared/community/api'
 import { useQuery } from '@tanstack/react-query'
 
-export const GET_COMMUNITYLIST_QUERY_KEY = {
-  GET_COMMUNITYLIST: 'getCommunityList',
+export const GET_COMMUNITY_LIST_QUERY_KEY = {
+  GET_COMMUNITY_LIST: 'getCommunityList',
 }
 
 export const getCommunityListInCommunity = (isSort: boolean) => {
@@ -13,7 +13,7 @@ export const getCommunityListInCommunity = (isSort: boolean) => {
     refetch,
   } = useQuery({
     queryFn: () => getCommunityList(isSort),
-    queryKey: [GET_COMMUNITYLIST_QUERY_KEY.GET_COMMUNITYLIST],
+    queryKey: [GET_COMMUNITY_LIST_QUERY_KEY.GET_COMMUNITY_LIST],
   })
 
   return { communityList, isLoading, isError, refetch }
