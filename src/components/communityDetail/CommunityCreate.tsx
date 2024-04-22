@@ -178,13 +178,15 @@ const CommunityCreate = () => {
             />
           </div>
 
-          <article className='h-[200px]'>
-            <CommunityQuillEditor
-              quillRef={quillRef}
-              content={content}
-              setCommunityForm={setCommunityForm}
-            />
-          </article>
+          {typeof window !== 'undefined' && (
+            <article className='h-[200px]'>
+              <CommunityQuillEditor
+                quillRef={quillRef}
+                content={content}
+                setCommunityForm={setCommunityForm}
+              />
+            </article>
+          )}
         </div>
       </form>
       <div className='mt-[88px]'>
