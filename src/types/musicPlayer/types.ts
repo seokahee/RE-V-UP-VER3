@@ -71,6 +71,9 @@ export type MusicListProps = {
   isLyrics: boolean
   checkedList: string[]
   currentPlayList: CurrentPlayListType[]
+  selectAll: boolean
+  setSelectAll: Dispatch<SetStateAction<boolean>>
+  setCheckedList: (value: string[]) => void
   setCurrentPlaying: Dispatch<SetStateAction<CurrentPlayListType | null>>
   onChangeCheckMusicHandler: (checked: boolean, id: string) => void
   onDeleteCurrentMusicHandler: () => void

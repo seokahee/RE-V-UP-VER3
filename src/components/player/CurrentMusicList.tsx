@@ -4,7 +4,7 @@ import {
   getMusicList,
 } from '@/query/musicPlayer/musicPlayerQueryKeys'
 import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
-import { MusicListProps } from '@/types/musicPlayer/types'
+import { MusicInfoType, MusicListProps } from '@/types/musicPlayer/types'
 import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import Swal from 'sweetalert2'
@@ -16,13 +16,14 @@ const CurrentMusicList = ({
   currentPlayList,
   isLyrics,
   checkedList,
+  selectAll,
+  setSelectAll,
+  setCheckedList,
   setCurrentPlaying,
   onChangeCheckMusicHandler,
   onDeleteCurrentMusicHandler,
   setMusicIndex,
 }: MusicListProps) => {
-  const [selectAll, setSelectAll] = useState(false)
-
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user?.uid as string
 
@@ -45,6 +46,24 @@ const CurrentMusicList = ({
       })
     },
   })
+
+  const dragHandler = (
+    e: React.DragEvent<HTMLLIElement>,
+    item: MusicInfoType,
+  ) => {
+    e.dataTransfer.setData(
+      'musicInfo',
+      JSON.stringify({
+        musicSource: item.thumbnail,
+        musicId: item.musicId,
+        musicTitle: item.musicTitle,
+        musicArtist: item.artist,
+        musicLyrics: item.lyrics,
+        musicRunTime: item.runTime,
+        musicUrl: item.musicSource,
+      }),
+    )
+  }
 
   const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -82,15 +101,14 @@ const CurrentMusicList = ({
   }
 
   const selectAllHandler = () => {
-    //   const allChecked: any = currentPlayList.map((item) => item.musicId)
-    //   if (selectAll) {
-    //     onChangeCheckMusicHandler(false, allChecked)
-    //   } else {
-    //     onChangeCheckMusicHandler(true, allChecked)
-    //   }
-    //   setSelectAll((prev) => !prev)
+    const allMusicIds = currentPlayList.map((item) => item.musicId)
+    if (!selectAll) {
+      setCheckedList(allMusicIds)
+    } else {
+      setCheckedList([])
+    }
+    setSelectAll((prev) => !prev)
   }
-
   return (
     <div
       className='mt-[16px] flex max-h-[450px] min-h-[450px] flex-col overflow-y-auto overflow-x-hidden'
@@ -155,11 +173,10 @@ const CurrentMusicList = ({
       <button
         type='button'
         onClick={selectAllHandler}
-        className='bg-gray-200 mb-4 rounded-md px-3 py-1 text-sm'
+        className='absolute left-[40%] top-[90%]'
       >
         {selectAll ? '전체 해제' : '전체 선택'}
       </button>
-
       {!isLyrics && currentPlayList.length > 0 && checkedList.length > 0 && (
         <button
           type='button'

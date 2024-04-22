@@ -24,6 +24,7 @@ const MusicPlayer = () => {
   const [checkedList, setCheckedList] = useState<string[]>([])
   const [isLyrics, setIsLyrics] = useState(false)
   const [isRandom, setIsRandom] = useState(false)
+  const [selectAll, setSelectAll] = useState(false)
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user.uid as string
 
@@ -146,6 +147,7 @@ const MusicPlayer = () => {
           currentMusicData: currentMusicData.map((music) => music.musicId),
         })
         setCheckedList([])
+        setSelectAll(false)
         const isCurrentMusicDeleted = checkedList.includes(
           currentPlaying!.musicId,
         )
@@ -261,10 +263,13 @@ const MusicPlayer = () => {
       </div>
       <div>
         <CurrentMusicList
+          selectAll={selectAll}
+          setSelectAll={setSelectAll}
           currentPlaying={currentPlaying}
           currentPlayList={currentPlayList as CurrentPlayListType[]}
           isLyrics={isLyrics}
           checkedList={checkedList}
+          setCheckedList={setCheckedList}
           setCurrentPlaying={setCurrentPlaying}
           onChangeCheckMusicHandler={onChangeCheckMusicHandler}
           onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}
