@@ -74,6 +74,55 @@ export const getUserMyPlaylistData = async (userId: string) => {
   }
 }
 
+export const getUserMyPlaylistDataInfinite = async (
+  userId: string,
+  pageParam: number,
+  perPage: number,
+) => {
+  try {
+    const { data } = await supabase
+      .from('playlistMy')
+      .select('myMusicIds')
+      .eq('userId', userId)
+      .single()
+
+    if (!data) {
+      const newData = { userId, myMusicIds: [] }
+      const { error: insertError } = await supabase
+        .from('playlistMy')
+        .insert(newData)
+
+      if (insertError) {
+        console.error('Error inserting data:', insertError.message)
+      }
+    }
+
+    if (data?.myMusicIds && data.myMusicIds.length > 0) {
+      const totalCount = data?.myMusicIds ? data?.myMusicIds?.length : 0
+      const totalPages = Math.ceil(totalCount! / perPage)
+      const start = (pageParam - 1) * perPage
+      const end = pageParam * perPage - 1
+
+      const { data: myPlaylistData, error } = await supabase
+        .from('musicInfo')
+        .select('*')
+        .in('musicId', data.myMusicIds)
+        .range(start, end)
+
+      return {
+        playlistMyIds: data.myMusicIds,
+        myPlaylistData: myPlaylistData,
+        isLast: totalPages === pageParam,
+        pageParam,
+      }
+    }
+
+    return { playlistMyIds: [], myPlaylistData: [], isLast: true, pageParam }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const updateMyMusicIds = async ({
   userId,
   myMusicIds,
