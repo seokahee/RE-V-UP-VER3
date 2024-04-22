@@ -129,75 +129,86 @@ const CommunityCreate = () => {
       background: '#2B2B2B',
     })
     router.replace('/')
-    return
+    return null
   }
 
   useEffect(() => {
-    if (refTitle.current !== null) {
+    if (refTitle.current !== null && typeof window !== 'undefined') {
       refTitle.current.focus()
     }
   }, [])
-
-  return (
-    <div>
-      <form onSubmit={onSumitHandler} className='flex flex-col gap-[32px]'>
-        <div
-          className={`mt-[32px] flex h-[72px] w-[100%] items-center justify-between rounded-[16px] border-[4px] border-solid border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.1)] px-[24px] py-[12px] tracking-[-0.03em] ${ADD_BOARD_STICK}`}
-        >
-          <button
-            onClick={(e) => {
-              e.preventDefault()
-              router.replace('/community')
-              setChooseMusic(null)
-            }}
-            className={`flex h-[48px] w-[48px] items-center justify-center rounded-[12px] bg-[rgba(255,255,255,0.1)] ${ALLOW_SHADOW}`}
-          >
-            <Image src={goback} alt='이전으로 아이콘' width={24} height={24} />
-          </button>
-          <div className='mx-[auto] text-center'>
-            <h3>글쓰기</h3>
-          </div>
-          <button
-            className={`flex h-[48px] w-[120px] items-center justify-center rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
-          >
-            <p>등록하기</p>
-          </button>
-        </div>
-
+  if (typeof window !== 'undefined') {
+    return (
+      <div>
+        {/* {typeof window !== 'undefined' && ( */}
         <div>
-          <div className='w-full'>
-            <input
-              type='text'
-              name='boardTitle'
-              value={boardTitle}
-              ref={refTitle}
-              maxLength={40}
-              onChange={onChangeHandler}
-              className=' mb-4 w-full rounded-lg border-none bg-[rgba(255,255,255,0.1)] p-2 placeholder:text-[#ffffff5a]'
-              placeholder='제목을 입력해 주세요.'
+          <form onSubmit={onSumitHandler} className='flex flex-col gap-[32px]'>
+            <div
+              className={`mt-[32px] flex h-[72px] w-[100%] items-center justify-between rounded-[16px] border-[4px] border-solid border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.1)] px-[24px] py-[12px] tracking-[-0.03em] ${ADD_BOARD_STICK}`}
+            >
+              <button
+                onClick={(e) => {
+                  e.preventDefault()
+                  router.replace('/community')
+                  setChooseMusic(null)
+                }}
+                className={`flex h-[48px] w-[48px] items-center justify-center rounded-[12px] bg-[rgba(255,255,255,0.1)] ${ALLOW_SHADOW}`}
+              >
+                <Image
+                  src={goback}
+                  alt='이전으로 아이콘'
+                  width={24}
+                  height={24}
+                />
+              </button>
+              <div className='mx-[auto] text-center'>
+                <h3>글쓰기</h3>
+              </div>
+              <button
+                className={`flex h-[48px] w-[120px] items-center justify-center rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
+              >
+                <p>등록하기</p>
+              </button>
+            </div>
+
+            <div>
+              <div className='w-full'>
+                <input
+                  type='text'
+                  name='boardTitle'
+                  value={boardTitle}
+                  ref={refTitle}
+                  maxLength={40}
+                  onChange={onChangeHandler}
+                  className=' mb-4 w-full rounded-lg border-none bg-[rgba(255,255,255,0.1)] p-2 placeholder:text-[#ffffff5a]'
+                  placeholder='제목을 입력해 주세요.'
+                />
+              </div>
+
+              {typeof window !== 'undefined' && (
+                <article className='h-[200px]'>
+                  <CommunityQuillEditor
+                    content={content}
+                    setCommunityForm={setCommunityForm}
+                  />
+                </article>
+              )}
+            </div>
+          </form>
+          <div className='mt-[88px]'>
+            <CommunityAddMusic
+              thumbnail={thumbnail}
+              musicTitle={musicTitle}
+              artist={artist}
             />
           </div>
-
-          {typeof window !== 'undefined' && (
-            <article className='h-[200px]'>
-              <CommunityQuillEditor
-                quillRef={quillRef}
-                content={content}
-                setCommunityForm={setCommunityForm}
-              />
-            </article>
-          )}
         </div>
-      </form>
-      <div className='mt-[88px]'>
-        <CommunityAddMusic
-          thumbnail={thumbnail}
-          musicTitle={musicTitle}
-          artist={artist}
-        />
+        {/* )} */}
       </div>
-    </div>
-  )
+    )
+  } else {
+    return null
+  }
 }
 
 export default CommunityCreate

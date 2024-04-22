@@ -5,7 +5,6 @@ export const toolbarOptions = [
   [{ color: [] }, { background: [] }, { align: [] }],
   [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
   ['link'],
-  // ['link', 'image'],
 ]
 
 export const formats = [

@@ -39,28 +39,45 @@ import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 import CommunityQuillEditor from './CommunityQuillEditor'
 import loading from '@/../public/images/loadingBar.gif'
 
-export const QuillEditor =
-  typeof window === 'object'
-    ? dynamic(
-        async () => {
-          const { default: RQ } = await import('react-quill')
-          return function comp({ forwardedRef, ...props }: any) {
-            return <RQ ref={forwardedRef} {...props} />
-          }
-        },
-        {
+// export const QuillEditor =
+//   typeof window === 'object'
+//     ? dynamic(
+//         async () => {
+//           const { default: RQ } = await import('react-quill')
+//           return function comp({ forwardedRef, ...props }: any) {
+//             return <RQ ref={forwardedRef} {...props} />
+//           }
+//         },
+//         {
+//           ssr: false,
+//           loading: () => {
+//             return (
+//               <div>
+//                 <Image src={loading} width={50} height={50} alt='로딩바' />
+//               </div>
+//             )
+//           },
+//         },
+//       )
+//     : () => false
+//
+let QuillEditor
+if (typeof window !== 'undefined') {
+  // const QuillEditor = dynamic(
+  QuillEditor =
+    typeof window !== 'undefined'
+      ? dynamic(() => import('react-quill'), {
           ssr: false,
-          loading: () => {
-            return (
-              <div>
-                <Image src={loading} width={50} height={50} alt='로딩바' />
-              </div>
-            )
-          },
-        },
-      )
-    : () => false
-
+          loading: () => (
+            <div>
+              <Image src={loading} width={50} height={50} alt='로딩바' />
+            </div>
+          ),
+        })
+      : () => false
+} else {
+  QuillEditor = () => false
+}
 const CommunityContents = () => {
   const quillRef = useRef<ReactQuill>(null)
   const router = useRouter()
@@ -324,235 +341,244 @@ const CommunityContents = () => {
     router.replace('/')
     return
   }
-
-  return (
-    <div className='flex w-[732px] flex-col'>
-      <div className='mb-[8px] flex flex-col gap-[16px]'>
-        <section
-          className={`justify-betweeen relative mt-[32px] flex h-[72px] w-[100%] items-center rounded-[16px] border-[4px] border-solid border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.1)] px-[16px] py-[12px] ${BOARD_TITLE_SHADOW}`}
-        >
-          <div>
-            {isEdit ? (
-              <button
-                onClick={onEditCancelHandler}
-                className={`flex h-[48px] w-[48px] items-center justify-center rounded-[12px] bg-[rgba(255,255,255,0.1)] ${ALLOW_SHADOW}`}
-              >
-                <Image
-                  src={goback}
-                  alt='수정취소 아이콘'
-                  width={24}
-                  height={24}
-                />
-              </button>
-            ) : (
-              <button
-                onClick={onBackButtonHandler}
-                className={`flex h-[48px] w-[48px] items-center justify-center rounded-[12px] bg-[rgba(255,255,255,0.1)] ${ALLOW_SHADOW}`}
-              >
-                <Image
-                  src={goback}
-                  alt='이전으로 아이콘'
-                  width={24}
-                  height={24}
-                />
-              </button>
-            )}
-          </div>
-          <h3 className='mx-[auto] text-[18px] font-bold'>
-            음악 추천 게시판🦻
-          </h3>
-          {isEdit ? (
-            <div className='absolute right-[12px] top-[12.5%]'>
-              <button
-                onClick={onBoardEditCompleteHandler}
-                className={`flex h-[48px] w-[120px] items-center justify-center rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
-              >
-                <p>수정완료</p>
-              </button>
+  if (typeof window !== 'undefined') {
+    return (
+      <div className='flex w-[732px] flex-col'>
+        <div className='mb-[8px] flex flex-col gap-[16px]'>
+          <section
+            className={`justify-betweeen relative mt-[32px] flex h-[72px] w-[100%] items-center rounded-[16px] border-[4px] border-solid border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.1)] px-[16px] py-[12px] ${BOARD_TITLE_SHADOW}`}
+          >
+            <div>
+              {isEdit ? (
+                <button
+                  onClick={onEditCancelHandler}
+                  className={`flex h-[48px] w-[48px] items-center justify-center rounded-[12px] bg-[rgba(255,255,255,0.1)] ${ALLOW_SHADOW}`}
+                >
+                  <Image
+                    src={goback}
+                    alt='수정취소 아이콘'
+                    width={24}
+                    height={24}
+                  />
+                </button>
+              ) : (
+                <button
+                  onClick={onBackButtonHandler}
+                  className={`flex h-[48px] w-[48px] items-center justify-center rounded-[12px] bg-[rgba(255,255,255,0.1)] ${ALLOW_SHADOW}`}
+                >
+                  <Image
+                    src={goback}
+                    alt='이전으로 아이콘'
+                    width={24}
+                    height={24}
+                  />
+                </button>
+              )}
             </div>
-          ) : null}
-        </section>
+            <h3 className='mx-[auto] text-[18px] font-bold'>
+              음악 추천 게시판🦻
+            </h3>
+            {isEdit ? (
+              <div className='absolute right-[12px] top-[12.5%]'>
+                <button
+                  onClick={onBoardEditCompleteHandler}
+                  className={`flex h-[48px] w-[120px] items-center justify-center rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
+                >
+                  <p>수정완료</p>
+                </button>
+              </div>
+            ) : null}
+          </section>
 
-        <div className='flex w-full flex-col gap-[40px]'>
-          <article className='flex items-center gap-[16px] border-b-[1px] border-solid border-[#000000] px-[16px] py-[30px]'>
-            <div className='flex'>
-              <Link
-                href={`/userpage/${userId}`}
-                className={`${uid === userId ? 'pointer-events-none' : 'cursor-pointer'}`}
-              >
-                <figure className='h-[56px] w-[56px] items-center rounded-full '>
-                  {userImage ? (
-                    <Image
-                      src={`${userImage}`}
-                      alt='유저 이미지'
-                      width={56}
-                      height={56}
-                      title={`${nickname}님의 페이지로 이동`}
-                      className='h-[56px] w-[56px] rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)] bg-[#2B2B2B]'
+          <div className='flex w-full flex-col gap-[40px]'>
+            <article className='flex items-center gap-[16px] border-b-[1px] border-solid border-[#000000] px-[16px] py-[30px]'>
+              <div className='flex'>
+                <Link
+                  href={`/userpage/${userId}`}
+                  className={`${uid === userId ? 'pointer-events-none' : 'cursor-pointer'}`}
+                >
+                  <figure className='h-[56px] w-[56px] items-center rounded-full '>
+                    {userImage ? (
+                      <Image
+                        src={`${userImage}`}
+                        alt='유저 이미지'
+                        width={56}
+                        height={56}
+                        title={`${nickname}님의 페이지로 이동`}
+                        className='h-[56px] w-[56px] rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)] bg-[#2B2B2B]'
+                      />
+                    ) : (
+                      <Image
+                        src={userDefault}
+                        alt='유저 이미지'
+                        width={56}
+                        height={56}
+                        title={`${nickname}님의 페이지로 이동`}
+                        className='h-[56px] w-[56px] rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)] bg-[#2B2B2B]'
+                      />
+                    )}
+                  </figure>
+                </Link>
+              </div>
+
+              <section className='flex w-full flex-col gap-[16px]'>
+                <div className='flex w-full justify-between'>
+                  {isEdit ? (
+                    <input
+                      type='text'
+                      name='boardTitle'
+                      maxLength={40}
+                      value={updatedTitle}
+                      onChange={onChangeEditForm}
+                      className='flex w-full rounded-[12px] border-none bg-[rgba(255,255,255,0.1)] px-[4px] pt-[4px] text-[18px] font-bold tracking-[-0.03em]'
                     />
                   ) : (
-                    <Image
-                      src={userDefault}
-                      alt='유저 이미지'
-                      width={56}
-                      height={56}
-                      title={`${nickname}님의 페이지로 이동`}
-                      className='h-[56px] w-[56px] rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)] bg-[#2B2B2B]'
-                    />
+                    <div className='flex flex-col items-center justify-center'>
+                      <p className='flex flex-col items-center justify-center text-center text-[18px] font-bold '>{`${boardTitle}`}</p>
+                    </div>
                   )}
-                </figure>
-              </Link>
-            </div>
-
-            <section className='flex w-full flex-col gap-[16px]'>
-              <div className='flex w-full justify-between'>
-                {isEdit ? (
-                  <input
-                    type='text'
-                    name='boardTitle'
-                    maxLength={40}
-                    value={updatedTitle}
-                    onChange={onChangeEditForm}
-                    className='flex w-full rounded-[12px] border-none bg-[rgba(255,255,255,0.1)] px-[4px] pt-[4px] text-[18px] font-bold tracking-[-0.03em]'
-                  />
-                ) : (
-                  <div className='flex flex-col items-center justify-center'>
-                    <p className='flex flex-col items-center justify-center text-center text-[18px] font-bold '>{`${boardTitle}`}</p>
-                  </div>
-                )}
-                <div>
                   <div>
-                    {userId === uid && !isEdit && (
-                      <button onClick={onBoardEditHandler}>
-                        <Image
-                          src={detailEdit}
-                          alt='상세페이지 수정 아이콘'
-                          width={20}
-                          height={20}
-                        />
-                      </button>
-                    )}
-                    {userId === uid && (
-                      <button type='button' onClick={onDeleteBoardHandler}>
-                        <Image
-                          src={detailDelete}
-                          alt='상세페이지 삭제 아이콘'
-                          width={20}
-                          height={20}
-                        />
-                      </button>
-                    )}
+                    <div>
+                      {userId === uid && !isEdit && (
+                        <button onClick={onBoardEditHandler}>
+                          <Image
+                            src={detailEdit}
+                            alt='상세페이지 수정 아이콘'
+                            width={20}
+                            height={20}
+                          />
+                        </button>
+                      )}
+                      {userId === uid && (
+                        <button type='button' onClick={onDeleteBoardHandler}>
+                          <Image
+                            src={detailDelete}
+                            alt='상세페이지 삭제 아이콘'
+                            width={20}
+                            height={20}
+                          />
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className='flex justify-between'>
-                <div className='flex items-center'>
-                  <p className=' text-center text-[14px] font-bold text-[rgba(255,255,255,0.5)]'>
-                    {nickname}
-                  </p>
-                </div>
-                <div className='text-[rgba(255,255,255,0.5)]'>
-                  {onDateTimeHandler(date)}
-                </div>
-              </div>
-            </section>
-          </article>
-          <article
-            className={`flex w-full justify-between gap-[24px] rounded-[32px] bg-[rgba(255,255,255,0.1)] py-[20px] pl-[40px] pr-[20px]  ${ADDED_CURRENT_MUSIC_SHADOW}`}
-          >
-            <div className='flex w-full items-center justify-between '>
-              <section className='flex items-center gap-[32px]'>
-                <figure className='flex h-[80px] w-[80px] items-center rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)]'>
-                  <Image
-                    src={`${thumbnail}`}
-                    alt='노래 앨범 이미지'
-                    width={80}
-                    height={80}
-                    className='rounded-full '
-                  />
-                </figure>
-                <article className='flex flex-col gap-[8px] '>
-                  <div>
-                    <p className='text-[24px] font-bold'>{musicTitle}</p>
-                  </div>
-                  <div>
-                    <p className='font-bold text-[rgba(255,255,255,0.4)]'>
-                      {artist}
+                <div className='flex justify-between'>
+                  <div className='flex items-center'>
+                    <p className=' text-center text-[14px] font-bold text-[rgba(255,255,255,0.5)]'>
+                      {nickname}
                     </p>
                   </div>
-                </article>
-              </section>
-              <section className='flex'>
-                <div className='flex items-center text-[16px] font-bold'>
-                  {runTime}
+                  <div className='text-[rgba(255,255,255,0.5)]'>
+                    {onDateTimeHandler(date)}
+                  </div>
                 </div>
               </section>
-            </div>
-            <div className='flex items-center justify-center gap-[16px]'>
-              <button
-                onClick={(e) => onAddPlayerHandler(e, uid, musicId)}
-                className={`flex h-[48px] w-[48px] items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW}`}
-              >
-                <Image
-                  src={addCurrMusic}
-                  alt='현재재생목록추가 아이콘'
-                  width={24}
-                  height={24}
-                />
-              </button>
-              <button
-                type='button'
-                className={`flex h-[48px] w-[48px] items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW}`}
-                onClick={() => onClickAddMyPlayListHandler(musicId)}
-              >
-                <Image
-                  src={addMyPlayList}
-                  alt='마이플레이리스트에 저장 아이콘'
-                  width={16}
-                  height={16}
-                />
-              </button>
-            </div>
-          </article>
-          <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
-            {isEdit ? (
-              <CommunityQuillEditor
-                quillRef={quillRef}
-                content={updatedContent}
-                setCommunityForm={setEditForm}
-              />
-            ) : (
-              <QuillEditor
-                theme='bubble'
-                value={content}
-                readOnly={true}
-                className='h-[200px] w-full px-[15px] tracking-[-0.03em]'
-                dangerouslySetInnerHTML={{ __html: sanitizedHtmlContent }}
-              />
-            )}
-          </article>
-        </div>
-
-        <div className='flex w-full flex-col gap-[40px] '>
-          <div className='flex gap-[16px]'>
-            <div className='flex gap-[7px]'>
-              <figure>
-                <Image src={message} alt='댓글 아이콘' width={24} height={24} />
-              </figure>
-              <div className='text-[rgba(255,255,255,0.5)]'>
-                <p>
-                  {commentLength}
-                  {commentPlusCondition}
-                </p>
+            </article>
+            <article
+              className={`flex w-full justify-between gap-[24px] rounded-[32px] bg-[rgba(255,255,255,0.1)] py-[20px] pl-[40px] pr-[20px]  ${ADDED_CURRENT_MUSIC_SHADOW}`}
+            >
+              <div className='flex w-full items-center justify-between '>
+                <section className='flex items-center gap-[32px]'>
+                  <figure className='flex h-[80px] w-[80px] items-center rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)]'>
+                    <Image
+                      src={`${thumbnail}`}
+                      alt='노래 앨범 이미지'
+                      width={80}
+                      height={80}
+                      className='rounded-full '
+                    />
+                  </figure>
+                  <article className='flex flex-col gap-[8px] '>
+                    <div>
+                      <p className='text-[24px] font-bold'>{musicTitle}</p>
+                    </div>
+                    <div>
+                      <p className='font-bold text-[rgba(255,255,255,0.4)]'>
+                        {artist}
+                      </p>
+                    </div>
+                  </article>
+                </section>
+                <section className='flex'>
+                  <div className='flex items-center text-[16px] font-bold'>
+                    {runTime}
+                  </div>
+                </section>
               </div>
+              <div className='flex items-center justify-center gap-[16px]'>
+                <button
+                  onClick={(e) => onAddPlayerHandler(e, uid, musicId)}
+                  className={`flex h-[48px] w-[48px] items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW}`}
+                >
+                  <Image
+                    src={addCurrMusic}
+                    alt='현재재생목록추가 아이콘'
+                    width={24}
+                    height={24}
+                  />
+                </button>
+                <button
+                  type='button'
+                  className={`flex h-[48px] w-[48px] items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW}`}
+                  onClick={() => onClickAddMyPlayListHandler(musicId)}
+                >
+                  <Image
+                    src={addMyPlayList}
+                    alt='마이플레이리스트에 저장 아이콘'
+                    width={16}
+                    height={16}
+                  />
+                </button>
+              </div>
+            </article>
+            {typeof window !== 'undefined' && (
+              <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
+                {isEdit ? (
+                  <CommunityQuillEditor
+                    content={updatedContent}
+                    setCommunityForm={setEditForm}
+                  />
+                ) : (
+                  <QuillEditor
+                    theme='bubble'
+                    value={content}
+                    readOnly={true}
+                    className='h-[200px] w-full px-[15px] tracking-[-0.03em]'
+                    // dangerouslySetInnerHTML={{ __html: sanitizedHtmlContent }}
+                  />
+                )}
+              </article>
+            )}
+          </div>
+
+          <div className='flex w-full flex-col gap-[40px] '>
+            <div className='flex gap-[16px]'>
+              <div className='flex gap-[7px]'>
+                <figure>
+                  <Image
+                    src={message}
+                    alt='댓글 아이콘'
+                    width={24}
+                    height={24}
+                  />
+                </figure>
+                <div className='text-[rgba(255,255,255,0.5)]'>
+                  <p>
+                    {commentLength}
+                    {commentPlusCondition}
+                  </p>
+                </div>
+              </div>
+              <LikeButton boardId={currentBoardId} />
             </div>
-            <LikeButton boardId={currentBoardId} />
           </div>
         </div>
+        {isEdit ? null : <CommentsPage />}
       </div>
-      {isEdit ? null : <CommentsPage />}
-    </div>
-  )
+    )
+  } else {
+    return null
+  }
 }
 
 export default CommunityContents
