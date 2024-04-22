@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { Quill, ReactQuillProps } from 'react-quill'
 import { ImageActions } from '@xeger/quill-image-actions'
 import { ImageFormats } from '@xeger/quill-image-formats'
+import { formats, toolbarOptions } from './value'
 
 Quill.register('modules/imageActions', ImageActions)
 Quill.register('modules/imageFormats', ImageFormats)
@@ -20,7 +21,7 @@ type QuillEditorProps = {
   quillRef: React.RefObject<ReactQuillProps>
 }
 
-const QuillEditor = dynamic(
+export const QuillEditor = dynamic(
   async () => {
     const { default: RQ } = await import('react-quill')
     return function comp({ forwardedRef, ...props }: any) {
@@ -44,21 +45,6 @@ const CommunityQuillEditor = ({
   setCommunityForm,
   quillRef,
 }: QuillEditorProps) => {
-  const toolbarOptions = [
-    [{ size: [false, 'large', 'huge'] }],
-    [{ header: [1, 2, 3, 4, false] }],
-    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-    [{ color: [] }, { background: [] }, { align: [] }],
-    [
-      { list: 'ordered' },
-      { list: 'bullet' },
-      { indent: '-1' },
-      { indent: '+1' },
-    ],
-    ['link', 'image'],
-    ['clean'],
-  ]
-
   const onImageHandler = () => {
     const input = document.createElement('input')
     input.setAttribute('type', 'file')
@@ -96,24 +82,6 @@ const CommunityQuillEditor = ({
     [],
   )
 
-  const formats = [
-    'size',
-    'header',
-    'bold',
-    'italic',
-    'underline',
-    'strike',
-    'blockquote',
-    'color',
-    'background',
-    'align',
-    'list',
-    'bullet',
-    'indent',
-    'link',
-    'image',
-  ]
-
   const onEditorChangeHandler = (value: string) => {
     setCommunityForm((prevData) => ({
       ...prevData,
@@ -122,19 +90,16 @@ const CommunityQuillEditor = ({
   }
 
   return (
-    <>
-      {/* <QuillEditor /> */}
-      <QuillEditor
-        theme='snow'
-        value={content}
-        onChange={onEditorChangeHandler}
-        modules={modules}
-        formats={formats}
-        placeholder='추천할 음악에 대해 얘기해 주세요.'
-        className='h-[200px] bg-[rgba(255,255,255,0.1)] text-white placeholder:text-white [&_.ql-container.ql-snow]:border-black [&_.ql-container.ql-snow]:text-white [&_.ql-toolbar.ql-snow]:border-black'
-        ref={quillRef}
-      />
-    </>
+    <QuillEditor
+      theme='snow'
+      value={content}
+      onChange={onEditorChangeHandler}
+      modules={modules}
+      formats={formats}
+      placeholder='추천할 음악에 대해 얘기해 주세요.'
+      className='rounded-[12px] text-white  [&_.ql-container.ql-snow]:rounded-[12px] [&_.ql-container.ql-snow]:border-[#ffffff1a] [&_.ql-editor.ql-blank::before]:text-[#ffffff5a] [&_.ql-editor.ql-blank]:text-white [&_.ql-editor]:h-[200px] [&_.ql-editor]:rounded-[12px] [&_.ql-editor]:bg-[#ffffff1a] [&_.ql-toolbar.ql-snow]:rounded-[12px] [&_.ql-toolbar.ql-snow]:border-[#ffffff1a] [&_quill]:rounded-[12px] '
+      ref={quillRef}
+    />
   )
 }
 

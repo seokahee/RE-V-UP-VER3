@@ -34,8 +34,29 @@ import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 import Swal from 'sweetalert2'
 import ReactQuill from 'react-quill'
+import dynamic from 'next/dynamic'
 import CommunityQuillEditor from './CommunityQuillEditor'
+import loading from '@/../public/images/loadingBar.gif'
 
+// import CommunityQuillEditor, { QuillEditor } from './CommunityQuillEditor'
+export const QuillEditor = dynamic(
+  async () => {
+    const { default: RQ } = await import('react-quill')
+    return function comp({ forwardedRef, ...props }: any) {
+      return <RQ ref={forwardedRef} {...props} />
+    }
+  },
+  {
+    ssr: false,
+    loading: () => {
+      return (
+        <div>
+          <Image src={loading} width={50} height={50} alt='로딩바' />
+        </div>
+      )
+    },
+  },
+)
 const CommunityContents = () => {
   const quillRef = useRef<ReactQuill>(null)
   const router = useRouter()
@@ -490,25 +511,18 @@ const CommunityContents = () => {
           </article>
           <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
             {isEdit ? (
-              // <textarea
-              //   id='content'
-              //   name='content'
-              //   value={updatedContent}
-              //   onChange={onChangeEditForm}
-              //   cols={30}
-              //   rows={4}
-              //   maxLength={200}
-              //   className='mb-4 h-[200px] w-full  rounded-lg border-none bg-[rgba(255,255,255,0.1)] p-2 px-[15px]'
-              // ></textarea>
               <CommunityQuillEditor
                 quillRef={quillRef}
                 content={updatedContent}
                 setCommunityForm={setEditForm}
               />
             ) : (
-              <div className='h-[200px] w-full px-[15px] tracking-[-0.03em]'>
-                <p>{content}</p>
-              </div>
+              <QuillEditor
+                theme='bubble'
+                value={content}
+                readOnly={true}
+                className='h-[200px] w-full px-[15px] tracking-[-0.03em]'
+              />
             )}
           </article>
         </div>

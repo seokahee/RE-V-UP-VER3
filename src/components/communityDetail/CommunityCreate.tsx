@@ -178,16 +178,8 @@ const CommunityCreate = () => {
               placeholder='제목을 입력해 주세요.'
             />
           </div>
-          {/* <textarea
-            
-            name='content'
-            value={content}
-            maxLength={200}
-            onChange={onChangeHandler}
-            className='mb-4 h-[200px] w-full rounded-lg border-none bg-[rgba(255,255,255,0.1)] p-2 '
-            placeholder='추천할 음악에 대해 얘기해 주세요.'
-          ></textarea> */}
-          <div>
+
+          <div className='h-[200px]'>
             <CommunityQuillEditor
               quillRef={quillRef}
               content={content}
@@ -196,12 +188,13 @@ const CommunityCreate = () => {
           </div>
         </div>
       </form>
-
-      <CommunityAddMusic
-        thumbnail={thumbnail}
-        musicTitle={musicTitle}
-        artist={artist}
-      />
+      <div className='mt-[88px]'>
+        <CommunityAddMusic
+          thumbnail={thumbnail}
+          musicTitle={musicTitle}
+          artist={artist}
+        />
+      </div>
     </div>
   )
 }
