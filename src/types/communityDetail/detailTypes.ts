@@ -83,8 +83,20 @@ export type Props = {
   boardId: string
 }
 
+export type AddMusicInfoType = {
+  artist: string
+  musicId: string
+  musicSource: string
+  musicTitle: string
+  release: string
+  thumbnail: string
+  runTime: string
+  lyrics: string
+}
+
 export type AddMusicProps = {
   thumbnail: string | undefined
   musicTitle: string | undefined
   artist: string | undefined
+  item: AddMusicInfoType
 }

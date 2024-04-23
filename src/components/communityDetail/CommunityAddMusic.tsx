@@ -2,14 +2,21 @@ import Image from 'next/image'
 import MusicSearch from '../search/MusicSearch'
 import type { AddMusicProps } from '@/types/communityDetail/detailTypes'
 import { ADDED_CURRENT_MUSIC_SHADOW } from './communityCss'
+import { dragHandler } from '@/util/util'
 
 const CommunityAddMusic = ({
   thumbnail,
   musicTitle,
   artist,
+  item,
 }: AddMusicProps) => {
   return (
-    <li>
+    <li
+      draggable='true'
+      onDragStart={(e) => {
+        dragHandler(e, item)
+      }}
+    >
       <article className='flex flex-col gap-[16px]'>
         <section className='flex gap-[16px]'>
           <MusicSearch />
@@ -45,6 +52,8 @@ const CommunityAddMusic = ({
         <div>
           <p className='text-[14px] text-[rgba(255,255,255,0.5)]'>
             게시글을 등록하기 위해 음악을 추가해야 돼요!
+            <br />
+            플레이어에 끌어놓고 미리듣기가 가능해요!
           </p>
         </div>
       </article>

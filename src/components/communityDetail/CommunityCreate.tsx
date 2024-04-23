@@ -17,6 +17,7 @@ import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 import CommunityAddMusic from './CommunityAddMusic'
 import { CommunityNoSsrQuillEditor } from './CommunityNoSsrQuillEditor'
+import { MusicInfoType } from '@/types/musicPlayer/types'
 
 type CommunityForm = {
   boardTitle: string
@@ -29,11 +30,27 @@ const CommunityCreate = () => {
   const { chooseMusic, setChooseMusic } = useMusicSearchedStore()
   const { addCommunityMutation } = useCoummunityItem()
   const { data: userSessionInfo, status } = useSession()
-  const musicId = chooseMusic?.musicId as string
-  const musicTitle = chooseMusic?.musicTitle
-  const artist = chooseMusic?.artist
-  const thumbnail = chooseMusic?.thumbnail
+  const {
+    artist,
+    musicId,
+    musicTitle,
+    thumbnail,
+    musicSource,
+    release,
+    runTime,
+    lyrics,
+  } = chooseMusic as MusicInfoType
 
+  const item = {
+    artist,
+    musicId,
+    musicSource,
+    musicTitle,
+    release,
+    thumbnail,
+    runTime,
+    lyrics,
+  } as MusicInfoType
   const {
     form: communityForm,
     setForm: setCommunityForm,
@@ -196,6 +213,7 @@ const CommunityCreate = () => {
             thumbnail={thumbnail}
             musicTitle={musicTitle}
             artist={artist}
+            item={item}
           />
         </ul>
       </div>
