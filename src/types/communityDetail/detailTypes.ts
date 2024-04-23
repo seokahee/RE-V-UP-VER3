@@ -79,3 +79,9 @@ export type getLikeListCommunity = {
 export type Props = {
   boardId: string
 }
+
+export type AddMusicProps = {
+  thumbnail: string | undefined
+  musicTitle: string | undefined
+  artist: string | undefined
+}

@@ -1,9 +1,13 @@
 'use client'
 
 import { MouseEvent, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { useParams, useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
+import Link from 'next/link'
+import Swal from 'sweetalert2'
+import DOMPurify from 'dompurify'
 import {
   useCoummunityCreateItem,
   useCoummunityItem,
@@ -18,9 +22,9 @@ import detailDelete from '@/../public/images/community-detail-Image/detail-delet
 import addCurrMusic from '@/../public/images/community-detail-Image/add-current-music.svg'
 import addMyPlayList from '@/../public/images/community-detail-Image/add-my-playlist.svg'
 import userDefault from '@/../public/images/userDefaultImg.svg'
+import loading from '@/../public/images/loadingBar.gif'
 import useInput from '@/hooks/useInput'
 import LikeButton from './LikeButton'
-import Link from 'next/link'
 
 import {
   ADDED_CURRENT_MUSIC_SHADOW,
@@ -30,9 +34,29 @@ import {
 } from './communityCss'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
 import CommentsPage from '@/app/(auth)/comment/page'
+import { QuillEditor } from './QuillEditor'
 import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
-import Swal from 'sweetalert2'
+
+
+export const CommunityQuillEditor = dynamic(
+  async () => {
+    const { default: RQ } = await import('./CommunityQuillEditor')
+    return function comp({ forwardedRef, ...props }: any) {
+      return <RQ ref={forwardedRef} {...props} />
+    }
+  },
+  {
+    ssr: false,
+    loading: () => {
+      return (
+        <div>
+          <Image src={loading} width={50} height={50} alt='로딩바' />
+        </div>
+      )
+    },
+  },
+)
 
 const CommunityContents = () => {
   const router = useRouter()
@@ -79,6 +103,8 @@ const CommunityContents = () => {
     onChange: onChangeEditForm,
   } = useInput({ boardTitle, content })
   const { boardTitle: updatedTitle, content: updatedContent } = editForm
+  const sanitizedHtmlContent = DOMPurify.sanitize(updatedContent)
+
   const commentLength =
     commentsData && commentsData.length > 99
       ? 99
@@ -228,7 +254,7 @@ const CommunityContents = () => {
       router.replace('/login')
       return
     }
-    //////////////////
+
     Swal.fire({
       text: '마이플레이 리스트에 추가하시겠습니까?',
 
@@ -294,7 +320,6 @@ const CommunityContents = () => {
     router.replace('/')
     return
   }
-
   return (
     <div className='flex w-[732px] flex-col'>
       <div className='mb-[8px] flex flex-col gap-[16px]'>
@@ -484,22 +509,24 @@ const CommunityContents = () => {
               </button>
             </div>
           </article>
-          <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
-            {isEdit ? (
-              <textarea
-                id='content'
-                name='content'
-                value={updatedContent}
-                onChange={onChangeEditForm}
-                cols={30}
-                rows={4}
-                maxLength={200}
-                className='mb-4 h-[200px] w-full  rounded-lg border-none bg-[rgba(255,255,255,0.1)] p-2 px-[15px]'
-              ></textarea>
-            ) : (
-              <div className='h-[200px] w-full px-[15px] tracking-[-0.03em]'>{`${content}`}</div>
-            )}
-          </article>
+          {typeof window !== 'undefined' && (
+            <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
+              {isEdit ? (
+                <CommunityQuillEditor
+                  content={updatedContent}
+                  setCommunityForm={setEditForm}
+                />
+              ) : (
+                <QuillEditor
+                  theme='bubble'
+                  value={content}
+                  readOnly={true}
+                  className='h-[200px] w-full px-[15px] tracking-[-0.03em]'
+                  dangerouslySetInnerHTML={{ __html: sanitizedHtmlContent }}
+                />
+              )}
+            </article>
+          )}
         </div>
 
         <div className='flex w-full flex-col gap-[40px] '>
