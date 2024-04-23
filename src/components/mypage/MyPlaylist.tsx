@@ -11,7 +11,7 @@ import { useIntersectionObserver } from '@/util/useIntersectionObserver'
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Swal from 'sweetalert2'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import CheckboxItem from './CheckboxItem'
@@ -21,14 +21,18 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
   const uid = userSessionInfo?.user?.uid as string
   const [checkedList, setCheckedList] = useState<string[]>([])
   const [toggle, setToggle] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
+  const topRef = useRef<HTMLDivElement>(null)
+  const bottomRef = useRef<HTMLDivElement>(null)
 
   const PER_PAGE = 5
+  const MAX_PAGES = 4
 
   const {
     data: playlistMyData,
     fetchNextPage,
+    fetchPreviousPage,
     hasNextPage,
+    hasPreviousPage,
   } = useInfiniteQuery({
     queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_MUSIC_INFO, uid],
     queryFn: ({ pageParam = 1 }) =>
@@ -45,7 +49,14 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       //lastPageParam + 1 을 해서 다음 페이지로 넘기기
       return lastPageParam + 1
     },
+    getPreviousPageParam: (firstPage, allPages, firstPageParam) => {
+      if (firstPageParam <= 1) {
+        return undefined
+      }
+      return firstPageParam - 1
+    },
     initialPageParam: 1,
+    maxPages: MAX_PAGES,
     enabled: !!uid,
   })
 
@@ -243,12 +254,47 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     checkListReset()
   }
 
-  //감시하는 요소가 보여지면 fetchNextPage 실행하도록 하는 onIntersect로직을 useIntersectionObserver 에 넘겨줌
-  const onIntersect = ([entry]: IntersectionObserverEntry[]) =>
-    entry.isIntersecting && fetchNextPage()
+  const scrollYPosition = window.scrollY || window.pageYOffset
+  const scrollPosition = (type: string) => {
+    const itemHeight = 88
+    // const position =
+    //   type === 'top' ? window.scrollY + itemHeight : window.scrollY - itemHeight
+    const position = scrollYPosition
+    window.scrollTo({
+      top: position, // 현재 스크롤 위치에서 100px 위로 이동
+      // behavior: 'smooth', // 부드럽게 스크롤 이동
+    })
+  }
+
+  const previousPage = () => {
+    fetchPreviousPage()
+    // scrollPosition('top')
+  }
+
+  const nextPage = () => {
+    fetchNextPage()
+    // if (MAX_PAGES === playlistMyData?.pageParams.length!) {
+    //   scrollPosition('bottom')
+    // }
+  }
+
+  //역방향
+  const onIntersectTop = ([entry]: IntersectionObserverEntry[]) =>
+    entry.isIntersecting && previousPage()
 
   useIntersectionObserver({
-    target: ref,
+    target: topRef,
+    onIntersect: onIntersectTop,
+    enabled: hasPreviousPage,
+  })
+
+  //정방향
+  //감시하는 요소가 보여지면 fetchNextPage 실행하도록 하는 onIntersect로직을 useIntersectionObserver 에 넘겨줌
+  const onIntersect = ([entry]: IntersectionObserverEntry[]) =>
+    entry.isIntersecting && nextPage()
+
+  useIntersectionObserver({
+    target: bottomRef,
     onIntersect,
     enabled: hasNextPage,
   })
@@ -297,10 +343,11 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
           </button>
         </div>
       )}
+      {hasPreviousPage && <div ref={topRef}></div>}
       <ul
         className={`tracking-[-0.03em] ${toggle ? toggleStyle : ''} overflow-hidden transition-opacity ease-in-out`}
       >
-        {playlistMyData && playlistMyData.pages.length > 0 ? (
+        {playlistMyData && playlistMyData.playlistMyIds?.length! > 0 ? (
           <>
             {playlistMyData.pages.map((group, i) => (
               <React.Fragment key={playlistMyData.pageParams[i]}>
@@ -354,7 +401,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
           </li>
         )}
       </ul>
-      {hasNextPage && <div ref={ref}></div>}
+      {hasNextPage && <div className='h-2' ref={bottomRef}></div>}
     </div>
   )
 }
