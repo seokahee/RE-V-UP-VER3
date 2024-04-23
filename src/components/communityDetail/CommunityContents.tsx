@@ -1,7 +1,6 @@
 'use client'
 
 import { MouseEvent, useState } from 'react'
-import dynamic from 'next/dynamic'
 import { useParams, useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -22,7 +21,6 @@ import detailDelete from '@/../public/images/community-detail-Image/detail-delet
 import addCurrMusic from '@/../public/images/community-detail-Image/add-current-music.svg'
 import addMyPlayList from '@/../public/images/community-detail-Image/add-my-playlist.svg'
 import userDefault from '@/../public/images/userDefaultImg.svg'
-import loading from '@/../public/images/loadingBar.gif'
 import useInput from '@/hooks/useInput'
 import LikeButton from './LikeButton'
 
@@ -34,13 +32,17 @@ import {
 } from './communityCss'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
 import CommentsPage from '@/app/(auth)/comment/page'
-import { QuillEditor } from './QuillEditor'
+import { QuillNoSSRWrapper } from './QuillEditor'
 import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 import { CommunityNoSsrQuillEditor } from './CommunityNoSsrQuillEditor'
+import createDOMPurify from 'dompurify'
+import ReactQuill from 'react-quill'
 
 const CommunityContents = () => {
   const router = useRouter()
+  const DOMPurify =
+    typeof window !== 'undefined' ? createDOMPurify(window) : null
   const { setIsChooseMusic } = useMusicSearchedStore()
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const { data: userSessionInfo, status } = useSession()
@@ -84,7 +86,7 @@ const CommunityContents = () => {
     onChange: onChangeEditForm,
   } = useInput({ boardTitle, content })
   const { boardTitle: updatedTitle, content: updatedContent } = editForm
-  const sanitizedHtmlContent = DOMPurify.sanitize(updatedContent)
+  // const sanitizedHtmlContent = DOMPurify && DOMPurify?.sanitize(updatedContent)
 
   const commentLength =
     commentsData && commentsData.length > 99
@@ -490,7 +492,7 @@ const CommunityContents = () => {
               </button>
             </div>
           </article>
-          {typeof window !== 'undefined' && (
+          {typeof window !== 'undefined' ? (
             <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
               {isEdit ? (
                 <CommunityNoSsrQuillEditor
@@ -499,16 +501,16 @@ const CommunityContents = () => {
                   setCommunityForm={setEditForm}
                 />
               ) : (
-                <QuillEditor
+                <QuillNoSSRWrapper
                   theme='bubble'
-                  value={content}
                   readOnly={true}
+                  value={content}
                   className='h-[200px] w-full px-[15px] tracking-[-0.03em]'
-                  dangerouslySetInnerHTML={{ __html: sanitizedHtmlContent }}
+                  // dangerouslySetInnerHTML={{ __html: updatedContent }}
                 />
               )}
             </article>
-          )}
+          ) : null}
         </div>
 
         <div className='flex w-full flex-col gap-[40px] '>

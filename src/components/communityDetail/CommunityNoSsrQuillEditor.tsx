@@ -5,9 +5,10 @@ import loading from '@/../public/images/loadingBar.gif'
 export const CommunityNoSsrQuillEditor = dynamic(
   async () => {
     const { default: RQ } = await import('./CommunityQuillEditor')
-    return function comp({ forwardedRef, ...props }: any) {
+    const comp = ({ forwardedRef, ...props }: any) => {
       return <RQ ref={forwardedRef} {...props} />
     }
+    return comp
   },
   {
     ssr: false,
