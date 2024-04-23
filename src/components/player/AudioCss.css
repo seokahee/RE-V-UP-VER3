@@ -2,14 +2,14 @@
   background-color: transparent;
   border: none;
   box-shadow: none;
-  height: 90px;
+  margin-top: 16px;
 }
 
 .rhap_play-status--playing {
   background-color: transparent;
   border: none;
   box-shadow: none;
-  height: 90px;
+  margin-top: 16px;
 }
 
 .rhap_rewind-button,
@@ -148,4 +148,8 @@
   animation:
     rotateAnimation 5s infinite,
     shadowAnimation 5s infinite;
+}
+
+.rhap_stacked .rhap_controls-section {
+  margin-top: -4px;
 }

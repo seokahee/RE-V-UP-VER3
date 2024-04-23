@@ -246,7 +246,7 @@ const MusicPlayer = () => {
   }
   return (
     <div>
-      <div className='min-h-[690px]'>
+      <div className='min-h-[600px]'>
         <Player
           currentPlaying={currentPlaying}
           setCurrentPlaying={setCurrentPlaying}

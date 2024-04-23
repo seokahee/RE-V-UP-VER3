@@ -4,12 +4,12 @@ import {
   getMusicList,
 } from '@/query/musicPlayer/musicPlayerQueryKeys'
 import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
-import { MusicInfoType, MusicListProps } from '@/types/musicPlayer/types'
+import { MusicListProps } from '@/types/musicPlayer/types'
 import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
+import { DragEvent } from 'react'
 import Swal from 'sweetalert2'
 import CheckboxItem from '../mypage/CheckboxItem'
-import { useState } from 'react'
 
 const CurrentMusicList = ({
   currentPlaying,
@@ -47,25 +47,7 @@ const CurrentMusicList = ({
     },
   })
 
-  const dragHandler = (
-    e: React.DragEvent<HTMLLIElement>,
-    item: MusicInfoType,
-  ) => {
-    e.dataTransfer.setData(
-      'musicInfo',
-      JSON.stringify({
-        musicSource: item.thumbnail,
-        musicId: item.musicId,
-        musicTitle: item.musicTitle,
-        musicArtist: item.artist,
-        musicLyrics: item.lyrics,
-        musicRunTime: item.runTime,
-        musicUrl: item.musicSource,
-      }),
-    )
-  }
-
-  const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
+  const dropHandler = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     const musicInfo = JSON.parse(e.dataTransfer.getData('musicInfo'))
 
@@ -96,7 +78,7 @@ const CurrentMusicList = ({
       color: '#ffffff',
     })
   }
-  const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
+  const dragOverHandler = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
   }
 
@@ -111,7 +93,7 @@ const CurrentMusicList = ({
   }
   return (
     <div
-      className='mt-[16px] flex max-h-[450px] min-h-[450px] flex-col overflow-y-auto overflow-x-hidden'
+      className='mt-[16px] flex max-h-[250px] min-h-[250px] flex-col overflow-y-auto overflow-x-hidden'
       onDrop={dropHandler}
       onDragOver={dragOverHandler}
     >
@@ -170,21 +152,23 @@ const CurrentMusicList = ({
           )
         })}
       </div>
-      <button
-        type='button'
-        onClick={selectAllHandler}
-        className='absolute left-[40%] top-[90%]'
-      >
-        {selectAll ? '전체 해제' : '전체 선택'}
-      </button>
       {!isLyrics && currentPlayList.length > 0 && checkedList.length > 0 && (
-        <button
-          type='button'
-          onClick={onDeleteCurrentMusicHandler}
-          className='via-gray-100 to-gray-300 shadow-outline-white absolute bottom-[40px] left-[127px] right-[126px] h-[56px] w-[113px] rounded-[16px] border-2 border-solid border-zinc-800 bg-gradient-to-br from-zinc-700 p-0 text-center shadow-md'
-        >
-          {`${checkedList.length > 0 ? `${checkedList.length} 곡 삭제` : '곡 삭제'}`}
-        </button>
+        <div className='absolute bottom-[40px] left-[56px] right-[56px] flex gap-[8px]'>
+          <button
+            type='button'
+            onClick={selectAllHandler}
+            className='h-[56px] w-[113px] rounded-[16px] border-[2px] border-solid border-[rgba(0,0,0,0.4)] bg-[rgba(255,255,255,0.1)] text-center font-bold drop-shadow-[-4px_-4px_8px_rgba(0,0,0,0.05),_4px_4px_8px_rgba(0,0,0,0.7)]  backdrop-blur-[12px]'
+          >
+            {selectAll ? '전체 해제' : '전체 선택'}
+          </button>
+          <button
+            type='button'
+            onClick={onDeleteCurrentMusicHandler}
+            className='h-[56px] w-[113px] rounded-[16px] border-[2px] border-solid border-[rgba(0,0,0,0.4)] bg-[rgba(255,255,255,0.1)] text-center font-bold drop-shadow-[-4px_-4px_8px_rgba(0,0,0,0.05),_4px_4px_8px_rgba(0,0,0,0.7)]  backdrop-blur-[12px]'
+          >
+            {`${checkedList.length > 0 ? `${checkedList.length} 곡 삭제` : '곡 삭제'}`}
+          </button>
+        </div>
       )}
     </div>
   )

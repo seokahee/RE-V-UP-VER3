@@ -21,7 +21,7 @@ const Container = ({
     <div className='relative flex justify-center'>
       {check ? (
         <div
-          className={`musicPlayer relative min-h-[100vh] w-[388px] ${check ? 'mr-[-3.5rem]' : ''} z-[1]`}
+          className={`musicPlayer relative h-[100vh] w-[388px] ${check ? 'mr-[-3.5rem]' : ''} z-[1]`}
         >
           <MusicPlayer />
         </div>
