@@ -1,5 +1,5 @@
 export const toolbarOptions = [
-  [{ size: [false, 'large', 'huge'] }],
+  [{ size: ['18px', 'large', 'huge'] }],
   // [{ header: [1, 2, 3, 4, false] }],
   ['bold', 'italic', 'underline', 'strike', 'blockquote'],
   [{ color: [] }, { background: [] }, { align: [] }],

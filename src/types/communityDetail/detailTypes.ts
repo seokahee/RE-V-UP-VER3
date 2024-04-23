@@ -21,6 +21,9 @@ export type readCommuDetail = {
     artist: string
     thumbnail: string
     runTime: string
+    musicSource: string
+    release: string
+    lyrics: string
   }
 }
 

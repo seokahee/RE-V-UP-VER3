@@ -13,7 +13,7 @@ import {
 } from '@/query/communityDetail/mutation'
 import { musicDataInCommuDetail } from '@/query/communityDetail/queryKey'
 import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
-import { onDateTimeHandler } from '@/util/util'
+import { dragHandler, onDateTimeHandler } from '@/util/util'
 import message from '@/../public/images/message-text-square-02-gray.svg'
 import goback from '@/../public/images/community-detail-Image/back-allow.svg'
 import detailEdit from '@/../public/images/community-detail-Image/detail-edit.svg'
@@ -37,6 +37,7 @@ import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 import { CommunityNoSsrQuillEditor } from './CommunityNoSsrQuillEditor'
 import createDOMPurify from 'dompurify'
+import { MusicInfoType } from '@/types/musicPlayer/types'
 
 const CommunityContents = () => {
   const router = useRouter()
@@ -77,7 +78,26 @@ const CommunityContents = () => {
     musicInfo,
   } = readDetailData || ({} as readCommuDetail)
   const { nickname, userImage, userId } = userInfo || {}
-  const { musicTitle, artist, thumbnail, runTime } = musicInfo || {}
+  const {
+    musicTitle,
+    artist,
+    thumbnail,
+    runTime,
+    musicSource,
+    release,
+    lyrics,
+  } = musicInfo || {}
+
+  const item = {
+    artist,
+    musicId,
+    musicSource,
+    musicTitle,
+    release,
+    thumbnail,
+    runTime,
+    lyrics,
+  } as MusicInfoType
 
   const {
     form: editForm,
@@ -434,10 +454,16 @@ const CommunityContents = () => {
               </div>
             </section>
           </article>
-          <article
+          <ul
             className={`flex w-full justify-between gap-[24px] rounded-[32px] bg-[rgba(255,255,255,0.1)] py-[20px] pl-[40px] pr-[20px]  ${ADDED_CURRENT_MUSIC_SHADOW}`}
           >
-            <div className='flex w-full items-center justify-between '>
+            <li
+              className='flex w-full items-center justify-between '
+              draggable='true'
+              onDragStart={(e) => {
+                dragHandler(e, item)
+              }}
+            >
               <section className='flex items-center gap-[32px]'>
                 <figure className='flex h-[80px] w-[80px] items-center rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)]'>
                   <Image
@@ -464,7 +490,7 @@ const CommunityContents = () => {
                   {runTime}
                 </div>
               </section>
-            </div>
+            </li>
             <div className='flex items-center justify-center gap-[16px]'>
               <button
                 onClick={(e) => onAddPlayerHandler(e, uid, musicId)}
@@ -490,7 +516,7 @@ const CommunityContents = () => {
                 />
               </button>
             </div>
-          </article>
+          </ul>
           {typeof window !== 'undefined' ? (
             <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
               {isEdit ? (

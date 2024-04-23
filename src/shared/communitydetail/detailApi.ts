@@ -12,7 +12,7 @@ export const readCommunityDetail = async (boardId: string) => {
     const { data, error } = await supabase
       .from('community')
       .select(
-        'boardId, boardTitle, date, musicId, content, likeList, userId, userInfo(nickname, userImage, userId), comment(commentId, boardId), musicInfo(musicId, musicTitle, artist, thumbnail, runTime)',
+        'boardId, boardTitle, date, musicId, content, likeList, userId, userInfo(nickname, userImage, userId), comment(commentId, boardId), musicInfo(musicId, musicTitle, artist, thumbnail, runTime, musicSource, release, lyrics)',
       )
       .eq('boardId', boardId)
       .single()
