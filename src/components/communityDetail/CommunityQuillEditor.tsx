@@ -2,72 +2,16 @@
 
 import React, { Dispatch, SetStateAction, useMemo, useRef } from 'react'
 import 'react-quill/dist/quill.snow.css'
-import dynamic from 'next/dynamic'
-import loading from '@/../public/images/loadingBar.gif'
-import Image from 'next/image'
-import { Quill, ReactQuillProps } from 'react-quill'
+import { Quill } from 'react-quill'
 import { formats, toolbarOptions } from './value'
+import { QuillEditor } from './QuillEditor'
 
 type QuillEditorProps = {
   content: string
   setCommunityForm: Dispatch<
     SetStateAction<{ boardTitle: string; content: string }>
   >
-  // quillRef: React.RefObject<ReactQuillProps>
 }
-const QuillWrapper =
-  typeof window !== 'undefined'
-    ? dynamic(() => import('react-quill'), {
-        ssr: false,
-        loading: () => (
-          <div>
-            <Image src={loading} width={50} height={50} alt='로딩바' />
-          </div>
-        ),
-      })
-    : () => false
-// export const QuillEditor =
-//   typeof window !== 'undefined'
-//     ? dynamic(
-//         async () => {
-//           const { default: RQ } = await import('react-quill')
-//           return function comp({ forwardedRef, ...props }: any) {
-//             return <RQ ref={forwardedRef} {...props} />
-//           }
-//         },
-//         {
-//           ssr: false,
-//           loading: () => {
-//             return (
-//               <div>
-//                 <Image src={loading} width={50} height={50} alt='로딩바' />
-//               </div>
-//             )
-//           },
-//         },
-//       )
-//     : () => false
-// export const QuillEditor =
-//   typeof window !== 'undefined'
-//     ? dynamic(
-//         async () => {
-//           const { default: RQ } = await import('react-quill')
-//           return function comp({ forwardedRef, ...props }: any) {
-//             return <RQ ref={forwardedRef} {...props} />
-//           }
-//         },
-//         {
-//           ssr: false,
-//           loading: () => {
-//             return (
-//               <div>
-//                 <Image src={loading} width={50} height={50} alt='로딩바' />
-//               </div>
-//             )
-//           },
-//         },
-//       )
-//     : () => false
 
 const CommunityQuillEditor = ({
   content,
@@ -116,25 +60,20 @@ const CommunityQuillEditor = ({
       content: value,
     }))
   }
-  if (typeof window !== 'undefined') {
-    return (
-      <div>
-        {typeof window !== 'undefined' && (
-          <QuillWrapper
-            theme='snow'
-            value={content}
-            onChange={onEditorChangeHandler}
-            modules={modules}
-            formats={formats}
-            placeholder='추천할 음악에 대해 얘기해 주세요.'
-            className='rounded-[12px] text-white [&_.ql-container.ql-snow]:rounded-[12px] [&_.ql-container.ql-snow]:border-[#ffffff1a] [&_.ql-editor.ql-blank::before]:text-[16px] [&_.ql-editor.ql-blank::before]:not-italic [&_.ql-editor.ql-blank::before]:text-[#ffffff5a] [&_.ql-editor.ql-blank]:text-white [&_.ql-editor]:h-[200px] [&_.ql-editor]:rounded-[12px] [&_.ql-editor]:bg-[#ffffff1a] [&_.ql-toolbar.ql-snow]:rounded-[12px] [&_.ql-toolbar.ql-snow]:border-[#ffffff1a] [&_quill]:rounded-[12px] '
-          />
-        )}
-      </div>
-    )
-  } else {
-    return null
-  }
+  // if (typeof window !== 'undefined') {
+  return (
+    <div>
+      <QuillEditor
+        theme='snow'
+        value={content}
+        onChange={onEditorChangeHandler}
+        modules={modules}
+        formats={formats}
+        placeholder='추천할 음악에 대해 얘기해 주세요.'
+        className='rounded-[12px] text-white [&_.ql-container.ql-snow]:rounded-[12px] [&_.ql-container.ql-snow]:border-[#ffffff1a] [&_.ql-editor.ql-blank::before]:text-[16px] [&_.ql-editor.ql-blank::before]:not-italic [&_.ql-editor.ql-blank::before]:text-[#ffffff5a] [&_.ql-editor.ql-blank]:text-white [&_.ql-editor]:h-[200px] [&_.ql-editor]:rounded-[12px] [&_.ql-editor]:bg-[#ffffff1a] [&_.ql-toolbar.ql-snow]:rounded-[12px] [&_.ql-toolbar.ql-snow]:border-[#ffffff1a] [&_quill]:rounded-[12px] '
+      />
+    </div>
+  )
 }
 
 export default CommunityQuillEditor
