@@ -127,11 +127,11 @@ const CommunityCreate = () => {
       background: '#2B2B2B',
     })
     router.replace('/')
-    return null
+    return
   }
 
   useEffect(() => {
-    if (refTitle.current !== null && typeof window !== 'undefined') {
+    if (refTitle.current !== null) {
       refTitle.current.focus()
     }
   }, [])
