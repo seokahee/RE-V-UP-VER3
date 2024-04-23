@@ -14,7 +14,7 @@ export const useIntersectionObserver = ({
   onIntersect,
   root = null,
   rootMargin = '0px',
-  threshold = 1.0,
+  threshold = 0.3,
   enabled = true,
 }: ObserveProps) => {
   useEffect(() => {
