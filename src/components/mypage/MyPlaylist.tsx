@@ -11,7 +11,7 @@ import { useIntersectionObserver } from '@/util/useIntersectionObserver'
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import { useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Swal from 'sweetalert2'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import CheckboxItem from './CheckboxItem'
@@ -34,7 +34,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     queryFn: ({ pageParam = 1 }) =>
       getUserMyPlaylistDataInfinite(uid, pageParam, PER_PAGE),
     select: (data) => ({
-      pages: data.pages.map((pageData) => pageData?.myPlaylistData!).flat(),
+      pages: data.pages.map((data) => data?.myPlaylistData),
       pageParams: data.pageParams,
       playlistMyIds: data.pages[0]?.playlistMyIds,
     }),
@@ -50,7 +50,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
   })
 
   const playlistMyIds = playlistMyData?.playlistMyIds
-  const myPlaylistData = playlistMyData?.pages
+  console.log(playlistMyData)
 
   const { data: playlistCurrentData } = useQuery({
     queryFn: () => getCurrentMusicData(uid),
@@ -300,45 +300,54 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       <ul
         className={`tracking-[-0.03em] ${toggle ? toggleStyle : ''} overflow-hidden transition-opacity ease-in-out`}
       >
-        {myPlaylistData && myPlaylistData?.length > 0 ? (
-          myPlaylistData?.map((item) => {
-            return (
-              <li
-                key={item.musicId}
-                className='flex items-center justify-between p-4'
-              >
-                <div className='flex items-center'>
-                  <CheckboxItem
-                    checked={checkedList.includes(item.musicId)}
-                    id={`my-${item.musicId}`}
-                    onChangeCheckMusicHandler={(e) =>
-                      onChangeCheckMusicHandler(e.target.checked, item.musicId)
-                    }
-                  />
-                  <figure className='ml-7 mr-4 overflow-hidden rounded-full'>
-                    <Image
-                      src={item.thumbnail}
-                      width={56}
-                      height={56}
-                      alt={`${item.musicTitle} 앨범 이미지`}
-                    />
-                  </figure>
-                  <label
-                    htmlFor={`my-${item.musicId}`}
-                    className='flex flex-col'
+        {playlistMyData && playlistMyData.pages.length > 0 ? (
+          <>
+            {playlistMyData.pages.map((group, i) => (
+              <React.Fragment key={playlistMyData.pageParams[i]}>
+                {group?.map((item) => (
+                  <li
+                    key={item.musicId}
+                    className='flex items-center justify-between p-4'
                   >
-                    <span className='text-[1.125rem]'>{item.musicTitle}</span>
-                    <span className='text-[0.875rem] text-[#ffffff7f]'>
-                      {item.artist}
+                    <div className='flex items-center'>
+                      <CheckboxItem
+                        checked={checkedList.includes(item.musicId)}
+                        id={`my-${item.musicId}`}
+                        onChangeCheckMusicHandler={(e) =>
+                          onChangeCheckMusicHandler(
+                            e.target.checked,
+                            item.musicId,
+                          )
+                        }
+                      />
+                      <figure className='ml-7 mr-4 overflow-hidden rounded-full'>
+                        <Image
+                          src={item.thumbnail}
+                          width={56}
+                          height={56}
+                          alt={`${item.musicTitle} 앨범 이미지`}
+                        />
+                      </figure>
+                      <label
+                        htmlFor={`my-${item.musicId}`}
+                        className='flex flex-col'
+                      >
+                        <span className='text-[1.125rem]'>
+                          {item.musicTitle}
+                        </span>
+                        <span className='text-[0.875rem] text-[#ffffff7f]'>
+                          {item.artist}
+                        </span>
+                      </label>
+                    </div>
+                    <span className='text-[0.875rem] font-medium text-[#ffffff7f]'>
+                      {item.runTime}
                     </span>
-                  </label>
-                </div>
-                <span className='text-[0.875rem] font-medium text-[#ffffff7f]'>
-                  {item.runTime}
-                </span>
-              </li>
-            )
-          })
+                  </li>
+                ))}
+              </React.Fragment>
+            ))}
+          </>
         ) : (
           <li className='flex h-[300px] items-center justify-center text-[1rem] text-white/50'>
             좋아하는 음악을 추가해보세요!
