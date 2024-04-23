@@ -4,6 +4,7 @@ import React, { FormEvent, useEffect, useRef } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import Swal from 'sweetalert2'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
 import {
   useCoummunityItem,
@@ -14,7 +15,6 @@ import goback from '@/../public/images/goback.svg'
 import { ADD_BOARD_STICK, ALLOW_SHADOW } from './communityCss'
 import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
-import Swal from 'sweetalert2'
 import CommunityAddMusic from './CommunityAddMusic'
 import { QuillEditor } from './QuillEditor'
 

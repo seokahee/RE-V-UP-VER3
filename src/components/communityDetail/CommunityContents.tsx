@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import { useParams, useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
+import Link from 'next/link'
 import Swal from 'sweetalert2'
 import DOMPurify from 'dompurify'
 import {
@@ -21,9 +22,9 @@ import detailDelete from '@/../public/images/community-detail-Image/detail-delet
 import addCurrMusic from '@/../public/images/community-detail-Image/add-current-music.svg'
 import addMyPlayList from '@/../public/images/community-detail-Image/add-my-playlist.svg'
 import userDefault from '@/../public/images/userDefaultImg.svg'
+import loading from '@/../public/images/loadingBar.gif'
 import useInput from '@/hooks/useInput'
 import LikeButton from './LikeButton'
-import Link from 'next/link'
 
 import {
   ADDED_CURRENT_MUSIC_SHADOW,
@@ -33,10 +34,10 @@ import {
 } from './communityCss'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
 import CommentsPage from '@/app/(auth)/comment/page'
+import { QuillEditor } from './QuillEditor'
 import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
-import loading from '@/../public/images/loadingBar.gif'
-import { QuillEditor } from './QuillEditor'
+
 
 export const CommunityQuillEditor = dynamic(
   async () => {

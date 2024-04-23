@@ -1,6 +1,6 @@
 'use client'
 
-import React, { Dispatch, SetStateAction, useMemo, useRef } from 'react'
+import React, { Dispatch, SetStateAction, useMemo } from 'react'
 import 'react-quill/dist/quill.snow.css'
 import { Quill } from 'react-quill'
 import { formats, toolbarOptions } from './value'
