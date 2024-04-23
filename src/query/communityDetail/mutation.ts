@@ -8,7 +8,6 @@ import {
 import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
 import { insertMyPlayMusic, updateMyPlayMusic } from '@/shared/musicPlayer/api'
 import { GET_COMMUNITY_DETAIL_QUERY_KEYS } from './queryKey'
-import { GET_USER_INFO } from '../user/userQueryKeys'
 import { GET_MUSIC_LIST_QUERY_KEYS } from '../musicPlayer/musicPlayerQueryKeys'
 
 export const validateFormBlank = (firstInput: string, secondInput: string) => {
@@ -47,7 +46,7 @@ export const useCoummunityItem = () => {
     mutationFn: insertMyPlayMusic,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [GET_USER_INFO.MYPAGE],
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_MUSIC_LIST],
       })
     },
   })
@@ -56,7 +55,7 @@ export const useCoummunityItem = () => {
     mutationFn: updateMyPlayMusic,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [GET_USER_INFO.MYPAGE],
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_MUSIC_LIST],
       })
     },
   })
