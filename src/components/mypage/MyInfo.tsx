@@ -1,27 +1,27 @@
 'use client'
 
+import right from '@/../public/images/chevron-right.svg'
+import pencil from '@/../public/images/pencil-line.svg'
+import defaultUserImg from '@/../public/images/userDefaultImg.svg'
+import { GET_USER_INFO } from '@/query/user/userQueryKeys'
 import {
   getUserAndPlaylistData,
   updateUserInfo,
   uploadUserThumbnail,
 } from '@/shared/mypage/api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import Image from 'next/image'
-import React, { useEffect, useRef, useState } from 'react'
-import Modal from './Modal'
-import Link from 'next/link'
-import TabMenu from './TabMenu'
-import MyPlaylist from './MyPlaylist'
 import { useSession } from 'next-auth/react'
-import right from '@/../public/images/chevron-right.svg'
-import pencil from '@/../public/images/pencil-line.svg'
-import defaultUserImg from '@/../public/images/userDefaultImg.svg'
-import ButtonPrimary from '../../util/ButtonPrimary'
-import FollowingList from './FollowingList'
-import FollowerList from './FollowerList'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import React, { useEffect, useRef, useState } from 'react'
 import Swal from 'sweetalert2'
-import { GET_USER_INFO } from '@/query/user/userQueryKeys'
+import ButtonPrimary from '../../util/ButtonPrimary'
+import FollowerList from './FollowerList'
+import FollowingList from './FollowingList'
+import Modal from './Modal'
+import MyPlaylist from './MyPlaylist'
+import TabMenu from './TabMenu'
 
 const MyInfo = () => {
   const { data: userSessionInfo, status } = useSession()
@@ -103,31 +103,44 @@ const MyInfo = () => {
       nicknameRef.current?.focus()
       return
     }
-    const {
-      likedPostsOpen,
-      mbtiOpen,
-      personalMusicOpen,
-      playlistOpen,
-      postsOpen,
-    } = isVisibility
-    updateUserInfoMutation.mutate({
-      userId: uid,
-      nickname,
-      likedPostsOpen,
-      mbtiOpen,
-      personalMusicOpen,
-      playlistOpen,
-      postsOpen,
-    })
-    await Swal.fire({
-      icon: 'success',
-      title: '정보 변경이 완료되었습니다.',
-      showConfirmButton: false,
-      timer: 1500,
-      background: '#2B2B2B',
-      color: '#ffffff',
-    })
-    onClickCloseModalHandler()
+    try {
+      const {
+        likedPostsOpen,
+        mbtiOpen,
+        personalMusicOpen,
+        playlistOpen,
+        postsOpen,
+      } = isVisibility
+      updateUserInfoMutation.mutateAsync({
+        userId: uid,
+        nickname,
+        likedPostsOpen,
+        mbtiOpen,
+        personalMusicOpen,
+        playlistOpen,
+        postsOpen,
+      })
+      setNickname(nickname)
+      setIsVisibility({
+        likedPostsOpen,
+        mbtiOpen,
+        personalMusicOpen,
+        playlistOpen,
+        postsOpen,
+      })
+
+      await Swal.fire({
+        icon: 'success',
+        title: '정보 변경이 완료되었습니다.',
+        showConfirmButton: false,
+        timer: 1500,
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
+      setIsModal(false)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
