@@ -4,7 +4,7 @@ import React, { Dispatch, SetStateAction, useMemo } from 'react'
 import 'react-quill/dist/quill.snow.css'
 import { Quill } from 'react-quill'
 import { formats, toolbarOptions } from './value'
-import { QuillEditor } from './QuillEditor'
+import { QuillNoSSRWrapper } from './QuillEditor'
 
 type QuillEditorProps = {
   content: string
@@ -60,7 +60,7 @@ const CommunityQuillEditor = ({
 
   return (
     <div>
-      <QuillEditor
+      <QuillNoSSRWrapper
         value={content}
         onChange={onEditorChangeHandler}
         modules={modules}
