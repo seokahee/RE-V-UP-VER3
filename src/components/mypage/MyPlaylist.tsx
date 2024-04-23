@@ -1,4 +1,5 @@
 import arrow from '@/../public/images/chevron-down.svg'
+import loading from '@/../public/images/loadingBar.gif'
 import { queryClient } from '@/app/provider'
 import { GET_MUSIC_LIST_QUERY_KEYS } from '@/query/musicPlayer/musicPlayerQueryKeys'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
@@ -11,7 +12,7 @@ import { useIntersectionObserver } from '@/util/useIntersectionObserver'
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Swal from 'sweetalert2'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import CheckboxItem from './CheckboxItem'
@@ -23,6 +24,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
   const [toggle, setToggle] = useState(false)
   const topRef = useRef<HTMLDivElement>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
+  const listRef = useRef<HTMLUListElement>(null)
 
   const PER_PAGE = 5
   const MAX_PAGES = 4
@@ -33,6 +35,8 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     fetchPreviousPage,
     hasNextPage,
     hasPreviousPage,
+    isFetchingNextPage,
+    isFetchingPreviousPage,
   } = useInfiniteQuery({
     queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_MUSIC_INFO, uid],
     queryFn: ({ pageParam = 1 }) =>
@@ -254,28 +258,34 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     checkListReset()
   }
 
-  const scrollYPosition = window.scrollY || window.pageYOffset
   const scrollPosition = (type: string) => {
-    const itemHeight = 88
-    // const position =
-    //   type === 'top' ? window.scrollY + itemHeight : window.scrollY - itemHeight
-    const position = scrollYPosition
+    const height = listRef.current?.children[0]
+      ? listRef.current?.children[0].clientHeight
+      : 0
+    console.log('height', height)
+    const itemHeight = height
+    const position =
+      type === 'top'
+        ? window.scrollY + itemHeight * 5
+        : window.scrollY - itemHeight * 3
+
     window.scrollTo({
-      top: position, // 현재 스크롤 위치에서 100px 위로 이동
+      top: position,
       // behavior: 'smooth', // 부드럽게 스크롤 이동
     })
   }
 
   const previousPage = () => {
     fetchPreviousPage()
-    // scrollPosition('top')
+    scrollPosition('top')
   }
 
   const nextPage = () => {
     fetchNextPage()
-    // if (MAX_PAGES === playlistMyData?.pageParams.length!) {
-    //   scrollPosition('bottom')
-    // }
+    console.log(playlistMyData?.pageParams.length)
+    if (MAX_PAGES === playlistMyData?.pageParams.length!) {
+      scrollPosition('bottom')
+    }
   }
 
   //역방향
@@ -344,8 +354,19 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
         </div>
       )}
       {hasPreviousPage && <div ref={topRef}></div>}
+      {isFetchingPreviousPage && (
+        <div className='flex h-[50px] items-center justify-center'>
+          <Image
+            src={loading}
+            height={40}
+            width={40}
+            alt='데이터를 가져오는 중입니다.'
+          />
+        </div>
+      )}
       <ul
         className={`tracking-[-0.03em] ${toggle ? toggleStyle : ''} overflow-hidden transition-opacity ease-in-out`}
+        ref={listRef}
       >
         {playlistMyData && playlistMyData.playlistMyIds?.length! > 0 ? (
           <>
@@ -377,7 +398,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
                       </figure>
                       <label
                         htmlFor={`my-${item.musicId}`}
-                        className='flex flex-col'
+                        className='flex cursor-pointer flex-col'
                       >
                         <span className='text-[1.125rem]'>
                           {item.musicTitle}
@@ -401,6 +422,16 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
           </li>
         )}
       </ul>
+      {isFetchingNextPage && (
+        <div className='flex h-[50px] items-center justify-center'>
+          <Image
+            src={loading}
+            height={40}
+            width={40}
+            alt='데이터를 가져오는 중입니다.'
+          />
+        </div>
+      )}
       {hasNextPage && <div className='h-2' ref={bottomRef}></div>}
     </div>
   )
