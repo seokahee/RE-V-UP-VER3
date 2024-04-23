@@ -46,9 +46,6 @@ const CommunityQuillEditor = ({
         ImageResize: {
           parchment: Quill.import('parchment'),
         },
-        // handlers: {
-        //   image: onImageHandler,
-        // },
       },
     }),
     [content],
@@ -60,11 +57,10 @@ const CommunityQuillEditor = ({
       content: value,
     }))
   }
-  // if (typeof window !== 'undefined') {
+
   return (
     <div>
       <QuillEditor
-        theme='snow'
         value={content}
         onChange={onEditorChangeHandler}
         modules={modules}
