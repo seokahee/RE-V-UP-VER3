@@ -37,7 +37,6 @@ import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 import { CommunityNoSsrQuillEditor } from './CommunityNoSsrQuillEditor'
 import createDOMPurify from 'dompurify'
-import ReactQuill from 'react-quill'
 
 const CommunityContents = () => {
   const router = useRouter()
