@@ -4,7 +4,7 @@ import React, { Dispatch, SetStateAction, useMemo } from 'react'
 import 'react-quill/dist/quill.snow.css'
 import { Quill } from 'react-quill'
 import { formats, toolbarOptions } from './value'
-import { QuillEditor } from './QuillEditor'
+import { QuillNoSSRWrapper } from './QuillEditor'
 
 type QuillEditorProps = {
   content: string
@@ -46,9 +46,6 @@ const CommunityQuillEditor = ({
         ImageResize: {
           parchment: Quill.import('parchment'),
         },
-        // handlers: {
-        //   image: onImageHandler,
-        // },
       },
     }),
     [content],
@@ -60,11 +57,10 @@ const CommunityQuillEditor = ({
       content: value,
     }))
   }
-  // if (typeof window !== 'undefined') {
+
   return (
     <div>
-      <QuillEditor
-        theme='snow'
+      <QuillNoSSRWrapper
         value={content}
         onChange={onEditorChangeHandler}
         modules={modules}

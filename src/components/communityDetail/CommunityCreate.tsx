@@ -16,7 +16,7 @@ import { ADD_BOARD_STICK, ALLOW_SHADOW } from './communityCss'
 import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 import CommunityAddMusic from './CommunityAddMusic'
-import { QuillEditor } from './QuillEditor'
+import { CommunityNoSsrQuillEditor } from './CommunityNoSsrQuillEditor'
 
 type CommunityForm = {
   boardTitle: string
@@ -182,14 +182,13 @@ const CommunityCreate = () => {
               />
             </div>
 
-            {typeof window !== 'undefined' && (
-              <article className='h-[200px]'>
-                <QuillEditor
-                  content={content}
-                  setCommunityForm={setCommunityForm}
-                />
-              </article>
-            )}
+            <article className='h-[200px] text-[16px]'>
+              <CommunityNoSsrQuillEditor
+                theme='snow'
+                content={content}
+                setCommunityForm={setCommunityForm}
+              />
+            </article>
           </div>
         </form>
         <ul className='mt-[88px]'>
