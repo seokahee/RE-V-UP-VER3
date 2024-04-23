@@ -16,6 +16,7 @@ import React, { useRef, useState } from 'react'
 import Swal from 'sweetalert2'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import CheckboxItem from './CheckboxItem'
+import InfiniteScrollContainer from '@/util/InfiniteScrollContainer'
 
 const MyPlaylist = ({ data }: { data: UserInfo }) => {
   const { data: userSessionInfo } = useSession()
@@ -288,26 +289,26 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     }
   }
 
-  //역방향
-  const onIntersectTop = ([entry]: IntersectionObserverEntry[]) =>
-    entry.isIntersecting && previousPage()
+  // //역방향
+  // const onIntersectTop = ([entry]: IntersectionObserverEntry[]) =>
+  //   entry.isIntersecting && previousPage()
 
-  useIntersectionObserver({
-    target: topRef,
-    onIntersect: onIntersectTop,
-    enabled: hasPreviousPage,
-  })
+  // useIntersectionObserver({
+  //   target: topRef,
+  //   onIntersect: onIntersectTop,
+  //   enabled: hasPreviousPage,
+  // })
 
-  //정방향
-  //감시하는 요소가 보여지면 fetchNextPage 실행하도록 하는 onIntersect로직을 useIntersectionObserver 에 넘겨줌
-  const onIntersect = ([entry]: IntersectionObserverEntry[]) =>
-    entry.isIntersecting && nextPage()
+  // //정방향
+  // //감시하는 요소가 보여지면 fetchNextPage 실행하도록 하는 onIntersect로직을 useIntersectionObserver 에 넘겨줌
+  // const onIntersect = ([entry]: IntersectionObserverEntry[]) =>
+  //   entry.isIntersecting && nextPage()
 
-  useIntersectionObserver({
-    target: bottomRef,
-    onIntersect,
-    enabled: hasNextPage,
-  })
+  // useIntersectionObserver({
+  //   target: bottomRef,
+  //   onIntersect,
+  //   enabled: hasNextPage,
+  // })
 
   const shadow =
     'shadow-[-4px_-4px_8px_rgba(255,255,255,0.05),4px_4px_8px_rgba(0,0,0,0.7)]'
@@ -353,7 +354,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
           </button>
         </div>
       )}
-      {hasPreviousPage && <div ref={topRef}></div>}
+      {/* {hasPreviousPage && <div ref={topRef}></div>}
       {isFetchingPreviousPage && (
         <div className='flex h-[50px] items-center justify-center'>
           <Image
@@ -363,66 +364,75 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
             alt='데이터를 가져오는 중입니다.'
           />
         </div>
-      )}
-      <ul
-        className={`tracking-[-0.03em] ${toggle ? toggleStyle : ''} overflow-hidden transition-opacity ease-in-out`}
-        ref={listRef}
+      )} */}
+      <InfiniteScrollContainer
+        isFetchingNextPage={isFetchingNextPage}
+        isFetchingPreviousPage={isFetchingPreviousPage}
+        hasNextPage={hasNextPage}
+        hasPreviousPage={hasPreviousPage}
+        previousPage={previousPage}
+        nextPage={nextPage}
       >
-        {playlistMyData && playlistMyData.playlistMyIds?.length! > 0 ? (
-          <>
-            {playlistMyData.pages.map((group, i) => (
-              <React.Fragment key={playlistMyData.pageParams[i]}>
-                {group?.map((item) => (
-                  <li
-                    key={item.musicId}
-                    className='flex items-center justify-between p-4'
-                  >
-                    <div className='flex items-center'>
-                      <CheckboxItem
-                        checked={checkedList.includes(item.musicId)}
-                        id={`my-${item.musicId}`}
-                        onChangeCheckMusicHandler={(e) =>
-                          onChangeCheckMusicHandler(
-                            e.target.checked,
-                            item.musicId,
-                          )
-                        }
-                      />
-                      <figure className='ml-7 mr-4 overflow-hidden rounded-full'>
-                        <Image
-                          src={item.thumbnail}
-                          width={56}
-                          height={56}
-                          alt={`${item.musicTitle} 앨범 이미지`}
+        <ul
+          className={`tracking-[-0.03em] ${toggle ? toggleStyle : ''} overflow-hidden transition-opacity ease-in-out`}
+          ref={listRef}
+        >
+          {playlistMyData && playlistMyData.playlistMyIds?.length! > 0 ? (
+            <>
+              {playlistMyData.pages.map((group, i) => (
+                <React.Fragment key={playlistMyData.pageParams[i]}>
+                  {group?.map((item) => (
+                    <li
+                      key={item.musicId}
+                      className='flex items-center justify-between p-4'
+                    >
+                      <div className='flex items-center'>
+                        <CheckboxItem
+                          checked={checkedList.includes(item.musicId)}
+                          id={`my-${item.musicId}`}
+                          onChangeCheckMusicHandler={(e) =>
+                            onChangeCheckMusicHandler(
+                              e.target.checked,
+                              item.musicId,
+                            )
+                          }
                         />
-                      </figure>
-                      <label
-                        htmlFor={`my-${item.musicId}`}
-                        className='flex cursor-pointer flex-col'
-                      >
-                        <span className='text-[1.125rem]'>
-                          {item.musicTitle}
-                        </span>
-                        <span className='text-[0.875rem] text-[#ffffff7f]'>
-                          {item.artist}
-                        </span>
-                      </label>
-                    </div>
-                    <span className='text-[0.875rem] font-medium text-[#ffffff7f]'>
-                      {item.runTime}
-                    </span>
-                  </li>
-                ))}
-              </React.Fragment>
-            ))}
-          </>
-        ) : (
-          <li className='flex h-[300px] items-center justify-center text-[1rem] text-white/50'>
-            좋아하는 음악을 추가해보세요!
-          </li>
-        )}
-      </ul>
-      {isFetchingNextPage && (
+                        <figure className='ml-7 mr-4 overflow-hidden rounded-full'>
+                          <Image
+                            src={item.thumbnail}
+                            width={56}
+                            height={56}
+                            alt={`${item.musicTitle} 앨범 이미지`}
+                          />
+                        </figure>
+                        <label
+                          htmlFor={`my-${item.musicId}`}
+                          className='flex cursor-pointer flex-col'
+                        >
+                          <span className='text-[1.125rem]'>
+                            {item.musicTitle}
+                          </span>
+                          <span className='text-[0.875rem] text-[#ffffff7f]'>
+                            {item.artist}
+                          </span>
+                        </label>
+                      </div>
+                      <span className='text-[0.875rem] font-medium text-[#ffffff7f]'>
+                        {item.runTime}
+                      </span>
+                    </li>
+                  ))}
+                </React.Fragment>
+              ))}
+            </>
+          ) : (
+            <li className='flex h-[300px] items-center justify-center text-[1rem] text-white/50'>
+              좋아하는 음악을 추가해보세요!
+            </li>
+          )}
+        </ul>
+      </InfiniteScrollContainer>
+      {/* {isFetchingNextPage && (
         <div className='flex h-[50px] items-center justify-center'>
           <Image
             src={loading}
@@ -432,7 +442,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
           />
         </div>
       )}
-      {hasNextPage && <div className='h-2' ref={bottomRef}></div>}
+      {hasNextPage && <div className='h-2' ref={bottomRef}></div>} */}
     </div>
   )
 }
