@@ -37,26 +37,7 @@ import CommentsPage from '@/app/(auth)/comment/page'
 import { QuillEditor } from './QuillEditor'
 import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
-
-
-export const CommunityQuillEditor = dynamic(
-  async () => {
-    const { default: RQ } = await import('./CommunityQuillEditor')
-    return function comp({ forwardedRef, ...props }: any) {
-      return <RQ ref={forwardedRef} {...props} />
-    }
-  },
-  {
-    ssr: false,
-    loading: () => {
-      return (
-        <div>
-          <Image src={loading} width={50} height={50} alt='로딩바' />
-        </div>
-      )
-    },
-  },
-)
+import { CommunityNoSsrQuillEditor } from './CommunityNoSsrQuillEditor'
 
 const CommunityContents = () => {
   const router = useRouter()
@@ -512,7 +493,8 @@ const CommunityContents = () => {
           {typeof window !== 'undefined' && (
             <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
               {isEdit ? (
-                <CommunityQuillEditor
+                <CommunityNoSsrQuillEditor
+                  theme='snow'
                   content={updatedContent}
                   setCommunityForm={setEditForm}
                 />
