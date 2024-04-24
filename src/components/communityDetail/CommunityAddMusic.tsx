@@ -53,7 +53,7 @@ const CommunityAddMusic = ({
           <p className='text-[14px] text-[rgba(255,255,255,0.5)]'>
             게시글을 등록하기 위해 음악을 추가해야 돼요!
             <br />
-            플레이어에 끌어놓고 미리듣기가 가능해요!
+            등록한 음악을 플레이어에 끌어놓고 미리 들어보아요!
           </p>
         </div>
       </article>

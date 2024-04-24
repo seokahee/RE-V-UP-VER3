@@ -38,10 +38,14 @@ export type CommentType = {
 }
 
 export type MusicInfoType = {
-  musicId?: string
-  musicTitle?: string
-  artist?: string
-  thumbnail?: string
+  musicId: string
+  musicTitle: string
+  artist: string
+  thumbnail: string
+  musicSource?: string
+  release?: string
+  runTime?: string
+  lyrics?: string
 }
 export type readCommuDetailDataType = {
   boardId?: string

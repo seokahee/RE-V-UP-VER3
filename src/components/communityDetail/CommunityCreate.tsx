@@ -30,27 +30,15 @@ const CommunityCreate = () => {
   const { chooseMusic, setChooseMusic } = useMusicSearchedStore()
   const { addCommunityMutation } = useCoummunityItem()
   const { data: userSessionInfo, status } = useSession()
-  const {
-    artist,
-    musicId,
-    musicTitle,
-    thumbnail,
-    musicSource,
-    release,
-    runTime,
-    lyrics,
-  } = chooseMusic as MusicInfoType
+  const musicId = chooseMusic?.musicId as string
+  const musicTitle = chooseMusic?.musicTitle
+  const artist = chooseMusic?.artist
+  const thumbnail = chooseMusic?.thumbnail
 
   const item = {
-    artist,
-    musicId,
-    musicSource,
-    musicTitle,
-    release,
-    thumbnail,
-    runTime,
-    lyrics,
+    ...chooseMusic,
   } as MusicInfoType
+
   const {
     form: communityForm,
     setForm: setCommunityForm,
