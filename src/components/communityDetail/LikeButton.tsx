@@ -71,7 +71,6 @@ const LikeButton = ({ boardId }: Props) => {
     setLikeList(updatedLikeList)
     setLike(!like)
   }
-  console.log(likeCount)
   return (
     <div>
       <div className='flex gap-[7px]'>
