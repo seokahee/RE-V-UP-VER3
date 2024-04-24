@@ -1,22 +1,45 @@
 import { MyPlayListType } from '@/types/musicPlayer/types'
 import { supabase } from '../supabase/supabase'
 
+// export const getCurrentMusicList = async (userId: string) => {
+//   const { data: currentMusic } = await supabase
+//     .from('playlistCurrent')
+//     .select('currentId,currentMusicIds,userInfo(userId)')
+//     .eq('userId', userId)
+
+//   if (currentMusic && currentMusic.length > 0) {
+//     const musicIds = currentMusic.map((item) => {
+//       return item.currentMusicIds
+//     })
+//     if (musicIds && musicIds.length > 0) {
+//       const { data: musicInfo } = await supabase
+//         .from('musicInfo')
+//         .select('*')
+//         .in('musicId', musicIds)
+
+//       return musicInfo ?? []
+//     }
+//   }
+//   return []
+// }
+
+// 아이디 타입 왜이래
 export const getCurrentMusicList = async (userId: string) => {
   const { data: currentMusic } = await supabase
     .from('playlistCurrent')
-    .select('currentId,currentMusicIds,userInfo(userId)')
+    .select('currentMusicIds,userInfo(userId)')
     .eq('userId', userId)
 
   if (currentMusic && currentMusic.length > 0) {
     const musicIds = currentMusic.map((item) => {
-      return item.currentMusicIds
+      return item.currentMusicIds?.map((music) => music!.id)
     })
     if (musicIds && musicIds.length > 0) {
       const { data: musicInfo } = await supabase
         .from('musicInfo')
         .select('*')
-        .in('musicId', musicIds)
-
+        .in('musicId', musicIds.flat())
+      console.log('musicInfo', musicInfo)
       return musicInfo ?? []
     }
   }

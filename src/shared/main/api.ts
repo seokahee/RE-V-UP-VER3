@@ -146,10 +146,14 @@ export const insertCurrentMusic = async ({
   userId: string
   musicId: string
 }) => {
+  const musicIdx = {
+    id: musicId,
+    idx: 0,
+  }
   try {
     await supabase
       .from('playlistCurrent')
-      .insert([{ userId: userId, currentMusicIds: [musicId] }])
+      .insert({ userId: userId, currentMusicIds: [musicIdx] })
       .select()
   } catch (error) {
     console.error(error)
@@ -163,10 +167,16 @@ export const updateCurrentMusic = async ({
   userId: string
   currentList: string[]
 }) => {
+  const musicIdx = currentList.map((item, idx) => {
+    return {
+      id: item,
+      idx,
+    }
+  })
   try {
     await supabase
       .from('playlistCurrent')
-      .update({ currentMusicIds: [...currentList] })
+      .update({ currentMusicIds: [...musicIdx] })
       .eq('userId', userId)
       .select()
   } catch (error) {
