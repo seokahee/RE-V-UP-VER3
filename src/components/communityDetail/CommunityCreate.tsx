@@ -17,6 +17,7 @@ import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 import CommunityAddMusic from './CommunityAddMusic'
 import { CommunityNoSsrQuillEditor } from './CommunityNoSsrQuillEditor'
+import { MusicInfoType } from '@/types/musicPlayer/types'
 
 type CommunityForm = {
   boardTitle: string
@@ -33,6 +34,10 @@ const CommunityCreate = () => {
   const musicTitle = chooseMusic?.musicTitle
   const artist = chooseMusic?.artist
   const thumbnail = chooseMusic?.thumbnail
+
+  const item = {
+    ...chooseMusic,
+  } as MusicInfoType
 
   const {
     form: communityForm,
@@ -196,6 +201,7 @@ const CommunityCreate = () => {
             thumbnail={thumbnail}
             musicTitle={musicTitle}
             artist={artist}
+            item={item}
           />
         </ul>
       </div>

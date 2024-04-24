@@ -21,7 +21,7 @@ const MusicSearchModal = ({
   isModal: boolean
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
-  const { chooseMusic, isChooseMusic, setChooseMusic, setIsChooseMusic } =
+  const { chooseMusic, isChooseMusic, setIsChooseMusic } =
     useMusicSearchedStore()
   const [musicList, setMusicList] = useState<MusicInfoType[]>([])
   const [currentPage, setCurrentPage] = useState(1)
@@ -86,7 +86,7 @@ const MusicSearchModal = ({
     setIsModal(false)
   }
 
-  const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyUp = (e: KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault()
       const submitEvent = new Event('submit', {
@@ -162,6 +162,7 @@ const MusicSearchModal = ({
         <div className='absolute bottom-[22px] flex flex-row items-center justify-center shadow-primary'>
           <button
             onClick={onAddViewMusicHandler}
+            onKeyUp={handleKeyUp}
             className='rounded-lg px-[10px] text-white'
           >
             <span

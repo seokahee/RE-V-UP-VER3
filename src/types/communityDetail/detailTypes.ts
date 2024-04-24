@@ -21,6 +21,9 @@ export type readCommuDetail = {
     artist: string
     thumbnail: string
     runTime: string
+    musicSource: string
+    release: string
+    lyrics: string
   }
 }
 
@@ -35,10 +38,14 @@ export type CommentType = {
 }
 
 export type MusicInfoType = {
-  musicId?: string
-  musicTitle?: string
-  artist?: string
-  thumbnail?: string
+  musicId: string
+  musicTitle: string
+  artist: string
+  thumbnail: string
+  musicSource?: string
+  release?: string
+  runTime?: string
+  lyrics?: string
 }
 export type readCommuDetailDataType = {
   boardId?: string
@@ -80,8 +87,20 @@ export type Props = {
   boardId: string
 }
 
+export type AddMusicInfoType = {
+  artist: string
+  musicId: string
+  musicSource: string
+  musicTitle: string
+  release: string
+  thumbnail: string
+  runTime: string
+  lyrics: string
+}
+
 export type AddMusicProps = {
   thumbnail: string | undefined
   musicTitle: string | undefined
   artist: string | undefined
+  item: AddMusicInfoType
 }
