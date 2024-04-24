@@ -146,6 +146,7 @@ export const updateLikeCountInCommunity = async (
       throw error
     }
   } catch (error) {
+    console.log(error)
     console.error('좋아요 수를 저장하지 못했습니다.', error)
     throw error
   }

@@ -90,7 +90,6 @@ const LikeButton = ({ boardId }: Props) => {
 
         <p className='text-[rgba(255,255,255,0.5)]'>
           {likeLength}
-          {likeCount}
           {likePlusCondition}
         </p>
       </div>
