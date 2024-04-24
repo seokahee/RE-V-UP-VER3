@@ -132,3 +132,21 @@ export const getComments = async (boardId: string): Promise<comment[]> => {
   }
   return comment as comment[]
 }
+
+export const updateLikeCountInCommunity = async (
+  boardId: string,
+  likeCount: number,
+) => {
+  try {
+    const { error } = await supabase
+      .from('community')
+      .update({ likeCount })
+      .eq('boardId', boardId)
+    if (error) {
+      throw error
+    }
+  } catch (error) {
+    console.error('좋아요 수를 저장하지 못했습니다.', error)
+    throw error
+  }
+}
