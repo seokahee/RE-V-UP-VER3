@@ -16,6 +16,7 @@ import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { SentenceMatch } from '@/util/personal/util'
 import ButtonPrimary from '../../util/ButtonPrimary'
+import Swal from 'sweetalert2'
 
 import type { PersonalRecommendProps } from '@/types/personal/type'
 
@@ -103,7 +104,13 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
 
   const onSubmitCurrentMusic = () => {
     if (checkedList.length === 0) {
-      alert('선택된 곡이 없습니다.')
+      // alert('선택된 곡이 없습니다.')
+      Swal.fire({
+        icon: 'error',
+        text: '선택된 곡이 없습니다.',
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       return
     }
 
@@ -112,7 +119,13 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     )
 
     if (filterMusic.length > 0) {
-      alert('이미 현재 재생목록에 있는 곡입니다.')
+      // alert('이미 현재 재생목록에 있는 곡입니다.')
+      Swal.fire({
+        icon: 'error',
+        text: '이미 현재 재생목록에 있는 곡입니다.',
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       setCheckedList([])
       return
     }
@@ -134,10 +147,20 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     }
 
     if (personalUser?.find((user) => user.userId === userChar.uid)) {
-      alert('진단 결과 업데이트 및 곡 추가가 완료됐습니다.')
+      // alert('진단 결과 업데이트 및 곡 추가가 완료됐습니다.')
+      Swal.fire({
+        text: '진단 결과 업데이트 및 곡 추가가 완료됐습니다.',
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       updatePersonalResultMutation.mutate(personalMusicData)
     } else {
-      alert('곡 추가가 완료됐습니다.')
+      // alert('곡 추가가 완료됐습니다.')
+      Swal.fire({
+        text: '곡 추가가 완료됐습니다.',
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       addPersonalResultMutation.mutate(personalMusicData)
     }
   }

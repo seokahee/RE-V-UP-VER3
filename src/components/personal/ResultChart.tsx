@@ -77,9 +77,21 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
               },
               responsive: false,
               plugins: {
+                legend: {
+                  labels: {
+                    font: {
+                      size: 14,
+                    },
+                    color: 'white',
+                  },
+                },
                 title: {
                   display: true,
                   text: '당신의 퍼스널 뮤직 진단 결과',
+                  color: 'white',
+                  font: {
+                    size: 20,
+                  },
                 },
               },
             },
