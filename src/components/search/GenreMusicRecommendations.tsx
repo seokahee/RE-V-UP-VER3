@@ -31,9 +31,9 @@ const GenreMusicRecommendations = ({
 
   return (
     <div>
-      <div className='focus-bold h-[28px] text-[20px] leading-[140%]'>
+      <h1 className='focus-bold h-[28px] text-[20px] leading-[140%]'>
         이런 음악은 어떠신가요? 🎶
-      </div>
+      </h1>
       <div>
         {currentItems?.map((item: any) => {
           return <NoSearchResultItem key={item.musicId} item={item} />

@@ -11,7 +11,6 @@ import {
 import { CurrentPlayListType } from '@/types/musicPlayer/types'
 import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import 'react-h5-audio-player/lib/styles.css'
 import Swal from 'sweetalert2'
@@ -25,9 +24,9 @@ const MusicPlayer = () => {
   const [checkedList, setCheckedList] = useState<string[]>([])
   const [isLyrics, setIsLyrics] = useState(false)
   const [isRandom, setIsRandom] = useState(false)
+  const [selectAll, setSelectAll] = useState(false)
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user.uid as string
-  const router = useRouter()
 
   const { currentPlayList, myPlayList, isError } = getMusicList(uid)
 
@@ -74,6 +73,7 @@ const MusicPlayer = () => {
     console.error('현재 플레이리스트를 가져오지 못했습니다')
     return
   }
+
   const onLyricsToggle = () => {
     setIsLyrics((prev) => !prev)
   }
@@ -148,6 +148,7 @@ const MusicPlayer = () => {
           currentMusicData: currentMusicData.map((music) => music.musicId),
         })
         setCheckedList([])
+        setSelectAll(false)
         const isCurrentMusicDeleted = checkedList.includes(
           currentPlaying!.musicId,
         )
@@ -160,6 +161,8 @@ const MusicPlayer = () => {
         }
         Swal.fire({
           title: '재생목록이 삭제되었습니다.',
+          showConfirmButton: false,
+          timer: 1500,
           icon: 'success',
           background: '#2B2B2B',
           color: '#ffffff',
@@ -173,19 +176,11 @@ const MusicPlayer = () => {
       Swal.fire({
         icon: 'warning',
         title: '추가할 노래를 선택해 주세요',
+        showConfirmButton: false,
+        timer: 1500,
         background: '#2B2B2B',
         color: '#ffffff',
       })
-      return
-    }
-
-    if (uid === '' || !uid) {
-      Swal.fire({
-        icon: 'error',
-        title:
-          '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
-      })
-      router.replace('/login')
       return
     }
 
@@ -215,6 +210,8 @@ const MusicPlayer = () => {
             Swal.fire({
               icon: 'warning',
               title: '이미 추가된 노래입니다.',
+              showConfirmButton: false,
+              timer: 1500,
               background: '#2B2B2B',
               color: '#ffffff',
             })
@@ -226,6 +223,8 @@ const MusicPlayer = () => {
             Swal.fire({
               icon: 'success',
               title: '마이플레이 리스트에 추가 되었습니다.',
+              showConfirmButton: false,
+              timer: 1500,
               background: '#2B2B2B',
               color: '#ffffff',
             })
@@ -236,6 +235,8 @@ const MusicPlayer = () => {
           Swal.fire({
             icon: 'success',
             title: '마이플레이 리스트에 추가 되었습니다.',
+            showConfirmButton: false,
+            timer: 1500,
             background: '#2B2B2B',
             color: '#ffffff',
           })
@@ -246,7 +247,7 @@ const MusicPlayer = () => {
   }
   return (
     <div>
-      <div className='min-h-[690px]'>
+      <div className='min-h-[600px]'>
         <Player
           currentPlaying={currentPlaying}
           setCurrentPlaying={setCurrentPlaying}
@@ -263,10 +264,13 @@ const MusicPlayer = () => {
       </div>
       <div>
         <CurrentMusicList
+          selectAll={selectAll}
+          setSelectAll={setSelectAll}
           currentPlaying={currentPlaying}
           currentPlayList={currentPlayList as CurrentPlayListType[]}
           isLyrics={isLyrics}
           checkedList={checkedList}
+          setCheckedList={setCheckedList}
           setCurrentPlaying={setCurrentPlaying}
           onChangeCheckMusicHandler={onChangeCheckMusicHandler}
           onDeleteCurrentMusicHandler={onDeleteCurrentMusicHandler}

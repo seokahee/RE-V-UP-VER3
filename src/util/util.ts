@@ -1,7 +1,5 @@
-import { PlaylistCurrent } from '@/types/main/types'
 import { MusicInfoType } from '@/types/musicPlayer/types'
 import { Dispatch, SetStateAction } from 'react'
-import Swal from 'sweetalert2'
 
 export const onDateHandler = (itemDate: string) => {
   const date = new Date(itemDate).toLocaleString('ko-KR', {
@@ -82,8 +80,3 @@ export const dragHandler = (
     }),
   )
 }
-
-// 헤이 pr올렸으니까 드래그 브랜치는 폭파예정이라구
-// 다음에 뭘 할지 의논해보고(현재플리 드래그로 순서 바꿀지 말지)
-// 브랜치 새로 게시한뒤 작업해라 이거 지우면 오류 사라질것임
-// pr올리기 전 수정내용 싹 푸쉬햇으니 안심하라구

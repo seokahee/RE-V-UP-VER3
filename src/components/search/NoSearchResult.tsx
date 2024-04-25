@@ -1,15 +1,16 @@
 'use client'
 import { getMusicPreferenceData, getUserChar } from '@/shared/main/api'
-import { useStore } from '@/shared/store'
 import { useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 import GenreMusicRecommendations from './GenreMusicRecommendations'
 import GenreRandomMusic from './GenreRandomMusic'
 
 const NoSearchResult = () => {
-  const { userInfo } = useStore()
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user.uid as string
 
   const { data: userData } = useQuery({
-    queryFn: () => getUserChar(userInfo.uid),
+    queryFn: () => getUserChar(uid),
     queryKey: ['userChar'],
   })
 

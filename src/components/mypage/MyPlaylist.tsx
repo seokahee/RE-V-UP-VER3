@@ -9,6 +9,7 @@ import {
 } from '@/shared/mypage/api'
 import type { UserInfo } from '@/types/mypage/types'
 import { useIntersectionObserver } from '@/util/useIntersectionObserver'
+import { dragHandler } from '@/util/util'
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -436,6 +437,10 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
                   <React.Fragment key={playlistMyData.pageParams[i]}>
                     {group?.map((item) => (
                       <li
+                        draggable='true'
+                        onDragStart={(e) => {
+                          dragHandler(e, item)
+                        }}
                         key={item.musicId}
                         className='flex items-center justify-between p-4'
                       >
