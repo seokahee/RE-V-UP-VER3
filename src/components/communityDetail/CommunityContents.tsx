@@ -260,8 +260,8 @@ const CommunityContents = () => {
     }
 
     Swal.fire({
-      text: '마이플레이 리스트에 추가하시겠습니까?',
-
+      text: '선택한 곡을 마이플레이 리스트에 추가하시겠습니까?',
+      icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#685BFF',
       cancelButtonColor: '#000000',
