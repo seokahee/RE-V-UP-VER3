@@ -1,20 +1,57 @@
 'use client'
 
-import { getSession, signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
+import Image from 'next/image'
+import Swal from 'sweetalert2'
 import { supabase } from '@/shared/supabase/supabase'
 import Logout from '@/../public/images/logout.svg'
-import Image from 'next/image'
 import { OPEN_ANOTHER_SHADOW } from '../login/loginCss'
 
 const LogOutButton = () => {
+  const { status } = useSession()
+
   const onLogOutHandler = async () => {
-    const loginStatus = await getSession()
-    await supabase.auth.signOut()
+    if (status === 'authenticated') {
+      Swal.fire({
+        title: '로그아웃',
+        text: '정말 로그아웃 하시겠습니까?',
 
-    await signOut({ redirect: true, callbackUrl: '/' })
+        showCancelButton: true,
+        confirmButtonColor: '#685BFF',
+        cancelButtonColor: '#000000',
+        confirmButtonText: '확인',
+        cancelButtonText: '취소',
+        color: '#ffffff',
+        background: '#2B2B2B',
 
-    if (loginStatus === null) {
-      alert('로그아웃 되셨습니다.')
+        reverseButtons: true,
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          supabase.auth.signOut()
+          signOut({ redirect: true, callbackUrl: '/' })
+
+          Swal.fire({
+            icon: 'success',
+            title: '로그아웃',
+            text: '로그아웃 되셨습니다.',
+            confirmButtonText: '확인',
+            showConfirmButton: false,
+            timer: 1500,
+            color: '#ffffff',
+            background: '#2B2B2B',
+          })
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: '로그아웃을 취소하셨습니다.',
+            confirmButtonText: '확인',
+            confirmButtonColor: '#685BFF',
+            color: '#ffffff',
+            background: '#2B2B2B',
+          })
+          return
+        }
+      })
     }
   }
 

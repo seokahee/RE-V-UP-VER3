@@ -105,7 +105,6 @@ const CommunityContents = () => {
     onChange: onChangeEditForm,
   } = useInput({ boardTitle, content })
   const { boardTitle: updatedTitle, content: updatedContent } = editForm
-  // const sanitizedHtmlContent = DOMPurify && DOMPurify?.sanitize(updatedContent)
 
   const commentLength =
     commentsData && commentsData.length > 99
@@ -133,9 +132,11 @@ const CommunityContents = () => {
         content: updatedContent,
       })
     }
+
     await Swal.fire({
       title: '게시글 수정',
       text: '내용을 수정하셨습니다.',
+
       confirmButtonText: '확인',
       confirmButtonColor: '#685BFF',
       color: '#ffffff',
@@ -164,9 +165,11 @@ const CommunityContents = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         deleteCommunityMutation.mutate(currentBoardId)
+
         Swal.fire({
           title: '게시글 삭제',
           text: '게시글을 삭제하셨습니다.',
+
           confirmButtonText: '확인',
           confirmButtonColor: '#685BFF',
           color: '#ffffff',
@@ -176,6 +179,7 @@ const CommunityContents = () => {
         Swal.fire({
           title: '게시글 삭제 취소',
           text: '삭제를 취소하셨습니다.',
+
           confirmButtonText: '취소',
           confirmButtonColor: '#685BFF',
           color: '#ffffff',
@@ -207,6 +211,7 @@ const CommunityContents = () => {
       await Swal.fire({
         text: '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
         confirmButtonText: '확인',
+
         confirmButtonColor: '#685BFF',
         color: '#ffffff',
         background: '#2B2B2B',
@@ -220,11 +225,13 @@ const CommunityContents = () => {
       const currentList = playListCurrent[0].currentMusicIds
       if (currentList.find((el) => el === musicId)) {
         await Swal.fire({
-          text: '이미 추가된 노래입니다.',
-          confirmButtonText: '확인',
-          confirmButtonColor: '#685BFF',
-          color: '#ffffff',
+          icon: 'warning',
+          title: '이미 추가된 노래입니다.',
+
+          showConfirmButton: false,
+          timer: 1500,
           background: '#2B2B2B',
+          color: '#ffffff',
         })
 
         return
@@ -236,11 +243,13 @@ const CommunityContents = () => {
       insertMutation.mutate({ userId: uid, musicId })
     }
     await Swal.fire({
-      text: '현재 재생목록에 추가 되었습니다.',
-      confirmButtonText: '확인',
-      confirmButtonColor: '#685BFF',
-      color: '#ffffff',
+      icon: 'success',
+      title: '현재 재생목록에 추가 되었습니다.',
+
+      showConfirmButton: false,
+      timer: 1500,
       background: '#2B2B2B',
+      color: '#ffffff',
     })
   }
 
@@ -249,22 +258,24 @@ const CommunityContents = () => {
       await Swal.fire({
         text: '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
         confirmButtonText: '확인',
+
         confirmButtonColor: '#685BFF',
         color: '#ffffff',
         background: '#2B2B2B',
       })
+
       router.replace('/login')
       return
     }
 
     Swal.fire({
       text: '마이플레이 리스트에 추가하시겠습니까?',
+      confirmButtonText: '추가',
+      cancelButtonText: '취소',
 
       showCancelButton: true,
       confirmButtonColor: '#685BFF',
       cancelButtonColor: '#000000',
-      confirmButtonText: '추가',
-      cancelButtonText: '취소',
       color: '#ffffff',
       background: '#2B2B2B',
 
@@ -278,6 +289,7 @@ const CommunityContents = () => {
             Swal.fire({
               text: '이미 추가된 노래입니다.',
               confirmButtonText: '확인',
+
               confirmButtonColor: '#685BFF',
               color: '#ffffff',
               background: '#2B2B2B',
@@ -293,6 +305,7 @@ const CommunityContents = () => {
         Swal.fire({
           text: '마이플레이리스트에 추가 되었습니다.',
           confirmButtonText: '확인',
+
           confirmButtonColor: '#685BFF',
           color: '#ffffff',
           background: '#2B2B2B',
@@ -410,6 +423,7 @@ const CommunityContents = () => {
                     maxLength={40}
                     value={updatedTitle}
                     onChange={onChangeEditForm}
+                    placeholder='제목을 입력해 주세요.(40자 이내)'
                     className='flex w-full rounded-[12px] border-none bg-[rgba(255,255,255,0.1)] px-[4px] pt-[4px] text-[18px] font-bold tracking-[-0.03em]'
                   />
                 ) : (
@@ -464,7 +478,7 @@ const CommunityContents = () => {
                 dragHandler(e, item)
               }}
             >
-              <section className='flex items-center gap-[32px]'>
+              <div className='flex items-center gap-[32px]'>
                 <figure className='flex h-[80px] w-[80px] items-center rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)]'>
                   <Image
                     src={`${thumbnail}`}
@@ -474,7 +488,7 @@ const CommunityContents = () => {
                     className='rounded-full '
                   />
                 </figure>
-                <article className='flex flex-col gap-[8px] '>
+                <div className='flex flex-col gap-[8px] '>
                   <div>
                     <p className='text-[24px] font-bold'>{musicTitle}</p>
                   </div>
@@ -483,15 +497,15 @@ const CommunityContents = () => {
                       {artist}
                     </p>
                   </div>
-                </article>
-              </section>
-              <section className='flex'>
-                <div className='flex items-center text-[16px] font-bold'>
-                  {runTime}
                 </div>
-              </section>
+              </div>
+              <div className='flex'>
+                <p className='flex items-center text-[16px] font-bold'>
+                  {runTime}
+                </p>
+              </div>
             </li>
-            <div className='flex items-center justify-center gap-[16px]'>
+            <li className='flex items-center justify-center gap-[16px]'>
               <button
                 onClick={(e) => onAddPlayerHandler(e, uid, musicId)}
                 className={`flex h-[48px] w-[48px] items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW}`}
@@ -515,7 +529,7 @@ const CommunityContents = () => {
                   height={16}
                 />
               </button>
-            </div>
+            </li>
           </ul>
           {typeof window !== 'undefined' ? (
             <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
@@ -531,7 +545,6 @@ const CommunityContents = () => {
                   readOnly={true}
                   value={content}
                   className='h-[200px] w-full px-[15px] tracking-[-0.03em]'
-                  // dangerouslySetInnerHTML={{ __html: updatedContent }}
                 />
               )}
             </article>
