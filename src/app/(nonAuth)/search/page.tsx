@@ -90,9 +90,9 @@ const Search = () => {
         </div>
       ) : (
         <div>
-          <div className='my-[48px] h-[28px] text-[20px] font-bold leading-[140%]'>
+          <h1 className='my-[48px] h-[28px] text-[20px] font-bold leading-[140%]'>
             {`'${keyword}'에 대한 검색 결과가 없습니다`}
-          </div>
+          </h1>
           <NoSearchResult />
         </div>
       )}

@@ -81,6 +81,8 @@ const SearchedMusicData = () => {
         Swal.fire({
           icon: 'warning',
           title: '이미 추가된 노래입니다.',
+          showConfirmButton: false,
+          timer: 1500,
           background: '#2B2B2B',
           color: '#ffffff',
         })
@@ -94,6 +96,8 @@ const SearchedMusicData = () => {
     Swal.fire({
       icon: 'success',
       title: '현재 플레이 리스트에 추가되었습니다',
+      showConfirmButton: false,
+      timer: 1500,
       background: '#2B2B2B',
       color: '#ffffff',
     })
@@ -129,6 +133,8 @@ const SearchedMusicData = () => {
             Swal.fire({
               icon: 'warning',
               title: '이미 추가된 노래입니다.',
+              showConfirmButton: false,
+              timer: 1500,
               background: '#2B2B2B',
               color: '#ffffff',
             })
@@ -142,6 +148,8 @@ const SearchedMusicData = () => {
         }
         Swal.fire({
           title: '마이플레이 리스트에 추가 되었습니다',
+          showConfirmButton: false,
+          timer: 1500,
           icon: 'success',
           background: '#2B2B2B',
           color: '#ffffff',
@@ -151,7 +159,7 @@ const SearchedMusicData = () => {
   }
 
   return (
-    <div>
+    <ul className='list-none'>
       {musicData.map((item) => {
         return (
           <li
@@ -163,7 +171,7 @@ const SearchedMusicData = () => {
             className='flex h-[88px] w-[732px] list-none items-start gap-[19px] p-[16px]'
           >
             <div className='flex h-[56px] w-[588px] gap-[16px]'>
-              <div className='h-[56px] w-[56px]'>
+              <figure className='h-[56px] w-[56px]'>
                 <Image
                   src={item.thumbnail}
                   width={56}
@@ -171,12 +179,10 @@ const SearchedMusicData = () => {
                   alt={`${item.musicTitle} 앨범 썸네일`}
                   className='rounded-full'
                 />
-              </div>
+              </figure>
               <div className='flex h-[48px] w-[516px] items-center justify-between pr-[32px]'>
                 <div className='flex flex-col gap-[3px]'>
-                  <span className='text-[18px] font-bold'>
-                    {item.musicTitle}
-                  </span>
+                  <h1 className='text-[18px] font-bold'>{item.musicTitle}</h1>
                   <span className='text-[14px] font-bold opacity-[50%]'>
                     {item.artist}
                   </span>
@@ -215,7 +221,7 @@ const SearchedMusicData = () => {
           </li>
         )
       })}
-    </div>
+    </ul>
   )
 }
 export default SearchedMusicData
