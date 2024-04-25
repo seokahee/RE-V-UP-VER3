@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Swal from 'sweetalert2'
+import DOMPurify from 'dompurify'
 import {
   useCoummunityCreateItem,
   useCoummunityItem,
@@ -40,8 +41,10 @@ import { MusicInfoType } from '@/types/musicPlayer/types'
 
 const CommunityContents = () => {
   const router = useRouter()
-  const [isEdit, setIsEdit] = useState<boolean>(false)
+  const DOMPurify =
+    typeof window !== 'undefined' ? createDOMPurify(window) : null
   const { setIsChooseMusic } = useMusicSearchedStore()
+  const [isEdit, setIsEdit] = useState<boolean>(false)
   const { data: userSessionInfo, status } = useSession()
   const uid = userSessionInfo?.user?.uid as string
   const { id: currentBoardId }: { id: string } = useParams()
@@ -129,9 +132,11 @@ const CommunityContents = () => {
         content: updatedContent,
       })
     }
+
     await Swal.fire({
       title: '게시글 수정',
       text: '내용을 수정하셨습니다.',
+
       confirmButtonText: '확인',
       confirmButtonColor: '#685BFF',
       color: '#ffffff',
@@ -164,6 +169,7 @@ const CommunityContents = () => {
         Swal.fire({
           title: '게시글 삭제',
           text: '게시글을 삭제하셨습니다.',
+
           confirmButtonText: '확인',
           confirmButtonColor: '#685BFF',
           color: '#ffffff',
@@ -173,6 +179,7 @@ const CommunityContents = () => {
         Swal.fire({
           title: '게시글 삭제 취소',
           text: '삭제를 취소하셨습니다.',
+
           confirmButtonText: '취소',
           confirmButtonColor: '#685BFF',
           color: '#ffffff',
@@ -200,11 +207,11 @@ const CommunityContents = () => {
     musicId: string,
   ) => {
     e.preventDefault()
-
     if (!uid) {
       await Swal.fire({
         text: '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
         confirmButtonText: '확인',
+
         confirmButtonColor: '#685BFF',
         color: '#ffffff',
         background: '#2B2B2B',
@@ -216,16 +223,17 @@ const CommunityContents = () => {
 
     if (playListCurrent && playListCurrent.length > 0) {
       const currentList = playListCurrent[0].currentMusicIds
-
       if (currentList.find((el) => el === musicId)) {
         await Swal.fire({
           icon: 'warning',
           title: '이미 추가된 노래입니다.',
+
           showConfirmButton: false,
           timer: 1500,
           background: '#2B2B2B',
           color: '#ffffff',
         })
+
         return
       }
 
@@ -234,10 +242,10 @@ const CommunityContents = () => {
     } else {
       insertMutation.mutate({ userId: uid, musicId })
     }
-
     await Swal.fire({
       icon: 'success',
       title: '현재 재생목록에 추가 되었습니다.',
+
       showConfirmButton: false,
       timer: 1500,
       background: '#2B2B2B',
@@ -250,22 +258,24 @@ const CommunityContents = () => {
       await Swal.fire({
         text: '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
         confirmButtonText: '확인',
+
         confirmButtonColor: '#685BFF',
         color: '#ffffff',
         background: '#2B2B2B',
       })
+
       router.replace('/login')
       return
     }
 
     Swal.fire({
-      text: '선택한 곡을 마이플레이 리스트에 추가하시겠습니까?',
-      icon: 'question',
+      text: '마이플레이 리스트에 추가하시겠습니까?',
+      confirmButtonText: '추가',
+      cancelButtonText: '취소',
+
       showCancelButton: true,
       confirmButtonColor: '#685BFF',
       cancelButtonColor: '#000000',
-      confirmButtonText: '추가',
-      cancelButtonText: '취소',
       color: '#ffffff',
       background: '#2B2B2B',
 
@@ -279,23 +289,23 @@ const CommunityContents = () => {
             Swal.fire({
               text: '이미 추가된 노래입니다.',
               confirmButtonText: '확인',
+
               confirmButtonColor: '#685BFF',
               color: '#ffffff',
               background: '#2B2B2B',
             })
             return
           }
-
           myList.push(musicId)
           updateMyMutation.mutate({ userId: uid, myMusicList: myList })
         } else {
           const myMusicId = [musicId]
           insertMyMutation.mutate({ userId: uid, musicId: myMusicId })
         }
-
         Swal.fire({
           text: '마이플레이리스트에 추가 되었습니다.',
           confirmButtonText: '확인',
+
           confirmButtonColor: '#685BFF',
           color: '#ffffff',
           background: '#2B2B2B',
@@ -325,14 +335,13 @@ const CommunityContents = () => {
     router.replace('/')
     return
   }
-
   return (
     <div className='flex w-[732px] flex-col'>
       <div className='mb-[8px] flex flex-col gap-[16px]'>
-        <ul
+        <section
           className={`justify-betweeen relative mt-[32px] flex h-[72px] w-[100%] items-center rounded-[16px] border-[4px] border-solid border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.1)] px-[16px] py-[12px] ${BOARD_TITLE_SHADOW}`}
         >
-          <li>
+          <div>
             {isEdit ? (
               <button
                 onClick={onEditCancelHandler}
@@ -358,24 +367,24 @@ const CommunityContents = () => {
                 />
               </button>
             )}
-          </li>
+          </div>
           <h3 className='mx-[auto] text-[18px] font-bold'>
             음악 추천 게시판🦻
           </h3>
           {isEdit ? (
-            <li className='absolute right-[12px] top-[12.5%]'>
+            <div className='absolute right-[12px] top-[12.5%]'>
               <button
                 onClick={onBoardEditCompleteHandler}
                 className={`flex h-[48px] w-[120px] items-center justify-center rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
               >
                 <p>수정완료</p>
               </button>
-            </li>
+            </div>
           ) : null}
-        </ul>
+        </section>
 
         <div className='flex w-full flex-col gap-[40px]'>
-          <ul className='flex items-center gap-[16px] border-b-[1px] border-solid border-[#000000] px-[16px] py-[30px]'>
+          <article className='flex items-center gap-[16px] border-b-[1px] border-solid border-[#000000] px-[16px] py-[30px]'>
             <div className='flex'>
               <Link
                 href={`/userpage/${userId}`}
@@ -405,7 +414,7 @@ const CommunityContents = () => {
               </Link>
             </div>
 
-            <li className='flex w-full flex-col gap-[16px]'>
+            <section className='flex w-full flex-col gap-[16px]'>
               <div className='flex w-full justify-between'>
                 {isEdit ? (
                   <input
@@ -457,8 +466,8 @@ const CommunityContents = () => {
                   {onDateTimeHandler(date)}
                 </div>
               </div>
-            </li>
-          </ul>
+            </section>
+          </article>
           <ul
             className={`flex w-full justify-between gap-[24px] rounded-[32px] bg-[rgba(255,255,255,0.1)] py-[20px] pl-[40px] pr-[20px]  ${ADDED_CURRENT_MUSIC_SHADOW}`}
           >
@@ -469,7 +478,7 @@ const CommunityContents = () => {
                 dragHandler(e, item)
               }}
             >
-              <ul className='flex items-center gap-[32px]'>
+              <div className='flex items-center gap-[32px]'>
                 <figure className='flex h-[80px] w-[80px] items-center rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)]'>
                   <Image
                     src={`${thumbnail}`}
@@ -479,24 +488,24 @@ const CommunityContents = () => {
                     className='rounded-full '
                   />
                 </figure>
-                <ul className='flex flex-col gap-[8px] '>
-                  <li>
+                <div className='flex flex-col gap-[8px] '>
+                  <div>
                     <p className='text-[24px] font-bold'>{musicTitle}</p>
-                  </li>
-                  <li>
+                  </div>
+                  <div>
                     <p className='font-bold text-[rgba(255,255,255,0.4)]'>
                       {artist}
                     </p>
-                  </li>
-                </ul>
-              </ul>
-              <ul className='flex'>
-                <li className='flex items-center text-[16px] font-bold'>
+                  </div>
+                </div>
+              </div>
+              <div className='flex'>
+                <p className='flex items-center text-[16px] font-bold'>
                   {runTime}
-                </li>
-              </ul>
+                </p>
+              </div>
             </li>
-            <div className='flex items-center justify-center gap-[16px]'>
+            <li className='flex items-center justify-center gap-[16px]'>
               <button
                 onClick={(e) => onAddPlayerHandler(e, uid, musicId)}
                 className={`flex h-[48px] w-[48px] items-center justify-center rounded-[100%] border border-solid border-[#292929] bg-[#292929] p-[8px] ${ADD_CURRENT_MUSIC_SHADOW}`}
@@ -520,7 +529,7 @@ const CommunityContents = () => {
                   height={16}
                 />
               </button>
-            </div>
+            </li>
           </ul>
           {typeof window !== 'undefined' ? (
             <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
@@ -531,13 +540,11 @@ const CommunityContents = () => {
                   setCommunityForm={setEditForm}
                 />
               ) : (
-                // <div dangerouslySetInnerHTML={{ __html: content }}></div>
                 <QuillNoSSRWrapper
                   theme='bubble'
                   readOnly={true}
                   value={content}
                   className='h-[200px] w-full px-[15px] tracking-[-0.03em]'
-                  // dangerouslySetInnerHTML={{ __html: updatedContent }}
                 />
               )}
             </article>
