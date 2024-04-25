@@ -192,13 +192,13 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
                 width={80}
                 height={80}
                 alt={`${item.musicTitle} 앨범 썸네일`}
-                className={`rounded-full ring-4 ring-transparent ${checkedList.includes(item.musicId) ? 'ring-white' : ''}`}
+                className={`cursor-pointer rounded-full ring-4 ring-transparent ${checkedList.includes(item.musicId) ? 'ring-white ' : ''}`}
               />
             </div>
             <div
               className={`w-[100px] ${checkedList.includes(item.musicId) ? 'text-white' : ''}`}
             >
-              <p className='w-[130px] text-center text-lg font-bold'>
+              <p className='w-[130px] cursor-pointer text-center text-lg font-bold'>
                 {item.musicTitle}
               </p>
             </div>
