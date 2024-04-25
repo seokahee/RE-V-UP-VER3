@@ -4,16 +4,23 @@ import {
   getMusicList,
 } from '@/query/musicPlayer/musicPlayerQueryKeys'
 import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
-import { MusicInfoType, MusicListProps } from '@/types/musicPlayer/types'
+import { useCurrentMusicStore } from '@/shared/store/playerStore'
+import {
+  CurrentPlayListType,
+  MusicInfoType,
+  MusicListProps,
+} from '@/types/musicPlayer/types'
 import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { DragEvent, useState } from 'react'
 import Swal from 'sweetalert2'
 import CheckboxItem from '../mypage/CheckboxItem'
+import musicDragIcon from '@/../public/images/musicDragIcon.svg'
+import Image from 'next/image'
 
 const CurrentMusicList = ({
   currentPlaying,
-  currentPlayList,
+  // currentPlayList,
   isLyrics,
   checkedList,
   selectAll,
@@ -24,9 +31,19 @@ const CurrentMusicList = ({
   onDeleteCurrentMusicHandler,
   setMusicIndex,
 }: MusicListProps) => {
+  const currentMusic = useCurrentMusicStore((state) => state.currentMusic)
+
   const [isDrag, setIsDrag] = useState(false)
-  const [isCurrent, setIsCurrent] = useState(false)
-  const [currentItem, setCurrentItem] = useState(currentPlayList)
+  const [draggedItem, setDraggedItem] = useState<MusicInfoType | null>(null)
+  const [dragIndex, setDragIndex] = useState<number>(-1)
+  // const [customList, setCustomList] = useState<CurrentPlayListType[]>([])
+
+  // const { setCustomList, customList } = useCurrentMusicStore()
+
+  const { state } = JSON.parse(
+    sessionStorage.getItem('currentMusicStore') as string,
+  )
+  const { currentPlayList } = state.currentMusicData
 
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user?.uid as string
@@ -53,47 +70,51 @@ const CurrentMusicList = ({
 
   const dropHandler = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
+    if (!isDrag) {
+      const musicInfo = JSON.parse(e.dataTransfer.getData('musicInfo'))
+      // console.log('musicInfo', musicInfo)
+      if (playListCurrent && playListCurrent.length > 0) {
+        // console.log('playListCurrent', playListCurrent)
+        const currentList = playListCurrent[0].currentMusicIds
+        if (currentList.find((el) => el === musicInfo.musicId)) {
+          Swal.fire({
+            icon: 'warning',
+            title: '이미 추가된 노래입니다.',
+            showConfirmButton: false,
+            timer: 1500,
+            background: '#2B2B2B',
+            color: '#ffffff',
+          })
+          return
+        }
+        // console.log('currentList', currentList)
 
-    const musicInfo = JSON.parse(e.dataTransfer.getData('musicInfo'))
-    // console.log('musicInfo', musicInfo)
-    if (playListCurrent && playListCurrent.length > 0) {
-      // console.log('playListCurrent', playListCurrent)
-      const currentList = playListCurrent[0].currentMusicIds
-      if (currentList.find((el) => el === musicInfo.musicId)) {
-        Swal.fire({
-          icon: 'warning',
-          title: '이미 추가된 노래입니다.',
-          showConfirmButton: false,
-          timer: 1500,
-          background: '#2B2B2B',
-          color: '#ffffff',
-        })
-        return
+        currentList.push(musicInfo.musicId)
+        // console.log('currentList', musicInfo.musicId)
+        // 아이디만 있는 배열을 보내주고 뮤테이션에서 객체 형태로 변환할것
+        updateMutation.mutate({ userId: uid, currentList })
+      } else {
+        insertMutation.mutate({ userId: uid, musicId: musicInfo.musicId })
       }
-      // console.log('currentList', currentList)
-
-      currentList.push(musicInfo.musicId)
-      // console.log('currentList', musicInfo.musicId)
-      // 아이디만 있는 배열을 보내주고 뮤테이션에서 객체 형태로 변환할것
-      updateMutation.mutate({ userId: uid, currentList })
-    } else {
-      insertMutation.mutate({ userId: uid, musicId: musicInfo.musicId })
+      Swal.fire({
+        icon: 'success',
+        title: '현재 재생목록에 추가 되었습니다.',
+        showConfirmButton: false,
+        timer: 1500,
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
     }
-    Swal.fire({
-      icon: 'success',
-      title: '현재 재생목록에 추가 되었습니다.',
-      showConfirmButton: false,
-      timer: 1500,
-      background: '#2B2B2B',
-      color: '#ffffff',
-    })
   }
   const dragOverHandler = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
   }
 
   const selectAllHandler = () => {
-    const allMusicIds = currentPlayList.map((item) => item.musicId)
+    const allMusicIds = currentPlayList.flatMap(
+      (item: CurrentPlayListType) => item.musicId,
+    )
+
     if (!selectAll) {
       setCheckedList(allMusicIds)
     } else {
@@ -102,57 +123,52 @@ const CurrentMusicList = ({
     setSelectAll((prev) => !prev)
   }
 
-  const indexDragHandler = (
-    e: DragEvent<HTMLDivElement>,
-    item: MusicInfoType,
+  // 인덱스 드래그 핸들러
+  const indexDragHandler = (item: MusicInfoType, index: number) => {
+    // 드래그 요소를 잡으면 요소의 정보와 인덱스를 스테이트에 저장
+    setDraggedItem(item)
+    setDragIndex(index)
+  }
+
+  const indexChangeDropHandler = (
+    dropIndex: number, // 드롭 위치의 인덱스
   ) => {
-    e.dataTransfer.setData('listItem', JSON.stringify(item))
-  }
-
-  const indexChangeDropHandler = (e: DragEvent<HTMLDivElement>) => {
-    const listItem = JSON.parse(e.dataTransfer.getData('listItem'))
-
-    const dragIndex = currentItem.findIndex(
-      (item) => item.musicId === listItem.musicId,
-    )
-
-    // 드롭된 위치 계산
-    const dropY = e.clientY
-    const dropIndex = calculateDropIndex(dropY)
-
-    if (dragIndex !== -1 && dropIndex !== -1 && dragIndex !== dropIndex) {
-      // 새로운 배열을 만들어서 드롭된 요소의 위치를 변경
-      const newPlayList = [...currentItem]
-      const [draggedItem] = newPlayList.splice(dragIndex, 1) // 드래그된 요소를 제거
-      newPlayList.splice(dropIndex, 0, draggedItem) // 드롭된 위치에 요소를 삽입
-
-      // 새로운 플레이리스트를 설정
-      setCurrentItem(newPlayList)
+    // 드래그 요소가 없거나, 현재 리스트가 없으면 반환
+    if (!draggedItem || !currentPlayList) {
+      return
     }
-  }
 
-  const calculateDropIndex = (dropY: number) => {
-    // 드래그된 아이템의 높이 계산
-    const draggedItemHeight = 63
+    // 드래그된 요소의 인덱스와 드롭할 인덱스가 동일하지 않으면 실행(기존 인덱스와 동일하면 이동시킬 필요없음)
+    if (dragIndex !== dropIndex) {
+      // 플리를 새 배열에 담음
+      // const newPlayList = [...currentPlayList]
 
-    // 목록의 상단 위치 계산
-    const listTop =
-      document.querySelector('.your-list-selector')?.getBoundingClientRect()
-        .top || 0
+      // 드래그된 플리에서 드래드된 인덱스를 삭제
+      const [draggedMusic] = currentPlayList.splice(dragIndex, 1)
 
-    // 드롭된 위치를 기준으로 목록의 위치를 계산
-    const yOffset = dropY - listTop
+      // 드롭한 순간 그 위치에 요소를 삽입
+      currentPlayList.splice(dropIndex, 0, draggedMusic)
 
-    // 드롭된 위치를 기준으로 목록에서의 인덱스를 계산
-    let currentIndex = Math.floor(yOffset / draggedItemHeight)
+      // setCustomList(newPlayList as CurrentPlayListType[])
 
-    // 현재 인덱스가 음수인 경우
-    currentIndex = Math.max(currentIndex, 0)
+      // 변경된 플레이리스트로 화면을 다시 렌더링
 
-    // 현재 인덱스가 목록의 길이를 초과한 경우
-    currentIndex = Math.min(currentIndex, currentItem.length)
+      // console.log('customList', customList)
+      // 세션스토리지에 저장
+      currentMusic(currentPlayList)
+      // currentMusic(customList as any)
+      // sessionStorage.setItem(
+      //   'currentMusicStore',
+      //   JSON.stringify({ currentMusicData: { currentPlayList: newPlayList } }),
+      // )
 
-    return currentIndex
+      // console.log('customList', customList)
+      //세션 스토리지에 변경사항이 저장되지않음
+    }
+
+    // 드래그 요소와 인덱스 초기화
+    setDraggedItem(null)
+    setDragIndex(-1)
   }
 
   return (
@@ -162,29 +178,34 @@ const CurrentMusicList = ({
       onDragOver={dragOverHandler}
     >
       {currentPlayList.length === 0 && (
-        <div className=' flex flex-col items-center text-[18px] opacity-50'>
+        <div className='flex flex-col items-center text-[18px] opacity-50'>
           음악을 추가해주세요
         </div>
       )}
-      <div className='flex  flex-col justify-between '>
-        {currentPlayList.map((item) => {
+      <div className='flex flex-col justify-between'>
+        {currentPlayList.map((item: CurrentPlayListType, index: number) => {
           const musicIndex = currentPlayList.findIndex(
-            (arr) => arr.musicId === item.musicId,
+            (arr: CurrentPlayListType) => {
+              return arr.musicId === item.musicId
+            },
           )
           const isCurrentPlaying = item.musicId === currentPlaying?.musicId
 
           return (
             <div
+              onDrop={() => indexChangeDropHandler(index)}
+              onDragOver={dragOverHandler}
               key={item.musicId}
-              style={{
-                backgroundColor: isCurrentPlaying
-                  ? 'rgb(64 64 64)'
-                  : 'transparent',
-              }}
+              className={`${isCurrentPlaying ? 'rounded-lg bg-neutral-700' : ''}`}
             >
               {!isLyrics ? (
                 <div
-                  className={`relative flex max-h-[63px] w-[366px] justify-between pb-[8px] pl-[16px] pr-[16px] pt-[8px] ${isCurrentPlaying ? ' bg-neutral-700' : ''}`}
+                  draggable='true'
+                  onDragStart={() => {
+                    setIsDrag(true)
+                    indexDragHandler(item, index)
+                  }}
+                  className={`relative flex max-h-[63px] w-[366px] cursor-pointer justify-between pb-[8px] pl-[16px] pr-[16px] pt-[8px] ${isCurrentPlaying ? 'rounded-lg bg-neutral-700' : ''}`}
                 >
                   <div className='flex items-center gap-[16px]'>
                     <CheckboxItem
@@ -210,19 +231,18 @@ const CurrentMusicList = ({
                       </span>
                     </div>
                   </div>
-                  <span className='text-[14px] opacity-[30%] '>
-                    {item.runTime}
-                  </span>
-
-                  <p
-                    draggable='true'
-                    onDragStart={(e) => {
-                      setIsDrag(true)
-                      indexDragHandler(e, item)
-                    }}
-                  >
-                    Drag
-                  </p>
+                  <div className='flex items-center gap-[17px]'>
+                    <span className='text-[14px] opacity-[30%] '>
+                      {item.runTime}
+                    </span>
+                    <Image
+                      src={musicDragIcon}
+                      alt='드래그 아이콘'
+                      width={24}
+                      height={24}
+                      // className='element rounded-full'
+                    />
+                  </div>
                 </div>
               ) : null}
               {isLyrics && isCurrentPlaying && (

@@ -11,11 +11,12 @@ import {
 import { CurrentPlayListType } from '@/types/musicPlayer/types'
 import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import 'react-h5-audio-player/lib/styles.css'
 import Swal from 'sweetalert2'
 import CurrentMusicList from './CurrentMusicList'
 import Player from './Player'
+import { useCurrentMusicStore } from '@/shared/store/playerStore'
 
 const MusicPlayer = () => {
   const [currentPlaying, setCurrentPlaying] =
@@ -27,6 +28,8 @@ const MusicPlayer = () => {
   const [selectAll, setSelectAll] = useState(false)
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user.uid as string
+
+  const currentMusic = useCurrentMusicStore((state) => state.currentMusic)
 
   const { currentPlayList, myPlayList, isError } = getMusicList(uid)
 
@@ -245,6 +248,7 @@ const MusicPlayer = () => {
       }
     })
   }
+  currentMusic(currentPlayList as CurrentPlayListType[])
   return (
     <div>
       <div className='min-h-[600px]'>
@@ -267,7 +271,7 @@ const MusicPlayer = () => {
           selectAll={selectAll}
           setSelectAll={setSelectAll}
           currentPlaying={currentPlaying}
-          currentPlayList={currentPlayList as CurrentPlayListType[]}
+          // currentPlayList={currentPlayList as CurrentPlayListType[]}
           isLyrics={isLyrics}
           checkedList={checkedList}
           setCheckedList={setCheckedList}

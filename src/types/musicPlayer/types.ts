@@ -79,7 +79,7 @@ export type MusicListProps = {
   currentPlaying: CurrentPlayListType | null
   isLyrics: boolean
   checkedList: string[]
-  currentPlayList: CurrentPlayListType[]
+  // currentPlayList: CurrentPlayListType[]
   selectAll: boolean
   setSelectAll: Dispatch<SetStateAction<boolean>>
   setCheckedList: (value: string[]) => void
