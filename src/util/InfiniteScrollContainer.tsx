@@ -8,11 +8,11 @@ type props = {
   isFetchingNextPage: boolean
   isFetchingPreviousPage: boolean
   hasNextPage: boolean
-  hasPreviousPage: boolean
-  previousPage: () => void
+  // hasPreviousPage: boolean
+  // previousPage: () => void
   nextPage: () => void
   root?: HTMLUListElement | HTMLDivElement | null
-  rootMargin?: string
+  // rootMargin?: string
 }
 
 const InfiniteScrollContainer = ({
@@ -20,16 +20,16 @@ const InfiniteScrollContainer = ({
   isFetchingNextPage,
   isFetchingPreviousPage,
   hasNextPage,
-  hasPreviousPage,
-  previousPage,
+  // hasPreviousPage,
+  // previousPage,
   nextPage,
   root,
-  rootMargin,
+  // rootMargin,
 }: props) => {
-  const topRef = useRef<HTMLDivElement>(null)
+  // const topRef = useRef<HTMLDivElement>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
   const rootTarget = root ? root : null
-  const rootMarginTarget = rootMargin ? rootMargin : '0px'
+  // const rootMarginTarget = rootMargin ? rootMargin : '0px'
 
   // 역방향
   // const onIntersectTop = ([entry]: IntersectionObserverEntry[]) =>
@@ -57,7 +57,7 @@ const InfiniteScrollContainer = ({
 
   return (
     <>
-      {hasPreviousPage && <div className='h-8' ref={topRef}></div>}
+      {/* {hasPreviousPage && <div className='h-8' ref={topRef}></div>} */}
       {isFetchingPreviousPage && (
         <div className='flex h-[50px] items-center justify-center'>
           <Image
@@ -79,7 +79,7 @@ const InfiniteScrollContainer = ({
           />
         </div>
       )}
-      {hasNextPage && <div className='h-20' ref={bottomRef}></div>}
+      {hasNextPage && <div className='h-[20px]' ref={bottomRef}></div>}
     </>
   )
 }
