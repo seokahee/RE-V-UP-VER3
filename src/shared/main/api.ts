@@ -146,14 +146,16 @@ export const insertCurrentMusic = async ({
   userId: string
   musicId: string
 }) => {
-  const musicIdx = {
-    id: musicId,
-    idx: 0,
-  }
+  // console.log('왜 갑자기 않되?')
+  // const musicIdx = {
+  //   id: musicId,
+  //   idx: 0,
+  // }
+  // console.log('최초 musicIdx,', musicIdx)
   try {
     await supabase
       .from('playlistCurrent')
-      .insert({ userId: userId, currentMusicIds: [musicIdx] })
+      .insert({ userId: userId, currentMusicIds: [musicId] })
       .select()
   } catch (error) {
     console.error(error)
@@ -167,17 +169,18 @@ export const updateCurrentMusic = async ({
   userId: string
   currentList: string[]
 }) => {
-  console.log('currentList', currentList)
-  const musicIdx = currentList.map((item, idx) => {
-    return {
-      id: item,
-      idx,
-    }
-  })
+  // console.log('API에 있는 currentList', currentList)
+  // const musicIdx = currentList.map((item, idx) => {
+  //   return {
+  //     id: item,
+  //     idx,
+  //   }
+  // })
+  // console.log('추가해서 수정musicIdx', musicIdx)
   try {
     await supabase
       .from('playlistCurrent')
-      .update({ currentMusicIds: [...musicIdx] })
+      .update({ currentMusicIds: [...currentList] })
       .eq('userId', userId)
       .select()
   } catch (error) {

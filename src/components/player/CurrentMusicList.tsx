@@ -51,8 +51,9 @@ const CurrentMusicList = ({
     e.preventDefault()
 
     const musicInfo = JSON.parse(e.dataTransfer.getData('musicInfo'))
-
+    // console.log('musicInfo', musicInfo)
     if (playListCurrent && playListCurrent.length > 0) {
+      // console.log('playListCurrent', playListCurrent)
       const currentList = playListCurrent[0].currentMusicIds
       if (currentList.find((el) => el === musicInfo.musicId)) {
         Swal.fire({
@@ -65,9 +66,11 @@ const CurrentMusicList = ({
         })
         return
       }
+      // console.log('currentList', currentList)
+
       currentList.push(musicInfo.musicId)
-      console.log('currentList', currentList)
-      console.log('currentList', musicInfo.musicId)
+      // console.log('currentList', musicInfo.musicId)
+      // 아이디만 있는 배열을 보내주고 뮤테이션에서 객체 형태로 변환할것
       updateMutation.mutate({ userId: uid, currentList })
     } else {
       insertMutation.mutate({ userId: uid, musicId: musicInfo.musicId })

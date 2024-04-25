@@ -1,51 +1,52 @@
-import { MyPlayListType, currentMusicIdType } from '@/types/musicPlayer/types'
+import { MyPlayListType } from '@/types/musicPlayer/types'
 import { supabase } from '../supabase/supabase'
 
-// export const getCurrentMusicList = async (userId: string) => {
-//   const { data: currentMusic } = await supabase
-//     .from('playlistCurrent')
-//     .select('currentId,currentMusicIds,userInfo(userId)')
-//     .eq('userId', userId)
-
-//   if (currentMusic && currentMusic.length > 0) {
-//     const musicIds = currentMusic.map((item) => {
-//       return item.currentMusicIds
-//     })
-//     if (musicIds && musicIds.length > 0) {
-//       const { data: musicInfo } = await supabase
-//         .from('musicInfo')
-//         .select('*')
-//         .in('musicId', musicIds)
-
-//       return musicInfo ?? []
-//     }
-//   }
-//   return []
-// }
-
-// 아이디 타입 왜이래
 export const getCurrentMusicList = async (userId: string) => {
   const { data: currentMusic } = await supabase
     .from('playlistCurrent')
-    .select('currentMusicIds,userInfo(userId)')
+    .select('currentId,currentMusicIds,userInfo(userId)')
     .eq('userId', userId)
+
   if (currentMusic && currentMusic.length > 0) {
-    const musicIds: currentMusicIdType[] = currentMusic.map((item) => {
-      return item.currentMusicIds?.map((music) => music!.id)
+    const musicIds = currentMusic.map((item) => {
+      return item.currentMusicIds
     })
-    console.log('musicIds', musicIds)
-    // musicIds.sort((a,b)=>{})
     if (musicIds && musicIds.length > 0) {
       const { data: musicInfo } = await supabase
         .from('musicInfo')
         .select('*')
-        .in('musicId', musicIds.flat())
-      console.log('musicInfo', musicInfo)
+        .in('musicId', musicIds)
+
       return musicInfo ?? []
     }
   }
   return []
 }
+
+// 아이디 타입 왜이래
+// export const getCurrentMusicList = async (userId: string) => {
+//   const { data: currentMusic } = await supabase
+//     .from('playlistCurrent')
+//     .select('currentMusicIds,userInfo(userId)')
+//     .eq('userId', userId)
+//   if (currentMusic && currentMusic.length > 0) {
+
+//     const musicIds = currentMusic.map((item) => {
+//       return item.currentMusicIds?.map((music) => music!.id)
+//     })
+//     console.log('currentMusic', currentMusic)
+//     // musicIds.sort((a,b)=>{})
+//     if (musicIds && musicIds.length > 0) {
+//       const { data: musicInfo } = await supabase
+//         .from('musicInfo')
+//         .select('*')
+//         .in('musicId', musicIds.flat())
+//       console.log('musicInfo', musicInfo)
+//       return musicInfo ?? []
+//     }
+//   }
+//   return []
+// }
 
 export const getMyMusicList = async (userId: string) => {
   const { data } = await supabase
