@@ -146,31 +146,33 @@ const CommunityCreate = () => {
       <div>
         <form onSubmit={onSumitHandler} className='flex flex-col gap-[32px]'>
           <div
-            className={`mt-[32px] flex h-[72px] w-[100%] items-center justify-between rounded-[16px] border-[4px] border-solid border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.1)] px-[24px] py-[12px] tracking-[-0.03em] ${ADD_BOARD_STICK}`}
+            className={`relative  mt-[32px] flex h-[72px] w-[100%] items-center justify-between rounded-[16px] border-[4px] border-solid border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.1)] px-[24px] py-[12px] tracking-[-0.03em] ${ADD_BOARD_STICK}`}
           >
-            <button
-              onClick={(e) => {
-                e.preventDefault()
-                router.replace('/community')
-                setChooseMusic(null)
-              }}
-              className={`flex h-[48px] w-[48px] items-center justify-center rounded-[12px] bg-[rgba(255,255,255,0.1)] ${ALLOW_SHADOW}`}
-            >
-              <Image
-                src={goback}
-                alt='이전으로 아이콘'
-                width={24}
-                height={24}
-              />
-            </button>
-            <div className='mx-[auto] text-center'>
+            <div className='absolute left-[45%] top-[32.5%] mx-[auto]  text-center'>
               <h3>글쓰기</h3>
             </div>
-            <button
-              className={`flex h-[48px] w-[120px] items-center justify-center rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
-            >
-              <p>등록하기</p>
-            </button>
+            <div className='flex w-full justify-between'>
+              <button
+                onClick={(e) => {
+                  e.preventDefault()
+                  router.replace('/community')
+                  setChooseMusic(null)
+                }}
+                className={`flex h-[48px] w-[48px] items-center justify-center rounded-[12px] bg-[rgba(255,255,255,0.1)] ${ALLOW_SHADOW}`}
+              >
+                <Image
+                  src={goback}
+                  alt='이전으로 아이콘'
+                  width={24}
+                  height={24}
+                />
+              </button>
+              <button
+                className={`flex h-[48px] w-[120px] items-center justify-center rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
+              >
+                <p>등록하기</p>
+              </button>
+            </div>
           </div>
 
           <div>
