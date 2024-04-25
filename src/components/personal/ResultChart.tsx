@@ -68,10 +68,10 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
                     color: 'white',
                   },
                   pointLabels: {
-                    color: 'blue',
+                    color: 'white',
                   },
                   ticks: {
-                    color: 'black',
+                    color: 'blue',
                   },
                 },
               },
