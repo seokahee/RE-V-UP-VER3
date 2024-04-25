@@ -72,6 +72,7 @@ const CurrentMusicList = ({
     e.preventDefault()
     if (!isDrag) {
       const musicInfo = JSON.parse(e.dataTransfer.getData('musicInfo'))
+
       // console.log('musicInfo', musicInfo)
       if (playListCurrent && playListCurrent.length > 0) {
         // console.log('playListCurrent', playListCurrent)
@@ -137,7 +138,6 @@ const CurrentMusicList = ({
     if (!draggedItem || !currentPlayList) {
       return
     }
-
     // 드래그된 요소의 인덱스와 드롭할 인덱스가 동일하지 않으면 실행(기존 인덱스와 동일하면 이동시킬 필요없음)
     if (dragIndex !== dropIndex) {
       // 플리를 새 배열에 담음
@@ -169,6 +169,7 @@ const CurrentMusicList = ({
     // 드래그 요소와 인덱스 초기화
     setDraggedItem(null)
     setDragIndex(-1)
+    setIsDrag(false)
   }
 
   return (
@@ -276,3 +277,10 @@ const CurrentMusicList = ({
   )
 }
 export default CurrentMusicList
+// 2. 인덱스 변경 후 새 배열이 세션에 저장이 안됨
+// 3. 검색 결과 이미 주스탄드에 넣어둠 근데 페이지 전환 시 이전 페이지에 있는 데이터 검색이 안됨
+
+// 이후 할 일
+// 커뮤니티 무한스크롤 적용
+// 플레이어 정렬추가
+// 뭐...css?
