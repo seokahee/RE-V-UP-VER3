@@ -11,6 +11,8 @@ type props = {
   hasPreviousPage: boolean
   previousPage: () => void
   nextPage: () => void
+  root?: HTMLUListElement | HTMLDivElement | null
+  rootMargin?: string
 }
 
 const InfiniteScrollContainer = ({
@@ -21,19 +23,25 @@ const InfiniteScrollContainer = ({
   hasPreviousPage,
   previousPage,
   nextPage,
+  root,
+  rootMargin,
 }: props) => {
   const topRef = useRef<HTMLDivElement>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
+  const rootTarget = root ? root : null
+  const rootMarginTarget = rootMargin ? rootMargin : '0px'
 
-  //역방향
-  const onIntersectTop = ([entry]: IntersectionObserverEntry[]) =>
-    entry.isIntersecting && previousPage()
+  // 역방향
+  // const onIntersectTop = ([entry]: IntersectionObserverEntry[]) =>
+  //   entry.isIntersecting && previousPage()
 
-  useIntersectionObserver({
-    target: topRef,
-    onIntersect: onIntersectTop,
-    enabled: hasPreviousPage,
-  })
+  // useIntersectionObserver({
+  //   target: topRef,
+  //   onIntersect: onIntersectTop,
+  //   enabled: hasPreviousPage,
+  //   root: rootTarget,
+  //   rootMargin: rootMarginTarget,
+  // })
 
   //정방향
   //감시하는 요소가 보여지면 fetchNextPage 실행하도록 하는 onIntersect로직을 useIntersectionObserver 에 넘겨줌
@@ -44,11 +52,12 @@ const InfiniteScrollContainer = ({
     target: bottomRef,
     onIntersect,
     enabled: hasNextPage,
+    root: rootTarget,
   })
 
   return (
     <>
-      {hasPreviousPage && <div ref={topRef}></div>}
+      {hasPreviousPage && <div className='h-8' ref={topRef}></div>}
       {isFetchingPreviousPage && (
         <div className='flex h-[50px] items-center justify-center'>
           <Image
@@ -70,7 +79,7 @@ const InfiniteScrollContainer = ({
           />
         </div>
       )}
-      {hasNextPage && <div className='h-2' ref={bottomRef}></div>}
+      {hasNextPage && <div className='h-20' ref={bottomRef}></div>}
     </>
   )
 }
