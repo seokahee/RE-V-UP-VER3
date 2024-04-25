@@ -4,10 +4,10 @@ import {
   getMusicList,
 } from '@/query/musicPlayer/musicPlayerQueryKeys'
 import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
-import { MusicListProps } from '@/types/musicPlayer/types'
+import { MusicInfoType, MusicListProps } from '@/types/musicPlayer/types'
 import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
-import { DragEvent } from 'react'
+import { DragEvent, useState } from 'react'
 import Swal from 'sweetalert2'
 import CheckboxItem from '../mypage/CheckboxItem'
 
@@ -24,6 +24,10 @@ const CurrentMusicList = ({
   onDeleteCurrentMusicHandler,
   setMusicIndex,
 }: MusicListProps) => {
+  const [isDrag, setIsDrag] = useState(false)
+  const [isCurrent, setIsCurrent] = useState(false)
+  const [currentItem, setCurrentItem] = useState(currentPlayList)
+
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user?.uid as string
 
@@ -98,6 +102,59 @@ const CurrentMusicList = ({
     setSelectAll((prev) => !prev)
   }
 
+  const indexDragHandler = (
+    e: DragEvent<HTMLDivElement>,
+    item: MusicInfoType,
+  ) => {
+    e.dataTransfer.setData('listItem', JSON.stringify(item))
+  }
+
+  const indexChangeDropHandler = (e: DragEvent<HTMLDivElement>) => {
+    const listItem = JSON.parse(e.dataTransfer.getData('listItem'))
+
+    const dragIndex = currentItem.findIndex(
+      (item) => item.musicId === listItem.musicId,
+    )
+
+    // 드롭된 위치 계산
+    const dropY = e.clientY
+    const dropIndex = calculateDropIndex(dropY)
+
+    if (dragIndex !== -1 && dropIndex !== -1 && dragIndex !== dropIndex) {
+      // 새로운 배열을 만들어서 드롭된 요소의 위치를 변경
+      const newPlayList = [...currentItem]
+      const [draggedItem] = newPlayList.splice(dragIndex, 1) // 드래그된 요소를 제거
+      newPlayList.splice(dropIndex, 0, draggedItem) // 드롭된 위치에 요소를 삽입
+
+      // 새로운 플레이리스트를 설정
+      setCurrentItem(newPlayList)
+    }
+  }
+
+  const calculateDropIndex = (dropY: number) => {
+    // 드래그된 아이템의 높이 계산
+    const draggedItemHeight = 63
+
+    // 목록의 상단 위치 계산
+    const listTop =
+      document.querySelector('.your-list-selector')?.getBoundingClientRect()
+        .top || 0
+
+    // 드롭된 위치를 기준으로 목록의 위치를 계산
+    const yOffset = dropY - listTop
+
+    // 드롭된 위치를 기준으로 목록에서의 인덱스를 계산
+    let currentIndex = Math.floor(yOffset / draggedItemHeight)
+
+    // 현재 인덱스가 음수인 경우
+    currentIndex = Math.max(currentIndex, 0)
+
+    // 현재 인덱스가 목록의 길이를 초과한 경우
+    currentIndex = Math.min(currentIndex, currentItem.length)
+
+    return currentIndex
+  }
+
   return (
     <div
       className='mt-[16px] flex max-h-[250px] min-h-[250px] flex-col overflow-y-auto overflow-x-hidden'
@@ -127,7 +184,7 @@ const CurrentMusicList = ({
             >
               {!isLyrics ? (
                 <div
-                  className={`relative flex max-h-[63px] w-[366px] justify-between pb-[8px] pl-[16px] pr-[16px] pt-[8px] ${isCurrentPlaying ? 'bg-neutral-700' : ''}`}
+                  className={`relative flex max-h-[63px] w-[366px] justify-between pb-[8px] pl-[16px] pr-[16px] pt-[8px] ${isCurrentPlaying ? ' bg-neutral-700' : ''}`}
                 >
                   <div className='flex items-center gap-[16px]'>
                     <CheckboxItem
@@ -156,6 +213,16 @@ const CurrentMusicList = ({
                   <span className='text-[14px] opacity-[30%] '>
                     {item.runTime}
                   </span>
+
+                  <p
+                    draggable='true'
+                    onDragStart={(e) => {
+                      setIsDrag(true)
+                      indexDragHandler(e, item)
+                    }}
+                  >
+                    Drag
+                  </p>
                 </div>
               ) : null}
               {isLyrics && isCurrentPlaying && (

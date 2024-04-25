@@ -2,31 +2,64 @@ import { CurrentPlayListType } from '@/types/musicPlayer/types'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-type MusicStore = {
-  musicData: {
-    item: CurrentPlayListType[]
+type CurrentMusicStore = {
+  currentMusicData: {
+    currentPlayList: CurrentPlayListType[]
+    musicIndex: number
   }
-  addMusic: (item: CurrentPlayListType) => void
+  currentMusic: (
+    currentPlayList: CurrentPlayListType[],
+    musicIndex: number,
+  ) => void
 }
 
-const musicState = {
-  musicData: {
-    item: [],
+const currentMusicState = {
+  currentMusicData: {
+    currentPlayList: [],
+    musicIndex: 0,
   },
 }
 
-export const useMusicStore = create(
-  persist<MusicStore>(
+export const useCurrentMusicStore = create(
+  persist<CurrentMusicStore>(
     (set, _) => ({
-      ...musicState,
-      addMusic: (item: CurrentPlayListType) => {
-        set((state) => ({
-          musicData: { item: [...state.musicData.item, item] },
-        }))
+      ...currentMusicState,
+      currentMusic: (
+        currentPlayList: CurrentPlayListType[],
+        musicIndex: number,
+      ) => {
+        set({ currentMusicData: { currentPlayList, musicIndex } })
       },
     }),
     {
-      name: 'musicStore',
+      name: 'currentMusicStore',
     },
   ),
 )
+
+// type PlayMusicStore = {
+//   playMusicData: {
+//     currentPlaying: CurrentPlayListType | null
+//   }
+//   playMusic: (currentPlaying: CurrentPlayListType | null) => void
+// }
+
+// const playMusicState = {
+//   playMusicData: {
+//     currentPlaying: null,
+//   },
+// }
+
+// export const usePlayMusicStore = create(
+//   persist<PlayMusicStore>(
+//     (set, _) => ({
+//       ...playMusicState,
+//       playMusic: (currentPlaying: CurrentPlayListType | null) => {
+//         set({ playMusicData: { currentPlaying } })
+//       },
+//     }),
+//     {
+//       name: 'currentMusicStore',
+//     },
+//   ),
+// )
