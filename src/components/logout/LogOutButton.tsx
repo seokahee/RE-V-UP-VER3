@@ -1,11 +1,11 @@
 'use client'
 
-import { getSession, signOut, useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
+import Image from 'next/image'
+import Swal from 'sweetalert2'
 import { supabase } from '@/shared/supabase/supabase'
 import Logout from '@/../public/images/logout.svg'
-import Image from 'next/image'
 import { OPEN_ANOTHER_SHADOW } from '../login/loginCss'
-import Swal from 'sweetalert2'
 
 const LogOutButton = () => {
   const { status } = useSession()
@@ -29,6 +29,7 @@ const LogOutButton = () => {
         if (result.isConfirmed) {
           supabase.auth.signOut()
           signOut({ redirect: true, callbackUrl: '/' })
+
           Swal.fire({
             icon: 'success',
             title: '로그아웃',
@@ -51,7 +52,6 @@ const LogOutButton = () => {
           return
         }
       })
-      // const loginStatus = await getSession()
     }
   }
 
