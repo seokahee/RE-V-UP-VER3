@@ -183,7 +183,7 @@ const CommunityCreate = () => {
                 maxLength={40}
                 onChange={onChangeHandler}
                 className=' mb-4 w-full rounded-lg border-none bg-[rgba(255,255,255,0.1)] p-2 placeholder:text-[#ffffff5a]'
-                placeholder='제목을 입력해 주세요.'
+                placeholder='제목을 입력해 주세요.(40자 이내)'
               />
             </div>
 

@@ -220,11 +220,12 @@ const CommunityContents = () => {
       const currentList = playListCurrent[0].currentMusicIds
       if (currentList.find((el) => el === musicId)) {
         await Swal.fire({
-          text: '이미 추가된 노래입니다.',
-          confirmButtonText: '확인',
-          confirmButtonColor: '#685BFF',
-          color: '#ffffff',
+          icon: 'warning',
+          title: '이미 추가된 노래입니다.',
+          showConfirmButton: false,
+          timer: 1500,
           background: '#2B2B2B',
+          color: '#ffffff',
         })
 
         return
@@ -236,11 +237,12 @@ const CommunityContents = () => {
       insertMutation.mutate({ userId: uid, musicId })
     }
     await Swal.fire({
-      text: '현재 재생목록에 추가 되었습니다.',
-      confirmButtonText: '확인',
-      confirmButtonColor: '#685BFF',
-      color: '#ffffff',
+      icon: 'success',
+      title: '현재 재생목록에 추가 되었습니다.',
+      showConfirmButton: false,
+      timer: 1500,
       background: '#2B2B2B',
+      color: '#ffffff',
     })
   }
 
@@ -325,10 +327,10 @@ const CommunityContents = () => {
   return (
     <div className='flex w-[732px] flex-col'>
       <div className='mb-[8px] flex flex-col gap-[16px]'>
-        <section
+        <ul
           className={`justify-betweeen relative mt-[32px] flex h-[72px] w-[100%] items-center rounded-[16px] border-[4px] border-solid border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.1)] px-[16px] py-[12px] ${BOARD_TITLE_SHADOW}`}
         >
-          <div>
+          <li>
             {isEdit ? (
               <button
                 onClick={onEditCancelHandler}
@@ -354,24 +356,24 @@ const CommunityContents = () => {
                 />
               </button>
             )}
-          </div>
+          </li>
           <h3 className='mx-[auto] text-[18px] font-bold'>
             음악 추천 게시판🦻
           </h3>
           {isEdit ? (
-            <div className='absolute right-[12px] top-[12.5%]'>
+            <li className='absolute right-[12px] top-[12.5%]'>
               <button
                 onClick={onBoardEditCompleteHandler}
                 className={`flex h-[48px] w-[120px] items-center justify-center rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
               >
                 <p>수정완료</p>
               </button>
-            </div>
+            </li>
           ) : null}
-        </section>
+        </ul>
 
         <div className='flex w-full flex-col gap-[40px]'>
-          <article className='flex items-center gap-[16px] border-b-[1px] border-solid border-[#000000] px-[16px] py-[30px]'>
+          <ul className='flex items-center gap-[16px] border-b-[1px] border-solid border-[#000000] px-[16px] py-[30px]'>
             <div className='flex'>
               <Link
                 href={`/userpage/${userId}`}
@@ -401,7 +403,7 @@ const CommunityContents = () => {
               </Link>
             </div>
 
-            <section className='flex w-full flex-col gap-[16px]'>
+            <li className='flex w-full flex-col gap-[16px]'>
               <div className='flex w-full justify-between'>
                 {isEdit ? (
                   <input
@@ -410,6 +412,7 @@ const CommunityContents = () => {
                     maxLength={40}
                     value={updatedTitle}
                     onChange={onChangeEditForm}
+                    placeholder='제목을 입력해 주세요.(40자 이내)'
                     className='flex w-full rounded-[12px] border-none bg-[rgba(255,255,255,0.1)] px-[4px] pt-[4px] text-[18px] font-bold tracking-[-0.03em]'
                   />
                 ) : (
@@ -452,8 +455,8 @@ const CommunityContents = () => {
                   {onDateTimeHandler(date)}
                 </div>
               </div>
-            </section>
-          </article>
+            </li>
+          </ul>
           <ul
             className={`flex w-full justify-between gap-[24px] rounded-[32px] bg-[rgba(255,255,255,0.1)] py-[20px] pl-[40px] pr-[20px]  ${ADDED_CURRENT_MUSIC_SHADOW}`}
           >
@@ -464,7 +467,7 @@ const CommunityContents = () => {
                 dragHandler(e, item)
               }}
             >
-              <section className='flex items-center gap-[32px]'>
+              <ul className='flex items-center gap-[32px]'>
                 <figure className='flex h-[80px] w-[80px] items-center rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)]'>
                   <Image
                     src={`${thumbnail}`}
@@ -474,22 +477,22 @@ const CommunityContents = () => {
                     className='rounded-full '
                   />
                 </figure>
-                <article className='flex flex-col gap-[8px] '>
-                  <div>
+                <ul className='flex flex-col gap-[8px] '>
+                  <li>
                     <p className='text-[24px] font-bold'>{musicTitle}</p>
-                  </div>
-                  <div>
+                  </li>
+                  <li>
                     <p className='font-bold text-[rgba(255,255,255,0.4)]'>
                       {artist}
                     </p>
-                  </div>
-                </article>
-              </section>
-              <section className='flex'>
-                <div className='flex items-center text-[16px] font-bold'>
+                  </li>
+                </ul>
+              </ul>
+              <ul className='flex'>
+                <li className='flex items-center text-[16px] font-bold'>
                   {runTime}
-                </div>
-              </section>
+                </li>
+              </ul>
             </li>
             <div className='flex items-center justify-center gap-[16px]'>
               <button
@@ -526,6 +529,7 @@ const CommunityContents = () => {
                   setCommunityForm={setEditForm}
                 />
               ) : (
+                // <div dangerouslySetInnerHTML={{ __html: content }}></div>
                 <QuillNoSSRWrapper
                   theme='bubble'
                   readOnly={true}
