@@ -3,19 +3,23 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import {
-  recommendMusic,
-  getRecommendMusic,
   insertPersonalMusic,
-  getCurrentMusics,
-  getPersonaledUser,
   updatePersonalMusic,
   insertPersonalResult,
   updatePersonalResult,
 } from '@/shared/personal/personalApi'
-import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { SentenceMatch } from '@/util/personal/util'
 import ButtonPrimary from '../../util/ButtonPrimary'
+import Swal from 'sweetalert2'
+import { PERSONAL_QUERY_KEYS } from '@/query/personal/keys.constant'
+import {
+  useCurrentMusicQuery,
+  usePersonalUserQuery,
+  usePreferenceDataQuery,
+  useRecommendDataQuery,
+} from '@/query/personal/useQueryPersonal'
 
 import type { PersonalRecommendProps } from '@/types/personal/type'
 
@@ -23,23 +27,14 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
   const [checkedList, setCheckedList] = useState<string[]>([])
   const queryClient = useQueryClient()
   const mbtiStatus = userChar.mbti
+  const uidStatus = userChar.uid
   const router = useRouter()
 
-  const { data: musicPreferenceData } = useQuery({
-    queryFn: () => recommendMusic(mbtiStatus),
-    queryKey: ['personal'],
-  })
-
-  const {
-    data: recommend,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryFn: () => getRecommendMusic(musicPreferenceData as number[]),
-    queryKey: ['recommendMusic'],
-  })
-
+  const musicPreferenceData = usePreferenceDataQuery(mbtiStatus)
+  const { recommend, isPending, isError } =
+    useRecommendDataQuery(musicPreferenceData)
   const resultMusic = recommend?.map((music) => music.musicId) as string[]
+  const { personalUser } = usePersonalUserQuery()
 
   const onChangeCheckMusicHandler = (checked: boolean, id: string) => {
     if (checked) {
@@ -50,15 +45,12 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     }
   }
 
-  const { data: personalUser } = useQuery({
-    queryFn: () => getPersonaledUser(),
-    queryKey: ['personalReuslt'],
-  })
-
   const addPersonalResultMutation = useMutation({
     mutationFn: insertPersonalMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
+      queryClient.invalidateQueries({
+        queryKey: [PERSONAL_QUERY_KEYS.PERSONAL_RESULT],
+      })
       setCheckedList([])
       refetchCurrent()
     },
@@ -67,7 +59,9 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
   const updatePersonalResultMutation = useMutation({
     mutationFn: updatePersonalMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
+      queryClient.invalidateQueries({
+        queryKey: [PERSONAL_QUERY_KEYS.PERSONAL_RESULT],
+      })
       setCheckedList([])
       refetchCurrent()
     },
@@ -76,7 +70,9 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
   const updateCurrentMusicMutation = useMutation({
     mutationFn: updatePersonalResult,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
+      queryClient.invalidateQueries({
+        queryKey: [PERSONAL_QUERY_KEYS.PERSONAL_RESULT],
+      })
       setCheckedList([])
       refetchCurrent()
     },
@@ -85,16 +81,15 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
   const insertCurrentMusicMutation = useMutation({
     mutationFn: insertPersonalResult,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
+      queryClient.invalidateQueries({
+        queryKey: [PERSONAL_QUERY_KEYS.PERSONAL_RESULT],
+      })
       setCheckedList([])
       refetchCurrent()
     },
   })
 
-  const { data: current, refetch: refetchCurrent } = useQuery({
-    queryFn: () => getCurrentMusics(userChar.uid),
-    queryKey: ['currentMusic'],
-  })
+  const { current, refetchCurrent } = useCurrentMusicQuery(uidStatus)
 
   const currentList =
     current?.length === 0
@@ -103,7 +98,13 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
 
   const onSubmitCurrentMusic = () => {
     if (checkedList.length === 0) {
-      alert('선택된 곡이 없습니다.')
+      // alert('선택된 곡이 없습니다.')
+      Swal.fire({
+        icon: 'error',
+        text: '선택된 곡이 없습니다.',
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       return
     }
 
@@ -112,7 +113,13 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     )
 
     if (filterMusic.length > 0) {
-      alert('이미 현재 재생목록에 있는 곡입니다.')
+      // alert('이미 현재 재생목록에 있는 곡입니다.')
+      Swal.fire({
+        icon: 'error',
+        text: '이미 현재 재생목록에 있는 곡입니다.',
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       setCheckedList([])
       return
     }
@@ -134,10 +141,20 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     }
 
     if (personalUser?.find((user) => user.userId === userChar.uid)) {
-      alert('진단 결과 업데이트 및 곡 추가가 완료됐습니다.')
+      // alert('진단 결과 업데이트 및 곡 추가가 완료됐습니다.')
+      Swal.fire({
+        text: '진단 결과 업데이트 및 곡 추가가 완료됐습니다.',
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       updatePersonalResultMutation.mutate(personalMusicData)
     } else {
-      alert('곡 추가가 완료됐습니다.')
+      // alert('곡 추가가 완료됐습니다.')
+      Swal.fire({
+        text: '곡 추가가 완료됐습니다.',
+        background: '#2B2B2B',
+        color: '#ffffff',
+      })
       addPersonalResultMutation.mutate(personalMusicData)
     }
   }
@@ -150,7 +167,7 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     router.push('/')
   }
 
-  if (isLoading) {
+  if (isPending) {
     return <div className='text-center'> 열심히 곡을 고르는 중입니다.</div>
   }
 
@@ -184,26 +201,32 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
               }
               className='peer hidden'
             />
-            <div className='flex w-[130px] justify-center'>
+            <div
+              className={`flex w-[130px] justify-center ${checkedList.includes(item.musicId) ? 'text-white' : ''}`}
+            >
               <Image
                 src={item.thumbnail}
                 width={80}
                 height={80}
                 alt={`${item.musicTitle} 앨범 썸네일`}
-                className='rounded-full ring-4 ring-transparent peer-checked:ring-white'
+                className={`cursor-pointer rounded-full ring-4 ring-transparent ${checkedList.includes(item.musicId) ? 'ring-white ' : ''}`}
               />
             </div>
-            <div className='w-[100px]  peer-checked:text-white'>
-              <p className='w-[130px] text-center text-lg font-bold'>
+            <div
+              className={`w-[100px] ${checkedList.includes(item.musicId) ? 'text-white' : ''}`}
+            >
+              <p className='w-[130px] cursor-pointer text-center text-lg font-bold'>
                 {item.musicTitle}
               </p>
             </div>
-            <div className='text-center text-sm font-medium peer-checked:text-white '>
-              <p> {item.artist}</p>
+            <div
+              className={`text-center text-sm font-medium ${checkedList.includes(item.musicId) ? 'text-white' : ''}`}
+            >
+              <p>{item.artist}</p>
             </div>
             <div>
               <p className='text-center text-sm'>
-                {currentList.includes(item.musicId) ? '현재 재생중' : ''}
+                {currentList.includes(item.musicId) ? '추가 완료' : ''}
               </p>
             </div>
           </label>
