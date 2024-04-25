@@ -29,6 +29,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
   const listRef = useRef<HTMLUListElement>(null)
   const scrollBoxRef = useRef<HTMLDivElement>(null)
   const scroll = useRef(0)
+  const [scrollBoxTopPosition, setScrollBoxTopPosition] = useState(0)
 
   const PER_PAGE = 5
   const MAX_PAGES = 4
@@ -275,7 +276,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       ) {
         // console.log(scroll.current, height * 3, height)
         // console.log('역방향 실행')
-        console.log('요청을 이렇게나 많이 보냄')
+        // console.log('요청을 이렇게나 많이 보냄') //!isFetchingPreviousPage 이 조건 추가해서 요청 필요한 만큼만 보냄
         fetchPreviousPage()
         // console.log(playlistMyData)
         // scrollPosition('top')
@@ -305,19 +306,17 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
   // })
   // }
 
-  //스크롤이 한 100 정도쯤 되면 이전 페이지 불러오기 실행
-
-  const previousPage = () => {
-    // const height = listRef.current?.children[0]
-    //   ? listRef.current?.children[0].clientHeight
-    //   : 0
-    // console.log(scroll.current, height * 3, height)
-    // if (hasPreviousPage && scroll.current < height * 3) {
-    //   console.log('이거 실행')
-    //   fetchPreviousPage()
-    //   scrollPosition('top')
-    // }
-  }
+  // const previousPage = () => {
+  // const height = listRef.current?.children[0]
+  //   ? listRef.current?.children[0].clientHeight
+  //   : 0
+  // console.log(scroll.current, height * 3, height)
+  // if (hasPreviousPage && scroll.current < height * 3) {
+  //   console.log('이거 실행')
+  //   fetchPreviousPage()
+  //   scrollPosition('top')
+  // }
+  // }
 
   const nextPage = () => {
     fetchNextPage()
@@ -354,6 +353,14 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
   //   }
   //   console.log('scroll.current', scroll.current)
   // }, [scrollBoxRef.current?.scrollTop])
+
+  useEffect(() => {
+    //높이를 구하기 위해 사용
+    //100vh - top 좌표값
+    if (scrollBoxRef.current) {
+      setScrollBoxTopPosition(scrollBoxRef.current?.getBoundingClientRect().top)
+    }
+  }, [scrollBoxTopPosition])
 
   const shadow =
     'shadow-[-4px_-4px_8px_rgba(255,255,255,0.05),4px_4px_8px_rgba(0,0,0,0.7)]'
@@ -414,15 +421,18 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       )} */}
       <div
         ref={scrollBoxRef}
-        className='max-h-[500px] overflow-y-auto'
+        className='overflow-y-auto'
         onScroll={handleScroll}
+        style={{
+          height: `calc(100vh - ${scrollBoxTopPosition}px - 30px)`,
+        }}
       >
         <InfiniteScrollContainer
           isFetchingNextPage={isFetchingNextPage}
           isFetchingPreviousPage={isFetchingPreviousPage}
           hasNextPage={hasNextPage}
-          hasPreviousPage={hasPreviousPage}
-          previousPage={previousPage}
+          // hasPreviousPage={hasPreviousPage}
+          // previousPage={previousPage}
           nextPage={nextPage}
           root={scrollBoxRef.current}
           // rootMargin='-100px 0px 0px 0px'
