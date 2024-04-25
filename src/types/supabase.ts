@@ -83,7 +83,7 @@ export type Database = {
           boardTitle: string
           content: string
           date: string
-          likeCount: string | null
+          likeCount: number | null
           likeList: string[]
           musicId: string
           userId: string
@@ -93,7 +93,7 @@ export type Database = {
           boardTitle?: string
           content?: string
           date?: string
-          likeCount?: string | null
+          likeCount?: number | null
           likeList: string[]
           musicId?: string
           userId?: string
@@ -103,7 +103,7 @@ export type Database = {
           boardTitle?: string
           content?: string
           date?: string
-          likeCount?: string | null
+          likeCount?: number | null
           likeList?: string[]
           musicId?: string
           userId?: string

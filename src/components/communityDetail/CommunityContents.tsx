@@ -4,13 +4,16 @@ import { MouseEvent, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
+import Link from 'next/link'
+import Swal from 'sweetalert2'
+import DOMPurify from 'dompurify'
 import {
   useCoummunityCreateItem,
   useCoummunityItem,
 } from '@/query/communityDetail/mutation'
 import { musicDataInCommuDetail } from '@/query/communityDetail/queryKey'
 import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
-import { onDateTimeHandler } from '@/util/util'
+import { dragHandler, onDateTimeHandler } from '@/util/util'
 import message from '@/../public/images/message-text-square-02-gray.svg'
 import goback from '@/../public/images/community-detail-Image/back-allow.svg'
 import detailEdit from '@/../public/images/community-detail-Image/detail-edit.svg'
@@ -20,7 +23,6 @@ import addMyPlayList from '@/../public/images/community-detail-Image/add-my-play
 import userDefault from '@/../public/images/userDefaultImg.svg'
 import useInput from '@/hooks/useInput'
 import LikeButton from './LikeButton'
-import Link from 'next/link'
 
 import {
   ADDED_CURRENT_MUSIC_SHADOW,
@@ -30,12 +32,17 @@ import {
 } from './communityCss'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
 import CommentsPage from '@/app/(auth)/comment/page'
+import { QuillNoSSRWrapper } from './QuillEditor'
 import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
 import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
-import Swal from 'sweetalert2'
+import { CommunityNoSsrQuillEditor } from './CommunityNoSsrQuillEditor'
+import createDOMPurify from 'dompurify'
+import { MusicInfoType } from '@/types/musicPlayer/types'
 
 const CommunityContents = () => {
   const router = useRouter()
+  const DOMPurify =
+    typeof window !== 'undefined' ? createDOMPurify(window) : null
   const { setIsChooseMusic } = useMusicSearchedStore()
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const { data: userSessionInfo, status } = useSession()
@@ -71,7 +78,26 @@ const CommunityContents = () => {
     musicInfo,
   } = readDetailData || ({} as readCommuDetail)
   const { nickname, userImage, userId } = userInfo || {}
-  const { musicTitle, artist, thumbnail, runTime } = musicInfo || {}
+  const {
+    musicTitle,
+    artist,
+    thumbnail,
+    runTime,
+    musicSource,
+    release,
+    lyrics,
+  } = musicInfo || {}
+
+  const item = {
+    artist,
+    musicId,
+    musicSource,
+    musicTitle,
+    release,
+    thumbnail,
+    runTime,
+    lyrics,
+  } as MusicInfoType
 
   const {
     form: editForm,
@@ -79,6 +105,8 @@ const CommunityContents = () => {
     onChange: onChangeEditForm,
   } = useInput({ boardTitle, content })
   const { boardTitle: updatedTitle, content: updatedContent } = editForm
+  // const sanitizedHtmlContent = DOMPurify && DOMPurify?.sanitize(updatedContent)
+
   const commentLength =
     commentsData && commentsData.length > 99
       ? 99
@@ -228,7 +256,7 @@ const CommunityContents = () => {
       router.replace('/login')
       return
     }
-    //////////////////
+
     Swal.fire({
       text: '마이플레이 리스트에 추가하시겠습니까?',
 
@@ -294,7 +322,6 @@ const CommunityContents = () => {
     router.replace('/')
     return
   }
-
   return (
     <div className='flex w-[732px] flex-col'>
       <div className='mb-[8px] flex flex-col gap-[16px]'>
@@ -427,10 +454,16 @@ const CommunityContents = () => {
               </div>
             </section>
           </article>
-          <article
+          <ul
             className={`flex w-full justify-between gap-[24px] rounded-[32px] bg-[rgba(255,255,255,0.1)] py-[20px] pl-[40px] pr-[20px]  ${ADDED_CURRENT_MUSIC_SHADOW}`}
           >
-            <div className='flex w-full items-center justify-between '>
+            <li
+              className='flex w-full items-center justify-between '
+              draggable='true'
+              onDragStart={(e) => {
+                dragHandler(e, item)
+              }}
+            >
               <section className='flex items-center gap-[32px]'>
                 <figure className='flex h-[80px] w-[80px] items-center rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)]'>
                   <Image
@@ -457,7 +490,7 @@ const CommunityContents = () => {
                   {runTime}
                 </div>
               </section>
-            </div>
+            </li>
             <div className='flex items-center justify-center gap-[16px]'>
               <button
                 onClick={(e) => onAddPlayerHandler(e, uid, musicId)}
@@ -483,23 +516,26 @@ const CommunityContents = () => {
                 />
               </button>
             </div>
-          </article>
-          <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
-            {isEdit ? (
-              <textarea
-                id='content'
-                name='content'
-                value={updatedContent}
-                onChange={onChangeEditForm}
-                cols={30}
-                rows={4}
-                maxLength={200}
-                className='mb-4 h-[200px] w-full  rounded-lg border-none bg-[rgba(255,255,255,0.1)] p-2 px-[15px]'
-              ></textarea>
-            ) : (
-              <div className='h-[200px] w-full px-[15px] tracking-[-0.03em]'>{`${content}`}</div>
-            )}
-          </article>
+          </ul>
+          {typeof window !== 'undefined' ? (
+            <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
+              {isEdit ? (
+                <CommunityNoSsrQuillEditor
+                  theme='snow'
+                  content={updatedContent}
+                  setCommunityForm={setEditForm}
+                />
+              ) : (
+                <QuillNoSSRWrapper
+                  theme='bubble'
+                  readOnly={true}
+                  value={content}
+                  className='h-[200px] w-full px-[15px] tracking-[-0.03em]'
+                  // dangerouslySetInnerHTML={{ __html: updatedContent }}
+                />
+              )}
+            </article>
+          ) : null}
         </div>
 
         <div className='flex w-full flex-col gap-[40px] '>

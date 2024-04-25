@@ -12,7 +12,7 @@ export const readCommunityDetail = async (boardId: string) => {
     const { data, error } = await supabase
       .from('community')
       .select(
-        'boardId, boardTitle, date, musicId, content, likeList, userId, userInfo(nickname, userImage, userId), comment(commentId, boardId), musicInfo(musicId, musicTitle, artist, thumbnail, runTime)',
+        'boardId, boardTitle, date, musicId, content, likeList, userId, userInfo(nickname, userImage, userId), comment(commentId, boardId), musicInfo(musicId, musicTitle, artist, thumbnail, runTime, musicSource, release, lyrics)',
       )
       .eq('boardId', boardId)
       .single()
@@ -131,4 +131,23 @@ export const getComments = async (boardId: string): Promise<comment[]> => {
     throw error.message
   }
   return comment as comment[]
+}
+
+export const updateLikeCountInCommunity = async (
+  boardId: string,
+  likeCount: number,
+) => {
+  try {
+    const { error } = await supabase
+      .from('community')
+      .update({ likeCount })
+      .eq('boardId', boardId)
+    if (error) {
+      throw error
+    }
+  } catch (error) {
+    console.log(error)
+    console.error('좋아요 수를 저장하지 못했습니다.', error)
+    throw error
+  }
 }

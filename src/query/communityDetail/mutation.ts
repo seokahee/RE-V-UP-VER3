@@ -7,7 +7,8 @@ import {
 } from '@/shared/communitydetail/detailApi'
 import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
 import { insertMyPlayMusic, updateMyPlayMusic } from '@/shared/musicPlayer/api'
-import { COMMUNITY_DETAIL_QUERY_KEY } from './queryKey'
+import { GET_COMMUNITY_DETAIL_QUERY_KEYS } from './queryKey'
+import { GET_MUSIC_LIST_QUERY_KEYS } from '../musicPlayer/musicPlayerQueryKeys'
 
 export const validateFormBlank = (firstInput: string, secondInput: string) => {
   const blankPattern = /^\s+|\s+$/g
@@ -22,7 +23,7 @@ export const useCoummunityItem = () => {
     mutationFn: updateCommnityBoard,
     onSuccess: () =>
       queryClient.invalidateQueries({
-        queryKey: [COMMUNITY_DETAIL_QUERY_KEY.COMMUNITY_DETAIL],
+        queryKey: [GET_COMMUNITY_DETAIL_QUERY_KEYS.COMMUNITY_DETAIL],
       }),
   })
 
@@ -30,7 +31,7 @@ export const useCoummunityItem = () => {
     mutationFn: deleteCommunityBoard,
     onSuccess: () =>
       queryClient.invalidateQueries({
-        queryKey: [COMMUNITY_DETAIL_QUERY_KEY.COMMUNITY_DETAIL],
+        queryKey: [GET_COMMUNITY_DETAIL_QUERY_KEYS.COMMUNITY_DETAIL],
       }),
   })
 
@@ -38,14 +39,14 @@ export const useCoummunityItem = () => {
     mutationFn: addCommnityBoard,
     onSuccess: () =>
       queryClient.invalidateQueries({
-        queryKey: [COMMUNITY_DETAIL_QUERY_KEY.COMMUNITY_DETAIL],
+        queryKey: [GET_COMMUNITY_DETAIL_QUERY_KEYS.COMMUNITY_DETAIL],
       }),
   })
   const insertMyMutation = useMutation({
     mutationFn: insertMyPlayMusic,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [COMMUNITY_DETAIL_QUERY_KEY.GET_MY_MUSICLIST],
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_MUSIC_LIST],
       })
     },
   })
@@ -54,7 +55,7 @@ export const useCoummunityItem = () => {
     mutationFn: updateMyPlayMusic,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [COMMUNITY_DETAIL_QUERY_KEY.GET_MY_MUSICLIST],
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_MUSIC_LIST],
       })
     },
   })
@@ -72,14 +73,18 @@ export const useCoummunityCreateItem = () => {
   const insertMutation = useMutation({
     mutationFn: insertCurrentMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.CURRENT_MUSIC_INFO],
+      })
     },
   })
 
   const updateMutation = useMutation({
     mutationFn: updateCurrentMusic,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getCurrentMusicList'] })
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.CURRENT_MUSIC_INFO],
+      })
     },
   })
   return { updateMutation, insertMutation }

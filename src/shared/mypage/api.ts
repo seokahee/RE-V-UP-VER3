@@ -25,14 +25,10 @@ export const getUserPlaylistMyMusicInfoData = async (
   myMusicIds: string[],
 ): Promise<PlaylistMy[]> => {
   try {
-    console.log('music', myMusicIds)
-
     const { data, error } = await supabase
       .from('musicInfo')
       .select('*')
       .in('musicId', myMusicIds)
-
-    console.log(data)
 
     return data as PlaylistMy[]
   } catch (error) {
