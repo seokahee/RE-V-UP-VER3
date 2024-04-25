@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { useSurvey } from '@/shared/store/personalStore'
 import { useSession } from 'next-auth/react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { insertUserChar } from '@/shared/personal/personalApi'
 import ButtonPrimary from '@/util/ButtonPrimary'
 import PreviousButton from '../mypage/PreviousButton'
 import left from '@/../public/images/double_arrow_left.svg'
@@ -14,6 +12,7 @@ import {
   INPUT_FOCUS,
   OPEN_ANOTHER_SHADOW,
 } from '../login/loginCss'
+import { useMutateUserChar } from '@/query/personal/useMutationPersonal'
 
 import type { PersonalInfo } from '@/types/personal/type'
 
@@ -25,7 +24,7 @@ const PersonalSubTest = ({
   const { addUserChar, userGender, userChar } = useSurvey()
   const { data: userSessionInfo } = useSession()
   const userId = userSessionInfo?.user?.uid as string
-  const queryClient = useQueryClient()
+  const insertUserCharMutation = useMutateUserChar()
 
   const exMbti = userChar.mbti
 
@@ -34,13 +33,6 @@ const PersonalSubTest = ({
   const [SN, setSN] = useState<boolean>(exSN === 'N' ? false : true ?? false)
   const [TF, setTF] = useState<boolean>(exTF === 'F' ? false : true ?? false)
   const [PJ, setPJ] = useState<boolean>(exPJ === 'J' ? false : true ?? false)
-
-  const insertUserCharMutation = useMutation({
-    mutationFn: insertUserChar,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['userChar'] })
-    },
-  })
 
   const calculateMBTI = () => {
     const changeEI = EI ? 'I' : 'E'

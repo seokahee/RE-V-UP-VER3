@@ -5,4 +5,5 @@ export const PERSONAL_QUERY_KEYS = {
   PREFERENCE: 'preference',
   DISLIKE: 'dislike',
   CURRENT_MUSIC: 'currentMusic',
+  PERSONAL_USER: 'userChar',
 }
