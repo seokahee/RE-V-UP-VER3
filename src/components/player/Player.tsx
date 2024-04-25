@@ -79,49 +79,49 @@ const Player = ({
     <div>
       <div className='flex flex-col items-center'>
         <div className='mt-[40px] flex flex-col items-center gap-[8px] p-[0px]'>
-          <div className=' text-center text-[20px] font-bold leading-[150%]  tracking-tighter text-white opacity-80'>
+          <div className=' text-center text-[18px] font-bold leading-[150%]  tracking-tighter text-white opacity-80'>
             {currentPlaying ? currentPlaying.musicTitle : 'V-UP'}
           </div>
 
-          <div className='text-center text-[18px] leading-[150%] tracking-tighter text-white opacity-50'>
+          <div className='text-center text-[14px] leading-[150%] tracking-tighter text-white opacity-50'>
             {currentPlaying ? currentPlaying.artist : '-'}
           </div>
         </div>
 
-        <div className='relative ml-[44px] mr-[44px] mt-[41px]'>
+        <div className='relative mt-[8px]'>
           {currentPlaying ? (
-            <div className=' h-[300px] w-[300px]'>
+            <figure className='h-[276px] w-[276px]'>
               <Image
                 src={musicThumbnail}
                 alt='Album Circle'
-                width={300}
-                height={300}
+                width={276}
+                height={276}
                 className='element rounded-full'
                 ref={imageRef}
                 // className='rotate element rounded-full shadow-[0px_0px_16px_rgba(210,137,176,0.5)]'
               />
-            </div>
+            </figure>
           ) : (
-            <div className=' h-[300px] w-[300px]'>
+            <figure className='h-[276px] w-[276px]'>
               <Image
                 src={musicThumbnailDefault}
                 alt='Album Circle'
-                width={300}
-                height={300}
-                className='rounded-full shadow-[0px_4px_4px_-5px_rgba(0,0,0,0.25)]'
+                width={276}
+                height={276}
+                className='rounded-full object-center shadow-[0px_4px_4px_-5px_rgba(0,0,0,0.25)]'
               />
-            </div>
+            </figure>
           )}
           {currentPlaying ? (
-            <div className='absolute left-[50px] top-[50px] h-[200px] w-[200px] '>
+            <figure className='absolute left-[45px] top-[45px] h-[188px] w-[188px]'>
               <Image
                 src={currentPlaying.thumbnail}
                 alt='Album Thumbnail'
-                width={200}
-                height={200}
-                className='rounded-full'
+                width={188}
+                height={188}
+                className='rounded-full object-center'
               />
-            </div>
+            </figure>
           ) : null}
         </div>
 
@@ -180,7 +180,7 @@ const Player = ({
           width={50}
           height={60}
           onClick={onRandomMusicHandler}
-          className='absolute translate-x-[318px] translate-y-[87px] cursor-pointer'
+          className='absolute translate-x-[315px] translate-y-[99px] cursor-pointer'
         />
       </div>
     </div>
