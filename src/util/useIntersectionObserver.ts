@@ -37,5 +37,5 @@ export const useIntersectionObserver = ({
     return () => {
       if (target.current) observer && observer.disconnect()
     }
-  }, [target, rootMargin, threshold, enabled])
+  }, [target, rootMargin, threshold, enabled, root])
 }
