@@ -6,7 +6,6 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Swal from 'sweetalert2'
-import DOMPurify from 'dompurify'
 import {
   useCoummunityCreateItem,
   useCoummunityItem,
@@ -41,10 +40,8 @@ import { MusicInfoType } from '@/types/musicPlayer/types'
 
 const CommunityContents = () => {
   const router = useRouter()
-  const DOMPurify =
-    typeof window !== 'undefined' ? createDOMPurify(window) : null
-  const { setIsChooseMusic } = useMusicSearchedStore()
   const [isEdit, setIsEdit] = useState<boolean>(false)
+  const { setIsChooseMusic } = useMusicSearchedStore()
   const { data: userSessionInfo, status } = useSession()
   const uid = userSessionInfo?.user?.uid as string
   const { id: currentBoardId }: { id: string } = useParams()
@@ -105,7 +102,6 @@ const CommunityContents = () => {
     onChange: onChangeEditForm,
   } = useInput({ boardTitle, content })
   const { boardTitle: updatedTitle, content: updatedContent } = editForm
-  // const sanitizedHtmlContent = DOMPurify && DOMPurify?.sanitize(updatedContent)
 
   const commentLength =
     commentsData && commentsData.length > 99
@@ -164,6 +160,7 @@ const CommunityContents = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         deleteCommunityMutation.mutate(currentBoardId)
+
         Swal.fire({
           title: '게시글 삭제',
           text: '게시글을 삭제하셨습니다.',
@@ -203,6 +200,7 @@ const CommunityContents = () => {
     musicId: string,
   ) => {
     e.preventDefault()
+
     if (!uid) {
       await Swal.fire({
         text: '로그인 후 사용할 수 있는 서비스입니다. 로그인 페이지로 이동합니다.',
@@ -218,6 +216,7 @@ const CommunityContents = () => {
 
     if (playListCurrent && playListCurrent.length > 0) {
       const currentList = playListCurrent[0].currentMusicIds
+
       if (currentList.find((el) => el === musicId)) {
         await Swal.fire({
           icon: 'warning',
@@ -227,7 +226,6 @@ const CommunityContents = () => {
           background: '#2B2B2B',
           color: '#ffffff',
         })
-
         return
       }
 
@@ -236,6 +234,7 @@ const CommunityContents = () => {
     } else {
       insertMutation.mutate({ userId: uid, musicId })
     }
+
     await Swal.fire({
       icon: 'success',
       title: '현재 재생목록에 추가 되었습니다.',
@@ -286,12 +285,14 @@ const CommunityContents = () => {
             })
             return
           }
+
           myList.push(musicId)
           updateMyMutation.mutate({ userId: uid, myMusicList: myList })
         } else {
           const myMusicId = [musicId]
           insertMyMutation.mutate({ userId: uid, musicId: myMusicId })
         }
+
         Swal.fire({
           text: '마이플레이리스트에 추가 되었습니다.',
           confirmButtonText: '확인',
@@ -324,6 +325,7 @@ const CommunityContents = () => {
     router.replace('/')
     return
   }
+
   return (
     <div className='flex w-[732px] flex-col'>
       <div className='mb-[8px] flex flex-col gap-[16px]'>
