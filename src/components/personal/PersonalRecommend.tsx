@@ -184,26 +184,32 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
               }
               className='peer hidden'
             />
-            <div className='flex w-[130px] justify-center'>
+            <div
+              className={`flex w-[130px] justify-center ${checkedList.includes(item.musicId) ? 'text-white' : ''}`}
+            >
               <Image
                 src={item.thumbnail}
                 width={80}
                 height={80}
                 alt={`${item.musicTitle} 앨범 썸네일`}
-                className='rounded-full ring-4 ring-transparent peer-checked:ring-white'
+                className={`rounded-full ring-4 ring-transparent ${checkedList.includes(item.musicId) ? 'ring-white' : ''}`}
               />
             </div>
-            <div className='w-[100px]  peer-checked:text-white'>
+            <div
+              className={`w-[100px] ${checkedList.includes(item.musicId) ? 'text-white' : ''}`}
+            >
               <p className='w-[130px] text-center text-lg font-bold'>
                 {item.musicTitle}
               </p>
             </div>
-            <div className='text-center text-sm font-medium peer-checked:text-white '>
-              <p> {item.artist}</p>
+            <div
+              className={`text-center text-sm font-medium ${checkedList.includes(item.musicId) ? 'text-white' : ''}`}
+            >
+              <p>{item.artist}</p>
             </div>
             <div>
               <p className='text-center text-sm'>
-                {currentList.includes(item.musicId) ? '현재 재생중' : ''}
+                {currentList.includes(item.musicId) ? '추가 완료' : ''}
               </p>
             </div>
           </label>
