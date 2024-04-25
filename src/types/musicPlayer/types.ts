@@ -52,6 +52,15 @@ export type SearchResultType = {
   }
 }
 
+export type currentMusicIdType = {
+  currentId?: string
+  currentMusicIds?: {
+    id: string
+    idx: number
+  }
+  userId?: string
+}
+
 export type PlayerProps = {
   currentPlaying: CurrentPlayListType | null
   isLyrics: boolean

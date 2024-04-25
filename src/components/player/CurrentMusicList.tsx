@@ -66,6 +66,8 @@ const CurrentMusicList = ({
         return
       }
       currentList.push(musicInfo.musicId)
+      console.log('currentList', currentList)
+      console.log('currentList', musicInfo.musicId)
       updateMutation.mutate({ userId: uid, currentList })
     } else {
       insertMutation.mutate({ userId: uid, musicId: musicInfo.musicId })

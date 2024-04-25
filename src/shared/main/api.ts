@@ -167,6 +167,7 @@ export const updateCurrentMusic = async ({
   userId: string
   currentList: string[]
 }) => {
+  console.log('currentList', currentList)
   const musicIdx = currentList.map((item, idx) => {
     return {
       id: item,
@@ -182,4 +183,4 @@ export const updateCurrentMusic = async ({
   } catch (error) {
     console.error(error)
   }
-}
+} // 변환을 한군데에서 하나로 통일해서 넣어라
