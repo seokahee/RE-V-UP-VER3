@@ -52,6 +52,15 @@ export type SearchResultType = {
   }
 }
 
+export type currentMusicIdType = {
+  currentId?: string
+  currentMusicIds?: {
+    id: string
+    idx: number
+  }
+  userId?: string
+}
+
 export type PlayerProps = {
   currentPlaying: CurrentPlayListType | null
   isLyrics: boolean
@@ -71,6 +80,9 @@ export type MusicListProps = {
   isLyrics: boolean
   checkedList: string[]
   currentPlayList: CurrentPlayListType[]
+  selectAll: boolean
+  setSelectAll: Dispatch<SetStateAction<boolean>>
+  setCheckedList: (value: string[]) => void
   setCurrentPlaying: Dispatch<SetStateAction<CurrentPlayListType | null>>
   onChangeCheckMusicHandler: (checked: boolean, id: string) => void
   onDeleteCurrentMusicHandler: () => void

@@ -146,10 +146,16 @@ export const insertCurrentMusic = async ({
   userId: string
   musicId: string
 }) => {
+  // console.log('왜 갑자기 않되?')
+  // const musicIdx = {
+  //   id: musicId,
+  //   idx: 0,
+  // }
+  // console.log('최초 musicIdx,', musicIdx)
   try {
     await supabase
       .from('playlistCurrent')
-      .insert([{ userId: userId, currentMusicIds: [musicId] }])
+      .insert({ userId: userId, currentMusicIds: [musicId] })
       .select()
   } catch (error) {
     console.error(error)
@@ -163,6 +169,14 @@ export const updateCurrentMusic = async ({
   userId: string
   currentList: string[]
 }) => {
+  // console.log('API에 있는 currentList', currentList)
+  // const musicIdx = currentList.map((item, idx) => {
+  //   return {
+  //     id: item,
+  //     idx,
+  //   }
+  // })
+  // console.log('추가해서 수정musicIdx', musicIdx)
   try {
     await supabase
       .from('playlistCurrent')
@@ -172,4 +186,4 @@ export const updateCurrentMusic = async ({
   } catch (error) {
     console.error(error)
   }
-}
+} // 변환을 한군데에서 하나로 통일해서 넣어라

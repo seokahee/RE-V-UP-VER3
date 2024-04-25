@@ -7,6 +7,7 @@ import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
 import { MusicListProps } from '@/types/musicPlayer/types'
 import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
+import { DragEvent } from 'react'
 import Swal from 'sweetalert2'
 import CheckboxItem from '../mypage/CheckboxItem'
 
@@ -15,6 +16,9 @@ const CurrentMusicList = ({
   currentPlayList,
   isLyrics,
   checkedList,
+  selectAll,
+  setSelectAll,
+  setCheckedList,
   setCurrentPlaying,
   onChangeCheckMusicHandler,
   onDeleteCurrentMusicHandler,
@@ -43,11 +47,13 @@ const CurrentMusicList = ({
     },
   })
 
-  const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
+  const dropHandler = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
-    const musicInfo = JSON.parse(e.dataTransfer.getData('musicInfo'))
 
+    const musicInfo = JSON.parse(e.dataTransfer.getData('musicInfo'))
+    // console.log('musicInfo', musicInfo)
     if (playListCurrent && playListCurrent.length > 0) {
+      // console.log('playListCurrent', playListCurrent)
       const currentList = playListCurrent[0].currentMusicIds
       if (currentList.find((el) => el === musicInfo.musicId)) {
         Swal.fire({
@@ -60,7 +66,11 @@ const CurrentMusicList = ({
         })
         return
       }
+      // console.log('currentList', currentList)
+
       currentList.push(musicInfo.musicId)
+      // console.log('currentList', musicInfo.musicId)
+      // 아이디만 있는 배열을 보내주고 뮤테이션에서 객체 형태로 변환할것
       updateMutation.mutate({ userId: uid, currentList })
     } else {
       insertMutation.mutate({ userId: uid, musicId: musicInfo.musicId })
@@ -74,12 +84,23 @@ const CurrentMusicList = ({
       color: '#ffffff',
     })
   }
-  const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
+  const dragOverHandler = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
   }
+
+  const selectAllHandler = () => {
+    const allMusicIds = currentPlayList.map((item) => item.musicId)
+    if (!selectAll) {
+      setCheckedList(allMusicIds)
+    } else {
+      setCheckedList([])
+    }
+    setSelectAll((prev) => !prev)
+  }
+
   return (
     <div
-      className='mt-[16px] flex max-h-[450px] min-h-[450px] flex-col overflow-y-auto overflow-x-hidden'
+      className='mt-[16px] flex max-h-[250px] min-h-[250px] flex-col overflow-y-auto overflow-x-hidden'
       onDrop={dropHandler}
       onDragOver={dragOverHandler}
     >
@@ -93,11 +114,21 @@ const CurrentMusicList = ({
           const musicIndex = currentPlayList.findIndex(
             (arr) => arr.musicId === item.musicId,
           )
+          const isCurrentPlaying = item.musicId === currentPlaying?.musicId
 
           return (
-            <div key={item.musicId}>
+            <div
+              key={item.musicId}
+              style={{
+                backgroundColor: isCurrentPlaying
+                  ? 'rgb(64 64 64)'
+                  : 'transparent',
+              }}
+            >
               {!isLyrics ? (
-                <div className='relative flex max-h-[63px] w-[366px] justify-between pb-[8px] pl-[16px] pr-[16px] pt-[8px]'>
+                <div
+                  className={`relative flex max-h-[63px] w-[366px] justify-between pb-[8px] pl-[16px] pr-[16px] pt-[8px] ${isCurrentPlaying ? 'bg-neutral-700' : ''}`}
+                >
                   <div className='flex items-center gap-[16px]'>
                     <CheckboxItem
                       checked={checkedList.includes(item.musicId)}
@@ -109,16 +140,14 @@ const CurrentMusicList = ({
                         )
                       }
                     />
-                    <div className='flex flex-col'>
-                      <p
-                        onClick={() => {
-                          setMusicIndex(musicIndex)
-                          setCurrentPlaying(currentPlayList[musicIndex])
-                        }}
-                        className='cursor-pointer text-[16px]'
-                      >
-                        {item.musicTitle}
-                      </p>
+                    <div
+                      onClick={() => {
+                        setMusicIndex(musicIndex)
+                        setCurrentPlaying(currentPlayList[musicIndex])
+                      }}
+                      className='flex cursor-pointer flex-col'
+                    >
+                      <p className='text-[16px]'>{item.musicTitle}</p>
                       <span className='text-[14px] opacity-[30%] '>
                         {item.artist}
                       </span>
@@ -129,7 +158,7 @@ const CurrentMusicList = ({
                   </span>
                 </div>
               ) : null}
-              {isLyrics && item.musicId === currentPlaying?.musicId && (
+              {isLyrics && isCurrentPlaying && (
                 <div className='m-auto  w-[326px] items-center p-[8px] text-center text-[14px] leading-[150%] opacity-[30%]'>
                   {currentPlayList[musicIndex].lyrics}
                 </div>
@@ -138,15 +167,23 @@ const CurrentMusicList = ({
           )
         })}
       </div>
-
       {!isLyrics && currentPlayList.length > 0 && checkedList.length > 0 && (
-        <button
-          type='button'
-          onClick={onDeleteCurrentMusicHandler}
-          className='via-gray-100 to-gray-300 shadow-outline-white absolute bottom-[40px] left-[127px] right-[126px] h-[56px] w-[113px] rounded-[16px] border-2 border-solid border-zinc-800 bg-gradient-to-br from-zinc-700 p-0 text-center shadow-md'
-        >
-          {`${checkedList.length > 0 ? `${checkedList.length} 곡 삭제` : '곡 삭제'}`}
-        </button>
+        <div className='absolute bottom-[40px] left-[56px] right-[56px] flex gap-[8px]'>
+          <button
+            type='button'
+            onClick={selectAllHandler}
+            className='h-[56px] w-[113px] rounded-[16px] border-[2px] border-solid border-[rgba(0,0,0,0.4)] bg-[rgba(255,255,255,0.1)] text-center font-bold drop-shadow-[-4px_-4px_8px_rgba(0,0,0,0.05),_4px_4px_8px_rgba(0,0,0,0.7)]  backdrop-blur-[12px]'
+          >
+            {selectAll ? '전체 해제' : '전체 선택'}
+          </button>
+          <button
+            type='button'
+            onClick={onDeleteCurrentMusicHandler}
+            className='h-[56px] w-[113px] rounded-[16px] border-[2px] border-solid border-[rgba(0,0,0,0.4)] bg-[rgba(255,255,255,0.1)] text-center font-bold drop-shadow-[-4px_-4px_8px_rgba(0,0,0,0.05),_4px_4px_8px_rgba(0,0,0,0.7)]  backdrop-blur-[12px]'
+          >
+            {`${checkedList.length > 0 ? `${checkedList.length} 곡 삭제` : '곡 삭제'}`}
+          </button>
+        </div>
       )}
     </div>
   )
