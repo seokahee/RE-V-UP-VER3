@@ -2,45 +2,38 @@
 
 import React, { useState } from 'react'
 import Image from 'next/image'
-import {
-  recommendMusic,
-  getRecommendMusic,
-  insertPersonalMusic,
-  getCurrentMusics,
-  getPersonaledUser,
-  updatePersonalMusic,
-  insertPersonalResult,
-  updatePersonalResult,
-} from '@/shared/personal/personalApi'
-import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { SentenceMatch } from '@/util/personal/util'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import Swal from 'sweetalert2'
+import {
+  useCurrentMusicQuery,
+  usePersonalUserQuery,
+  usePreferenceDataQuery,
+  useRecommendDataQuery,
+} from '@/query/personal/useQueryPersonal'
+import { useMutatePersonal } from '@/query/personal/useMutationPersonal'
 
 import type { PersonalRecommendProps } from '@/types/personal/type'
 
 const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
   const [checkedList, setCheckedList] = useState<string[]>([])
-  const queryClient = useQueryClient()
   const mbtiStatus = userChar.mbti
+  const uidStatus = userChar.uid
   const router = useRouter()
 
-  const { data: musicPreferenceData } = useQuery({
-    queryFn: () => recommendMusic(mbtiStatus),
-    queryKey: ['personal'],
-  })
-
-  const {
-    data: recommend,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryFn: () => getRecommendMusic(musicPreferenceData as number[]),
-    queryKey: ['recommendMusic'],
-  })
-
+  const musicPreferenceData = usePreferenceDataQuery(mbtiStatus)
+  const { recommend, isPending, isError } =
+    useRecommendDataQuery(musicPreferenceData)
   const resultMusic = recommend?.map((music) => music.musicId) as string[]
+  const { personalUser } = usePersonalUserQuery()
+  const { current, refetchCurrent } = useCurrentMusicQuery(uidStatus)
+  const {
+    addPersonalResultMutation,
+    updatePersonalResultMutation,
+    updateCurrentMusicMutation,
+    insertCurrentMusicMutation,
+  } = useMutatePersonal(setCheckedList)
 
   const onChangeCheckMusicHandler = (checked: boolean, id: string) => {
     if (checked) {
@@ -50,52 +43,6 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
       setCheckedList(checkList)
     }
   }
-
-  const { data: personalUser } = useQuery({
-    queryFn: () => getPersonaledUser(),
-    queryKey: ['personalReuslt'],
-  })
-
-  const addPersonalResultMutation = useMutation({
-    mutationFn: insertPersonalMusic,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
-      setCheckedList([])
-      refetchCurrent()
-    },
-  })
-
-  const updatePersonalResultMutation = useMutation({
-    mutationFn: updatePersonalMusic,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
-      setCheckedList([])
-      refetchCurrent()
-    },
-  })
-
-  const updateCurrentMusicMutation = useMutation({
-    mutationFn: updatePersonalResult,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
-      setCheckedList([])
-      refetchCurrent()
-    },
-  })
-
-  const insertCurrentMusicMutation = useMutation({
-    mutationFn: insertPersonalResult,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['personalReuslt'] })
-      setCheckedList([])
-      refetchCurrent()
-    },
-  })
-
-  const { data: current, refetch: refetchCurrent } = useQuery({
-    queryFn: () => getCurrentMusics(userChar.uid),
-    queryKey: ['currentMusic'],
-  })
 
   const currentList =
     current?.length === 0
@@ -133,9 +80,11 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
     if (!current || current.length === 0) {
       const musicList = [...checkedList] as string[]
       insertCurrentMusicMutation.mutate({ userId: userChar.uid, musicList })
+      refetchCurrent()
     } else {
       const musicList = [...currentList, ...checkedList] as string[]
       updateCurrentMusicMutation.mutate({ userId: userChar.uid, musicList })
+      refetchCurrent()
     }
     onSubmitPersonalResult()
   }
@@ -154,6 +103,7 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
         color: '#ffffff',
       })
       updatePersonalResultMutation.mutate(personalMusicData)
+      refetchCurrent()
     } else {
       // alert('곡 추가가 완료됐습니다.')
       Swal.fire({
@@ -162,6 +112,7 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
         color: '#ffffff',
       })
       addPersonalResultMutation.mutate(personalMusicData)
+      refetchCurrent()
     }
   }
   const onGoToHomeHandler = () => {
@@ -170,10 +121,11 @@ const PersonalRecommend: React.FC<PersonalRecommendProps> = ({ userChar }) => {
       resultMusic: resultMusic,
     }
     updatePersonalResultMutation.mutate(personalMusicData)
+    refetchCurrent()
     router.push('/')
   }
 
-  if (isLoading) {
+  if (isPending) {
     return <div className='text-center'> 열심히 곡을 고르는 중입니다.</div>
   }
 
