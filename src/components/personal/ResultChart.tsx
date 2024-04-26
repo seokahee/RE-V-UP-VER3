@@ -1,8 +1,10 @@
 import { useRef, useEffect } from 'react'
 import Chart, { ChartConfiguration } from 'chart.js/auto'
 import React from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { getPreference, getDislike } from '@/shared/personal/personalApi'
+import {
+  useDisLikeQuery,
+  usePreferenceQuery,
+} from '@/query/personal/useQueryPersonal'
 
 import type { ResultChartProps } from '@/types/personal/type'
 
@@ -12,15 +14,8 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
   const chartRef = useRef<HTMLCanvasElement | null>(null)
   const chartInstance = useRef<Chart | null>(null)
 
-  const { data: preference } = useQuery({
-    queryFn: () => getPreference(mbtiStatus),
-    queryKey: ['preference'],
-  })
-
-  const { data: dislike } = useQuery({
-    queryFn: () => getDislike(mbtiStatus),
-    queryKey: ['dislike'],
-  })
+  const preference = usePreferenceQuery(mbtiStatus)
+  const dislike = useDisLikeQuery(mbtiStatus)
 
   useEffect(() => {
     if (preference && dislike) {
@@ -68,18 +63,33 @@ const ResultChart: React.FC<ResultChartProps> = ({ userChar }) => {
                     color: 'white',
                   },
                   pointLabels: {
-                    color: 'blue',
+                    color: 'white',
+                    font: {
+                      size: 15,
+                    },
                   },
                   ticks: {
-                    color: 'black',
+                    color: 'blue',
                   },
                 },
               },
               responsive: false,
               plugins: {
+                legend: {
+                  labels: {
+                    font: {
+                      size: 14,
+                    },
+                    color: 'white',
+                  },
+                },
                 title: {
                   display: true,
                   text: '당신의 퍼스널 뮤직 진단 결과',
+                  color: 'white',
+                  font: {
+                    size: 20,
+                  },
                 },
               },
             },

@@ -26,6 +26,8 @@ const GenderPage = ({
       Swal.fire({
         icon: 'error',
         title: '성별을 선택해주세요.',
+        color: '#ffffff',
+        background: '#2B2B2B',
       })
       return
     }

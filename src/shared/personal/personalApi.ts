@@ -6,7 +6,7 @@ import { mbtiMatch, SentenceMatch } from '@/util/personal/util'
 
 //MBTI 선호도 조회
 export const getPreference = async (mbtiStatus: string) => {
-  const mbtiCode = mbtiMatch(mbtiStatus) // MBTI를 숫자로 변환
+  const mbtiCode = mbtiMatch(mbtiStatus)
   let { data: musicPreferences, error } = await supabase
     .from('musicPreferences')
     .select('hiphop,dance,ballad,rnb,rock')
@@ -22,7 +22,7 @@ export const getPreference = async (mbtiStatus: string) => {
 
 //MBTI 비선호도 조회
 export const getDislike = async (mbtiStatus: string) => {
-  const mbtiCode = mbtiMatch(mbtiStatus) // MBTI를 숫자로 변환
+  const mbtiCode = mbtiMatch(mbtiStatus)
   let { data: musicPreferences, error } = await supabase
     .from('musicDislikes')
     .select('hiphop,dance,ballad,rnb,rock')
@@ -38,9 +38,9 @@ export const getDislike = async (mbtiStatus: string) => {
 
 //mbti별 선호도 상위 장르 3개
 export const recommendMusic = async (mbtiStatus: string) => {
-  const mbtiCode = mbtiMatch(mbtiStatus) // MBTI를 숫자로 변환
+  const mbtiCode = mbtiMatch(mbtiStatus)
   try {
-    let { data, error } = await supabase
+    let { data } = await supabase
       .from('musicPreferences')
       .select('hiphop, dance, ballad, rnb, rock')
       .eq('mbti', mbtiCode)
@@ -82,7 +82,6 @@ export const insertUserChar = async ({
   userId: string
   personalUser: PersonalInfo
 }) => {
-  // const mbtiCode = mbtiMatch(personalUser.mbti) // MBTI를 숫자로 변환
   const mbtiSentence = SentenceMatch(personalUser.mbti)
   const { data, error } = await supabase
     .from('userInfo')
@@ -92,14 +91,14 @@ export const insertUserChar = async ({
         mbti: personalUser.mbti,
         resultSentence: mbtiSentence,
       },
-    }) // 숫자로 변환된 MBTI 저장
+    })
     .eq('userId', userId)
     .select()
 
   if (error) {
     throw new Error(error?.message || 'An unknown error occurred')
   }
-  return
+  return data
 }
 
 //퍼스널 뮤직 테이블에 추가하는 값
@@ -120,12 +119,16 @@ export const insertPersonalMusic = async (personalMusic: PersonalMusic) => {
   if (error) {
     throw new Error(error?.message || 'An unknown error occurred')
   }
+  return data
 }
 //진단 여부 확인
 export const getPersonaledUser = async () => {
   let { data: personalMusic, error } = await supabase
     .from('personalMusic')
     .select('userId')
+  if (error) {
+    throw new Error(error?.message || 'An unknown error occurred')
+  }
   return personalMusic
 }
 
@@ -177,6 +180,7 @@ export const updatePersonalResult = async ({
   if (error) {
     throw new Error(error?.message || 'An unknown error occurred')
   }
+  return data
 }
 
 //현재 재생목록이 없을 경우 추가
@@ -198,4 +202,5 @@ export const insertPersonalResult = async ({
   if (error) {
     throw new Error(error?.message || 'An unknown error occurred')
   }
+  return data
 }

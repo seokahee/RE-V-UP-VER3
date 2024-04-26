@@ -2,12 +2,13 @@
 
 import { getRandomMusicData } from '@/shared/main/api'
 import { useQuery } from '@tanstack/react-query'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import GenreMusicItem from './GenreMusicItem'
 
-import SlideButton from './SlideButton'
-import SectionTitle from './SectionTitle'
+import { GENRE_MUSIC_QUERY_KEY } from '@/query/genreMusic/queryKeys'
 import { useSession } from 'next-auth/react'
+import SectionTitle from './SectionTitle'
+import SlideButton from './SlideButton'
 
 const RandomMusicList = () => {
   const [position, setPosition] = useState(0)
@@ -20,7 +21,7 @@ const RandomMusicList = () => {
   //없을 때
   const { data, isError, isLoading } = useQuery({
     queryFn: () => getRandomMusicData(),
-    queryKey: ['mainGenreMusic'],
+    queryKey: [GENRE_MUSIC_QUERY_KEY.GET_MAIN_GENRE_MUSIC],
   })
 
   const onClickPrevHandler = () => {

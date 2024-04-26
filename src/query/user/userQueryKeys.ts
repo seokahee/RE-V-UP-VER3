@@ -4,4 +4,5 @@ export const GET_USER_INFO = {
   MY_WRITE_BOARD_LIST: 'myWriteList',
   MY_FOLLOWER: 'follower',
   MY_FOLLOWING: 'following',
+  USER_MUSIC_PREFERENCE: 'userMusicPreference',
 }
