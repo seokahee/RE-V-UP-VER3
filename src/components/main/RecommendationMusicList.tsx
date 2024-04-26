@@ -1,12 +1,13 @@
 'use client'
 
+import { GENRE_MUSIC_QUERY_KEY } from '@/query/genreMusic/queryKeys'
 import { getGenreMusicData } from '@/shared/main/api'
 import { useQuery } from '@tanstack/react-query'
-import React, { useState } from 'react'
-import GenreMusicItem from './GenreMusicItem'
-import SlideButton from './SlideButton'
-import SectionTitle from './SectionTitle'
 import { useSession } from 'next-auth/react'
+import { useState } from 'react'
+import GenreMusicItem from './GenreMusicItem'
+import SectionTitle from './SectionTitle'
+import SlideButton from './SlideButton'
 
 const RecommendationMusicList = ({
   musicPreferenceData,
@@ -23,7 +24,7 @@ const RecommendationMusicList = ({
   //mbti 있을 때
   const { data, isError, isLoading } = useQuery({
     queryFn: () => getGenreMusicData(musicPreferenceData),
-    queryKey: ['mainGenreMusic', musicPreferenceData],
+    queryKey: [GENRE_MUSIC_QUERY_KEY.GET_MAIN_GENRE_MUSIC, musicPreferenceData],
     enabled: !!musicPreferenceData,
   })
 
