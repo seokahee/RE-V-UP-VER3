@@ -531,24 +531,24 @@ const CommunityContents = () => {
               </button>
             </li>
           </ul>
-          {typeof window !== 'undefined' ? (
-            <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
-              {isEdit ? (
-                <CommunityNoSsrQuillEditor
-                  theme='snow'
-                  content={updatedContent}
-                  setCommunityForm={setEditForm}
-                />
-              ) : (
-                <QuillNoSSRWrapper
-                  theme='bubble'
-                  readOnly={true}
-                  value={content}
-                  className='h-[200px] w-full px-[15px] tracking-[-0.03em]'
-                />
-              )}
-            </article>
-          ) : null}
+          {/* {typeof window !== 'undefined' ? ( */}
+          <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
+            {isEdit ? (
+              <CommunityNoSsrQuillEditor
+                theme='snow'
+                content={updatedContent}
+                setCommunityForm={setEditForm}
+              />
+            ) : (
+              <QuillNoSSRWrapper
+                theme='bubble'
+                readOnly={true}
+                value={content}
+                className='h-[200px] w-full px-[15px] tracking-[-0.03em]'
+              />
+            )}
+          </article>
+          {/* ) : null} */}
         </div>
 
         <div className='flex w-full flex-col gap-[40px] '>
