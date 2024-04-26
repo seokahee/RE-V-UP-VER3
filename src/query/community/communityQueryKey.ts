@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 
 export const GET_COMMUNITY_LIST_QUERY_KEY = {
   GET_COMMUNITY_LIST: 'getCommunityList',
+  GET_TOP_LIKED_BOARD: 'topLikedBoard',
 }
 
 export const getCommunityListInCommunity = (isSort: boolean) => {

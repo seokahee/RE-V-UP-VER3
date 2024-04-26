@@ -1,17 +1,18 @@
 'use client'
 
-import { getTopLikedBoardData } from '@/shared/main/api'
-import { useQuery } from '@tanstack/react-query'
-import Image from 'next/image'
-import Link from 'next/link'
-import React, { useState } from 'react'
-import SectionTitle from './SectionTitle'
-import next from '@/../public/images/next.svg'
-import prev from '@/../public/images/prev.svg'
 import heart from '@/../public/images/heart-rounded-gray.svg'
 import message from '@/../public/images/message-text-square-02-gray.svg'
+import next from '@/../public/images/next.svg'
+import prev from '@/../public/images/prev.svg'
 import defaultUserImg from '@/../public/images/userDefaultImg.svg'
+import { GET_COMMUNITY_LIST_QUERY_KEY } from '@/query/community/communityQueryKey'
+import { getTopLikedBoardData } from '@/shared/main/api'
+import { useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useState } from 'react'
+import SectionTitle from './SectionTitle'
 
 const TopLikedBoard = () => {
   const [position, setPosition] = useState(0)
@@ -23,7 +24,7 @@ const TopLikedBoard = () => {
 
   const { data, isError, isLoading } = useQuery({
     queryFn: () => getTopLikedBoardData(),
-    queryKey: ['topLikedBoard'],
+    queryKey: [GET_COMMUNITY_LIST_QUERY_KEY.GET_TOP_LIKED_BOARD],
   })
 
   const onClickPrevHandler = () => {
