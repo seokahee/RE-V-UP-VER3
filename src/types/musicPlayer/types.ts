@@ -64,8 +64,8 @@ export type currentMusicIdType = {
 export type PlayerProps = {
   currentPlaying: CurrentPlayListType | null
   isLyrics: boolean
-  currentPlayList: CurrentPlayListType[]
   musicIndex: number
+  // currentPlayList: CurrentPlayListType[]
   isRandom: boolean
   setCurrentPlaying: Dispatch<SetStateAction<CurrentPlayListType | null>>
   onPreviousHandler: () => void

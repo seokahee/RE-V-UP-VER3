@@ -19,13 +19,14 @@ import MyNextIcon from './playerIcons/MyNextIcon'
 import MyPauseIcon from './playerIcons/MyPauseIcon'
 import MyPlayIcon from './playerIcons/MyPlayIcon'
 import MyPreviousIcon from './playerIcons/MyPreviousIcon'
+import { useCurrentMusicStore } from '@/shared/store/playerStore'
 
 const Player = ({
   currentPlaying,
+  // currentPlayList,
   setCurrentPlaying,
   isLyrics,
   isRandom,
-  currentPlayList,
   musicIndex,
   onPreviousHandler,
   onNextTrackHandler,
@@ -33,14 +34,20 @@ const Player = ({
   onInsertMyPlayListHandler,
   onRandomMusicHandler,
 }: PlayerProps) => {
+  // console.log('musicIndex', musicIndex)
+  const { currentMusicData } = useCurrentMusicStore()
+  const { currentPlayList } = currentMusicData
   useEffect(() => {
-    if (!currentPlaying && currentPlayList.length > 0 && musicIndex !== null) {
+    if (!currentPlaying && currentPlayList.length > 0) {
       setCurrentPlaying(currentPlayList[musicIndex])
     } else if (currentPlaying && currentPlayList.length === 0) {
       setCurrentPlaying(null)
     }
   }, [musicIndex, currentPlayList, currentPlaying])
-
+  // console.log(
+  //   '현재 재생 노래에에에에에에에에에에에에에에에에에에에에엥에에에에',
+  //   currentPlaying,
+  // )
   const customIcons = {
     play: <MyPlayIcon />,
     pause: <MyPauseIcon />,
@@ -75,6 +82,7 @@ const Player = ({
   const onPauseHandler = () => {
     stopAnimation()
   }
+
   return (
     <div>
       <div className='flex flex-col items-center'>
@@ -164,7 +172,7 @@ const Player = ({
       <div className='flex items-center'>
         <AudioPlayer
           src={currentPlaying ? currentPlaying.musicSource : ''}
-          volume={0.5}
+          volume={0.1}
           loop={false}
           onEnded={onNextTrackHandler}
           showSkipControls={true}
