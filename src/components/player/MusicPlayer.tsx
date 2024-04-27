@@ -8,7 +8,6 @@ import {
   updateCurrentMusic,
   updateMyPlayMusic,
 } from '@/shared/musicPlayer/api'
-import { useCurrentMusicStore } from '@/shared/store/playerStore'
 import { CurrentPlayListType } from '@/types/musicPlayer/types'
 import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
@@ -28,8 +27,6 @@ const MusicPlayer = () => {
   const [selectAll, setSelectAll] = useState(false)
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user.uid as string
-
-  const currentMusic = useCurrentMusicStore((state) => state.currentMusic)
 
   const { currentPlayList, myPlayList, isError } = getMusicList(uid)
 
@@ -77,8 +74,6 @@ const MusicPlayer = () => {
     return
   }
 
-  currentMusic(currentPlayList as CurrentPlayListType[])
-
   const onLyricsToggle = () => {
     setIsLyrics((prev) => !prev)
   }
@@ -92,50 +87,36 @@ const MusicPlayer = () => {
   const onPreviousHandler = () => {
     if (!isRandom) {
       if (musicIndex === 0) {
-        setMusicIndex(currentPlayList.length - 1) // 마지막 곡으로 이동
+        setMusicIndex(currentPlayList.length - 1)
         setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
       } else {
-        setMusicIndex((prev) => prev - 1) // 이전 곡으로 이동
+        setMusicIndex((prev) => prev - 1)
         setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
       }
     } else {
       setMusicIndex(Math.floor(Math.random() * currentPlayList.length))
       setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
-      // console.log('currentPlaying', currentPlaying)
     }
   }
-  // (musicIndex === currentPlayList.length - 1)
-  // console.log('musicIndex', musicIndex)
   const onNextTrackHandler = () => {
+    // 다음곡 두번 눌러야함 확인하라고
     if (!isRandom) {
       if (musicIndex === currentPlayList.length) {
-        setMusicIndex(0) // 첫 번째 곡으로 돌아감
+        setMusicIndex(0)
         setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
-        // console.log(
-        //   '처음곡!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
-        //   currentPlaying,
-        // )
       } else {
-        // console.log('다음곡으로 왜안돼애애애애애앵')
-        setMusicIndex((prev) => prev + 1) // 다음 곡으로 이동
+        setMusicIndex((prev) => prev + 1)
         setCurrentPlaying(
           currentPlayList[musicIndex]
             ? (currentPlayList[musicIndex] as CurrentPlayListType)
             : null,
         )
-        // setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
-
-        // console.log(
-        //   '다음곡!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
-        //   currentPlaying,
-        // )
       }
     } else {
       setMusicIndex(Math.floor(Math.random() * currentPlayList.length))
       setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
     }
   }
-  // 처음 실행 시 노래 끝나고 다시 재생하거나 첫 인덱스에 있는 노래를 아래로 내리면 다음곡이 잘 넘어감 하지만 콘솔 상태변경은 매우잘됨 장난함?
   const onChangeCheckMusicHandler = (checked: boolean, id: string) => {
     if (checked) {
       setCheckedList((prev) => [...prev, id])
@@ -217,7 +198,6 @@ const MusicPlayer = () => {
             return item.myMusicIds
           })
 
-          // some - || / every - &&
           const uniqueValues = checkedList.filter((value) => {
             return myIndex.every((item) => {
               return item !== value
@@ -269,7 +249,7 @@ const MusicPlayer = () => {
         <Player
           currentPlaying={currentPlaying}
           setCurrentPlaying={setCurrentPlaying}
-          // currentPlayList={currentPlayList as CurrentPlayListType[]}
+          currentPlayList={currentPlayList as CurrentPlayListType[]}
           musicIndex={musicIndex}
           isLyrics={isLyrics}
           isRandom={isRandom}
@@ -284,7 +264,7 @@ const MusicPlayer = () => {
         <CurrentMusicList
           selectAll={selectAll}
           setSelectAll={setSelectAll}
-          // currentPlayList={currentPlayList as CurrentPlayListType[]}
+          currentPlayList={currentPlayList as CurrentPlayListType[]}
           currentPlaying={currentPlaying}
           isLyrics={isLyrics}
           checkedList={checkedList}

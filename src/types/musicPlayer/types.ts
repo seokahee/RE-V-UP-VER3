@@ -35,37 +35,11 @@ export type MyPlayListType = {
   userId: string
 }
 
-export type SearchResultType = {
-  artist: string
-  musicId: string
-  musicSource: string
-  musicTitle: string
-  release: string
-  thumbnail: string
-  boardId: string
-  boardTitle: string
-  date: string
-  likeList: string[]
-  userInfo: {
-    nickname: string
-    userImage: string
-  }
-}
-
-export type currentMusicIdType = {
-  currentId?: string
-  currentMusicIds?: {
-    id: string
-    idx: number
-  }
-  userId?: string
-}
-
 export type PlayerProps = {
   currentPlaying: CurrentPlayListType | null
   isLyrics: boolean
   musicIndex: number
-  // currentPlayList: CurrentPlayListType[]
+  currentPlayList: CurrentPlayListType[]
   isRandom: boolean
   setCurrentPlaying: Dispatch<SetStateAction<CurrentPlayListType | null>>
   onPreviousHandler: () => void
@@ -79,7 +53,7 @@ export type MusicListProps = {
   currentPlaying: CurrentPlayListType | null
   isLyrics: boolean
   checkedList: string[]
-  // currentPlayList: CurrentPlayListType[]
+  currentPlayList: CurrentPlayListType[]
   selectAll: boolean
   setSelectAll: Dispatch<SetStateAction<boolean>>
   setCheckedList: (value: string[]) => void

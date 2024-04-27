@@ -2,30 +2,30 @@ import { CurrentPlayListType } from '@/types/musicPlayer/types'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-type CurrentMusicStore = {
-  currentMusicData: {
-    currentPlayList: CurrentPlayListType[]
+type customListMusicStore = {
+  customListData: {
+    customPlayList: CurrentPlayListType[]
   }
 
-  currentMusic: (currentPlayList: CurrentPlayListType[]) => void
+  customListMusic: (customPlayList: CurrentPlayListType[]) => void
 }
 
-const currentMusicState = {
-  currentMusicData: {
-    currentPlayList: [],
+const customListMusicState = {
+  customListData: {
+    customPlayList: [],
   },
 }
 
-export const useCurrentMusicStore = create(
-  persist<CurrentMusicStore>(
+export const useCustomListMusicStore = create(
+  persist<customListMusicStore>(
     (set, _) => ({
-      ...currentMusicState,
-      currentMusic: (currentPlayList: CurrentPlayListType[]) => {
-        set({ currentMusicData: { currentPlayList } })
+      ...customListMusicState,
+      customListMusic: (customPlayList: CurrentPlayListType[]) => {
+        set({ customListData: { customPlayList } })
       },
     }),
     {
-      name: 'currentMusicStore',
+      name: 'customListMusicStore',
     },
   ),
 )

@@ -19,11 +19,10 @@ import MyNextIcon from './playerIcons/MyNextIcon'
 import MyPauseIcon from './playerIcons/MyPauseIcon'
 import MyPlayIcon from './playerIcons/MyPlayIcon'
 import MyPreviousIcon from './playerIcons/MyPreviousIcon'
-import { useCurrentMusicStore } from '@/shared/store/playerStore'
 
 const Player = ({
   currentPlaying,
-  // currentPlayList,
+  currentPlayList,
   setCurrentPlaying,
   isLyrics,
   isRandom,
@@ -34,9 +33,6 @@ const Player = ({
   onInsertMyPlayListHandler,
   onRandomMusicHandler,
 }: PlayerProps) => {
-  // console.log('musicIndex', musicIndex)
-  const { currentMusicData } = useCurrentMusicStore()
-  const { currentPlayList } = currentMusicData
   useEffect(() => {
     if (!currentPlaying && currentPlayList.length > 0) {
       setCurrentPlaying(currentPlayList[musicIndex])
@@ -44,10 +40,7 @@ const Player = ({
       setCurrentPlaying(null)
     }
   }, [musicIndex, currentPlayList, currentPlaying])
-  // console.log(
-  //   '현재 재생 노래에에에에에에에에에에에에에에에에에에에에엥에에에에',
-  //   currentPlaying,
-  // )
+
   const customIcons = {
     play: <MyPlayIcon />,
     pause: <MyPauseIcon />,
@@ -106,7 +99,6 @@ const Player = ({
                 height={276}
                 className='element rounded-full'
                 ref={imageRef}
-                // className='rotate element rounded-full shadow-[0px_0px_16px_rgba(210,137,176,0.5)]'
               />
             </figure>
           ) : (
