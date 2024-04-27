@@ -6,7 +6,6 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Swal from 'sweetalert2'
-import DOMPurify from 'dompurify'
 import {
   useCoummunityCreateItem,
   useCoummunityItem,
@@ -15,7 +14,6 @@ import { musicDataInCommuDetail } from '@/query/communityDetail/queryKey'
 import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
 import { dragHandler, onDateTimeHandler } from '@/util/util'
 import message from '@/../public/images/message-text-square-02-gray.svg'
-import goback from '@/../public/images/community-detail-Image/back-allow.svg'
 import detailEdit from '@/../public/images/community-detail-Image/detail-edit.svg'
 import detailDelete from '@/../public/images/community-detail-Image/detail-delete.svg'
 import addCurrMusic from '@/../public/images/community-detail-Image/add-current-music.svg'
@@ -38,11 +36,13 @@ import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 import { CommunityNoSsrQuillEditor } from './CommunityNoSsrQuillEditor'
 import createDOMPurify from 'dompurify'
 import { MusicInfoType } from '@/types/musicPlayer/types'
+import ContentsHeader from './ContentsHeader'
 
 const CommunityContents = () => {
   const router = useRouter()
   const DOMPurify =
     typeof window !== 'undefined' ? createDOMPurify(window) : null
+
   const { setIsChooseMusic } = useMusicSearchedStore()
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const { data: userSessionInfo, status } = useSession()
@@ -78,6 +78,7 @@ const CommunityContents = () => {
     musicInfo,
   } = readDetailData || ({} as readCommuDetail)
   const { nickname, userImage, userId } = userInfo || {}
+
   const {
     musicTitle,
     artist,
@@ -105,6 +106,7 @@ const CommunityContents = () => {
     onChange: onChangeEditForm,
   } = useInput({ boardTitle, content })
   const { boardTitle: updatedTitle, content: updatedContent } = editForm
+  const setCotent = DOMPurify?.sanitize(content)
 
   const commentLength =
     commentsData && commentsData.length > 99
@@ -338,54 +340,16 @@ const CommunityContents = () => {
   return (
     <div className='flex w-[732px] flex-col'>
       <div className='mb-[8px] flex flex-col gap-[16px]'>
-        <section
-          className={`justify-betweeen relative mt-[32px] flex h-[72px] w-[100%] items-center rounded-[16px] border-[4px] border-solid border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.1)] px-[16px] py-[12px] ${BOARD_TITLE_SHADOW}`}
-        >
-          <div>
-            {isEdit ? (
-              <button
-                onClick={onEditCancelHandler}
-                className={`flex h-[48px] w-[48px] items-center justify-center rounded-[12px] bg-[rgba(255,255,255,0.1)] ${ALLOW_SHADOW}`}
-              >
-                <Image
-                  src={goback}
-                  alt='수정취소 아이콘'
-                  width={24}
-                  height={24}
-                />
-              </button>
-            ) : (
-              <button
-                onClick={onBackButtonHandler}
-                className={`flex h-[48px] w-[48px] items-center justify-center rounded-[12px] bg-[rgba(255,255,255,0.1)] ${ALLOW_SHADOW}`}
-              >
-                <Image
-                  src={goback}
-                  alt='이전으로 아이콘'
-                  width={24}
-                  height={24}
-                />
-              </button>
-            )}
-          </div>
-          <h3 className='mx-[auto] text-[18px] font-bold'>
-            음악 추천 게시판🦻
-          </h3>
-          {isEdit ? (
-            <div className='absolute right-[12px] top-[12.5%]'>
-              <button
-                onClick={onBoardEditCompleteHandler}
-                className={`flex h-[48px] w-[120px] items-center justify-center rounded-[12px] bg-primary text-[16px] font-bold active:bg-[rgba(104,91,255,0.20)] ${DOWN_ACTIVE_BUTTON} ${ACTIVE_BUTTON_SHADOW} `}
-              >
-                <p>수정완료</p>
-              </button>
-            </div>
-          ) : null}
-        </section>
+        <ContentsHeader
+          isEdit={isEdit}
+          onEditCancelHandler={onEditCancelHandler}
+          onBackButtonHandler={onBackButtonHandler}
+          onBoardEditCompleteHandler={onBackButtonHandler}
+        />
 
-        <div className='flex w-full flex-col gap-[40px]'>
+        <section className='flex w-full flex-col gap-[40px]'>
           <article className='flex items-center gap-[16px] border-b-[1px] border-solid border-[#000000] px-[16px] py-[30px]'>
-            <div className='flex'>
+            <section className='flex'>
               <Link
                 href={`/userpage/${userId}`}
                 className={`${uid === userId ? 'pointer-events-none' : 'cursor-pointer'}`}
@@ -412,10 +376,10 @@ const CommunityContents = () => {
                   )}
                 </figure>
               </Link>
-            </div>
+            </section>
 
             <section className='flex w-full flex-col gap-[16px]'>
-              <div className='flex w-full justify-between'>
+              <article className='flex w-full justify-between'>
                 {isEdit ? (
                   <input
                     type='text'
@@ -431,7 +395,7 @@ const CommunityContents = () => {
                     <p className='flex flex-col items-center justify-center text-center text-[18px] font-bold '>{`${boardTitle}`}</p>
                   </div>
                 )}
-                <div>
+                <section>
                   <div>
                     {userId === uid && !isEdit && (
                       <button onClick={onBoardEditHandler}>
@@ -454,9 +418,9 @@ const CommunityContents = () => {
                       </button>
                     )}
                   </div>
-                </div>
-              </div>
-              <div className='flex justify-between'>
+                </section>
+              </article>
+              <article className='flex justify-between'>
                 <div className='flex items-center'>
                   <p className=' text-center text-[14px] font-bold text-[rgba(255,255,255,0.5)]'>
                     {nickname}
@@ -465,7 +429,7 @@ const CommunityContents = () => {
                 <div className='text-[rgba(255,255,255,0.5)]'>
                   {onDateTimeHandler(date)}
                 </div>
-              </div>
+              </article>
             </section>
           </article>
           <ul
@@ -543,15 +507,16 @@ const CommunityContents = () => {
               <QuillNoSSRWrapper
                 theme='bubble'
                 readOnly={true}
-                value={content}
+                value={setCotent}
                 className='h-[200px] w-full px-[15px] tracking-[-0.03em]'
               />
             )}
+            {/* <div dangerouslySetInnerHTML={{__html : setCotent}}></div> */}
           </article>
           {/* ) : null} */}
-        </div>
+        </section>
 
-        <div className='flex w-full flex-col gap-[40px] '>
+        <section className='flex w-full flex-col gap-[40px] '>
           <div className='flex gap-[16px]'>
             <div className='flex gap-[7px]'>
               <figure>
@@ -566,7 +531,7 @@ const CommunityContents = () => {
             </div>
             <LikeButton boardId={currentBoardId} />
           </div>
-        </div>
+        </section>
       </div>
       {isEdit ? null : <CommentsPage />}
     </div>
