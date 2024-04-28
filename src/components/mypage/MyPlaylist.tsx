@@ -1,5 +1,4 @@
 import arrow from '@/../public/images/chevron-down.svg'
-import loading from '@/../public/images/loadingBar.gif'
 import { queryClient } from '@/app/provider'
 import { GET_MUSIC_LIST_QUERY_KEYS } from '@/query/musicPlayer/musicPlayerQueryKeys'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
@@ -8,7 +7,7 @@ import {
   updateMyMusicIds,
 } from '@/shared/mypage/api'
 import type { UserInfo } from '@/types/mypage/types'
-import { useIntersectionObserver } from '@/util/useIntersectionObserver'
+import InfiniteScrollContainer from '@/util/InfiniteScrollContainer'
 import { dragHandler } from '@/util/util'
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
@@ -17,15 +16,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import Swal from 'sweetalert2'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import CheckboxItem from './CheckboxItem'
-import InfiniteScrollContainer from '@/util/InfiniteScrollContainer'
 
 const MyPlaylist = ({ data }: { data: UserInfo }) => {
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user?.uid as string
   const [checkedList, setCheckedList] = useState<string[]>([])
   const [toggle, setToggle] = useState(false)
-  const topRef = useRef<HTMLDivElement>(null)
-  const bottomRef = useRef<HTMLDivElement>(null)
   const listRef = useRef<HTMLUListElement>(null)
   const scrollBoxRef = useRef<HTMLDivElement>(null)
   const scroll = useRef(0)
@@ -55,7 +51,6 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       if (!lastPage || lastPage.isLast) {
         return null
       }
-      //lastPageParam + 1 을 해서 다음 페이지로 넘기기
       return lastPageParam + 1
     },
     getPreviousPageParam: (firstPage, allPages, firstPageParam) => {
@@ -274,89 +269,17 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
         !isFetchingPreviousPage &&
         scrollBoxRef.current.scrollTop < height * 3
       ) {
-        // console.log(scroll.current, height * 3, height)
-        // console.log('역방향 실행')
-        // console.log('요청을 이렇게나 많이 보냄') //!isFetchingPreviousPage 이 조건 추가해서 요청 필요한 만큼만 보냄
         fetchPreviousPage()
-        // console.log(playlistMyData)
-        // scrollPosition('top')
       }
     }
   }
 
-  // const scrollPosition = (type: string) => {
-  //   const height = listRef.current?.children[0]
-  //     ? listRef.current?.children[0].clientHeight
-  //     : 0
-  //   console.log('height', height)
-  //   const itemHeight = height
-  //   if (scrollBoxRef.current) {
-  //     console.log(scrollBoxRef.current.scrollTop)
-
-  //     const position =
-  //       type === 'top'
-  //         ? scrollBoxRef.current.scrollTop + itemHeight * 5
-  //         : scrollBoxRef.current.scrollTop - itemHeight * 3
-
-  //     scrollBoxRef.current.scrollTop = position
-  //   }
-  // window.scrollTo({
-  //   top: position,
-  //   // behavior: 'smooth', // 부드럽게 스크롤 이동
-  // })
-  // }
-
-  // const previousPage = () => {
-  // const height = listRef.current?.children[0]
-  //   ? listRef.current?.children[0].clientHeight
-  //   : 0
-  // console.log(scroll.current, height * 3, height)
-  // if (hasPreviousPage && scroll.current < height * 3) {
-  //   console.log('이거 실행')
-  //   fetchPreviousPage()
-  //   scrollPosition('top')
-  // }
-  // }
-
   const nextPage = () => {
     fetchNextPage()
     console.log(playlistMyData?.pageParams.length)
-    // if (MAX_PAGES === playlistMyData?.pageParams.length!) {
-    //   scrollPosition('bottom')
-    // }
   }
 
-  // //역방향
-  // const onIntersectTop = ([entry]: IntersectionObserverEntry[]) =>
-  //   entry.isIntersecting && previousPage()
-
-  // useIntersectionObserver({
-  //   target: topRef,
-  //   onIntersect: onIntersectTop,
-  //   enabled: hasPreviousPage,
-  // })
-
-  // //정방향
-  // //감시하는 요소가 보여지면 fetchNextPage 실행하도록 하는 onIntersect로직을 useIntersectionObserver 에 넘겨줌
-  // const onIntersect = ([entry]: IntersectionObserverEntry[]) =>
-  //   entry.isIntersecting && nextPage()
-
-  // useIntersectionObserver({
-  //   target: bottomRef,
-  //   onIntersect,
-  //   enabled: hasNextPage,
-  // })
-
-  // useEffect(() => {
-  //   if (scrollBoxRef.current) {
-  //     scroll.current = scrollBoxRef.current.scrollTop
-  //   }
-  //   console.log('scroll.current', scroll.current)
-  // }, [scrollBoxRef.current?.scrollTop])
-
   useEffect(() => {
-    //높이를 구하기 위해 사용
-    //100vh - top 좌표값
     if (scrollBoxRef.current) {
       setScrollBoxTopPosition(scrollBoxRef.current?.getBoundingClientRect().top)
     }
@@ -408,17 +331,6 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
           </button>
         </div>
       )}
-      {/* {hasPreviousPage && <div ref={topRef}></div>}
-      {isFetchingPreviousPage && (
-        <div className='flex h-[50px] items-center justify-center'>
-          <Image
-            src={loading}
-            height={40}
-            width={40}
-            alt='데이터를 가져오는 중입니다.'
-          />
-        </div>
-      )} */}
       <div
         ref={scrollBoxRef}
         className='overflow-y-auto'
@@ -431,11 +343,8 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
           isFetchingNextPage={isFetchingNextPage}
           isFetchingPreviousPage={isFetchingPreviousPage}
           hasNextPage={hasNextPage}
-          // hasPreviousPage={hasPreviousPage}
-          // previousPage={previousPage}
           nextPage={nextPage}
           root={scrollBoxRef.current}
-          // rootMargin='-100px 0px 0px 0px'
         >
           <ul
             className={`tracking-[-0.03em] ${toggle ? toggleStyle : ''} overflow-hidden transition-opacity ease-in-out`}
@@ -501,17 +410,6 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
           </ul>
         </InfiniteScrollContainer>
       </div>
-      {/* {isFetchingNextPage && (
-        <div className='flex h-[50px] items-center justify-center'>
-          <Image
-            src={loading}
-            height={40}
-            width={40}
-            alt='데이터를 가져오는 중입니다.'
-          />
-        </div>
-      )}
-      {hasNextPage && <div className='h-2' ref={bottomRef}></div>} */}
     </div>
   )
 }
