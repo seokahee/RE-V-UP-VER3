@@ -132,6 +132,7 @@ const CurrentMusicList = ({
       })
     }
   }
+
   const dragOverHandler = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
   }
