@@ -24,7 +24,6 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
   const [toggle, setToggle] = useState(false)
   const listRef = useRef<HTMLUListElement>(null)
   const scrollBoxRef = useRef<HTMLDivElement>(null)
-  const scroll = useRef(0)
   const [scrollBoxTopPosition, setScrollBoxTopPosition] = useState(0)
 
   const PER_PAGE = 5
@@ -262,8 +261,6 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       ? listRef.current?.children[0].clientHeight
       : 0
     if (scrollBoxRef.current) {
-      scroll.current = scrollBoxRef.current.scrollTop
-
       if (
         hasPreviousPage &&
         !isFetchingPreviousPage &&
