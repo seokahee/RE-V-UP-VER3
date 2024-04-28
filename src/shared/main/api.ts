@@ -156,6 +156,23 @@ export const insertCurrentMusic = async ({
   }
 }
 
+export const insertCurrentMusics = async ({
+  userId,
+  musicIds,
+}: {
+  userId: string
+  musicIds: string[]
+}) => {
+  try {
+    await supabase
+      .from('playlistCurrent')
+      .insert({ userId: userId, currentMusicIds: [...musicIds] })
+      .select()
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export const updateCurrentMusic = async ({
   userId,
   currentList,

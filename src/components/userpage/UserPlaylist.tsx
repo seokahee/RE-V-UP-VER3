@@ -105,6 +105,15 @@ const UserPlaylist = ({
     },
   })
 
+  const insertMutation = useMutation({
+    mutationFn: insertCurrentMusics,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [GET_MUSIC_LIST_QUERY_KEYS.CURRENT_MUSIC_INFO],
+      })
+    },
+  })
+
   const checkListReset = () => {
     setCheckedList([])
   }
@@ -172,6 +181,15 @@ const UserPlaylist = ({
 
   const onClickAllAddHandler = async () => {
     const userPlaylistMy = !userPlaylistMyIds ? [] : userPlaylistMyIds
+
+    if (!myPlaylistCurrentData?.length && userPlaylistMy.length) {
+      await insertMutation.mutate({
+        userId: uid,
+        musicIds: [...userPlaylistMy],
+      })
+      return
+    }
+
     const myPlayListCurrent = !myPlaylistCurrentData?.[0].currentMusicIds
       ? []
       : myPlaylistCurrentData?.[0].currentMusicIds
