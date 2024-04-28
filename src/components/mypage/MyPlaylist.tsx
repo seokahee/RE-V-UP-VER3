@@ -273,7 +273,6 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
 
   const nextPage = () => {
     fetchNextPage()
-    console.log(playlistMyData?.pageParams.length)
   }
 
   useEffect(() => {
