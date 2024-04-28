@@ -83,9 +83,6 @@ const UserPlaylist = ({
   })
 
   const userPlaylistMyIds = userPlaylistMyData?.userPlaylistMyIds
-  // const userPlaylistMyData = userPlaylistMyInfoData?.myPlaylistData
-
-  console.log('userPlaylistMyData', userPlaylistMyData)
 
   const { data: myPlaylistCurrentData } = useQuery({
     queryFn: () => getCurrentMusicData(uid),
@@ -211,7 +208,7 @@ const UserPlaylist = ({
       const addData = userPlaylistMy?.filter(
         (el) => !myPlayListCurrent!.includes(el),
       )
-      console.log('addData', addData)
+
       if (addData?.length === 0) {
         await Swal.fire({
           icon: 'info',
