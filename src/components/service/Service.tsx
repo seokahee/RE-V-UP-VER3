@@ -13,7 +13,7 @@ const Service = () => {
   }
 
   return (
-    <div className='relative pl-20'>
+    <div className='relative '>
       <div className='absolute inset-x-10 bottom-20 inline-flex h-14 w-14 flex-col items-center justify-center gap-2 rounded-[100px] border-2 border-black border-opacity-10 bg-indigo-500 p-2 shadow shadow-inner'>
         <div className="text-center font-['Urbanist'] text-2xl font-black leading-[33.60px] text-white">
           <button onClick={onServiceHandler}>
