@@ -167,7 +167,7 @@ const Player = ({
       <div className='flex items-center'>
         <AudioPlayer
           src={currentPlaying ? currentPlaying.musicSource : ''}
-          volume={0.1}
+          volume={0.5}
           loop={false}
           onEnded={onNextTrackHandler}
           showSkipControls={true}

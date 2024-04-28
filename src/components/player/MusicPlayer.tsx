@@ -148,7 +148,7 @@ const MusicPlayer = () => {
       color: '#ffffff',
     }).then((result) => {
       if (result.isConfirmed) {
-        const currentMusicData = currentPlayList.filter(
+        const currentMusicData = customPlayList.filter(
           (music) => !checkedList.includes(music.musicId),
         )
         deleteMutation.mutate({
@@ -162,8 +162,8 @@ const MusicPlayer = () => {
         )
         if (isCurrentMusicDeleted) {
           setCurrentPlaying(
-            currentPlayList[musicIndex]
-              ? (currentMusicData[0] as CurrentPlayListType)
+            customPlayList[musicIndex]
+              ? (currentMusicData[musicIndex] as CurrentPlayListType)
               : null,
           )
         }
