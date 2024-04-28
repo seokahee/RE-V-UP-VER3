@@ -194,7 +194,6 @@ const CurrentMusicList = ({
               onDrop={() => indexChangeDropHandler(index)}
               onDragOver={dragOverHandler}
               key={item.musicId}
-              className={`${isCurrentPlaying ? 'rounded-lg bg-neutral-700' : ''}`}
             >
               {!isLyrics ? (
                 <div
@@ -203,7 +202,7 @@ const CurrentMusicList = ({
                     setIsDrag(true)
                     indexDragHandler(item, index)
                   }}
-                  className={`relative flex max-h-[63px] w-[366px] cursor-pointer justify-between pb-[8px] pl-[16px] pr-[16px] pt-[8px] ${isCurrentPlaying ? 'rounded-lg bg-neutral-700' : ''}`}
+                  className={`relative flex max-h-[63px] w-[366px] w-full cursor-pointer justify-between pb-[8px] pl-[16px] pr-[16px] pt-[8px] ${isCurrentPlaying ? 'rounded-lg bg-neutral-700' : ''}`}
                 >
                   <div className='flex items-center gap-[16px]'>
                     <CheckboxItem

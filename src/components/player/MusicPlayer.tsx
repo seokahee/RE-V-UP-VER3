@@ -8,6 +8,7 @@ import {
   updateCurrentMusic,
   updateMyPlayMusic,
 } from '@/shared/musicPlayer/api'
+import { useCustomListMusicStore } from '@/shared/store/playerStore'
 import { CurrentPlayListType } from '@/types/musicPlayer/types'
 import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
@@ -16,7 +17,6 @@ import 'react-h5-audio-player/lib/styles.css'
 import Swal from 'sweetalert2'
 import CurrentMusicList from './CurrentMusicList'
 import Player from './Player'
-import { useCustomListMusicStore } from '@/shared/store/playerStore'
 
 const MusicPlayer = () => {
   const [currentPlaying, setCurrentPlaying] =
@@ -259,7 +259,6 @@ const MusicPlayer = () => {
         <Player
           currentPlaying={currentPlaying}
           setCurrentPlaying={setCurrentPlaying}
-          currentPlayList={currentPlayList as CurrentPlayListType[]}
           musicIndex={musicIndex}
           isLyrics={isLyrics}
           isRandom={isRandom}

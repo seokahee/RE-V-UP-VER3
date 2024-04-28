@@ -5,6 +5,7 @@ import musicShuffle from '@/../public/images/musicShuffle.svg'
 import musicShuffleOff from '@/../public/images/musicShuffleOff.svg'
 import musicThumbnail from '@/../public/images/musicThumbnail.svg'
 import musicThumbnailDefault from '@/../public/images/musicThumbnailDefault.svg'
+import { useCustomListMusicStore } from '@/shared/store/playerStore'
 import { PlayerProps } from '@/types/musicPlayer/types'
 import Image from 'next/image'
 import { useEffect, useRef } from 'react'
@@ -19,11 +20,9 @@ import MyNextIcon from './playerIcons/MyNextIcon'
 import MyPauseIcon from './playerIcons/MyPauseIcon'
 import MyPlayIcon from './playerIcons/MyPlayIcon'
 import MyPreviousIcon from './playerIcons/MyPreviousIcon'
-import { useCustomListMusicStore } from '@/shared/store/playerStore'
 
 const Player = ({
   currentPlaying,
-  currentPlayList,
   setCurrentPlaying,
   isLyrics,
   isRandom,
