@@ -64,7 +64,6 @@ const CurrentMusicList = ({
       customListMusic(addList)
     }
     if (removeValues.length > 0) {
-      console.log('삭제되면 스테이트 값도 지워줘야겠지 또도를 생각해')
       const currentItems = removeValues.map((item) => {
         return item.musicId
       })

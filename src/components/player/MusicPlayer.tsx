@@ -16,6 +16,7 @@ import 'react-h5-audio-player/lib/styles.css'
 import Swal from 'sweetalert2'
 import CurrentMusicList from './CurrentMusicList'
 import Player from './Player'
+import { useCustomListMusicStore } from '@/shared/store/playerStore'
 
 const MusicPlayer = () => {
   const [currentPlaying, setCurrentPlaying] =
@@ -27,6 +28,9 @@ const MusicPlayer = () => {
   const [selectAll, setSelectAll] = useState(false)
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user.uid as string
+
+  const { customListData } = useCustomListMusicStore()
+  const { customPlayList } = customListData
 
   const { currentPlayList, myPlayList, isError } = getMusicList(uid)
 
@@ -87,36 +91,42 @@ const MusicPlayer = () => {
   const onPreviousHandler = () => {
     if (!isRandom) {
       if (musicIndex === 0) {
-        setMusicIndex(currentPlayList.length - 1)
-        setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
+        setMusicIndex(customPlayList.length - 1)
+        setCurrentPlaying(customPlayList[musicIndex] as CurrentPlayListType)
       } else {
         setMusicIndex((prev) => prev - 1)
-        setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
+        setCurrentPlaying(customPlayList[musicIndex] as CurrentPlayListType)
       }
     } else {
-      setMusicIndex(Math.floor(Math.random() * currentPlayList.length))
-      setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
+      setCurrentPlaying(
+        customPlayList[
+          Math.floor(Math.random() * customPlayList.length)
+        ] as CurrentPlayListType,
+      )
     }
   }
   const onNextTrackHandler = () => {
-    // 다음곡 두번 눌러야함 확인하라고
     if (!isRandom) {
-      if (musicIndex === currentPlayList.length) {
+      if (musicIndex === customPlayList.length - 1) {
         setMusicIndex(0)
-        setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
+        setCurrentPlaying(customPlayList[0] as CurrentPlayListType)
       } else {
         setMusicIndex((prev) => prev + 1)
         setCurrentPlaying(
-          currentPlayList[musicIndex]
-            ? (currentPlayList[musicIndex] as CurrentPlayListType)
+          customPlayList[musicIndex]
+            ? (customPlayList[musicIndex + 1] as CurrentPlayListType)
             : null,
         )
       }
     } else {
-      setMusicIndex(Math.floor(Math.random() * currentPlayList.length))
-      setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
+      setCurrentPlaying(
+        customPlayList[
+          Math.floor(Math.random() * customPlayList.length)
+        ] as CurrentPlayListType,
+      )
     }
   }
+
   const onChangeCheckMusicHandler = (checked: boolean, id: string) => {
     if (checked) {
       setCheckedList((prev) => [...prev, id])

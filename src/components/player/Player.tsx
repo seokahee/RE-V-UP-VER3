@@ -19,6 +19,7 @@ import MyNextIcon from './playerIcons/MyNextIcon'
 import MyPauseIcon from './playerIcons/MyPauseIcon'
 import MyPlayIcon from './playerIcons/MyPlayIcon'
 import MyPreviousIcon from './playerIcons/MyPreviousIcon'
+import { useCustomListMusicStore } from '@/shared/store/playerStore'
 
 const Player = ({
   currentPlaying,
@@ -33,13 +34,16 @@ const Player = ({
   onInsertMyPlayListHandler,
   onRandomMusicHandler,
 }: PlayerProps) => {
+  const { customListData } = useCustomListMusicStore()
+  const { customPlayList } = customListData
+
   useEffect(() => {
-    if (!currentPlaying && currentPlayList.length > 0) {
-      setCurrentPlaying(currentPlayList[musicIndex])
-    } else if (currentPlaying && currentPlayList.length === 0) {
+    if (!currentPlaying && customPlayList.length > 0) {
+      setCurrentPlaying(customPlayList[0])
+    } else if (currentPlaying && customPlayList.length === 0) {
       setCurrentPlaying(null)
     }
-  }, [musicIndex, currentPlayList, currentPlaying])
+  }, [musicIndex, customPlayList, currentPlaying])
 
   const customIcons = {
     play: <MyPlayIcon />,

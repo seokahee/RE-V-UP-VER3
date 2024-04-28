@@ -19,8 +19,6 @@ const Search = () => {
   const searchResultData = useSearchedResultStore(
     (state) => state.searchResultData,
   )
-  // 이미 쥬스탄드에 저장중임...
-
   const { musicResult, musicDataIsLoading, musicDataIsError } =
     searchedData(keyword)
   const { communityResult, communityDataIsLoading, communityDataIsError } =
