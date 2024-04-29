@@ -23,8 +23,8 @@ const MainBanner = () => {
     {
       id: 1,
       src: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/adBanner/userTestBanner.jpg`,
-      url: 'https://docs.google.com/forms/d/1UIuYIuQYtkDPL6LkMxE8VdDlt36HhwDvpHBZ2pepvIY/viewform?edit_requested=true',
-      text: '유저테스트 참여하고 기프티콘 받아가세요!',
+      url: '',
+      text: '',
     },
     {
       id: 2,
