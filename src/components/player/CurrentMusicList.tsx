@@ -35,11 +35,16 @@ const CurrentMusicList = ({
   const [draggedItem, setDraggedItem] = useState<MusicInfoType | null>(null)
   const [dragIndex, setDragIndex] = useState<number>(-1)
 
+  const { data: userSessionInfo } = useSession()
+  const uid = userSessionInfo?.user?.uid as string
+
   const customListMusic = useCustomListMusicStore(
     (state) => state.customListMusic,
   )
   const { customListData } = useCustomListMusicStore()
   const { customPlayList } = customListData
+
+  const { playListCurrent } = getMusicList(uid)
 
   useEffect(() => {
     if (customPlayList.length === 0) {
@@ -75,11 +80,6 @@ const CurrentMusicList = ({
     }
   }, [currentPlayList, customPlayList])
 
-  const { data: userSessionInfo } = useSession()
-  const uid = userSessionInfo?.user?.uid as string
-
-  const { playListCurrent } = getMusicList(uid)
-
   const insertMutation = useMutation({
     mutationFn: insertCurrentMusic,
     onSuccess: () => {
@@ -98,7 +98,7 @@ const CurrentMusicList = ({
     },
   })
 
-  const dropHandler = (e: DragEvent<HTMLDivElement>) => {
+  const onOuterDropHandler = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     if (!isDrag) {
       const musicInfo = JSON.parse(e.dataTransfer.getData('musicInfo'))
@@ -133,28 +133,11 @@ const CurrentMusicList = ({
     }
   }
 
-  const dragOverHandler = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-  }
-
-  const selectAllHandler = () => {
-    const allMusicIds = currentPlayList.flatMap(
-      (item: CurrentPlayListType) => item.musicId,
-    )
-
-    if (!selectAll) {
-      setCheckedList(allMusicIds)
-    } else {
-      setCheckedList([])
-    }
-    setSelectAll((prev) => !prev)
-  }
-
-  const indexDragHandler = (item: MusicInfoType, index: number) => {
+  const onInnerDragHandler = (item: MusicInfoType, index: number) => {
     setDraggedItem(item)
     setDragIndex(index)
   }
-  const indexChangeDropHandler = (dropIndex: number) => {
+  const onInnerDropHandler = (dropIndex: number) => {
     if (!draggedItem || !currentPlayList) {
       return
     }
@@ -170,11 +153,28 @@ const CurrentMusicList = ({
     setIsDrag(false)
   }
 
+  const onDragOverHandler = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+  }
+
+  const onSelectAllHandler = () => {
+    const allMusicIds = currentPlayList.flatMap(
+      (item: CurrentPlayListType) => item.musicId,
+    )
+
+    if (!selectAll) {
+      setCheckedList(allMusicIds)
+    } else {
+      setCheckedList([])
+    }
+    setSelectAll((prev) => !prev)
+  }
+
   return (
     <div
       className='mt-[16px] flex max-h-[250px] min-h-[250px] flex-col overflow-y-auto overflow-x-hidden'
-      onDrop={dropHandler}
-      onDragOver={dragOverHandler}
+      onDrop={onOuterDropHandler}
+      onDragOver={onDragOverHandler}
     >
       {customPlayList.length === 0 && (
         <div className='flex flex-col items-center text-[18px] opacity-50'>
@@ -192,8 +192,8 @@ const CurrentMusicList = ({
 
           return (
             <div
-              onDrop={() => indexChangeDropHandler(index)}
-              onDragOver={dragOverHandler}
+              onDrop={() => onInnerDropHandler(index)}
+              onDragOver={onDragOverHandler}
               key={item.musicId}
             >
               {!isLyrics ? (
@@ -201,7 +201,7 @@ const CurrentMusicList = ({
                   draggable='true'
                   onDragStart={() => {
                     setIsDrag(true)
-                    indexDragHandler(item, index)
+                    onInnerDragHandler(item, index)
                   }}
                   className={`relative flex max-h-[63px]  w-full cursor-pointer justify-between pb-[8px] pl-[16px] pr-[16px] pt-[8px] ${isCurrentPlaying ? 'rounded-lg bg-neutral-700' : ''}`}
                 >
@@ -255,7 +255,7 @@ const CurrentMusicList = ({
         <div className='absolute bottom-[40px] left-[56px] right-[56px] flex gap-[8px]'>
           <button
             type='button'
-            onClick={selectAllHandler}
+            onClick={onSelectAllHandler}
             className='h-[56px] w-[113px] rounded-[16px] border-[2px] border-solid border-[rgba(0,0,0,0.4)] bg-[rgba(255,255,255,0.1)] text-center font-bold drop-shadow-[-4px_-4px_8px_rgba(0,0,0,0.05),_4px_4px_8px_rgba(0,0,0,0.7)]  backdrop-blur-[12px]'
           >
             {selectAll ? '전체 해제' : '전체 선택'}

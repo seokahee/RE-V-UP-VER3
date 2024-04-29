@@ -56,14 +56,14 @@ const Player = ({
 
   const imageRef = useRef<HTMLImageElement>(null)
 
-  const startAnimation = () => {
+  const onStartAnimation = () => {
     if (imageRef.current) {
       const imageElement = imageRef.current
       imageElement.classList.add('rotate-with-shadow')
     }
   }
 
-  const stopAnimation = () => {
+  const onStopAnimation = () => {
     if (imageRef.current) {
       const imageElement = imageRef.current
       imageElement.classList.remove('rotate-with-shadow')
@@ -72,11 +72,11 @@ const Player = ({
 
   const onplayHandler = (arg: any) => {
     setCurrentPlaying(arg)
-    startAnimation()
+    onStartAnimation()
   }
 
   const onPauseHandler = () => {
-    stopAnimation()
+    onStopAnimation()
   }
 
   return (

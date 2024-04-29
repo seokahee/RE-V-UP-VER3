@@ -26,6 +26,7 @@ const MusicPlayer = () => {
   const [isLyrics, setIsLyrics] = useState(false)
   const [isRandom, setIsRandom] = useState(false)
   const [selectAll, setSelectAll] = useState(false)
+
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user.uid as string
 
