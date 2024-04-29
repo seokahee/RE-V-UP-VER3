@@ -5,8 +5,8 @@ import people from '@/../public/images/Property 1=user-01.svg'
 import Image from 'next/image'
 import cd from '@/../public/images/cdIcon.svg'
 import goOut from '@/../public/images/XIcon.png'
-import heart from '@/../public/images/personalHeart.svg'
 
+import addCurrMusic from '@/../public/images/community-detail-Image/add-current-music.svg'
 const ServiceModal = ({ isOpen, onClose }: PersonalModal) => {
   if (!isOpen) return null
 
@@ -21,17 +21,21 @@ const ServiceModal = ({ isOpen, onClose }: PersonalModal) => {
       <div
         className={`fixed z-10 h-[600px] w-[560px] space-y-10 rounded-[37px] rounded-xl border-opacity-10 bg-modal-black p-6 ${OPEN_ANOTHER_SHADOW}   `}
       >
-        <div className='flex pt-[40px]'>
-          <p className=' w-[550px] text-center text-xl font-bold text-white'>
-            💡V-UP 이용방법💡
-          </p>
-          <button onClick={onCloseHandler}>
-            <Image src={goOut} alt='나가기' width={22} height={23} />
-          </button>
+        <div className='flex w-[500px]'>
+          <div className='flex w-[500px] pt-[40px] text-center'>
+            <p className='w-[480px] text-xl font-bold text-white'>
+              💡V-UP 이용방법💡
+            </p>
+          </div>
+          <div className='pt-[30px]'>
+            <button onClick={onCloseHandler}>
+              <Image src={goOut} alt='나가기' width={22} height={23} />
+            </button>
+          </div>
         </div>
         <div
           className='
-          h-[400px] overflow-y-scroll'
+          h-[410px] overflow-y-scroll'
         >
           <p className='flex gap-2 text-lg font-bold text-white'>
             <Image src={cd} alt='cd 아이콘' width={22} height={23} />
@@ -157,7 +161,12 @@ const ServiceModal = ({ isOpen, onClose }: PersonalModal) => {
             </ul>
           </div>{' '}
           <p className='flex gap-2 pt-[32px] text-lg font-bold text-white'>
-            <Image src={heart} alt='퍼스널 뮤직진단' height={24} width={24} />
+            <Image
+              src={addCurrMusic}
+              alt='퍼스널 뮤직진단'
+              height={24}
+              width={24}
+            />
             퍼스널 뮤직 진단
           </p>
           <div>
