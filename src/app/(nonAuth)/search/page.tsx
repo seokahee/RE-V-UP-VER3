@@ -7,7 +7,7 @@ import {
   useSearchedKeywordStore,
   useSearchedResultStore,
 } from '@/shared/store/searchStore'
-import { CurrentPlayListType } from '@/types/musicPlayer/types'
+import { MusicInfoType } from '@/types/musicPlayer/types'
 import Pagination from '@/util/Pagination '
 import { paging } from '@/util/util'
 import { useState } from 'react'
@@ -41,7 +41,7 @@ const Search = () => {
 
   const filteredMusic = musicResult?.filter((item) => {
     return item
-  }) as CurrentPlayListType[]
+  }) as MusicInfoType[]
 
   const searchedResult =
     selectedTabs === 'musicInfo' ? filteredMusic : filteredCommunity

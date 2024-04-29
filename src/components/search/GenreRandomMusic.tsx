@@ -4,14 +4,16 @@ import { paging } from '@/util/util'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import NoSearchResultItem from './NoSearchResultItem'
+import { GENRE_MUSIC_QUERY_KEY } from '@/query/genreMusic/queryKeys'
 
 const GenreRandomMusic = () => {
   const [currentPage, setCurrentPage] = useState(1)
 
   const { data, isLoading } = useQuery({
     queryFn: () => getRandomMusicData(),
-    queryKey: ['mainGenreMusic'],
+    queryKey: [GENRE_MUSIC_QUERY_KEY.GET_MAIN_GENRE_MUSIC],
   })
+
   if (isLoading) {
     return <div>정보를 가져오고 있습니다</div>
   }

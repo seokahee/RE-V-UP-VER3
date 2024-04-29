@@ -6,6 +6,7 @@ import { paging } from '@/util/util'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import NoSearchResultItem from './NoSearchResultItem'
+import { GENRE_MUSIC_QUERY_KEY } from '@/query/genreMusic/queryKeys'
 
 const GenreMusicRecommendations = ({
   musicPreferenceData,
@@ -16,7 +17,7 @@ const GenreMusicRecommendations = ({
 
   const { data, isLoading } = useQuery({
     queryFn: () => getGenreMusicData(musicPreferenceData),
-    queryKey: ['mainGenreMusic', musicPreferenceData],
+    queryKey: [GENRE_MUSIC_QUERY_KEY.GET_MAIN_GENRE_MUSIC, musicPreferenceData],
     enabled: !!musicPreferenceData,
   })
   if (isLoading) {
