@@ -18,7 +18,7 @@ const LikeButton = ({ boardId }: Props) => {
   const uid = userSessionInfo?.user.uid
   const [like, setLike] = useState<boolean | null>(null)
   const [likeList, setLikeList] = useState<string[]>([])
-  const [likeCount, setLikeCount] = useState<number>(0)
+  const [, setLikeCount] = useState<number>(0)
 
   const likeLength =
     likeList && likeList.length > 99 ? 99 : likeList ? likeList.length : 0
