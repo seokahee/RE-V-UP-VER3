@@ -206,9 +206,7 @@ const MyInfo = () => {
     {
       id: 0,
       title: '팔로워',
-      content: (
-        <FollowerList data={data?.follower!} myFollowing={data?.following!} />
-      ),
+      content: <FollowerList data={data?.following!} />,
     },
     {
       id: 1,

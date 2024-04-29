@@ -66,7 +66,7 @@ export const getUserMyPlaylistData = async (userId: string) => {
 
     return { playlistMyIds: [], myPlaylistData: [] }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -114,7 +114,7 @@ export const getUserMyPlaylistDataInfinite = async (
 
     return { playlistMyIds: [], myPlaylistData: [], isLast: true }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -187,7 +187,7 @@ export const uploadUserThumbnail = async ({
       .upload(`${userId}/${fileName}`, file)
 
     if (error) {
-      console.log('파일이 업로드 되지 않습니다.', error)
+      console.error('파일이 업로드 되지 않습니다.', error)
       return
     }
     const { data: urlData } = await supabase.storage
@@ -205,7 +205,7 @@ export const uploadUserThumbnail = async ({
     }
     return url
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -217,6 +217,7 @@ export const getMyWriteListData = async (userId: string): Promise<Board[]> => {
         '*, musicInfo(thumbnail, musicTitle), userInfo(nickname, userImage), comment(commentId)',
       )
       .eq('userId', userId)
+      .order('date', { ascending: false })
 
     if (error) {
       console.error(error)
@@ -225,7 +226,7 @@ export const getMyWriteListData = async (userId: string): Promise<Board[]> => {
 
     return data as Board[]
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return []
   }
 }
@@ -243,7 +244,7 @@ export const getFollowData = async (ids: string[]) => {
 
     return data
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -269,7 +270,7 @@ export const getFollowDataFollowing = async (userId: string) => {
 
     return followingData
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return []
   }
 }
@@ -296,7 +297,7 @@ export const getFollowDataFollower = async (userId: string) => {
 
     return followerData
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -337,6 +338,7 @@ export const getLikeBoardData = async (userId: string): Promise<Board[]> => {
         '*, musicInfo(thumbnail, musicTitle), userInfo(nickname, userImage), comment(commentId)',
       )
       .contains('likeList', [userId])
+      .order('date', { ascending: false })
     if (error) {
       console.error(error)
       return []
@@ -344,7 +346,7 @@ export const getLikeBoardData = async (userId: string): Promise<Board[]> => {
 
     return data as Board[]
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return []
   }
 }

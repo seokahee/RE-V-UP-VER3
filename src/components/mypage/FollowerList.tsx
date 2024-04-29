@@ -8,10 +8,9 @@ import ButtonSecondary from '../../util/ButtonSecondary'
 
 type FollowProps = {
   data: string[]
-  myFollowing?: string[]
 }
 
-const FollowerList = ({ data, myFollowing }: FollowProps) => {
+const FollowerList = ({ data }: FollowProps) => {
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user?.uid as string
   const queryClient = useQueryClient()
@@ -51,8 +50,8 @@ const FollowerList = ({ data, myFollowing }: FollowProps) => {
   }
 
   const onClickFollow = (userId: string, targetId: string) => {
-    const data = myFollowing ? myFollowing : []
-    const newData = [...data, targetId]
+    const prevData = data ? data : []
+    const newData = [...prevData, targetId]
 
     const newTargetData = followData?.find(
       (item) => item.userId === targetId,
@@ -99,7 +98,7 @@ const FollowerList = ({ data, myFollowing }: FollowProps) => {
               </Link>
             </div>
             <>
-              {myFollowing && !myFollowing.find((el) => el === item.userId) ? (
+              {data && !data.find((el) => el === item.userId) ? (
                 <ButtonSecondary
                   onClick={() => onClickFollow(uid, item.userId)}
                 >
