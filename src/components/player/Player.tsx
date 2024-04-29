@@ -1,3 +1,4 @@
+'use client'
 import addCurrMusic from '@/../public/images/community-detail-Image/add-current-music.svg'
 import addMyPlayList from '@/../public/images/community-detail-Image/add-my-playlist.svg'
 import musicLyricsButton from '@/../public/images/musicLyricsButton.svg'

@@ -1,3 +1,4 @@
+'use client'
 import { queryClient } from '@/app/provider'
 import {
   GET_MUSIC_LIST_QUERY_KEYS,

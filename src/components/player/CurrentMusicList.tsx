@@ -1,3 +1,4 @@
+'use client'
 import musicDragIcon from '@/../public/images/musicDragIcon.svg'
 import { queryClient } from '@/app/provider'
 import {
