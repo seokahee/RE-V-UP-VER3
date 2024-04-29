@@ -217,6 +217,7 @@ export const getMyWriteListData = async (userId: string): Promise<Board[]> => {
         '*, musicInfo(thumbnail, musicTitle), userInfo(nickname, userImage), comment(commentId)',
       )
       .eq('userId', userId)
+      .order('date', { ascending: false })
 
     if (error) {
       console.error(error)
@@ -337,6 +338,7 @@ export const getLikeBoardData = async (userId: string): Promise<Board[]> => {
         '*, musicInfo(thumbnail, musicTitle), userInfo(nickname, userImage), comment(commentId)',
       )
       .contains('likeList', [userId])
+      .order('date', { ascending: false })
     if (error) {
       console.error(error)
       return []
