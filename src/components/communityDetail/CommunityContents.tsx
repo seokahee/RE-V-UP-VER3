@@ -25,14 +25,10 @@ import LikeButton from './LikeButton'
 import {
   ADDED_CURRENT_MUSIC_SHADOW,
   ADD_CURRENT_MUSIC_SHADOW,
-  ALLOW_SHADOW,
-  BOARD_TITLE_SHADOW,
 } from './communityCss'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
 import CommentsPage from '@/app/(auth)/comment/page'
 import { QuillNoSSRWrapper } from './QuillEditor'
-import { DOWN_ACTIVE_BUTTON } from '../login/loginCss'
-import { ACTIVE_BUTTON_SHADOW } from '../login/buttonCss'
 import { CommunityNoSsrQuillEditor } from './CommunityNoSsrQuillEditor'
 import createDOMPurify from 'dompurify'
 import { MusicInfoType } from '@/types/musicPlayer/types'
@@ -495,7 +491,6 @@ const CommunityContents = () => {
               </button>
             </li>
           </ul>
-          {/* {typeof window !== 'undefined' ? ( */}
           <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
             {isEdit ? (
               <CommunityNoSsrQuillEditor
@@ -511,9 +506,7 @@ const CommunityContents = () => {
                 className='h-[200px] w-full px-[15px] tracking-[-0.03em]'
               />
             )}
-            {/* <div dangerouslySetInnerHTML={{__html : setCotent}}></div> */}
           </article>
-          {/* ) : null} */}
         </section>
 
         <section className='flex w-full flex-col gap-[40px] '>
