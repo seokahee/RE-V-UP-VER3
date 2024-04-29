@@ -7,7 +7,6 @@ import {
   useSearchedKeywordStore,
   useSearchedResultStore,
 } from '@/shared/store/searchStore'
-import { MusicInfoType } from '@/types/musicPlayer/types'
 import Pagination from '@/util/Pagination '
 import { paging } from '@/util/util'
 import { useState } from 'react'
@@ -19,13 +18,16 @@ const Search = () => {
   const searchResultData = useSearchedResultStore(
     (state) => state.searchResultData,
   )
-  const { musicResult, musicDataIsLoading, musicDataIsError } =
-    searchedData(keyword)
+  const { musicResult, musicDataIsLoading, musicDataIsError } = searchedData(
+    keyword,
+    selectedTabs,
+  )
   const { communityResult, communityDataIsLoading, communityDataIsError } =
-    searchedData(keyword)
+    searchedData(keyword, selectedTabs)
 
   const isLoadingSate = musicDataIsLoading && communityDataIsLoading
   const isErrorState = musicDataIsError && communityDataIsError
+
   if (isLoadingSate) {
     return <div>정보를 가져오고 있습니다</div>
   }
@@ -35,16 +37,8 @@ const Search = () => {
     return
   }
 
-  const filteredCommunity = communityResult?.filter((item) => {
-    return item && item.userInfo && item.musicInfo && item.comment
-  })
-
-  const filteredMusic = musicResult?.filter((item) => {
-    return item
-  }) as MusicInfoType[]
-
   const searchedResult =
-    selectedTabs === 'musicInfo' ? filteredMusic : filteredCommunity
+    selectedTabs === 'musicInfo' ? musicResult : communityResult
 
   const { currentItems, nextPage, prevPage, totalPages } = paging(
     searchedResult,
@@ -53,9 +47,6 @@ const Search = () => {
     5,
   )
 
-  if (!keyword) {
-    return
-  }
   searchResultData(
     selectedTabs === 'musicInfo' ? currentItems : [],
     selectedTabs === 'community' ? currentItems : [],
