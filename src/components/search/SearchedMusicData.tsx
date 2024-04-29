@@ -182,7 +182,9 @@ const SearchedMusicData = () => {
               </figure>
               <div className='flex h-[48px] w-[516px] items-center justify-between pr-[32px]'>
                 <div className='flex flex-col gap-[3px]'>
-                  <h1 className='text-[18px] font-bold'>{item.musicTitle}</h1>
+                  <span className='text-[18px] font-bold'>
+                    {item.musicTitle}
+                  </span>
                   <span className='text-[14px] font-bold opacity-[50%]'>
                     {item.artist}
                   </span>

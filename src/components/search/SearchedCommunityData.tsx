@@ -42,7 +42,7 @@ const SearchedCommunityData = () => {
                 )}
 
                 <div className='flex h-[53px] w-[548px] flex-col gap-[8px]'>
-                  <h1 className='text-[18px]'>{item.boardTitle}</h1>
+                  <span className='text-[18px]'>{item.boardTitle}</span>
                   <div className='flex h-[20px] w-[548px] items-center justify-between pr-[32px]'>
                     <div className='flex h-[20px] w-[160px] gap-[16px] text-[14px] opacity-[50%]'>
                       <span>{item.userInfo.nickname}</span>

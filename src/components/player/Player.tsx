@@ -1,3 +1,4 @@
+'use client'
 import addCurrMusic from '@/../public/images/community-detail-Image/add-current-music.svg'
 import addMyPlayList from '@/../public/images/community-detail-Image/add-my-playlist.svg'
 import musicLyricsButton from '@/../public/images/musicLyricsButton.svg'
@@ -5,6 +6,7 @@ import musicShuffle from '@/../public/images/musicShuffle.svg'
 import musicShuffleOff from '@/../public/images/musicShuffleOff.svg'
 import musicThumbnail from '@/../public/images/musicThumbnail.svg'
 import musicThumbnailDefault from '@/../public/images/musicThumbnailDefault.svg'
+import { useCustomListMusicStore } from '@/shared/store/playerStore'
 import { PlayerProps } from '@/types/musicPlayer/types'
 import Image from 'next/image'
 import { useEffect, useRef } from 'react'
@@ -25,7 +27,6 @@ const Player = ({
   setCurrentPlaying,
   isLyrics,
   isRandom,
-  currentPlayList,
   musicIndex,
   onPreviousHandler,
   onNextTrackHandler,
@@ -33,13 +34,16 @@ const Player = ({
   onInsertMyPlayListHandler,
   onRandomMusicHandler,
 }: PlayerProps) => {
+  const { customListData } = useCustomListMusicStore()
+  const { customPlayList } = customListData
+
   useEffect(() => {
-    if (!currentPlaying && currentPlayList.length > 0 && musicIndex !== null) {
-      setCurrentPlaying(currentPlayList[musicIndex])
-    } else if (currentPlaying && currentPlayList.length === 0) {
+    if (!currentPlaying && customPlayList.length > 0) {
+      setCurrentPlaying(customPlayList[0])
+    } else if (currentPlaying && customPlayList.length === 0) {
       setCurrentPlaying(null)
     }
-  }, [musicIndex, currentPlayList, currentPlaying])
+  }, [musicIndex, customPlayList, currentPlaying])
 
   const customIcons = {
     play: <MyPlayIcon />,
@@ -53,14 +57,14 @@ const Player = ({
 
   const imageRef = useRef<HTMLImageElement>(null)
 
-  const startAnimation = () => {
+  const onStartAnimation = () => {
     if (imageRef.current) {
       const imageElement = imageRef.current
       imageElement.classList.add('rotate-with-shadow')
     }
   }
 
-  const stopAnimation = () => {
+  const onStopAnimation = () => {
     if (imageRef.current) {
       const imageElement = imageRef.current
       imageElement.classList.remove('rotate-with-shadow')
@@ -69,12 +73,13 @@ const Player = ({
 
   const onplayHandler = (arg: any) => {
     setCurrentPlaying(arg)
-    startAnimation()
+    onStartAnimation()
   }
 
   const onPauseHandler = () => {
-    stopAnimation()
+    onStopAnimation()
   }
+
   return (
     <div>
       <div className='flex flex-col items-center'>
@@ -98,7 +103,6 @@ const Player = ({
                 height={276}
                 className='element rounded-full'
                 ref={imageRef}
-                // className='rotate element rounded-full shadow-[0px_0px_16px_rgba(210,137,176,0.5)]'
               />
             </figure>
           ) : (
