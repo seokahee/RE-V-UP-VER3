@@ -12,9 +12,9 @@ const CommunityListData = ({ item }: { item: CommunityType }) => {
 
   return (
     <Link href={`/community/${item.boardId}`}>
-      <li
+      <div
         key={item.boardId}
-        className='flex h-[112px] w-[732px] list-none justify-between border-b border-black p-[16px]'
+        className='flex h-[112px] w-[732px] justify-between border-b border-black p-[16px]'
       >
         <div className='flex h-[80px] w-[620px] items-center gap-[16px]'>
           {item.userInfo.userImage ? (
@@ -36,7 +36,7 @@ const CommunityListData = ({ item }: { item: CommunityType }) => {
           )}
 
           <div className='flex h-[53px] w-[548px] flex-col gap-[8px]'>
-            <h1 className='text-[18px]'>{item.boardTitle}</h1>
+            <h2 className='text-[18px]'>{item.boardTitle}</h2>
             <div className='flex h-[20px] w-[548px] items-center justify-between pr-[32px]'>
               <div className='flex h-[20px] gap-[16px] text-[14px] opacity-[50%]'>
                 <span>{item.userInfo.nickname}</span>
@@ -76,7 +76,7 @@ const CommunityListData = ({ item }: { item: CommunityType }) => {
             className='rounded-full'
           />
         </div>
-      </li>
+      </div>
     </Link>
   )
 }

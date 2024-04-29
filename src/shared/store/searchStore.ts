@@ -77,19 +77,12 @@ const resultState = {
   },
 }
 
-export const useSearchedResultStore = create(
-  persist<SearchedResultStore>(
-    (set, _) => ({
-      ...resultState,
-      searchResultData: (
-        musicData: MusicInfoType[],
-        communityData: CommunityType[],
-      ) => {
-        set({ searchedData: { musicData, communityData } })
-      },
-    }),
-    {
-      name: 'searchedResultStore',
-    },
-  ),
-)
+export const useSearchedResultStore = create<SearchedResultStore>((set) => ({
+  ...resultState,
+  searchResultData: (
+    musicData: MusicInfoType[],
+    communityData: CommunityType[],
+  ) => {
+    set({ searchedData: { musicData, communityData } })
+  },
+}))

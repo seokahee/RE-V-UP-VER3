@@ -1,3 +1,4 @@
+'use client'
 import { queryClient } from '@/app/provider'
 import {
   GET_MUSIC_LIST_QUERY_KEYS,
@@ -8,6 +9,7 @@ import {
   updateCurrentMusic,
   updateMyPlayMusic,
 } from '@/shared/musicPlayer/api'
+import { useCustomListMusicStore } from '@/shared/store/playerStore'
 import { CurrentPlayListType } from '@/types/musicPlayer/types'
 import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
@@ -25,8 +27,12 @@ const MusicPlayer = () => {
   const [isLyrics, setIsLyrics] = useState(false)
   const [isRandom, setIsRandom] = useState(false)
   const [selectAll, setSelectAll] = useState(false)
+
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user.uid as string
+
+  const { customListData } = useCustomListMusicStore()
+  const { customPlayList } = customListData
 
   const { currentPlayList, myPlayList, isError } = getMusicList(uid)
 
@@ -87,35 +93,39 @@ const MusicPlayer = () => {
   const onPreviousHandler = () => {
     if (!isRandom) {
       if (musicIndex === 0) {
-        setMusicIndex(currentPlayList.length - 1) // 마지막 곡으로 이동
-        setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
+        setMusicIndex(customPlayList.length - 1)
+        setCurrentPlaying(customPlayList[musicIndex] as CurrentPlayListType)
       } else {
-        setMusicIndex((prev) => prev - 1) // 이전 곡으로 이동
-        setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
+        setMusicIndex((prev) => prev - 1)
+        setCurrentPlaying(customPlayList[musicIndex] as CurrentPlayListType)
       }
     } else {
-      setMusicIndex(Math.floor(Math.random() * currentPlayList.length))
-      setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
-      console.log('currentPlaying', currentPlaying)
+      setCurrentPlaying(
+        customPlayList[
+          Math.floor(Math.random() * customPlayList.length)
+        ] as CurrentPlayListType,
+      )
     }
   }
-
   const onNextTrackHandler = () => {
     if (!isRandom) {
-      if (musicIndex === currentPlayList.length - 1) {
-        setMusicIndex(0) // 첫 번째 곡으로 돌아감
-        setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
+      if (musicIndex === customPlayList.length - 1) {
+        setMusicIndex(0)
+        setCurrentPlaying(customPlayList[0] as CurrentPlayListType)
       } else {
-        setMusicIndex((prev) => prev + 1) // 다음 곡으로 이동
+        setMusicIndex((prev) => prev + 1)
         setCurrentPlaying(
-          currentPlayList[musicIndex]
-            ? (currentPlayList[musicIndex] as CurrentPlayListType)
+          customPlayList[musicIndex]
+            ? (customPlayList[musicIndex + 1] as CurrentPlayListType)
             : null,
         )
       }
     } else {
-      setMusicIndex(Math.floor(Math.random() * currentPlayList.length))
-      setCurrentPlaying(currentPlayList[musicIndex] as CurrentPlayListType)
+      setCurrentPlaying(
+        customPlayList[
+          Math.floor(Math.random() * customPlayList.length)
+        ] as CurrentPlayListType,
+      )
     }
   }
 
@@ -140,7 +150,7 @@ const MusicPlayer = () => {
       color: '#ffffff',
     }).then((result) => {
       if (result.isConfirmed) {
-        const currentMusicData = currentPlayList.filter(
+        const currentMusicData = customPlayList.filter(
           (music) => !checkedList.includes(music.musicId),
         )
         deleteMutation.mutate({
@@ -154,8 +164,8 @@ const MusicPlayer = () => {
         )
         if (isCurrentMusicDeleted) {
           setCurrentPlaying(
-            currentPlayList[musicIndex]
-              ? (currentMusicData[0] as CurrentPlayListType)
+            customPlayList[musicIndex]
+              ? (currentMusicData[musicIndex] as CurrentPlayListType)
               : null,
           )
         }
@@ -200,7 +210,6 @@ const MusicPlayer = () => {
             return item.myMusicIds
           })
 
-          // some - || / every - &&
           const uniqueValues = checkedList.filter((value) => {
             return myIndex.every((item) => {
               return item !== value
@@ -245,13 +254,13 @@ const MusicPlayer = () => {
       }
     })
   }
+
   return (
     <div>
       <div className='min-h-[600px]'>
         <Player
           currentPlaying={currentPlaying}
           setCurrentPlaying={setCurrentPlaying}
-          currentPlayList={currentPlayList as CurrentPlayListType[]}
           musicIndex={musicIndex}
           isLyrics={isLyrics}
           isRandom={isRandom}
@@ -266,8 +275,8 @@ const MusicPlayer = () => {
         <CurrentMusicList
           selectAll={selectAll}
           setSelectAll={setSelectAll}
-          currentPlaying={currentPlaying}
           currentPlayList={currentPlayList as CurrentPlayListType[]}
+          currentPlaying={currentPlaying}
           isLyrics={isLyrics}
           checkedList={checkedList}
           setCheckedList={setCheckedList}
