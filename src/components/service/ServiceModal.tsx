@@ -78,13 +78,6 @@ const ServiceModal = ({ isOpen, onClose }: PersonalModal) => {
                 됩니다.
               </li>
               <li className='leading-7'>
-                - 음악 추가는
-                <span className='font-bold text-white'>
-                  &nbsp;제목순으로 정렬
-                </span>
-                됩니다.
-              </li>
-              <li className='leading-7'>
                 - 재생목록의 체크버튼은 곡 삭제 및 플리 추가에만 사용됩니다.
               </li>
             </ul>
