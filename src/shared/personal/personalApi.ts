@@ -67,13 +67,14 @@ export const getRecommendMusic = async (musicPreferenceData: number[]) => {
     .from('musicInfo')
     .select('*')
     .in('genre', musicPreferenceData)
-    .limit(3)
+  const randomMusic = musicInfo?.sort(() => Math.random() - 0.5)
+  const recommendMusicInfo = randomMusic?.slice(0, 3)
+
   if (error) {
     throw new Error(error?.message || 'An unknown error occurred')
   }
-  return musicInfo
+  return recommendMusicInfo
 }
-
 //userInfo 테이블에 userChar 추가
 export const insertUserChar = async ({
   userId,
