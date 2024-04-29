@@ -28,6 +28,7 @@ const FollowerList = ({ data }: FollowProps) => {
   const unFollowMutation = useMutation({
     mutationFn: updateFollow,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [GET_USER_INFO.MY_FOLLOWER] })
       queryClient.invalidateQueries({ queryKey: [GET_USER_INFO.MYPAGE] })
       queryClient.invalidateQueries({ queryKey: [GET_USER_INFO.MY_FOLLOWING] })
     },
