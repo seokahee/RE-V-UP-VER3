@@ -10,7 +10,10 @@ export const GET_COMMUNITY_DETAIL_QUERY_KEYS = {
   COMMUNITY_COMMENTS: 'comment',
 }
 
-export const musicDataInCommuDetail = (uid: string, currentBoardId: string) => {
+export const useMusicDataInCommuDetailQuery = (
+  uid: string,
+  currentBoardId: string,
+) => {
   const { data: playListCurrent } = useQuery({
     queryFn: () => getCurrentMusicData(uid),
     queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_CURRENT_MUSIC_LIST],
@@ -31,7 +34,9 @@ export const musicDataInCommuDetail = (uid: string, currentBoardId: string) => {
     error,
   } = useQuery({
     queryFn: () => readCommunityDetail(currentBoardId.toString()),
-    queryKey: [GET_COMMUNITY_DETAIL_QUERY_KEYS.COMMUNITY_DETAIL],
+    queryKey: [
+      `${GET_COMMUNITY_DETAIL_QUERY_KEYS.COMMUNITY_DETAIL}-${currentBoardId}`,
+    ],
   })
 
   const { data: commentsData } = useQuery({
