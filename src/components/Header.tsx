@@ -19,7 +19,7 @@ const Header = () => {
   if (path === '/mypage') {
     return (
       <header
-        className={`flex h-[120px] w-[836px] items-center justify-between border-b-2 border-solid border-primary-black py-4 pr-[2.5rem] ${check ? 'pl-[5rem] ' : 'pl-[2.5rem]'}`}
+        className={`flex h-[100px] w-[836px] items-center justify-between border-b-2 border-solid border-primary-black py-4 pr-[2.5rem] ${check ? 'pl-[5rem] ' : 'pl-[2.5rem]'}`}
       >
         <nav>
           <Link href='/'>
@@ -33,23 +33,27 @@ const Header = () => {
             href='/community'
             className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white bg-opacity-10 ${OPEN_ANOTHER_SHADOW}`}
           >
-            <Image src={commu} alt='커뮤니티 아이콘' />
+            <Image src={commu} alt='커뮤니티 아이콘' height={24} width={24} />
           </Link>
           {!user ? (
             <Link
               href='/join'
               className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white bg-opacity-10 ${OPEN_ANOTHER_SHADOW}`}
             >
-              <Image src={commu} alt='커뮤니티 아이콘' />
+              <Image src={commu} alt='커뮤니티 아이콘' height={24} width={24} />
             </Link>
           ) : (
             <>
-              {' '}
               <Link
                 href='/mypage'
                 className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white bg-opacity-10 ${OPEN_ANOTHER_SHADOW}`}
               >
-                <Image src={people} alt='마이페이지 아이콘' />
+                <Image
+                  src={people}
+                  alt='마이페이지 아이콘'
+                  height={24}
+                  width={24}
+                />
               </Link>
               <LogOutButton />
             </>
@@ -70,6 +74,8 @@ const Header = () => {
             <Image
               src={back}
               alt='뒤로가기 아이콘'
+              width={24}
+              height={24}
               className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white bg-opacity-10 ${OPEN_ANOTHER_SHADOW}`}
             />
           </Link>
@@ -93,7 +99,7 @@ const Header = () => {
             </p>
           </Link>
         </nav>
-        <nav>
+        <nav className='pb-[26px] pt-[26px]'>
           <SearchComponent />
         </nav>
         <nav className='flex justify-between gap-4'>
@@ -101,14 +107,19 @@ const Header = () => {
             href='/community'
             className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white bg-opacity-10 ${OPEN_ANOTHER_SHADOW}`}
           >
-            <Image src={commu} alt='' />
+            <Image src={commu} alt='커뮤니티 아이콘' height={24} width={24} />
           </Link>
           {!user ? (
             <Link
               href='/login'
               className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white bg-opacity-10 ${OPEN_ANOTHER_SHADOW}`}
             >
-              <Image src={people} alt='' />
+              <Image
+                src={people}
+                alt='마이페이지 아이콘'
+                height={24}
+                width={24}
+              />
             </Link>
           ) : (
             <>
@@ -116,7 +127,12 @@ const Header = () => {
                 href='/mypage'
                 className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white bg-opacity-10 ${OPEN_ANOTHER_SHADOW}`}
               >
-                <Image src={people} alt='' />
+                <Image
+                  src={people}
+                  alt='마이페이지 아이콘'
+                  height={24}
+                  width={24}
+                />
               </Link>
               <LogOutButton />
             </>

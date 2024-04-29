@@ -11,10 +11,15 @@ const Service = () => {
   const onServiceHandler = () => {
     setIsModalOpen(true)
   }
-
+  const shadow =
+    'shadow-[0px_4px_4px_#00000033,0px_0px_0px_1px_#0000001a,0px_0px_0px_4px_#695bffb9,0px_0px_0px_3px_#ffffff33,inset_0px_1px_2px_#ffffff33,inset_0px_4px_1px_#ffffff33,inset_0px_-4px_1px_#0000001a]'
   return (
     <div className='relative '>
-      <div className='absolute inset-x-10 bottom-20 inline-flex h-14 w-14 flex-col items-center justify-center gap-2 rounded-[100px] border-2 border-black border-opacity-10 bg-indigo-500 p-2 shadow shadow-inner'>
+      <div
+        className={`${shadow} absolute inset-x-10 bottom-20 
+        inline-flex h-14 w-14 flex-col items-center justify-center 
+        gap-2 rounded-[100px]  bg-indigo-500 `}
+      >
         <div className="text-center font-['Urbanist'] text-2xl font-black leading-[33.60px] text-white">
           <button onClick={onServiceHandler}>
             <span>?</span>
