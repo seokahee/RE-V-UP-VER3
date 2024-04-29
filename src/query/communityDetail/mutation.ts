@@ -19,14 +19,6 @@ export const validateFormBlank = (firstInput: string, secondInput: string) => {
 }
 
 export const useCoummunityItem = () => {
-  const updateCommunityMutation = useMutation({
-    mutationFn: updateCommnityBoard,
-    onSuccess: () =>
-      queryClient.invalidateQueries({
-        queryKey: [GET_COMMUNITY_DETAIL_QUERY_KEYS.COMMUNITY_DETAIL],
-      }),
-  })
-
   const deleteCommunityMutation = useMutation({
     mutationFn: deleteCommunityBoard,
     onSuccess: () =>
@@ -61,7 +53,7 @@ export const useCoummunityItem = () => {
   })
 
   return {
-    updateCommunityMutation,
+    // updateCommunityMutation,
     deleteCommunityMutation,
     addCommunityMutation,
     insertMyMutation,
@@ -88,4 +80,19 @@ export const useCoummunityCreateItem = () => {
     },
   })
   return { updateMutation, insertMutation }
+}
+
+export const updateCommnityInvalidate = (currentBoardId: string) => {
+  const updateCommunityMutation = useMutation({
+    mutationFn: updateCommnityBoard,
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: [
+          `${GET_COMMUNITY_DETAIL_QUERY_KEYS.COMMUNITY_DETAIL}-${currentBoardId}`,
+        ],
+      }),
+  })
+  return {
+    updateCommunityMutation,
+  }
 }
