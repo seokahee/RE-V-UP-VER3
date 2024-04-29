@@ -1,8 +1,8 @@
 'use client'
+import nextPageButton from '@/../public/images/nextPageButton.svg'
+import prevPageButton from '@/../public/images/prevPageButton.svg'
 import Image from 'next/image'
 import React from 'react'
-import prevPageButton from '@/../public/images/prevPageButton.svg'
-import nextPageButton from '@/../public/images/nextPageButton.svg'
 
 type PaginationProps = {
   currentPage: number
