@@ -48,7 +48,7 @@
 | :----------------------------------------: | :------------------------------------: | :--------------------------------------------: | :----------------------------------------: | :----------------: |
 |                    ISTP                    |                  ISFP                  |                   ENFJ/ISTJ                    |                    ESTP                    |        ENFJ        |
 |                  <p></p>                   |                <p></p>                 |                    <p></p>                     |                  <p></p>                   |      <p></p>       |
-| [@bowl0112](https://github.com/bowl0112) | [@jigico](https://github.com/jigico) | [@r03181231](https://github.com/r03181231) | [@seokahee](https://github.com/kahee430) |      [@iinon00](https://github.com/iinon00)      |
+| [@dpwl032](https://github.com/dpwl032) | [@jigico](https://github.com/jigico) | [@r03181231](https://github.com/r03181231) | [@seokahee](https://github.com/kahee430) |      [@iinon00](https://github.com/iinon00)      |
 |                    팀장                    |                  팀원                  |                      팀원                      |                    팀원                    |        팀원        |
 |                          |                    |                                    |                         |  |
 
