@@ -6,12 +6,12 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Swal from 'sweetalert2'
+import createDOMPurify from 'dompurify'
 import {
   useCoummunityCreateItem,
   useCoummunityItem,
 } from '@/query/communityDetail/mutation'
-import { musicDataInCommuDetail } from '@/query/communityDetail/queryKey'
-import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
+import { useMusicDataInCommuDetailQuery } from '@/query/communityDetail/queryKey'
 import { dragHandler, onDateTimeHandler } from '@/util/util'
 import message from '@/../public/images/message-text-square-02-gray.svg'
 import detailEdit from '@/../public/images/community-detail-Image/detail-edit.svg'
@@ -30,7 +30,7 @@ import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
 import CommentsPage from '@/app/(auth)/comment/page'
 import { QuillNoSSRWrapper } from './QuillEditor'
 import { CommunityNoSsrQuillEditor } from './CommunityNoSsrQuillEditor'
-import createDOMPurify from 'dompurify'
+import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
 import { MusicInfoType } from '@/types/musicPlayer/types'
 import ContentsHeader from './ContentsHeader'
 
@@ -53,7 +53,7 @@ const CommunityContents = () => {
     isLoading,
     error,
     commentsData,
-  } = musicDataInCommuDetail(uid, currentBoardId)
+  } = useMusicDataInCommuDetailQuery(uid, currentBoardId)
 
   const {
     updateCommunityMutation,
