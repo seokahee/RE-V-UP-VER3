@@ -5,6 +5,7 @@ import MusicPlayer from '../player/MusicPlayer'
 import Header from '../Header'
 import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import Service from '../service/Service'
 
 const Container = ({
   children,
@@ -40,6 +41,7 @@ const Container = ({
           <div>{children}</div>
         )}
       </div>
+      <Service />
     </div>
   )
 }
