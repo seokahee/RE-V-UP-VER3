@@ -9,7 +9,7 @@ import { supabase } from '../supabase/supabase'
 
 export const readCommunityDetail = async (boardId: string) => {
   try {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('community')
       .select(
         'boardId, boardTitle, date, musicId, content, likeList, userId, userInfo(nickname, userImage, userId), comment(commentId, boardId), musicInfo(musicId, musicTitle, artist, thumbnail, runTime, musicSource, release, lyrics)',
