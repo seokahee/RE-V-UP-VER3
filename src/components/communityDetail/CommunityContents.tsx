@@ -340,7 +340,7 @@ const CommunityContents = () => {
           isEdit={isEdit}
           onEditCancelHandler={onEditCancelHandler}
           onBackButtonHandler={onBackButtonHandler}
-          onBoardEditCompleteHandler={onBackButtonHandler}
+          onBoardEditCompleteHandler={onBoardEditCompleteHandler}
         />
 
         <section className='flex w-full flex-col gap-[40px]'>

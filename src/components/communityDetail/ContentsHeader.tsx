@@ -9,7 +9,7 @@ export type ContentsHeaderProps = {
   isEdit: boolean
   onEditCancelHandler: () => void
   onBackButtonHandler: () => void
-  onBoardEditCompleteHandler: () => void
+  onBoardEditCompleteHandler: (e: React.MouseEvent) => void
 }
 
 const ContentsHeader = ({
