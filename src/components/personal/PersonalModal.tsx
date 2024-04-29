@@ -13,13 +13,13 @@ const PersonalModal = () => {
 
   useEffect(() => {
     const today = new Date()
-    const visitedDate = HOME_VISITED ? new Date(HOME_VISITED) : null
+    const visitedDate = HOME_VISITED ?? null
 
     const handleMainPop = () => {
-      if (visitedDate && visitedDate > today) {
+      if (visitedDate && visitedDate > today.getTime().toString()) {
         return
       }
-      if (!visitedDate || visitedDate < today) {
+      if (!visitedDate || visitedDate < today.getTime().toString()) {
         setIsModalOpen(true)
       }
     }
