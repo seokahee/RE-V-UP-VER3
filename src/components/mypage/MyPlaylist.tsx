@@ -12,10 +12,11 @@ import { dragHandler } from '@/util/util'
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Swal from 'sweetalert2'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import CheckboxItem from './CheckboxItem'
+import _ from 'lodash'
 
 const MyPlaylist = ({ data }: { data: UserInfo }) => {
   const { data: userSessionInfo } = useSession()
@@ -255,21 +256,25 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     setToggle((prev) => !prev)
     checkListReset()
   }
-
-  const handleScroll = () => {
-    const height = listRef.current?.children[0]
-      ? listRef.current?.children[0].clientHeight
-      : 0
-    if (scrollBoxRef.current) {
-      if (
-        hasPreviousPage &&
-        !isFetchingPreviousPage &&
-        scrollBoxRef.current.scrollTop < height * 3
-      ) {
-        fetchPreviousPage()
+  console.log('리렌더링 일어나는중~')
+  const handleScroll = useCallback(
+    _.throttle(() => {
+      console.log('실행3초')
+      const height = listRef.current?.children[0]
+        ? listRef.current?.children[0].clientHeight
+        : 0
+      if (scrollBoxRef.current) {
+        if (
+          hasPreviousPage &&
+          !isFetchingPreviousPage &&
+          scrollBoxRef.current.scrollTop < height * 3
+        ) {
+          fetchPreviousPage()
+        }
       }
-    }
-  }
+    }, 3000),
+    [fetchPreviousPage],
+  )
 
   const nextPage = () => {
     fetchNextPage()
@@ -280,6 +285,20 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       setScrollBoxTopPosition(scrollBoxRef.current?.getBoundingClientRect().top)
     }
   }, [scrollBoxTopPosition])
+
+  // useEffect를 사용하여 컴포넌트가 마운트될 때 스크롤 이벤트 핸들러 등록
+  useEffect(() => {
+    if (scrollBoxRef.current) {
+      scrollBoxRef.current.addEventListener('scroll', handleScroll)
+
+      // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+      return () => {
+        if (scrollBoxRef.current) {
+          scrollBoxRef.current.removeEventListener('scroll', handleScroll)
+        }
+      }
+    }
+  }, [handleScroll])
 
   const shadow =
     'shadow-[-4px_-4px_8px_rgba(255,255,255,0.05),4px_4px_8px_rgba(0,0,0,0.7)]'
@@ -330,7 +349,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       <div
         ref={scrollBoxRef}
         className='overflow-y-auto'
-        onScroll={handleScroll}
+        // onScroll={handleScroll}
         style={{
           height: `calc(100vh - ${scrollBoxTopPosition}px - 30px)`,
         }}
