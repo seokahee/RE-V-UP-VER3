@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 type ObserveProps = {
   target: React.RefObject<HTMLDivElement>
   onIntersect: IntersectionObserverCallback
-  root?: null
+  root?: null | HTMLUListElement | HTMLDivElement
   rootMargin?: string
   threshold?: number
   enabled: boolean
@@ -14,7 +14,7 @@ export const useIntersectionObserver = ({
   onIntersect,
   root = null,
   rootMargin = '0px',
-  threshold = 1.0,
+  threshold = 0.1,
   enabled = true,
 }: ObserveProps) => {
   useEffect(() => {
@@ -32,8 +32,10 @@ export const useIntersectionObserver = ({
       rootMargin,
       threshold,
     })
-    observer.observe(target.current!) //주시 대상 목록에 추가
+    if (target.current) observer.observe(target.current!) //주시 대상 목록에 추가
 
-    return () => observer && observer.disconnect()
-  }, [target, rootMargin, threshold, enabled])
+    return () => {
+      if (target.current) observer && observer.disconnect()
+    }
+  }, [target, rootMargin, threshold, enabled, root])
 }
