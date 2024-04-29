@@ -35,36 +35,9 @@ export type MyPlayListType = {
   userId: string
 }
 
-export type SearchResultType = {
-  artist: string
-  musicId: string
-  musicSource: string
-  musicTitle: string
-  release: string
-  thumbnail: string
-  boardId: string
-  boardTitle: string
-  date: string
-  likeList: string[]
-  userInfo: {
-    nickname: string
-    userImage: string
-  }
-}
-
-export type currentMusicIdType = {
-  currentId?: string
-  currentMusicIds?: {
-    id: string
-    idx: number
-  }
-  userId?: string
-}
-
 export type PlayerProps = {
   currentPlaying: CurrentPlayListType | null
   isLyrics: boolean
-  currentPlayList: CurrentPlayListType[]
   musicIndex: number
   isRandom: boolean
   setCurrentPlaying: Dispatch<SetStateAction<CurrentPlayListType | null>>
