@@ -8,6 +8,7 @@ import Link from 'next/link'
 import Swal from 'sweetalert2'
 import createDOMPurify from 'dompurify'
 import {
+  updateCommnityInvalidate,
   useCoummunityCreateItem,
   useCoummunityItem,
 } from '@/query/communityDetail/mutation'
@@ -56,11 +57,13 @@ const CommunityContents = () => {
   } = useMusicDataInCommuDetailQuery(uid, currentBoardId)
 
   const {
-    updateCommunityMutation,
+    // updateCommunityMutation,
     deleteCommunityMutation,
     insertMyMutation,
     updateMyMutation,
   } = useCoummunityItem()
+
+  const { updateCommunityMutation } = updateCommnityInvalidate(currentBoardId)
 
   const {
     boardId,
