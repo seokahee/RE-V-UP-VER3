@@ -1,25 +1,34 @@
+import { GET_MUSIC_LIST_QUERY_KEYS } from '@/query/musicPlayer/musicPlayerQueryKeys'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
 import { getMyWriteListData } from '@/shared/mypage/api'
+import { usePaginationStore } from '@/shared/store/paginationStore'
 import { getUserVisibilityData } from '@/shared/userpage/api'
 import type { Board } from '@/types/mypage/types'
 import Pagination from '@/util/Pagination '
-import { paging } from '@/util/util'
+import { paging, resetPagination } from '@/util/util'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { useParams } from 'next/navigation'
-import { useState } from 'react'
 import Swal from 'sweetalert2'
 import BoardItem from '../mypage/BoardItem'
 import BoardNoData from '../mypage/BoardNoData'
 import LockContents from './LockContents'
-import { GET_MUSIC_LIST_QUERY_KEYS } from '@/query/musicPlayer/musicPlayerQueryKeys'
+import { useEffect } from 'react'
 
 const WriteList = () => {
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user?.uid as string
   const { id } = useParams<{ id: string }>()
-  const [currentPage, setCurrentPage] = useState(1)
+  const setCurrentPageData = usePaginationStore(
+    (state) => state.setCurrentPageData,
+  )
+  const { currentPageData } = usePaginationStore()
+  const { currentPage } = currentPageData
   const queryClient = useQueryClient()
+
+  useEffect(() => {
+    resetPagination(setCurrentPageData)
+  }, [])
 
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getMyWriteListData(id),
@@ -30,7 +39,7 @@ const WriteList = () => {
   const { currentItems, nextPage, prevPage, totalPages } = paging(
     data,
     currentPage,
-    setCurrentPage,
+    setCurrentPageData,
     5,
   )
 
@@ -105,11 +114,9 @@ const WriteList = () => {
           </ul>
           {currentItems && currentItems?.length > 0 ? (
             <Pagination
-              currentPage={currentPage}
               totalPages={totalPages}
               nextPage={nextPage}
               prevPage={prevPage}
-              setCurrentPage={setCurrentPage}
             />
           ) : (
             ''

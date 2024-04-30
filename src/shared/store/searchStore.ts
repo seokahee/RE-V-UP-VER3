@@ -1,4 +1,3 @@
-import { CommunityType } from '@/types/community/type'
 import { MusicInfoType } from '@/types/musicPlayer/types'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
@@ -58,31 +57,3 @@ export const useModalMusicResultStore = create(
     },
   ),
 )
-
-type SearchedResultStore = {
-  searchedData: {
-    musicData: MusicInfoType[]
-    communityData: CommunityType[]
-  }
-  searchResultData: (
-    musicData: MusicInfoType[],
-    communityData: CommunityType[],
-  ) => void
-}
-
-const resultState = {
-  searchedData: {
-    musicData: [],
-    communityData: [],
-  },
-}
-
-export const useSearchedResultStore = create<SearchedResultStore>((set) => ({
-  ...resultState,
-  searchResultData: (
-    musicData: MusicInfoType[],
-    communityData: CommunityType[],
-  ) => {
-    set({ searchedData: { musicData, communityData } })
-  },
-}))

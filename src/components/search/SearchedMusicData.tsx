@@ -7,7 +7,7 @@ import {
 } from '@/query/musicPlayer/musicPlayerQueryKeys'
 import { insertCurrentMusic, updateCurrentMusic } from '@/shared/main/api'
 import { insertMyPlayMusic, updateMyPlayMusic } from '@/shared/musicPlayer/api'
-import { useSearchedResultStore } from '@/shared/store/searchStore'
+import { MusicInfoType } from '@/types/musicPlayer/types'
 import { dragHandler } from '@/util/util'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
@@ -16,9 +16,11 @@ import { useRouter } from 'next/navigation'
 import Swal from 'sweetalert2'
 import { ADD_CURRENT_MUSIC_SHADOW } from '../communityDetail/communityCss'
 
-const SearchedMusicData = () => {
-  const { searchedData } = useSearchedResultStore()
-  const { musicData } = searchedData
+const SearchedMusicData = ({
+  currentItems,
+}: {
+  currentItems: MusicInfoType[]
+}) => {
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user.uid as string
   const queryClient = useQueryClient()
@@ -160,7 +162,7 @@ const SearchedMusicData = () => {
 
   return (
     <ul className='list-none'>
-      {musicData.map((item) => {
+      {currentItems.map((item) => {
         return (
           <li
             draggable='true'
