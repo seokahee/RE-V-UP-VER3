@@ -107,11 +107,13 @@ const CommunityCreate = () => {
 
       addCommunityMutation.mutate(newData)
       await Swal.fire({
-        text: '등록이 완료됐습니다.',
-        confirmButtonText: '확인',
-        confirmButtonColor: '#685BFF',
-        color: '#ffffff',
+        icon: 'success',
+        title: '게시글 등록이 완료됐습니다.',
+
+        showConfirmButton: false,
+        timer: 1500,
         background: '#2B2B2B',
+        color: '#ffffff',
       })
       reset()
       setChooseMusic(null)
@@ -120,6 +122,7 @@ const CommunityCreate = () => {
 
     if (!userSessionInfo) {
       Swal.fire({
+        icon: 'warning',
         text: '오류로 인해 정보를 저장할 수 없습니다.',
         confirmButtonText: '확인',
         confirmButtonColor: '#685BFF',
@@ -132,6 +135,7 @@ const CommunityCreate = () => {
 
   if (status === 'unauthenticated') {
     Swal.fire({
+      icon: 'warning',
       text: '로그인한 유저만 이용 가능합니다.',
       confirmButtonText: '확인',
       confirmButtonColor: '#685BFF',

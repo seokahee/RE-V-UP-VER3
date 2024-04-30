@@ -168,13 +168,13 @@ const CommunityContents = () => {
         deleteCommunityMutation.mutate(currentBoardId)
 
         Swal.fire({
-          title: '게시글 삭제',
-          text: '게시글을 삭제하셨습니다.',
+          icon: 'success',
+          title: '게시글을 삭제하셨습니다.',
 
-          confirmButtonText: '확인',
-          confirmButtonColor: '#685BFF',
-          color: '#ffffff',
+          showConfirmButton: false,
+          timer: 1500,
           background: '#2B2B2B',
+          color: '#ffffff',
         })
       } else {
         Swal.fire({
@@ -303,6 +303,7 @@ const CommunityContents = () => {
           const myMusicId = [musicId]
           insertMyMutation.mutate({ userId: uid, musicId: myMusicId })
         }
+
         Swal.fire({
           text: '마이플레이리스트에 추가 되었습니다.',
           confirmButtonText: '확인',
