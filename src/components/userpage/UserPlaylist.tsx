@@ -245,7 +245,6 @@ const UserPlaylist = ({
 
   const handleScroll = useCallback(
     throttle(() => {
-      console.log('실행')
       const height = listRef.current?.children[0]
         ? listRef.current?.children[0].clientHeight
         : 0
