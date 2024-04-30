@@ -12,7 +12,6 @@ import {
 import { Props } from '@/types/communityDetail/detailTypes'
 import emptyHeart from '@/../public/images/heart-rounded-gray.svg'
 import heart from '@/../public/images/likeFullHeart.svg'
-import debounce from 'lodash/debounce'
 
 const LikeButton = ({ boardId }: Props) => {
   const { data: userSessionInfo } = useSession()
