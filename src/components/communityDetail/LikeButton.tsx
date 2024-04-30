@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import {
@@ -12,6 +12,7 @@ import {
 import { Props } from '@/types/communityDetail/detailTypes'
 import emptyHeart from '@/../public/images/heart-rounded-gray.svg'
 import heart from '@/../public/images/likeFullHeart.svg'
+import debounce from 'lodash/debounce'
 
 const LikeButton = ({ boardId }: Props) => {
   const { data: userSessionInfo } = useSession()
@@ -45,39 +46,47 @@ const LikeButton = ({ boardId }: Props) => {
     likedStatus()
   }, [uid, boardId])
 
-  const onLikeToggleHandler = async () => {
-    if (removeDouble) return
+  const onDebouncedLikeToggleHandler = useCallback(
+    debounce(async () => {
+      if (removeDouble) return
 
-    setRemoveDouble(true)
-    if (!uid) {
-      alert('로그인 후 이용해 주세요.')
+      setRemoveDouble(true)
+      if (!uid) {
+        alert('로그인 후 이용해 주세요.')
+        setRemoveDouble(false)
+        return
+      }
+
+      if (like && likeList) {
+        const updatedLikeList = likeList && likeList.filter((id) => id !== uid)
+        await removeLikedUser(likeList, boardId, uid)
+        setLike(false)
+        setLikeList(updatedLikeList)
+        setLikeCount(updatedLikeList.length)
+        await updateLikeCountInCommunity(boardId, updatedLikeList.length)
+      } else {
+        const updatedLikeList = [...likeList, uid]
+        await addLikedUser(likeList, boardId, uid)
+        setLike(true)
+        setLikeList(updatedLikeList)
+        setLikeCount(updatedLikeList.length)
+        await updateLikeCountInCommunity(boardId, updatedLikeList.length)
+      }
+      const updatedLikeList = like
+        ? likeList.filter((id) => id !== uid)
+        : [...likeList, uid]
+      setLikeList(updatedLikeList)
+      setLike(!like)
+
       setRemoveDouble(false)
-      return
-    }
+    }, 1000),
+    [likeList, boardId, uid, removeDouble],
+  )
 
-    if (like && likeList) {
-      const updatedLikeList = likeList && likeList.filter((id) => id !== uid)
-      await removeLikedUser(likeList, boardId, uid)
-      setLike(false)
-      setLikeList(updatedLikeList)
-      setLikeCount(updatedLikeList.length)
-      await updateLikeCountInCommunity(boardId, updatedLikeList.length)
-    } else {
-      const updatedLikeList = [...likeList, uid]
-      await addLikedUser(likeList, boardId, uid)
-      setLike(true)
-      setLikeList(updatedLikeList)
-      setLikeCount(updatedLikeList.length)
-      await updateLikeCountInCommunity(boardId, updatedLikeList.length)
-    }
-    const updatedLikeList = like
-      ? likeList.filter((id) => id !== uid)
-      : [...likeList, uid]
-    setLikeList(updatedLikeList)
-    setLike(!like)
-
-    setRemoveDouble(false)
+  const onLikeToggleHandler = () => {
+    onDebouncedLikeToggleHandler()
   }
+
   return (
     <div>
       <div className='flex gap-[7px]'>
