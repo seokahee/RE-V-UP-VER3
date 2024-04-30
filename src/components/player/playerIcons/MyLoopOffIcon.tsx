@@ -22,9 +22,9 @@ const MyLoopOffIcon = () => {
         cy='54'
         r='6'
         fill='url(#paint0_radial_1592_4017)'
-        fill-opacity='0.5'
+        fillOpacity='0.5'
       />
-      <circle cx='24' cy='54' r='6.5' stroke='black' stroke-opacity='0.7' />
+      <circle cx='24' cy='54' r='6.5' stroke='black' strokeOpacity='0.7' />
       <defs>
         <radialGradient
           id='paint0_radial_1592_4017'
@@ -34,8 +34,8 @@ const MyLoopOffIcon = () => {
           gradientUnits='userSpaceOnUse'
           gradientTransform='translate(22.5 52) rotate(61.3895) scale(6.26498)'
         >
-          <stop stop-color='white' />
-          <stop offset='1' stop-color='#3E3E3E' />
+          <stop stopColor='white' />
+          <stop offset='1' stopColor='#3E3E3E' />
         </radialGradient>
       </defs>
     </svg>

@@ -19,8 +19,8 @@ const ProgressContainer = () => {
             height='30'
             rx='5'
             stroke='white'
-            stroke-opacity='0.05'
-            stroke-width='2'
+            strokeOpacity='0.05'
+            strokeWidth='2'
           />
         </g>
       </g>
@@ -30,7 +30,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.7'
+        fillOpacity='0.7'
       />
       <rect
         x='22'
@@ -38,7 +38,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.1'
+        fillOpacity='0.1'
       />
       <rect
         x='39'
@@ -46,7 +46,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.7'
+        fillOpacity='0.7'
       />
       <rect
         x='40'
@@ -54,7 +54,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.1'
+        fillOpacity='0.1'
       />
       <rect
         x='57'
@@ -62,7 +62,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.7'
+        fillOpacity='0.7'
       />
       <rect
         x='58'
@@ -70,7 +70,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.1'
+        fillOpacity='0.1'
       />
       <rect
         x='75'
@@ -78,7 +78,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.7'
+        fillOpacity='0.7'
       />
       <rect
         x='76'
@@ -86,7 +86,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.1'
+        fillOpacity='0.1'
       />
       <rect
         x='93'
@@ -94,7 +94,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.7'
+        fillOpacity='0.7'
       />
       <rect
         x='94'
@@ -102,7 +102,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.1'
+        fillOpacity='0.1'
       />
       <rect
         x='111'
@@ -110,7 +110,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.7'
+        fillOpacity='0.7'
       />
       <rect
         x='112'
@@ -118,7 +118,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.1'
+        fillOpacity='0.1'
       />
       <rect
         x='129'
@@ -126,7 +126,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.7'
+        fillOpacity='0.7'
       />
       <rect
         x='130'
@@ -134,7 +134,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.1'
+        fillOpacity='0.1'
       />
       <rect
         x='147'
@@ -142,7 +142,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.7'
+        fillOpacity='0.7'
       />
       <rect
         x='148'
@@ -150,7 +150,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.1'
+        fillOpacity='0.1'
       />
       <rect
         x='165'
@@ -158,7 +158,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.7'
+        fillOpacity='0.7'
       />
       <rect
         x='166'
@@ -166,7 +166,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.1'
+        fillOpacity='0.1'
       />
       <rect
         x='183'
@@ -174,7 +174,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.7'
+        fillOpacity='0.7'
       />
       <rect
         x='184'
@@ -182,7 +182,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.1'
+        fillOpacity='0.1'
       />
       <rect
         x='201'
@@ -190,7 +190,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.7'
+        fillOpacity='0.7'
       />
       <rect
         x='202'
@@ -198,7 +198,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.1'
+        fillOpacity='0.1'
       />
       <rect
         x='219'
@@ -206,7 +206,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.7'
+        fillOpacity='0.7'
       />
       <rect
         x='220'
@@ -214,7 +214,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.1'
+        fillOpacity='0.1'
       />
       <rect
         x='237'
@@ -222,7 +222,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.7'
+        fillOpacity='0.7'
       />
       <rect
         x='238'
@@ -230,7 +230,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.1'
+        fillOpacity='0.1'
       />
       <rect
         x='255'
@@ -238,7 +238,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.7'
+        fillOpacity='0.7'
       />
       <rect
         x='256'
@@ -246,7 +246,7 @@ const ProgressContainer = () => {
         width='1'
         height='24'
         fill='white'
-        fill-opacity='0.1'
+        fillOpacity='0.1'
       />
       <defs>
         <filter
@@ -258,7 +258,7 @@ const ProgressContainer = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feBlend
             mode='normal'
             in='SourceGraphic'
@@ -293,7 +293,7 @@ const ProgressContainer = () => {
           filterUnits='userSpaceOnUse'
           color-interpolation-filters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feColorMatrix
             in='SourceAlpha'
             type='matrix'
