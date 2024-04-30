@@ -67,16 +67,11 @@ export const getGenreMusicData = async (
 
 export const getRandomMusicData = async (): Promise<GenreMusicInfo[]> => {
   try {
-    const alphabets = 'abcdefghijklmnopqrstuvwxyz'
-    const random = Math.floor(Math.random() * 10)
     const { data } = await supabase
       .from('musicInfo')
       .select(
         'musicTitle, genre, artist, thumbnail, lyrics, release, musicId, musicSource,runTime',
       )
-      .like('musicSource', `%${alphabets[random]}%`)
-      .limit(10)
-
     return data as GenreMusicInfo[]
   } catch (error) {
     console.error(error)
