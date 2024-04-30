@@ -7,7 +7,7 @@ import { usePaginationStore } from '@/shared/store/paginationStore'
 import { getUserVisibilityData } from '@/shared/userpage/api'
 import type { Board } from '@/types/mypage/types'
 import Pagination from '@/util/Pagination '
-import { paging } from '@/util/util'
+import { paging, resetPagination } from '@/util/util'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { useParams } from 'next/navigation'
@@ -15,6 +15,7 @@ import Swal from 'sweetalert2'
 import BoardItem from '../mypage/BoardItem'
 import BoardNoData from '../mypage/BoardNoData'
 import LockContents from './LockContents'
+import { useEffect } from 'react'
 
 const LikeBoardList = () => {
   const { data: userSessionInfo } = useSession()
@@ -27,6 +28,10 @@ const LikeBoardList = () => {
   const { currentPage } = currentPageData
 
   const queryClient = useQueryClient()
+
+  useEffect(() => {
+    resetPagination(setCurrentPageData)
+  }, [])
 
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getLikeBoardData(id),
