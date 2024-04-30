@@ -257,7 +257,7 @@ const UserPlaylist = ({
           fetchPreviousPage()
         }
       }
-    }, 3000),
+    }, 1000),
     [fetchPreviousPage, hasPreviousPage],
   )
 
