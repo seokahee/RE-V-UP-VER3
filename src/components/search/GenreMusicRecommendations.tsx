@@ -19,6 +19,7 @@ const GenreMusicRecommendations = ({
   const { currentPageData } = usePaginationStore()
   const { currentPage } = currentPageData
 
+  // 서버에서 노래 정보를 받아오고 유즈이펙
   const { data, isLoading } = useQuery({
     queryFn: () => getGenreMusicData(musicPreferenceData),
     queryKey: [GENRE_MUSIC_QUERY_KEY.GET_MAIN_GENRE_MUSIC, musicPreferenceData],
