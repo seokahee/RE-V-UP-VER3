@@ -3,10 +3,8 @@ import search from '@/../public/images/community-detail-Image/search-button.svg'
 import useInput from '@/hooks/useInput'
 import { getSearchedMusicData } from '@/shared/search/api'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
-import {
-  useModalMusicResultStore,
-  usePaginationStore,
-} from '@/shared/store/searchStore'
+import { usePaginationStore } from '@/shared/store/paginationStore'
+import { useModalMusicResultStore } from '@/shared/store/searchStore'
 import type { MusicInfoType } from '@/types/musicPlayer/types'
 import Pagination from '@/util/Pagination '
 import { paging, resetPagination } from '@/util/util'

@@ -3,7 +3,7 @@
 import { GET_MUSIC_LIST_QUERY_KEYS } from '@/query/musicPlayer/musicPlayerQueryKeys'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
 import { getLikeBoardData } from '@/shared/mypage/api'
-import { usePaginationStore } from '@/shared/store/searchStore'
+import { usePaginationStore } from '@/shared/store/paginationStore'
 import { getUserVisibilityData } from '@/shared/userpage/api'
 import type { Board } from '@/types/mypage/types'
 import Pagination from '@/util/Pagination '

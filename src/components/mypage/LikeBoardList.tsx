@@ -2,7 +2,7 @@ import { GET_MUSIC_LIST_QUERY_KEYS } from '@/query/musicPlayer/musicPlayerQueryK
 import { GET_USER_INFO } from '@/query/user/userQueryKeys'
 import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
 import { getLikeBoardData } from '@/shared/mypage/api'
-import { usePaginationStore } from '@/shared/store/searchStore'
+import { usePaginationStore } from '@/shared/store/paginationStore'
 import { Board } from '@/types/mypage/types'
 import Pagination from '@/util/Pagination '
 import { paging } from '@/util/util'

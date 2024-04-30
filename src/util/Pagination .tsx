@@ -1,7 +1,7 @@
 'use client'
 import nextPageButton from '@/../public/images/nextPageButton.svg'
 import prevPageButton from '@/../public/images/prevPageButton.svg'
-import { usePaginationStore } from '@/shared/store/searchStore'
+import { usePaginationStore } from '@/shared/store/paginationStore'
 import Image from 'next/image'
 
 type PaginationProps = {

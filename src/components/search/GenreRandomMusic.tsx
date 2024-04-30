@@ -1,6 +1,6 @@
 import { GENRE_MUSIC_QUERY_KEY } from '@/query/genreMusic/queryKeys'
 import { getRandomMusicData } from '@/shared/main/api'
-import { usePaginationStore } from '@/shared/store/searchStore'
+import { usePaginationStore } from '@/shared/store/paginationStore'
 import Pagination from '@/util/Pagination '
 import { paging } from '@/util/util'
 import { useQuery } from '@tanstack/react-query'

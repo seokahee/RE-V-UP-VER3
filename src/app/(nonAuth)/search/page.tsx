@@ -3,10 +3,8 @@ import NoSearchResult from '@/components/search/NoSearchResult'
 import SearchedCommunityData from '@/components/search/SearchedCommunityData'
 import SearchedMusicData from '@/components/search/SearchedMusicData'
 import { searchedData } from '@/query/search/searchQueryKeys'
-import {
-  usePaginationStore,
-  useSearchedKeywordStore,
-} from '@/shared/store/searchStore'
+import { usePaginationStore } from '@/shared/store/paginationStore'
+import { useSearchedKeywordStore } from '@/shared/store/searchStore'
 import Pagination from '@/util/Pagination '
 import { paging } from '@/util/util'
 
