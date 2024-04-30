@@ -10,7 +10,6 @@ import { paging, resetPagination } from '@/util/util'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-// 커뮤니티 리스트 페이지
 const Community = () => {
   const [isSort, setIsSort] = useState(true)
   const setCurrentPageData = usePaginationStore(
