@@ -10,7 +10,7 @@ import type { UserInfo } from '@/types/mypage/types'
 import InfiniteScrollContainer from '@/util/InfiniteScrollContainer'
 import { dragHandler } from '@/util/util'
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
-import _ from 'lodash'
+import { throttle } from 'lodash'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
@@ -258,7 +258,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
   }
 
   const handleScroll = useCallback(
-    _.throttle(() => {
+    throttle(() => {
       const height = listRef.current?.children[0]
         ? listRef.current?.children[0].clientHeight
         : 0

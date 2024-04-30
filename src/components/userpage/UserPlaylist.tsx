@@ -23,7 +23,7 @@ import Swal from 'sweetalert2'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import CheckboxItem from '../mypage/CheckboxItem'
 import LockContents from './LockContents'
-import _ from 'lodash'
+import { throttle } from 'lodash'
 
 const UserPlaylist = ({
   data,
@@ -244,7 +244,8 @@ const UserPlaylist = ({
   }
 
   const handleScroll = useCallback(
-    _.throttle(() => {
+    throttle(() => {
+      console.log('실행')
       const height = listRef.current?.children[0]
         ? listRef.current?.children[0].clientHeight
         : 0
@@ -257,7 +258,7 @@ const UserPlaylist = ({
           fetchPreviousPage()
         }
       }
-    }, 1000),
+    }, 3000),
     [fetchPreviousPage, hasPreviousPage],
   )
 
