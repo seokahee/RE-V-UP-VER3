@@ -53,6 +53,7 @@ const LikeButton = ({ boardId }: Props) => {
 
     if (like && likeList) {
       const updatedLikeList = likeList && likeList.filter((id) => id !== uid)
+
       await removeLikedUser(likeList, boardId, uid)
       setLike(false)
       setLikeList(updatedLikeList)
@@ -60,6 +61,7 @@ const LikeButton = ({ boardId }: Props) => {
       await updateLikeCountInCommunity(boardId, updatedLikeList.length)
     } else {
       const updatedLikeList = [...likeList, uid]
+
       await addLikedUser(likeList, boardId, uid)
       setLike(true)
       setLikeList(updatedLikeList)
@@ -71,7 +73,7 @@ const LikeButton = ({ boardId }: Props) => {
       : [...likeList, uid]
     setLikeList(updatedLikeList)
     setLike(!like)
-  }, 1000)
+  }, 500)
 
   const onLikeToggleHandler = () => {
     onDebouncedLikeToggleHandler()

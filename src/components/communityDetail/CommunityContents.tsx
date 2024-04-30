@@ -4,7 +4,6 @@ import { MouseEvent, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import Link from 'next/link'
 import Swal from 'sweetalert2'
 import createDOMPurify from 'dompurify'
 import {
@@ -13,13 +12,11 @@ import {
   useCoummunityItem,
 } from '@/query/communityDetail/mutation'
 import { useMusicDataInCommuDetailQuery } from '@/query/communityDetail/queryKey'
-import { dragHandler, onDateTimeHandler } from '@/util/util'
+import { dragHandler } from '@/util/util'
 import message from '@/../public/images/message-text-square-02-gray.svg'
-import detailEdit from '@/../public/images/community-detail-Image/detail-edit.svg'
-import detailDelete from '@/../public/images/community-detail-Image/detail-delete.svg'
 import addCurrMusic from '@/../public/images/community-detail-Image/add-current-music.svg'
 import addMyPlayList from '@/../public/images/community-detail-Image/add-my-playlist.svg'
-import userDefault from '@/../public/images/userDefaultImg.svg'
+
 import useInput from '@/hooks/useInput'
 import LikeButton from './LikeButton'
 
@@ -34,6 +31,8 @@ import { CommunityNoSsrQuillEditor } from './CommunityNoSsrQuillEditor'
 import type { readCommuDetail } from '@/types/communityDetail/detailTypes'
 import { MusicInfoType } from '@/types/musicPlayer/types'
 import ContentsHeader from './ContentsHeader'
+import DetailuserImage from './DetailuserImage'
+import DetailEditDelete from './DetailEditDelete'
 
 const CommunityContents = () => {
   const router = useRouter()
@@ -56,14 +55,9 @@ const CommunityContents = () => {
     commentsData,
   } = useMusicDataInCommuDetailQuery(uid, currentBoardId)
 
-  const {
-    // updateCommunityMutation,
-    deleteCommunityMutation,
-    insertMyMutation,
-    updateMyMutation,
-  } = useCoummunityItem()
-
   const { updateCommunityMutation } = updateCommnityInvalidate(currentBoardId)
+  const { deleteCommunityMutation, insertMyMutation, updateMyMutation } =
+    useCoummunityItem()
 
   const {
     boardId,
@@ -326,6 +320,7 @@ const CommunityContents = () => {
   if (error) {
     return <div>정보를 가져오지 못하고 있습니다. 로딩바자뤼</div>
   }
+
   if (status === 'unauthenticated') {
     Swal.fire({
       text: '로그인한 유저만 이용 가능합니다.',
@@ -337,6 +332,7 @@ const CommunityContents = () => {
     router.replace('/')
     return
   }
+
   return (
     <div className='flex w-[732px] flex-col'>
       <div className='mb-[8px] flex flex-col gap-[16px]'>
@@ -349,89 +345,25 @@ const CommunityContents = () => {
 
         <section className='flex w-full flex-col gap-[40px]'>
           <article className='flex items-center gap-[16px] border-b-[1px] border-solid border-[#000000] px-[16px] py-[30px]'>
-            <section className='flex'>
-              <Link
-                href={`/userpage/${userId}`}
-                className={`${uid === userId ? 'pointer-events-none' : 'cursor-pointer'}`}
-              >
-                <figure className='h-[56px] w-[56px] items-center rounded-full '>
-                  {userImage ? (
-                    <Image
-                      src={`${userImage}`}
-                      alt='유저 이미지'
-                      width={56}
-                      height={56}
-                      title={`${nickname}님의 페이지로 이동`}
-                      className='h-[56px] w-[56px] rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)] bg-[#2B2B2B]'
-                    />
-                  ) : (
-                    <Image
-                      src={userDefault}
-                      alt='유저 이미지'
-                      width={56}
-                      height={56}
-                      title={`${nickname}님의 페이지로 이동`}
-                      className='h-[56px] w-[56px] rounded-full border-[2px] border-solid border-[rgba(255,255,255,0.1)] bg-[#2B2B2B]'
-                    />
-                  )}
-                </figure>
-              </Link>
-            </section>
+            <DetailuserImage
+              userId={userId}
+              nickname={nickname}
+              userImage={userImage}
+            />
 
-            <section className='flex w-full flex-col gap-[16px]'>
-              <article className='flex w-full justify-between'>
-                {isEdit ? (
-                  <input
-                    type='text'
-                    name='boardTitle'
-                    maxLength={40}
-                    value={updatedTitle}
-                    onChange={onChangeEditForm}
-                    placeholder='제목을 입력해 주세요.(40자 이내)'
-                    className='flex w-full rounded-[12px] border-none bg-[rgba(255,255,255,0.1)] px-[4px] pt-[4px] text-[18px] font-bold tracking-[-0.03em]'
-                  />
-                ) : (
-                  <div className='flex flex-col items-center justify-center'>
-                    <p className='flex flex-col items-center justify-center text-center text-[18px] font-bold '>{`${boardTitle}`}</p>
-                  </div>
-                )}
-                <section>
-                  <div>
-                    {userId === uid && !isEdit && (
-                      <button onClick={onBoardEditHandler}>
-                        <Image
-                          src={detailEdit}
-                          alt='상세페이지 수정 아이콘'
-                          width={20}
-                          height={20}
-                        />
-                      </button>
-                    )}
-                    {userId === uid && (
-                      <button type='button' onClick={onDeleteBoardHandler}>
-                        <Image
-                          src={detailDelete}
-                          alt='상세페이지 삭제 아이콘'
-                          width={20}
-                          height={20}
-                        />
-                      </button>
-                    )}
-                  </div>
-                </section>
-              </article>
-              <article className='flex justify-between'>
-                <div className='flex items-center'>
-                  <p className=' text-center text-[14px] font-bold text-[rgba(255,255,255,0.5)]'>
-                    {nickname}
-                  </p>
-                </div>
-                <div className='text-[rgba(255,255,255,0.5)]'>
-                  {onDateTimeHandler(date)}
-                </div>
-              </article>
-            </section>
+            <DetailEditDelete
+              isEdit={isEdit}
+              userId={userId}
+              date={date}
+              nickname={nickname}
+              boardTitle={boardTitle}
+              updatedTitle={updatedTitle}
+              onChangeEditForm={onChangeEditForm}
+              onBoardEditHandler={onBoardEditHandler}
+              onDeleteBoardHandler={onDeleteBoardHandler}
+            />
           </article>
+
           <ul
             className={`flex w-full justify-between gap-[24px] rounded-[32px] bg-[rgba(255,255,255,0.1)] py-[20px] pl-[40px] pr-[20px]  ${ADDED_CURRENT_MUSIC_SHADOW}`}
           >
@@ -495,6 +427,7 @@ const CommunityContents = () => {
               </button>
             </li>
           </ul>
+
           <article className='px-[16px] pb-[72px] text-[16px] font-bold'>
             {isEdit ? (
               <CommunityNoSsrQuillEditor
