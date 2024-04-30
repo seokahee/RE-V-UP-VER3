@@ -10,6 +10,7 @@ import { paging, resetPagination } from '@/util/util'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
+// 커뮤니티 리스트 페이지
 const Community = () => {
   const [isSort, setIsSort] = useState(true)
   const setCurrentPageData = usePaginationStore(
@@ -38,12 +39,9 @@ const Community = () => {
     console.error('커뮤니티 리스트를 가져오지 못했습니다')
     return
   }
-  const filteredData = communityList.filter((item) => {
-    return item && item.userInfo && item.musicInfo && item.comment
-  })
 
   const { currentItems, nextPage, prevPage, totalPages } = paging(
-    filteredData,
+    communityList,
     currentPage,
     setCurrentPageData,
   )
