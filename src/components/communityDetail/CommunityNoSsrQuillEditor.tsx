@@ -6,7 +6,8 @@ import loading from '@/../public/images/loadingBar.gif'
 // SSR을 비활성화하고, 로딩 중에 표시될 컴포넌트 및 로딩 중에 SSR 여부를 설정
 export const CommunityNoSsrQuillEditor = dynamic(
   async () => {
-    // 필요한 컴포넌트를 비동기적으로 임포트
+    // 필요한 컴포넌트(CSR환경이 필요한 라이브러리를 포함한 컴포넌트)
+    // 비동기적으로 임포트
     const { default: RQ } = await import('./CommunityQuillEditor')
     // 컴포넌트를 반환
     const comp = ({ forwardedRef, ...props }: any) => {

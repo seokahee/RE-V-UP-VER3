@@ -218,6 +218,7 @@ const CommunityCreate = () => {
             </div>
 
             <article className='h-[200px] text-[16px]'>
+              {/* 에디터 적용 */}
               <CommunityNoSsrQuillEditor
                 theme='snow'
                 content={content}

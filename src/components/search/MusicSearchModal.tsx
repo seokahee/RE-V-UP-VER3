@@ -25,6 +25,7 @@ const MusicSearchModal = ({
   const { chooseMusic, isChooseMusic, setIsChooseMusic } =
     useMusicSearchedStore()
   const [musicList, setMusicList] = useState<MusicInfoType[]>([])
+
   const setCurrentPageData = usePaginationStore(
     (state) => state.setCurrentPageData,
   )
@@ -60,7 +61,7 @@ const MusicSearchModal = ({
       }
     }
     getMusicData(keyword)
-    setIsChooseMusic(false)
+    setIsChooseMusic(false) // 음악 선택 해제위한 상태
   }
 
   const { currentItems, nextPage, prevPage, totalPages } = paging(
@@ -91,14 +92,17 @@ const MusicSearchModal = ({
     })
     setIsModal(false)
   }
-
+  // MusicSearchModal 컴포넌트에서 사용되는 키 입력 이벤트 핸들러 - 등록 이벤트
   const handleKeyUp = (e: KeyboardEvent<HTMLButtonElement>) => {
+    // 키가 'Enter'인지 확인
     if (e.key === 'Enter') {
       e.preventDefault()
+      // 새 이벤트 생성
       const submitEvent = new Event('submit', {
-        bubbles: true,
-        cancelable: true,
+        bubbles: true, // 버블링 활성화
+        cancelable: true, // 취소 가능하도록 설정
       })
+      // 현재 버튼의 부모 요소에 이벤트 전파
       e.currentTarget.form?.dispatchEvent(submitEvent)
     }
   }
