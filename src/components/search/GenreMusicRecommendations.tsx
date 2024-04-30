@@ -1,10 +1,11 @@
 'use client'
 
+import { GENRE_MUSIC_QUERY_KEY } from '@/query/genreMusic/queryKeys'
 import { getGenreMusicData } from '@/shared/main/api'
+import { usePaginationStore } from '@/shared/store/paginationStore'
 import Pagination from '@/util/Pagination '
 import { paging } from '@/util/util'
 import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
 import NoSearchResultItem from './NoSearchResultItem'
 
 const GenreMusicRecommendations = ({
@@ -12,11 +13,15 @@ const GenreMusicRecommendations = ({
 }: {
   musicPreferenceData: number[]
 }) => {
-  const [currentPage, setCurrentPage] = useState(1)
+  const setCurrentPageData = usePaginationStore(
+    (state) => state.setCurrentPageData,
+  )
+  const { currentPageData } = usePaginationStore()
+  const { currentPage } = currentPageData
 
   const { data, isLoading } = useQuery({
     queryFn: () => getGenreMusicData(musicPreferenceData),
-    queryKey: ['mainGenreMusic', musicPreferenceData],
+    queryKey: [GENRE_MUSIC_QUERY_KEY.GET_MAIN_GENRE_MUSIC, musicPreferenceData],
     enabled: !!musicPreferenceData,
   })
   if (isLoading) {
@@ -25,7 +30,7 @@ const GenreMusicRecommendations = ({
   const { currentItems, nextPage, prevPage, totalPages } = paging(
     data,
     currentPage,
-    setCurrentPage,
+    setCurrentPageData,
     5,
   )
 
@@ -41,11 +46,9 @@ const GenreMusicRecommendations = ({
       </div>
       <div className='mb-[82px]'>
         <Pagination
-          currentPage={currentPage}
           totalPages={totalPages}
           prevPage={prevPage}
           nextPage={nextPage}
-          setCurrentPage={setCurrentPage}
         />
       </div>
     </div>

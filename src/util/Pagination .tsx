@@ -1,24 +1,23 @@
 'use client'
 import nextPageButton from '@/../public/images/nextPageButton.svg'
 import prevPageButton from '@/../public/images/prevPageButton.svg'
+import { usePaginationStore } from '@/shared/store/paginationStore'
 import Image from 'next/image'
-import React from 'react'
 
 type PaginationProps = {
-  currentPage: number
   totalPages: number
   prevPage: () => void
   nextPage: () => void
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>
 }
 
-const Pagination = ({
-  currentPage,
-  totalPages,
-  prevPage,
-  nextPage,
-  setCurrentPage,
-}: PaginationProps) => {
+const Pagination = ({ totalPages, prevPage, nextPage }: PaginationProps) => {
+  const setCurrentPageData = usePaginationStore(
+    (state) => state.setCurrentPageData,
+  )
+
+  const { currentPageData } = usePaginationStore()
+  const { currentPage } = currentPageData
+
   return (
     <div className='text-center'>
       {currentPage !== 1 && (
@@ -39,7 +38,7 @@ const Pagination = ({
               <button
                 key={idx + 1}
                 className={`mx-[4px] px-[4px] text-[18px] ${idx + 1 !== currentPage && 'opacity-[30%]'}`}
-                onClick={() => setCurrentPage(idx + 1)}
+                onClick={() => setCurrentPageData(idx + 1)}
               >
                 {idx + 1}
               </button>

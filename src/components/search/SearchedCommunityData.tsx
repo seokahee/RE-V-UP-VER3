@@ -2,18 +2,19 @@
 import comment from '@/../public/images/comment.svg'
 import like from '@/../public/images/like.svg'
 import userDefaultImg from '@/../public/images/userDefaultImg.svg'
-import { useSearchedResultStore } from '@/shared/store/searchStore'
+import { CommunityType } from '@/types/community/type'
 import { onDateHandler } from '@/util/util'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const SearchedCommunityData = () => {
-  const { searchedData } = useSearchedResultStore()
-  const { communityData } = searchedData
-
+const SearchedCommunityData = ({
+  currentItems,
+}: {
+  currentItems: CommunityType[]
+}) => {
   return (
     <ul className='list-none'>
-      {communityData.map((item) => {
+      {currentItems.map((item) => {
         const keys = Object.keys(item.comment)
         const numKeys = keys.length
         return (

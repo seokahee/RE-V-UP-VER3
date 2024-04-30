@@ -3,7 +3,9 @@ import rectangle from '@/../public/images/Rectangle 156.svg'
 import arrowSearch from '@/../public/images/arrow_forward_ios.svg'
 import search from '@/../public/images/searchIcon (2).svg'
 import useInput from '@/hooks/useInput'
+import { usePaginationStore } from '@/shared/store/paginationStore'
 import { useSearchedKeywordStore } from '@/shared/store/searchStore'
+import { resetPagination } from '@/util/util'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useRef } from 'react'
@@ -21,6 +23,10 @@ const SearchForm = () => {
   })
   const { keyword, selectedTabs } = keywordInput
   const searched = useSearchedKeywordStore((state) => state.searched)
+  const setCurrentPageData = usePaginationStore(
+    (state) => state.setCurrentPageData,
+  )
+
   const router = useRouter()
   const keywordRef = useRef<HTMLInputElement>(null)
 
@@ -37,6 +43,7 @@ const SearchForm = () => {
     }
 
     searched(keyword, selectedTabs)
+    resetPagination(setCurrentPageData)
     router.push('/search')
     reset()
   }

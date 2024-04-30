@@ -1,5 +1,4 @@
 import { MusicInfoType } from '@/types/musicPlayer/types'
-import { Dispatch, SetStateAction } from 'react'
 
 export const onDateHandler = (itemDate: string) => {
   const date = new Date(itemDate).toLocaleString('ko-KR', {
@@ -20,7 +19,7 @@ export const getToday = () => {
 export const paging = (
   data: any,
   currentPage: number,
-  setCurrentPage: Dispatch<SetStateAction<number>>,
+  setCurrentPageData: (page: number) => void,
   itemsPer: number = 10,
 ) => {
   if (!data)
@@ -39,16 +38,20 @@ export const paging = (
 
   const nextPage = () => {
     if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1)
+      setCurrentPageData(currentPage + 1)
     }
   }
 
   const prevPage = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
+      setCurrentPageData(currentPage - 1)
     }
   }
   return { currentItems, nextPage, prevPage, totalPages }
+}
+
+export const resetPagination = (setCurrentPageData: (page: number) => void) => {
+  setCurrentPageData(1)
 }
 
 export const onDateTimeHandler = (itemDate: string) => {

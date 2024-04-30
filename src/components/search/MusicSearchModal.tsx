@@ -3,10 +3,11 @@ import search from '@/../public/images/community-detail-Image/search-button.svg'
 import useInput from '@/hooks/useInput'
 import { getSearchedMusicData } from '@/shared/search/api'
 import { useMusicSearchedStore } from '@/shared/store/communityDetailStore'
+import { usePaginationStore } from '@/shared/store/paginationStore'
 import { useModalMusicResultStore } from '@/shared/store/searchStore'
 import type { MusicInfoType } from '@/types/musicPlayer/types'
 import Pagination from '@/util/Pagination '
-import { paging } from '@/util/util'
+import { paging, resetPagination } from '@/util/util'
 import Image from 'next/image'
 import React, { FormEvent, KeyboardEvent, useRef, useState } from 'react'
 import Swal from 'sweetalert2'
@@ -24,7 +25,11 @@ const MusicSearchModal = ({
   const { chooseMusic, isChooseMusic, setIsChooseMusic } =
     useMusicSearchedStore()
   const [musicList, setMusicList] = useState<MusicInfoType[]>([])
-  const [currentPage, setCurrentPage] = useState(1)
+  const setCurrentPageData = usePaginationStore(
+    (state) => state.setCurrentPageData,
+  )
+  const { currentPageData } = usePaginationStore()
+  const { currentPage } = currentPageData
   const { form: keywordInput, onChange } = useInput({
     keyword: '',
   })
@@ -48,6 +53,7 @@ const MusicSearchModal = ({
 
       if (data && data?.length > 0) {
         setMusicList(data)
+        resetPagination(setCurrentPageData)
       } else {
         alert('검색 결과가 없습니다')
         return
@@ -60,7 +66,7 @@ const MusicSearchModal = ({
   const { currentItems, nextPage, prevPage, totalPages } = paging(
     musicList,
     currentPage,
-    setCurrentPage,
+    setCurrentPageData,
     5,
   )
 
@@ -147,15 +153,13 @@ const MusicSearchModal = ({
               })}
             </div>
             <div className='mt-[16px] [&_div]:m-0'>
-              {currentItems && currentItems.length > 0 ? (
+              {currentItems && currentItems.length > 0 && (
                 <Pagination
-                  currentPage={currentPage}
                   totalPages={totalPages}
                   prevPage={prevPage}
                   nextPage={nextPage}
-                  setCurrentPage={setCurrentPage}
                 />
-              ) : null}
+              )}
             </div>
           </div>
         </div>
