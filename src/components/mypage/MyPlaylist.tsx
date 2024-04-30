@@ -10,13 +10,13 @@ import type { UserInfo } from '@/types/mypage/types'
 import InfiniteScrollContainer from '@/util/InfiniteScrollContainer'
 import { dragHandler } from '@/util/util'
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
+import _ from 'lodash'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Swal from 'sweetalert2'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import CheckboxItem from './CheckboxItem'
-import _ from 'lodash'
 
 const MyPlaylist = ({ data }: { data: UserInfo }) => {
   const { data: userSessionInfo } = useSession()
@@ -256,10 +256,9 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     setToggle((prev) => !prev)
     checkListReset()
   }
-  console.log('리렌더링 일어나는중~')
+
   const handleScroll = useCallback(
     _.throttle(() => {
-      console.log('실행3초')
       const height = listRef.current?.children[0]
         ? listRef.current?.children[0].clientHeight
         : 0
@@ -267,17 +266,19 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
         if (
           hasPreviousPage &&
           !isFetchingPreviousPage &&
-          scrollBoxRef.current.scrollTop < height * 3
+          scrollBoxRef.current.scrollTop < height * 4
         ) {
           fetchPreviousPage()
         }
       }
-    }, 3000),
-    [fetchPreviousPage],
+    }, 1000),
+    [fetchPreviousPage, hasPreviousPage],
   )
 
   const nextPage = () => {
-    fetchNextPage()
+    if (!isFetchingNextPage && hasNextPage) {
+      fetchNextPage()
+    }
   }
 
   useEffect(() => {
@@ -286,17 +287,9 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     }
   }, [scrollBoxTopPosition])
 
-  // useEffect를 사용하여 컴포넌트가 마운트될 때 스크롤 이벤트 핸들러 등록
   useEffect(() => {
     if (scrollBoxRef.current) {
       scrollBoxRef.current.addEventListener('scroll', handleScroll)
-
-      // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
-      return () => {
-        if (scrollBoxRef.current) {
-          scrollBoxRef.current.removeEventListener('scroll', handleScroll)
-        }
-      }
     }
   }, [handleScroll])
 
@@ -349,7 +342,6 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       <div
         ref={scrollBoxRef}
         className='overflow-y-auto'
-        // onScroll={handleScroll}
         style={{
           height: `calc(100vh - ${scrollBoxTopPosition}px - 30px)`,
         }}
