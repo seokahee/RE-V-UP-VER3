@@ -4,20 +4,26 @@ import CommunityListSort from '@/components/communityList/CommunityListSort'
 import { ACTIVE_BUTTON_SHADOW } from '@/components/login/buttonCss'
 import { DOWN_ACTIVE_BUTTON } from '@/components/login/loginCss'
 import { getCommunityListInCommunity } from '@/query/community/communityQueryKey'
+import { usePaginationStore } from '@/shared/store/searchStore'
 import Pagination from '@/util/Pagination '
-import { paging } from '@/util/util'
+import { paging, resetPagination } from '@/util/util'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 const Community = () => {
   const [isSort, setIsSort] = useState(true)
-  const [currentPage, setCurrentPage] = useState(1)
+  const setCurrentPageData = usePaginationStore(
+    (state) => state.setCurrentPageData,
+  )
+  const { currentPageData } = usePaginationStore()
+  const { currentPage } = currentPageData
 
   const { communityList, isLoading, isError, refetch } =
     getCommunityListInCommunity(isSort)
 
   useEffect(() => {
     refetch()
+    resetPagination(setCurrentPageData)
   }, [isSort, refetch])
 
   if (isLoading) {
@@ -39,7 +45,7 @@ const Community = () => {
   const { currentItems, nextPage, prevPage, totalPages } = paging(
     filteredData,
     currentPage,
-    setCurrentPage,
+    setCurrentPageData,
   )
   const likedItem =
     !isSort &&
@@ -67,11 +73,9 @@ const Community = () => {
       {currentItems && currentItems.length > 0 ? (
         <div className='my-[32px]'>
           <Pagination
-            currentPage={currentPage}
             totalPages={totalPages}
             prevPage={prevPage}
             nextPage={nextPage}
-            setCurrentPage={setCurrentPage}
           />
         </div>
       ) : null}

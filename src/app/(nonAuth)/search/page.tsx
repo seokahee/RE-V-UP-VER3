@@ -4,20 +4,21 @@ import SearchedCommunityData from '@/components/search/SearchedCommunityData'
 import SearchedMusicData from '@/components/search/SearchedMusicData'
 import { searchedData } from '@/query/search/searchQueryKeys'
 import {
+  usePaginationStore,
   useSearchedKeywordStore,
-  useSearchedResultStore,
 } from '@/shared/store/searchStore'
 import Pagination from '@/util/Pagination '
 import { paging } from '@/util/util'
-import { useState } from 'react'
 
 const Search = () => {
-  const [currentPage, setCurrentPage] = useState(1)
+  const setCurrentPageData = usePaginationStore(
+    (state) => state.setCurrentPageData,
+  )
+  const { currentPageData } = usePaginationStore()
+  const { currentPage } = currentPageData
   const { searchedKeyword } = useSearchedKeywordStore()
   const { keyword, selectedTabs } = searchedKeyword
-  const searchResultData = useSearchedResultStore(
-    (state) => state.searchResultData,
-  )
+
   const { musicResult, musicDataIsLoading, musicDataIsError } = searchedData(
     keyword,
     selectedTabs,
@@ -43,14 +44,10 @@ const Search = () => {
   const { currentItems, nextPage, prevPage, totalPages } = paging(
     searchedResult,
     currentPage,
-    setCurrentPage,
+    setCurrentPageData,
     5,
   )
 
-  searchResultData(
-    selectedTabs === 'musicInfo' ? currentItems : [],
-    selectedTabs === 'community' ? currentItems : [],
-  )
   return (
     <div>
       {searchedResult && searchedResult.length > 0 ? (
@@ -60,23 +57,24 @@ const Search = () => {
               ? `'${keyword}'에 대한 노래 검색 결과`
               : `'${keyword}'에 대한 게시글 검색 결과`}
           </div>
-          <SearchedMusicData />
-          <SearchedCommunityData />
-          {currentItems && currentItems.length > 0 ? (
+          {selectedTabs === 'musicInfo' ? (
+            <SearchedMusicData currentItems={currentItems} />
+          ) : (
+            <SearchedCommunityData currentItems={currentItems} />
+          )}
+          {currentItems && currentItems.length > 0 && (
             <div
               className={
                 selectedTabs === 'musicInfo' ? 'mt-[82px]' : 'mt-[32px]'
               }
             >
               <Pagination
-                currentPage={currentPage}
                 totalPages={totalPages}
                 prevPage={prevPage}
                 nextPage={nextPage}
-                setCurrentPage={setCurrentPage}
               />
             </div>
-          ) : null}
+          )}
         </div>
       ) : (
         <div>

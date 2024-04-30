@@ -1,23 +1,28 @@
 'use client'
 
-import { getMyWriteListData } from '@/shared/mypage/api'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import React, { useState } from 'react'
-import BoardItem from './BoardItem'
-import BoardNoData from './BoardNoData'
-import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
-import { useSession } from 'next-auth/react'
-import { paging } from '@/util/util'
-import Pagination from '@/util/Pagination '
-import type { Board } from '@/types/mypage/types'
-import Swal from 'sweetalert2'
 import { GET_MUSIC_LIST_QUERY_KEYS } from '@/query/musicPlayer/musicPlayerQueryKeys'
 import { GET_USER_INFO } from '@/query/user/userQueryKeys'
+import { getCurrentMusicData, updateCurrentMusic } from '@/shared/main/api'
+import { getMyWriteListData } from '@/shared/mypage/api'
+import { usePaginationStore } from '@/shared/store/searchStore'
+import type { Board } from '@/types/mypage/types'
+import Pagination from '@/util/Pagination '
+import { paging } from '@/util/util'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
+import Swal from 'sweetalert2'
+import BoardItem from './BoardItem'
+import BoardNoData from './BoardNoData'
 
 const WriteList = () => {
   const { data: userSessionInfo } = useSession()
   const uid = userSessionInfo?.user?.uid as string
-  const [currentPage, setCurrentPage] = useState(1)
+  const setCurrentPageData = usePaginationStore(
+    (state) => state.setCurrentPageData,
+  )
+  const { currentPageData } = usePaginationStore()
+  const { currentPage } = currentPageData
+
   const queryClient = useQueryClient()
 
   const { data, isLoading, isError } = useQuery({
@@ -29,7 +34,7 @@ const WriteList = () => {
   const { currentItems, nextPage, prevPage, totalPages } = paging(
     data,
     currentPage,
-    setCurrentPage,
+    setCurrentPageData,
     5,
   )
 
@@ -96,11 +101,9 @@ const WriteList = () => {
       </ul>
       {currentItems && currentItems?.length > 0 ? (
         <Pagination
-          currentPage={currentPage}
           totalPages={totalPages}
           nextPage={nextPage}
           prevPage={prevPage}
-          setCurrentPage={setCurrentPage}
         />
       ) : (
         ''
