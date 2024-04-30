@@ -20,7 +20,6 @@ const LikeButton = ({ boardId }: Props) => {
   const [like, setLike] = useState<boolean | null>(null)
   const [likeList, setLikeList] = useState<string[]>([])
   const [, setLikeCount] = useState<number>(0)
-  const [removeDouble, setRemoveDouble] = useState<boolean>(false)
 
   const likeLength =
     likeList && likeList.length > 99 ? 99 : likeList ? likeList.length : 0
@@ -46,42 +45,33 @@ const LikeButton = ({ boardId }: Props) => {
     likedStatus()
   }, [uid, boardId])
 
-  const onDebouncedLikeToggleHandler = useCallback(
-    debounce(async () => {
-      if (removeDouble) return
+  const onDebouncedLikeToggleHandler = debounce(async () => {
+    if (!uid) {
+      alert('로그인 후 이용해 주세요.')
+      return
+    }
 
-      setRemoveDouble(true)
-      if (!uid) {
-        alert('로그인 후 이용해 주세요.')
-        setRemoveDouble(false)
-        return
-      }
-
-      if (like && likeList) {
-        const updatedLikeList = likeList && likeList.filter((id) => id !== uid)
-        await removeLikedUser(likeList, boardId, uid)
-        setLike(false)
-        setLikeList(updatedLikeList)
-        setLikeCount(updatedLikeList.length)
-        await updateLikeCountInCommunity(boardId, updatedLikeList.length)
-      } else {
-        const updatedLikeList = [...likeList, uid]
-        await addLikedUser(likeList, boardId, uid)
-        setLike(true)
-        setLikeList(updatedLikeList)
-        setLikeCount(updatedLikeList.length)
-        await updateLikeCountInCommunity(boardId, updatedLikeList.length)
-      }
-      const updatedLikeList = like
-        ? likeList.filter((id) => id !== uid)
-        : [...likeList, uid]
+    if (like && likeList) {
+      const updatedLikeList = likeList && likeList.filter((id) => id !== uid)
+      await removeLikedUser(likeList, boardId, uid)
+      setLike(false)
       setLikeList(updatedLikeList)
-      setLike(!like)
-
-      setRemoveDouble(false)
-    }, 1000),
-    [likeList, boardId, uid, removeDouble],
-  )
+      setLikeCount(updatedLikeList.length)
+      await updateLikeCountInCommunity(boardId, updatedLikeList.length)
+    } else {
+      const updatedLikeList = [...likeList, uid]
+      await addLikedUser(likeList, boardId, uid)
+      setLike(true)
+      setLikeList(updatedLikeList)
+      setLikeCount(updatedLikeList.length)
+      await updateLikeCountInCommunity(boardId, updatedLikeList.length)
+    }
+    const updatedLikeList = like
+      ? likeList.filter((id) => id !== uid)
+      : [...likeList, uid]
+    setLikeList(updatedLikeList)
+    setLike(!like)
+  }, 1000)
 
   const onLikeToggleHandler = () => {
     onDebouncedLikeToggleHandler()
