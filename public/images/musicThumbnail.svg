@@ -1,15 +1,15 @@
 <svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
 <circle cx="150" cy="150" r="150" fill="url(#paint0_linear_1592_6415)"/>
-<circle cx="149.999" cy="150" r="144" stroke="black" strokeWidth="0.925926"/>
-<circle cx="150.001" cy="150" r="138" stroke="black" strokeWidth="0.925926"/>
-<circle cx="150" cy="150" r="132" stroke="black" strokeWidth="0.925926"/>
-<circle cx="150" cy="150" r="126" stroke="black" strokeWidth="0.925926"/>
-<circle cx="150" cy="150" r="120" stroke="black" strokeWidth="0.925926"/>
-<circle cx="150.001" cy="150" r="114" stroke="black" strokeWidth="0.925926"/>
-<circle cx="149.999" cy="150" r="108" stroke="black" strokeWidth="0.925926"/>
-<circle cx="150" cy="150" r="102" stroke="black" strokeWidth="0.925926"/>
-<circle cx="149.999" cy="150" r="96" stroke="black" strokeWidth="0.925926"/>
-<circle cx="150.001" cy="150" r="90" stroke="black" strokeWidth="0.925926"/>
+<circle cx="149.999" cy="150" r="144" stroke="black" stroke-width="0.925926"/>
+<circle cx="150.001" cy="150" r="138" stroke="black" stroke-width="0.925926"/>
+<circle cx="150" cy="150" r="132" stroke="black" stroke-width="0.925926"/>
+<circle cx="150" cy="150" r="126" stroke="black" stroke-width="0.925926"/>
+<circle cx="150" cy="150" r="120" stroke="black" stroke-width="0.925926"/>
+<circle cx="150.001" cy="150" r="114" stroke="black" stroke-width="0.925926"/>
+<circle cx="149.999" cy="150" r="108" stroke="black" stroke-width="0.925926"/>
+<circle cx="150" cy="150" r="102" stroke="black" stroke-width="0.925926"/>
+<circle cx="149.999" cy="150" r="96" stroke="black" stroke-width="0.925926"/>
+<circle cx="150.001" cy="150" r="90" stroke="black" stroke-width="0.925926"/>
 <defs>
 <linearGradient id="paint0_linear_1592_6415" x1="0" y1="0" x2="300" y2="300" gradientUnits="userSpaceOnUse">
 <stop offset="0.335"/>
