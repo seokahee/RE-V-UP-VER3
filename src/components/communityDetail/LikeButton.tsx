@@ -20,6 +20,7 @@ const LikeButton = ({ boardId }: Props) => {
   const [like, setLike] = useState<boolean | null>(null)
   const [likeList, setLikeList] = useState<string[]>([])
   const [, setLikeCount] = useState<number>(0)
+  const [removeDouble, setRemoveDouble] = useState<boolean>(false)
 
   const likeLength =
     likeList && likeList.length > 99 ? 99 : likeList ? likeList.length : 0
@@ -45,9 +46,13 @@ const LikeButton = ({ boardId }: Props) => {
     likedStatus()
   }, [uid, boardId])
 
-  const onDebouncedLikeToggleHandler = debounce(async () => {
+  const onLikeToggleHandler = async () => {
+    if (removeDouble) return
+
+    setRemoveDouble(true)
     if (!uid) {
       alert('로그인 후 이용해 주세요.')
+      setRemoveDouble(false)
       return
     }
 
@@ -73,10 +78,8 @@ const LikeButton = ({ boardId }: Props) => {
       : [...likeList, uid]
     setLikeList(updatedLikeList)
     setLike(!like)
-  }, 500)
 
-  const onLikeToggleHandler = () => {
-    onDebouncedLikeToggleHandler()
+    setRemoveDouble(false)
   }
 
   return (
