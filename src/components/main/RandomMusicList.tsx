@@ -2,17 +2,19 @@
 
 import { getRandomMusicData } from '@/shared/main/api'
 import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import GenreMusicItem from './GenreMusicItem'
 
 import { GENRE_MUSIC_QUERY_KEY } from '@/query/genreMusic/queryKeys'
 import { useSession } from 'next-auth/react'
 import SectionTitle from './SectionTitle'
 import SlideButton from './SlideButton'
+import { GenreMusicInfo } from '@/types/main/types'
 
 const RandomMusicList = () => {
   const [position, setPosition] = useState(0)
   const session = useSession()
+  const [randomMusic, setRandomMusic] = useState<GenreMusicInfo[]>([])
 
   const check = session.status === 'authenticated'
 
@@ -23,6 +25,17 @@ const RandomMusicList = () => {
     queryFn: () => getRandomMusicData(),
     queryKey: [GENRE_MUSIC_QUERY_KEY.GET_MAIN_GENRE_MUSIC],
   })
+
+  useEffect(() => {
+    if (data) {
+      const randomIndex = new Set<number>()
+      while (randomIndex.size < 10) {
+        randomIndex.add(Math.floor(Math.random() * data.length))
+      }
+      const randomMusic = Array.from(randomIndex).map((index) => data[index])
+      setRandomMusic(randomMusic)
+    }
+  }, [data])
 
   const onClickPrevHandler = () => {
     if (position < 0) {
@@ -45,14 +58,14 @@ const RandomMusicList = () => {
             transform: `translateX(${position}px)`,
           }}
         >
-          {data?.map((item) => {
+          {randomMusic?.map((item) => {
             return <GenreMusicItem key={item.musicId} item={item} />
           })}
         </ul>
         <SlideButton
           position={position}
           movePoint={MOVE_POINT}
-          length={data?.length ? data?.length : 0}
+          length={randomMusic?.length ? randomMusic?.length : 0}
           onClickNextHandler={onClickNextHandler}
           onClickPrevHandler={onClickPrevHandler}
         />

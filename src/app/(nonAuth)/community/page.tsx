@@ -38,21 +38,13 @@ const Community = () => {
     console.error('커뮤니티 리스트를 가져오지 못했습니다')
     return
   }
-  const filteredData = communityList.filter((item) => {
-    return item && item.userInfo && item.musicInfo && item.comment
-  })
 
   const { currentItems, nextPage, prevPage, totalPages } = paging(
-    filteredData,
+    communityList,
     currentPage,
     setCurrentPageData,
   )
-  const likedItem =
-    !isSort &&
-    currentItems.sort((a: any, b: any) => {
-      b.likeList - a.likeList
-    })
-  console.log('likedItem', likedItem)
+
   return (
     <section>
       <div className='shadow-mb relative mt-[32px] flex h-[72px] w-[732px] items-center justify-center rounded-xl border-4 border-white border-opacity-10 bg-white bg-opacity-10'>
@@ -70,7 +62,7 @@ const Community = () => {
       {currentItems.map((item: any) => {
         return <CommunityListData key={item.boardId} item={item} />
       })}
-      {currentItems && currentItems.length > 0 ? (
+      {currentItems && currentItems.length > 0 && (
         <div className='my-[32px]'>
           <Pagination
             totalPages={totalPages}
@@ -78,7 +70,7 @@ const Community = () => {
             nextPage={nextPage}
           />
         </div>
-      ) : null}
+      )}
     </section>
   )
 }
