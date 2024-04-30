@@ -10,9 +10,10 @@ import type { UserInfo } from '@/types/mypage/types'
 import InfiniteScrollContainer from '@/util/InfiniteScrollContainer'
 import { dragHandler } from '@/util/util'
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
+import { throttle } from 'lodash'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Swal from 'sweetalert2'
 import ButtonPrimary from '../../util/ButtonPrimary'
 import CheckboxItem from './CheckboxItem'
@@ -256,23 +257,28 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     checkListReset()
   }
 
-  const handleScroll = () => {
-    const height = listRef.current?.children[0]
-      ? listRef.current?.children[0].clientHeight
-      : 0
-    if (scrollBoxRef.current) {
-      if (
-        hasPreviousPage &&
-        !isFetchingPreviousPage &&
-        scrollBoxRef.current.scrollTop < height * 3
-      ) {
-        fetchPreviousPage()
+  const handleScroll = useCallback(
+    throttle(() => {
+      const height = listRef.current?.children[0]
+        ? listRef.current?.children[0].clientHeight
+        : 0
+      if (scrollBoxRef.current) {
+        if (
+          hasPreviousPage &&
+          !isFetchingPreviousPage &&
+          scrollBoxRef.current.scrollTop < height * 4
+        ) {
+          fetchPreviousPage()
+        }
       }
-    }
-  }
+    }, 1000),
+    [fetchPreviousPage, hasPreviousPage],
+  )
 
   const nextPage = () => {
-    fetchNextPage()
+    if (!isFetchingNextPage && hasNextPage) {
+      fetchNextPage()
+    }
   }
 
   useEffect(() => {
@@ -280,6 +286,12 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       setScrollBoxTopPosition(scrollBoxRef.current?.getBoundingClientRect().top)
     }
   }, [scrollBoxTopPosition])
+
+  useEffect(() => {
+    if (scrollBoxRef.current) {
+      scrollBoxRef.current.addEventListener('scroll', handleScroll)
+    }
+  }, [handleScroll])
 
   const shadow =
     'shadow-[-4px_-4px_8px_rgba(255,255,255,0.05),4px_4px_8px_rgba(0,0,0,0.7)]'
@@ -330,7 +342,6 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
       <div
         ref={scrollBoxRef}
         className='overflow-y-auto'
-        onScroll={handleScroll}
         style={{
           height: `calc(100vh - ${scrollBoxTopPosition}px - 30px)`,
         }}
