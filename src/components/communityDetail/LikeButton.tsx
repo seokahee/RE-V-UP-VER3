@@ -19,6 +19,7 @@ const LikeButton = ({ boardId }: Props) => {
   const [like, setLike] = useState<boolean | null>(null)
   const [likeList, setLikeList] = useState<string[]>([])
   const [, setLikeCount] = useState<number>(0)
+  const [removeDouble, setRemoveDouble] = useState<boolean>(false)
 
   const likeLength =
     likeList && likeList.length > 99 ? 99 : likeList ? likeList.length : 0
@@ -45,13 +46,18 @@ const LikeButton = ({ boardId }: Props) => {
   }, [uid, boardId])
 
   const onLikeToggleHandler = async () => {
+    if (removeDouble) return
+
+    setRemoveDouble(true)
     if (!uid) {
       alert('로그인 후 이용해 주세요.')
+      setRemoveDouble(false)
       return
     }
 
     if (like && likeList) {
       const updatedLikeList = likeList && likeList.filter((id) => id !== uid)
+
       await removeLikedUser(likeList, boardId, uid)
       setLike(false)
       setLikeList(updatedLikeList)
@@ -59,6 +65,7 @@ const LikeButton = ({ boardId }: Props) => {
       await updateLikeCountInCommunity(boardId, updatedLikeList.length)
     } else {
       const updatedLikeList = [...likeList, uid]
+
       await addLikedUser(likeList, boardId, uid)
       setLike(true)
       setLikeList(updatedLikeList)
@@ -70,7 +77,10 @@ const LikeButton = ({ boardId }: Props) => {
       : [...likeList, uid]
     setLikeList(updatedLikeList)
     setLike(!like)
+
+    setRemoveDouble(false)
   }
+
   return (
     <div>
       <div className='flex gap-[7px]'>

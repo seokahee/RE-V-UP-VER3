@@ -1,3 +1,5 @@
+import { ChangeEvent, MouseEvent } from 'react'
+
 export type readCommuDetail = {
   boardId: string
   boardTitle: string
@@ -103,4 +105,21 @@ export type AddMusicProps = {
   musicTitle: string | undefined
   artist: string | undefined
   item: AddMusicInfoType
+}
+
+export type DetailEditDeleteProps = {
+  isEdit: boolean
+  userId: string | undefined
+  date: string
+  nickname: string | undefined
+  boardTitle: string
+  updatedTitle: string
+  onChangeEditForm: (
+    e:
+      | ChangeEvent<HTMLInputElement>
+      | ChangeEvent<HTMLSelectElement>
+      | ChangeEvent<HTMLTextAreaElement>,
+  ) => void
+  onBoardEditHandler: (e: MouseEvent) => void
+  onDeleteBoardHandler: (e: MouseEvent) => void
 }
