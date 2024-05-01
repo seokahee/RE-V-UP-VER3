@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import loading from '@/../public/images/loadingBar.gif'
 
+// 커뮤니티 상세페이지 등록 - 퀼 에디터
 // SSR을 비활성화하고, 로딩 중에 표시될 컴포넌트 및 로딩 중에 SSR 여부를 설정
 export const CommunityNoSsrQuillEditor = dynamic(
   async () => {

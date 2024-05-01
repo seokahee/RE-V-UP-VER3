@@ -28,6 +28,7 @@ type CommunityForm = {
 }
 
 const CommunityCreate = () => {
+  // 커뮤니티 등록 페이지, 퀼 에디터 적용
   const router = useRouter()
   const refTitle = useRef<HTMLInputElement>(null)
   const {

@@ -36,6 +36,7 @@ import DetailuserImage from './DetailuserImage' //유저 이미지 컴포넌트
 import DetailEditDelete from './DetailEditDelete' // 수정, 삭제 기능 컴포넌트
 
 const CommunityContents = () => {
+  // 커뮤니티 상세페이지
   const router = useRouter()
   const DOMPurify =
     typeof window !== 'undefined' ? createDOMPurify(window) : null // DOMPurify 객체가 CSR환경에서 작동하게
