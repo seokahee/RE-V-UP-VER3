@@ -7,7 +7,7 @@ import MusicSearchModal from './MusicSearchModal'
 const MusicSearch = () => {
   const [isModal, setIsModal] = useState<boolean>(false)
   const { setIsChooseMusic } = useMusicSearchedStore()
-
+  // 음악 등록 모달
   const onModalOpenHandler = (e: MouseEvent) => {
     e.preventDefault()
     setIsModal(true)

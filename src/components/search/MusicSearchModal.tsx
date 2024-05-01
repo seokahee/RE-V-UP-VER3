@@ -22,6 +22,7 @@ const MusicSearchModal = ({
   isModal: boolean
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
+  // 선택한 음악 정보, 상태 유무 체크
   const { chooseMusic, isChooseMusic, setIsChooseMusic } =
     useMusicSearchedStore()
   const [musicList, setMusicList] = useState<MusicInfoType[]>([])
@@ -70,7 +71,7 @@ const MusicSearchModal = ({
     setCurrentPageData,
     5,
   )
-
+  // 음악 등록 버튼
   const onAddViewMusicHandler = async () => {
     if (!isChooseMusic || !chooseMusic) {
       await Swal.fire({
