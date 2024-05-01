@@ -27,7 +27,12 @@ type CommunityForm = {
 const CommunityCreate = () => {
   const router = useRouter()
   const refTitle = useRef<HTMLInputElement>(null)
-  const { chooseMusic, setChooseMusic } = useMusicSearchedStore()
+  const {
+    chooseMusic,
+    setChooseMusic,
+    setIsChooseMusic,
+    setSelectedCardIndex,
+  } = useMusicSearchedStore()
   const { addCommunityMutation } = useCoummunityItem()
   const { data: userSessionInfo, status } = useSession()
   const musicId = chooseMusic?.musicId as string
@@ -99,20 +104,25 @@ const CommunityCreate = () => {
         userId: uid,
         musicId,
       }
+
       addCommunityMutation.mutate(newData)
       await Swal.fire({
-        text: '등록이 완료됐습니다.',
-        confirmButtonText: '확인',
-        confirmButtonColor: '#685BFF',
-        color: '#ffffff',
+        icon: 'success',
+        title: '게시글 등록이 완료됐습니다.',
+
+        showConfirmButton: false,
+        timer: 1500,
         background: '#2B2B2B',
+        color: '#ffffff',
       })
       reset()
       setChooseMusic(null)
       router.push('/community')
     }
+
     if (!userSessionInfo) {
       Swal.fire({
+        icon: 'warning',
         text: '오류로 인해 정보를 저장할 수 없습니다.',
         confirmButtonText: '확인',
         confirmButtonColor: '#685BFF',
@@ -125,6 +135,7 @@ const CommunityCreate = () => {
 
   if (status === 'unauthenticated') {
     Swal.fire({
+      icon: 'warning',
       text: '로그인한 유저만 이용 가능합니다.',
       confirmButtonText: '확인',
       confirmButtonColor: '#685BFF',
@@ -139,6 +150,10 @@ const CommunityCreate = () => {
     if (refTitle.current !== null) {
       refTitle.current.focus()
     }
+
+    setChooseMusic(null)
+    setIsChooseMusic(false)
+    setSelectedCardIndex(null)
   }, [])
 
   return (
