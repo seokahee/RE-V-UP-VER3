@@ -70,6 +70,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
 
   const playlistMyIds = playlistMyData?.playlistMyIds
 
+  //현플리 데이터 조회
   const { data: playlistCurrentData } = useQuery({
     queryFn: () => getCurrentMusicData(uid),
     queryKey: [GET_MUSIC_LIST_QUERY_KEYS.MY_CURRENT_MUSIC_LIST],
@@ -315,6 +316,7 @@ const MyPlaylist = ({ data }: { data: UserInfo }) => {
     if (scrollBoxRef.current) {
       //scrollBoxRef.current : 스크롤할 영역의 타켓
       //타켓의 상단 좌료를 구해서 useState에 담는다
+      //스크롤할 영역의 높이를 해상도에 따라 가변적으로 구하기 위해서 이 좌표를 useState에 담음
       setScrollBoxTopPosition(scrollBoxRef.current?.getBoundingClientRect().top)
     }
   }, [scrollBoxTopPosition])
