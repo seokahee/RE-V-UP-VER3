@@ -8,6 +8,7 @@ import { paging } from '@/util/util'
 import { useQuery } from '@tanstack/react-query'
 import NoSearchResultItem from './NoSearchResultItem'
 
+// 검색 결과 없을 시 MBTI가 등록된 경우 해당 MBTI 기반 랜덤 뮤직
 const GenreMusicRecommendations = ({
   musicPreferenceData,
 }: {
@@ -19,7 +20,6 @@ const GenreMusicRecommendations = ({
   const { currentPageData } = usePaginationStore()
   const { currentPage } = currentPageData
 
-  // 서버에서 노래 정보를 받아오고 유즈이펙
   const { data, isLoading } = useQuery({
     queryFn: () => getGenreMusicData(musicPreferenceData),
     queryKey: [GENRE_MUSIC_QUERY_KEY.GET_MAIN_GENRE_MUSIC, musicPreferenceData],
