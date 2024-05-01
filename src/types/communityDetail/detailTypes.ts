@@ -123,3 +123,10 @@ export type DetailEditDeleteProps = {
   onBoardEditHandler: (e: MouseEvent) => void
   onDeleteBoardHandler: (e: MouseEvent) => void
 }
+
+export type ContentsHeaderProps = {
+  isEdit: boolean
+  onEditCancelHandler: () => void
+  onBackButtonHandler: () => void
+  onBoardEditCompleteHandler: (e: React.MouseEvent) => void
+}
