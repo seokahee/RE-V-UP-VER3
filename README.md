@@ -83,7 +83,7 @@
   
 - **Language :**  Javascript
   
-- **Framwork** : Next(14.1.4)
+- **Framwork** : Next.js(14.1.4)
 
 - **Library**
   - next-auth(^4.24.7)
