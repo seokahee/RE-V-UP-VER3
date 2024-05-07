@@ -63,6 +63,10 @@
 
 **팀 노션** : [V-UP (Volume Up, 불륨업)](https://www.notion.so/VakVakVerse-16f2aa0964ad45f4b09dee8683b39c23)
 
+**발표 자료** : https://www.canva.com/design/DAGDnKcIjGI/oBJswMRAhDifvn7f2FFMRQ/view?utm_content=DAGDnKcIjGI&utm_campaign=designshare&utm_medium=link&utm_source=editor
+
+**시연 영상** : https://www.youtube.com/watch?v=zsFyAOfzZy0
+
 **개발 기간** : 2024.03. 25~ 2023.05.01 (약 5주간)
 
 **프로젝트 소개** : 음악 플레이어와 커뮤니티를 동시에 즐길 수 있는 플랫폼입니다.
